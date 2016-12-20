@@ -85,14 +85,16 @@
     "default": "1"
 }, {
     "tab": "Rechnung",
-    "key": "PAYONE_INVOICE.position",
+    "key": "PAYONE_INVOICE.position", 
+    "default":"10",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "Rechnung",
     "key": "PAYONE_INVOICE.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"Rechnung"
 }, {
     "tab": "Rechnung",
     "key": "PAYONE_INVOICE.description",
@@ -100,12 +102,14 @@
     "type": "text"
 }, {
     "tab": "Rechnung",
-    "key": "PAYONE_INVOICE.minCartAmount",
+    "key": "PAYONE_INVOICE.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "Rechnung",
-    "key": "PAYONE_INVOICE.maxCartAmount",
+    "key": "PAYONE_INVOICE.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -117,7 +121,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "Rechnung",
     "key": "PAYONE_INVOICE.useGlobalConfig",
@@ -157,14 +161,16 @@
     "default": "1"
 }, {
     "tab": "Paydirekt",
-    "key": "PAYONE_PAYDIREKT.position",
+    "key": "PAYONE_PAYDIREKT.position", 
+    "default":"20",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "Paydirekt",
     "key": "PAYONE_PAYDIREKT.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"Paydirekt"
 }, {
     "tab": "Paydirekt",
     "key": "PAYONE_PAYDIREKT.description",
@@ -172,12 +178,14 @@
     "type": "text"
 }, {
     "tab": "Paydirekt",
-    "key": "PAYONE_PAYDIREKT.minCartAmount",
+    "key": "PAYONE_PAYDIREKT.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "Paydirekt",
-    "key": "PAYONE_PAYDIREKT.maxCartAmount",
+    "key": "PAYONE_PAYDIREKT.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -189,7 +197,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "Paydirekt",
     "key": "PAYONE_PAYDIREKT.useGlobalConfig",
@@ -229,14 +237,16 @@
     "default": "1"
 }, {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYOLUTION_INSTALLMENT.position",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.position", 
+    "default":"30",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYOLUTION_INSTALLMENT.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"Payolution Ratenzahlung"
 }, {
     "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYOLUTION_INSTALLMENT.description",
@@ -244,12 +254,14 @@
     "type": "text"
 }, {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYOLUTION_INSTALLMENT.minCartAmount",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYOLUTION_INSTALLMENT.maxCartAmount",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -261,7 +273,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYOLUTION_INSTALLMENT.useGlobalConfig",
@@ -301,14 +313,16 @@
     "default": "1"
 }, {
     "tab": "PayPal",
-    "key": "PAYONE_PAYPAL.position",
+    "key": "PAYONE_PAYPAL.position", 
+    "default":"40",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "PayPal",
     "key": "PAYONE_PAYPAL.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"Payone PayPal"
 }, {
     "tab": "PayPal",
     "key": "PAYONE_PAYPAL.description",
@@ -316,12 +330,14 @@
     "type": "text"
 }, {
     "tab": "PayPal",
-    "key": "PAYONE_PAYPAL.minCartAmount",
+    "key": "PAYONE_PAYPAL.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "PayPal",
-    "key": "PAYONE_PAYPAL.maxCartAmount",
+    "key": "PAYONE_PAYPAL.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -333,7 +349,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "PayPal",
     "key": "PAYONE_PAYPAL.useGlobalConfig",
@@ -373,14 +389,16 @@
     "default": "1"
 }, {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_RATEPAY_INSTALLMENT.position",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.position", 
+    "default":"50",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_RATEPAY_INSTALLMENT.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"RatePay Ratenzahlung"
 }, {
     "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_RATEPAY_INSTALLMENT.description",
@@ -388,12 +406,14 @@
     "type": "text"
 }, {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_RATEPAY_INSTALLMENT.minCartAmount",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_RATEPAY_INSTALLMENT.maxCartAmount",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -405,7 +425,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_RATEPAY_INSTALLMENT.useGlobalConfig",
@@ -445,14 +465,16 @@
     "default": "1"
 }, {
     "tab": "Sofortüberweisung",
-    "key": "PAYONE_SOFORT.position",
+    "key": "PAYONE_SOFORT.position", 
+    "default":"60",
     "label": "Position",
     "type": "text"
 }, {
     "tab": "Sofortüberweisung",
     "key": "PAYONE_SOFORT.name",
     "label": "Name",
-    "type": "text"
+    "type": "text",
+    "default":"Sofortüberweisung"
 }, {
     "tab": "Sofortüberweisung",
     "key": "PAYONE_SOFORT.description",
@@ -460,12 +482,14 @@
     "type": "text"
 }, {
     "tab": "Sofortüberweisung",
-    "key": "PAYONE_SOFORT.minCartAmount",
+    "key": "PAYONE_SOFORT.minCartAmount", 
+    "default":"0",
     "label": "Minimaler Bestellwert",
     "type": "text"
 }, {
     "tab": "Sofortüberweisung",
-    "key": "PAYONE_SOFORT.maxCartAmount",
+    "key": "PAYONE_SOFORT.maxCartAmount", 
+    "default":"2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
 }, {
@@ -477,7 +501,7 @@
         "0": "Test",
         "1": "Live"
     },
-    "default": "1"
+    "default": "0"
 }, {
     "tab": "Sofortüberweisung",
     "key": "PAYONE_SOFORT.useGlobalConfig",

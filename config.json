@@ -71,7 +71,7 @@
 },{
     "tab": "Grundeinstellungen",
     "key": "captureText",
-    "label": "Zahlungstext",
+    "label": "Zahlungsfreitext",
     "type": "text"
 }, {
     "tab": "Rechnung",
@@ -137,12 +137,12 @@
 }, {
     "tab": "Rechnung",
     "key": "PAYONE_INVOICE.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_INVOICE.allowedTrafficLights.green": "Description",
-        "PAYONE_INVOICE.allowedTrafficLights.yellow": "Description",
-        "PAYONE_INVOICE.allowedTrafficLights.red": "Technical data"
+        "PAYONE_INVOICE.allowedTrafficLights._green": "Grün",
+        "PAYONE_INVOICE.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_INVOICE.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_INVOICE.allowedTrafficLights.green"
 }, {
@@ -209,12 +209,12 @@
 }, {
     "tab": "Paydirekt",
     "key": "PAYONE_PAYDIREKT.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_PAYDIREKT.allowedTrafficLights.green": "Description",
-        "PAYONE_PAYDIREKT.allowedTrafficLights.yellow": "Description",
-        "PAYONE_PAYDIREKT.allowedTrafficLights.red": "Technical data"
+        "PAYONE_PAYDIREKT.allowedTrafficLights._green": "Grün",
+        "PAYONE_PAYDIREKT.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_PAYDIREKT.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_PAYDIREKT.allowedTrafficLights.green"
 }, {
@@ -281,12 +281,12 @@
 }, {
     "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.green": "Description",
-        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.yellow": "Description",
-        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.red": "Technical data"
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights._green": "Grün",
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.green"
 }, {
@@ -353,12 +353,12 @@
 }, {
     "tab": "PayPal",
     "key": "PAYONE_PAYPAL.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_PAYPAL.allowedTrafficLights.green": "Description",
-        "PAYONE_PAYPAL.allowedTrafficLights.yellow": "Description",
-        "PAYONE_PAYPAL.allowedTrafficLights.red": "Technical data"
+        "PAYONE_PAYPAL.allowedTrafficLights._green": "Grün",
+        "PAYONE_PAYPAL.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_PAYPAL.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_PAYPAL.allowedTrafficLights.green"
 }, {
@@ -425,12 +425,12 @@
 }, {
     "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.green": "Description",
-        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.yellow": "Description",
-        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.red": "Technical data"
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights._green": "Grün",
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.green"
 }, {
@@ -497,12 +497,12 @@
 }, {
     "tab": "Sofortüberweisung",
     "key": "PAYONE_SOFORT.allowedTrafficLights",
-    "label": "Erlaubte Länder",
+    "label": "Erlaubte Ampelfarben",
     "type"      : "multi_select",
     "possibleValues": {
-        "PAYONE_SOFORT.allowedTrafficLights.green": "Description",
-        "PAYONE_SOFORT.allowedTrafficLights.yellow": "Description",
-        "PAYONE_SOFORT.allowedTrafficLights.red": "Technical data"
+        "PAYONE_SOFORT.allowedTrafficLights._green": "Grün",
+        "PAYONE_SOFORT.allowedTrafficLights.yellow": "Gelb",
+        "PAYONE_SOFORT.allowedTrafficLights.red": "Rot"
     },
     "default"   : "PAYONE_SOFORT.allowedTrafficLights.green"
 }

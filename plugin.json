@@ -1,0 +1,26 @@
+{
+  "version": 1.0,
+  "license":"",
+  "pluginIcon":"",
+  "price":0,
+  "authorIcon":"",
+  "":"",
+  "name": "Payone",
+  "description": "The official Payone plugin for plentymarkets",
+  "author": "arvatis media GmbH",
+  "keywords": ["Payone", "plentymarkets", "payment"],
+  "type": "payment",
+  "namespace": "Payone",
+  "require": [],
+  "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
+  "dependencies":{
+    "guzzlehttp/guzzle":"*"
+  },
+  "runOnBuild": [
+    "Payone\\Migrations\\CreatePaymentMethod",
+    "Payone\\Migrations\\CreateSettingsTable"
+  ],
+  "dataProviders": [
+    {}
+  ]
+}

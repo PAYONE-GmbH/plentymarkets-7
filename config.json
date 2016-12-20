@@ -1,0 +1,509 @@
+[{
+    "tab": "Grundeinstellungen",
+    "key": "mid",
+    "label": "Merchant-Id",
+    "type": "text"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "portalid",
+    "label": "Portal-Id",
+    "type": "text"
+}, {
+    "tab": "Grundeinstellungen",
+    "key": "aid",
+    "label": "Account-Id",
+    "type": "text"
+}, {
+    "tab": "Grundeinstellungen",
+    "key": "key",
+    "label": "Key",
+    "type": "text"
+},  {
+    "tab": "Grundeinstellungen",
+    "key": "mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Live",
+        "1": "Test"
+    },
+    "default": "1"
+}, {
+    "tab": "Grundeinstellungen",
+    "key": "authType",
+    "label": "Autorisierungsmethode",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Preautorisierung",
+        "1": "Autorisierung"
+    },
+    "default": "0"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "submitCart",
+    "label": "Warenkorb übertragen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "pdfDownloadActive",
+    "label": "PDF Download aktivieren",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "invoiceText",
+    "label": "Rechnungsfreitext",
+    "type": "text"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "refundText",
+    "label": "Gutschriftfreitext",
+    "type": "text"
+},{
+    "tab": "Grundeinstellungen",
+    "key": "captureText",
+    "label": "Zahlungstext",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "Rechnung",
+    "key": "PAYONE_INVOICE.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_INVOICE.allowedTrafficLights.green": "Description",
+        "PAYONE_INVOICE.allowedTrafficLights.yellow": "Description",
+        "PAYONE_INVOICE.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_INVOICE.allowedTrafficLights.green"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "Paydirekt",
+    "key": "PAYONE_PAYDIREKT.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_PAYDIREKT.allowedTrafficLights.green": "Description",
+        "PAYONE_PAYDIREKT.allowedTrafficLights.yellow": "Description",
+        "PAYONE_PAYDIREKT.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_PAYDIREKT.allowedTrafficLights.green"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "Payolution Ratenzahlung",
+    "key": "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.green": "Description",
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.yellow": "Description",
+        "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.green"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "PayPal",
+    "key": "PAYONE_PAYPAL.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_PAYPAL.allowedTrafficLights.green": "Description",
+        "PAYONE_PAYPAL.allowedTrafficLights.yellow": "Description",
+        "PAYONE_PAYPAL.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_PAYPAL.allowedTrafficLights.green"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "RatePay Ratenzahlung",
+    "key": "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.green": "Description",
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.yellow": "Description",
+        "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.green"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.position",
+    "label": "Position",
+    "type": "text"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.name",
+    "label": "Name",
+    "type": "text"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.description",
+    "label": "Beschreibung",
+    "type": "text"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.minCartAmount",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.maxCartAmount",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.mode",
+    "label": "Modus",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Test",
+        "1": "Live"
+    },
+    "default": "1"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.useGlobalConfig",
+    "label": "Globale Einstellungen benutzen",
+    "type": "dropdown",
+    "possibleValues": {
+        "0": "Nein",
+        "1": "Ja"
+    },
+    "default": "1"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DEU,AUT,CHE"
+}, {
+    "tab": "Sofortüberweisung",
+    "key": "PAYONE_SOFORT.allowedTrafficLights",
+    "label": "Erlaubte Länder",
+    "type"      : "multi_select",
+    "possibleValues": {
+        "PAYONE_SOFORT.allowedTrafficLights.green": "Description",
+        "PAYONE_SOFORT.allowedTrafficLights.yellow": "Description",
+        "PAYONE_SOFORT.allowedTrafficLights.red": "Technical data"
+    },
+    "default"   : "PAYONE_SOFORT.allowedTrafficLights.green"
+}
+]

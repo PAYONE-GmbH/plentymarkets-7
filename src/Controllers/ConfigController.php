@@ -26,7 +26,7 @@ class ConfigController extends Controller
         $config = '';
 
         foreach ($this->configRepo->get('Payone') as $key => $value) {
-            $config .= $key . '=>'$value . PHP_EOL;
+            $config .= $key . '=>'.$value . PHP_EOL;
         }
         return $config;
     }

@@ -2,8 +2,8 @@
 
 namespace Payone;
 
+use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
-use Plenty\Plugin\Templates\Twig;
 
 class ConfigController extends Controller
 {
@@ -23,7 +23,11 @@ class ConfigController extends Controller
 
     public function index(): string
     {
-        return print_r(get_object_vars($this->configRepo), true) . PHP_EOL .
-            print_r($this->configRepo->get('Payone'), true);
+        $config = '';
+
+        foreach ($this->configRepo->get('Payone') as $key => $value) {
+            $config .= $key . '=>'$value . PHP_EOL;
+        }
+        return $config;
     }
 }

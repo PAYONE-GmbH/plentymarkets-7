@@ -46,7 +46,7 @@ class PaymentHelper
             return 'no_paymentmethod_found';
         }
         foreach ($paymentMethods as $paymentMethod) {
-            if (in_array($paymentMethod->paymentKey, $this->getAvailablePaymentCodes())) {
+            if (in_array($paymentMethod->paymentKey, $this->getPayonePaymentCodes())) {
                 return $paymentMethod->id;
             }
         }

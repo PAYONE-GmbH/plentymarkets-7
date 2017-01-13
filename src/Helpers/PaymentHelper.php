@@ -55,6 +55,9 @@ class PaymentHelper
         return 'no_paymentmethod_found';
     }
 
+    /**
+     * @return array
+     */
     public function getPayonePaymentCodes()
     {
         return [
@@ -65,5 +68,17 @@ class PaymentHelper
             PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
             PayoneSofortPaymentMethod::PAYMENT_CODE,
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getPayoneMops()
+    {
+        $mops = [];
+        foreach ($this->getPayonePaymentCodes() as $paymentCode) {
+            $mops[] = $this->getPayoneMops($paymentCode);
+        }
+        return $mops;
     }
 }

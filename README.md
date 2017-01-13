@@ -2,7 +2,7 @@
 
 # PAYONE plugin for plentymarkets 7.x
 
-This is the official PayPal plugin plentymarkets. Integrate the payment method PAYONE in your plentymarkets 7 online store.
+This is the official PAYONE plugin plentymarkets. Integrate the payment method PAYONE in your plentymarkets 7 online store.
 
 ## Requirements
 

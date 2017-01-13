@@ -21,6 +21,6 @@
     "Payone\\Migrations\\CreateSettingsTable"
   ],
   "dataProviders": [
-    {}
+
   ]
 }

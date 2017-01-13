@@ -77,7 +77,7 @@ class PaymentHelper
     {
         $mops = [];
         foreach ($this->getPayonePaymentCodes() as $paymentCode) {
-            $mops[] = $this->getPayoneMops($paymentCode);
+            $mops[] = $this->getPayoneMopId($paymentCode);
         }
         return $mops;
     }

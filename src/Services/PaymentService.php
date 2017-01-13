@@ -48,10 +48,6 @@ class PaymentService
      */
     private $sessionStorage;
 
-    /**
-     * @var ContactService
-     */
-    private $contactService;
 
     /**
      * PaymentService constructor.
@@ -71,8 +67,7 @@ class PaymentService
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        SessionStorageService $sessionStorage,
-        ContactService $contactService
+        SessionStorageService $sessionStorage
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -81,7 +76,6 @@ class PaymentService
         $this->addressRepo = $addressRepo;
         $this->config = $config;
         $this->sessionStorage = $sessionStorage;
-        $this->contactService = $contactService;
     }
 
     /**

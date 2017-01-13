@@ -21,13 +21,14 @@ class ConfigController extends Controller
         $this->configRepo = $configRepo;
     }
 
-    public function index(): string
+    public function index()
     {
+        echo 'index';
         $config = '';
 
         foreach ($this->configRepo->get('Payone') as $key => $value) {
             $config .= $key . '=>'.$value . PHP_EOL;
         }
-        return $config;
+        echo $config;
     }
 }

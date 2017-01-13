@@ -28,7 +28,7 @@ class CreatePaymentMethod
      * CreatePaymentMethod constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
-     * @param PaymentHelper                   $paymentHelper
+     * @param PaymentHelper $paymentHelper
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
@@ -45,16 +45,15 @@ class CreatePaymentMethod
      */
     public function run()
     {
-        if ($this->paymentHelper->getPayoneMopId() != 'no_paymentmethod_found') {
-            return;
-        }
-
         foreach ($this->paymentHelper->getPayonePaymentCodes() as $paymentCode) {
+            if ($this->paymentHelper->getPayoneMopId($paymentCode) != 'no_paymentmethod_found') {
+                continue;
+            }
             $this->paymentMethodRepo->createPaymentMethod(
                 [
-                'pluginKey' => 'Payone',
-                'paymentKey' => $paymentCode,
-                'name' => $paymentCode
+                    'pluginKey' => 'Payone',
+                    'paymentKey' => $paymentCode,
+                    'name' => $paymentCode
                 ]
             );
         }

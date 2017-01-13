@@ -21,7 +21,7 @@ abstract class PaymentContract extends PaymentMethodService
      * PayonePaymentMethod constructor.
      *
      * @param BasketRepositoryContract $basketRepo
-     * @param ConfigRepository         $configRepo
+     * @param ConfigRepository $configRepo
      */
     public function __construct(
         BasketRepositoryContract $basketRepo,
@@ -36,7 +36,7 @@ abstract class PaymentContract extends PaymentMethodService
      *
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return true; //TODO
         return (bool)$this->configRepo->get($this->PAYMENT_CODE . '.active');
@@ -47,7 +47,7 @@ abstract class PaymentContract extends PaymentMethodService
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         $name = $this->configRepo->get($this->PAYMENT_CODE . '.name');
         return $name;
@@ -58,7 +58,7 @@ abstract class PaymentContract extends PaymentMethodService
      *
      * @return float
      */
-    public function getFee()
+    public function getFee(): float
     {
         return 0.;
     }
@@ -68,7 +68,7 @@ abstract class PaymentContract extends PaymentMethodService
      *
      * @return string
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return '';
     }
@@ -78,7 +78,7 @@ abstract class PaymentContract extends PaymentMethodService
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->configRepo->get($this->PAYMENT_CODE . '.description');
     }

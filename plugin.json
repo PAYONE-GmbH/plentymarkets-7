@@ -17,7 +17,7 @@
     "guzzlehttp/guzzle":"*"
   },
   "runOnBuild": [
-    "Payone\\Migrations\\CreatePaymentMethod",
+    "Payone\\Migrations\\CreatePaymentMethodNew",
     "Payone\\Migrations\\CreateSettingsTable"
   ],
   "dataProviders": [

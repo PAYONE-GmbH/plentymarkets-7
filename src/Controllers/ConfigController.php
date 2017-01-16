@@ -1,6 +1,6 @@
 <?php
 
-namespace Payone;
+namespace Payone\Controllers;
 
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;

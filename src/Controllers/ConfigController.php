@@ -43,6 +43,7 @@ class ConfigController extends Controller
      */
     public function test()
     {
+        MailLogger::log(__METHOD__ . ': calling test action');
         echo 'test';
 
     }

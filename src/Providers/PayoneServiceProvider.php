@@ -10,12 +10,9 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Services\PaymentService;
-use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
-use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
-use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
@@ -53,17 +50,8 @@ class PayoneServiceProvider extends ServiceProvider
         EventProceduresService $eventProceduresService
     ) {
         $this->registerPaymentMethods($payContainer);
+        $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
 
-        // Listen for the event that gets the payment method content
-        $eventDispatcher->listen(GetPaymentMethodContent::class,
-            function (GetPaymentMethodContent $event) use ($paymentHelper, $basket, $paymentService) {
-                if (in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
-                    $basket = $basket->load();
-
-                    $event->setValue($paymentService->getPaymentContent($basket));
-                    $event->setType($paymentService->getReturnType());
-                }
-            });
 
     }
 
@@ -103,6 +91,32 @@ class PayoneServiceProvider extends ServiceProvider
             'Payone::' . PayoneSofortPaymentMethod::PAYMENT_CODE,
             PayoneSofortPaymentMethod::class,
             $events
+        );
+    }
+
+    /**
+     * @param Dispatcher $eventDispatcher
+     * @param PaymentHelper $paymentHelper
+     * @param PaymentService $paymentService
+     * @param BasketRepositoryContract $basket
+     * @return void
+     */
+    private function addPaymentMethodContent(
+        Dispatcher $eventDispatcher,
+        PaymentHelper $paymentHelper,
+        PaymentService $paymentService,
+        BasketRepositoryContract $basket
+    ) {
+        $eventDispatcher->listen(
+            GetPaymentMethodContent::class,
+            function (GetPaymentMethodContent $event) use ($paymentHelper, $basket, $paymentService) {
+                if (in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
+                    $basket = $basket->load();
+
+                    $event->setValue($paymentService->getPaymentContent($basket));
+                    $event->setType($paymentService->getReturnType());
+                }
+            }
         );
     }
 

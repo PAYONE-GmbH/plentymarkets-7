@@ -1,0 +1,19 @@
+{
+  "autoload-dev": {
+    "classmap": [
+      "src/",
+      "resources/lib/",
+      "vendor/plentymarkets/plugin-interface"
+    ]
+  },
+  "require-dev": {
+    "plentymarkets/plugin-interface": "@dev",
+    "phpunit/phpunit": "~5"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/plentymarkets/plugin-interface.git"
+    }
+  ]
+}

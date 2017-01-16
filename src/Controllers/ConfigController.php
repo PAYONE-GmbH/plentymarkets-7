@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use Payone\Services\MailLogger;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
 

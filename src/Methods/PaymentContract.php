@@ -7,7 +7,7 @@ use Plenty\Plugin\ConfigRepository;
 
 abstract class PaymentContract extends PaymentMethodService
 {
-    protected $PAYMENT_CODE = 'Payone';
+    const PAYMENT_CODE = 'Payone';
     /**
      * @var BasketRepositoryContract
      */
@@ -39,7 +39,7 @@ abstract class PaymentContract extends PaymentMethodService
     public function isActive(): bool
     {
         return true; //TODO
-        return (bool)$this->configRepo->get($this->PAYMENT_CODE . '.active');
+        return (bool)$this->configRepo->get($this::PAYMENT_CODE . '.active');
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class PaymentContract extends PaymentMethodService
      */
     public function getName(): string
     {
-        $name = $this->configRepo->get($this->PAYMENT_CODE . '.name');
+        $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
         return $name;
     }
 
@@ -80,6 +80,6 @@ abstract class PaymentContract extends PaymentMethodService
      */
     public function getDescription(): string
     {
-        return $this->configRepo->get($this->PAYMENT_CODE . '.description');
+        return $this->configRepo->get($this::PAYMENT_CODE . '.description');
     }
 }

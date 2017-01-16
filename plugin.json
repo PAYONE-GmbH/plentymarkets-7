@@ -4,7 +4,6 @@
   "pluginIcon":"",
   "price":0,
   "authorIcon":"",
-  "":"",
   "name": "Payone",
   "description": "The official Payone plugin for plentymarkets",
   "author": "arvatis media GmbH",
@@ -19,8 +18,5 @@
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",
     "Payone\\Migrations\\CreateSettingsTable"
-  ],
-  "dataProviders": [
-
   ]
 }

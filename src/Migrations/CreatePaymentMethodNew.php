@@ -46,7 +46,7 @@ class CreatePaymentMethodNew
     public function run()
     {
         foreach ($this->paymentHelper->getPayonePaymentCodes() as $paymentCode) {
-            if ($this->paymentHelper->getPayoneMopId($paymentCode) != 'no_paymentmethod_found') {
+            if ($this->paymentHelper->getPayoneMopId($paymentCode) == 'no_paymentmethod_found') {
                 continue;
             }
             $this->paymentMethodRepo->createPaymentMethod(

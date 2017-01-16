@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="my-project" default="build">
+    <!-- import the main tasks -->
+    <import file="vendor/phpcq/phpcq/phpcq.main.xml" />
+    <target name="run"
+            depends="
+                phplint,
+                autoload-validation,
+                author-validation,
+                phploc,
+                pdepend,
+                phpmd,
+                phpcs,
+                phpcpd,
+                phpunit,
+                phpspec,
+                branch-alias-validation
+            "/>
+</project>

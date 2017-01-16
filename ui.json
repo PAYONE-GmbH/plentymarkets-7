@@ -1,0 +1,18 @@
+{
+  "defaultEntryPoint": "index.html",
+  "namespace": "Payone",
+  "menuEntries": [
+    {
+      "label": "Grundeinstellungen",
+      "menu": "settings/orders/payone",
+      "urlKey": "settings",
+      "entryPoint": "index.html?action=settings"
+    },
+    {
+      "label": "Händlereinstellungen",
+      "menu": "settings/orders/payone",
+      "urlKey": "merchant-settings",
+      "entryPoint": "index.html?action=permissions"
+    }
+  ]
+}

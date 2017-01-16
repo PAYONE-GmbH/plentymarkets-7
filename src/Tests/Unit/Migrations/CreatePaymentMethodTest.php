@@ -75,7 +75,7 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
                 ]
             );
         $this->helper = new PaymentHelper($this->paymentRepo);
-        $this->migration = new CreatePaymentMethodNew($this->paymentRepo, $this->helper);
+        $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper);
     }
 
     /**

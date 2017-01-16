@@ -12,7 +12,7 @@ use Payone\Helper\PaymentHelper;
  *
  * @package Payone\Migrations
  */
-class CreatePaymentMethodNew
+class CreatePaymentMethods
 {
     /**
      * @var PaymentMethodRepositoryContract

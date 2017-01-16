@@ -5,6 +5,9 @@ namespace Payone\Controllers;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
 
+/**
+ * Class ConfigController
+ */
 class ConfigController extends Controller
 {
 
@@ -21,14 +24,26 @@ class ConfigController extends Controller
         $this->configRepo = $configRepo;
     }
 
+    /**
+     * @return void
+     */
     public function index()
     {
         echo 'index';
         $config = '';
 
         foreach ($this->configRepo->get('Payone') as $key => $value) {
-            $config .= $key . '=>'.$value . PHP_EOL;
+            $config .= $key . '=>' . $value . PHP_EOL;
         }
         echo $config;
+    }
+
+    /**
+     * @return void
+     */
+    public function test()
+    {
+        echo 'test';
+
     }
 }

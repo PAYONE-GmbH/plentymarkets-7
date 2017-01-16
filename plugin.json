@@ -14,8 +14,7 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "guzzlehttp/guzzle":"*",
-    "phpunit/phpunit": "~5"
+    "guzzlehttp/guzzle":"*"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",

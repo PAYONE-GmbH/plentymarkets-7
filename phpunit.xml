@@ -19,7 +19,7 @@
     <testsuites>
         <testsuite name="API Test Suite">
             <directory suffix="Test.php">./resources/lib/Payone/Tests/*</directory>
-            <directory suffix="Test.php">./test/*</directory>
+            <directory suffix="Test.php">./resources/test/*</directory>
         </testsuite>
     </testsuites>
 </phpunit>

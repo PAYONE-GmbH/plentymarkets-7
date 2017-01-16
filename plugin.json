@@ -13,7 +13,8 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "guzzlehttp/guzzle":"*"
+    "guzzlehttp/guzzle":"*",
+    "monolog/monolog": "^1.22"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",

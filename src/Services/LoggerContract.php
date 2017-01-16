@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Payone\Models;
+namespace Payone\Services;
 
 /**
  * Interface LoggerContract
@@ -14,5 +14,5 @@ interface LoggerContract
      * @param string $message
      * @return void
      */
-    public static function log($message);
+    public function log($message);
 }

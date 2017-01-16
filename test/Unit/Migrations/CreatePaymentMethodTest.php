@@ -8,7 +8,7 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
-use Payone\Migrations\CreatePaymentMethodNew;
+use Payone\Migrations\CreatePaymentMethods;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 
 /**
@@ -16,13 +16,13 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
  */
 class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  PaymentMethodRepositoryContract */
+    /** @var  PaymentMethodRepositoryContract|PHPUnit_Framework_MockObject_MockObject */
     private $paymentRepo;
     /** @var  PaymentHelper */
     private $helper;
 
     /**
-     * @var CreatePaymentMethodNew
+     * @var CreatePaymentMethods
      */
     private $migration;
 

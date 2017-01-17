@@ -29,7 +29,6 @@ class PayoneServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        MailLogger::log(__METHOD__ . ': registering routers');
         $this->getApplication()->register(PayoneRouteServiceProvider::class);
     }
 
@@ -51,9 +50,7 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentMethodContainer $payContainer,
         EventProceduresService $eventProceduresService
     ) {
-        MailLogger::log(__METHOD__ . ': creating payments');
         $this->registerPaymentMethods($payContainer);
-        MailLogger::log(__METHOD__ . ': adding payment content');
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
 
 

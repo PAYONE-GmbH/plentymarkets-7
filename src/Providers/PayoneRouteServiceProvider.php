@@ -17,7 +17,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
      */
     public function map(Router $router)
     {
-        MailLogger::log(__METHOD__ . ': mapping routes');
         $router->get('payone/config/', 'Payone\Controllers\ConfigController@index');
         $router->any('payone/test/', 'Payone\Controllers\ConfigController@test');
     }

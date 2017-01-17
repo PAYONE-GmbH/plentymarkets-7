@@ -9,7 +9,6 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
-use Payone\Services\MailLogger;
 use Payone\Services\PaymentService;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;

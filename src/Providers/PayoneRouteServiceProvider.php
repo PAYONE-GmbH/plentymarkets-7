@@ -2,7 +2,6 @@
 
 namespace Payone\Providers;
 
-use Payone\Services\MailLogger;
 use Plenty\Plugin\RouteServiceProvider;
 use Plenty\Plugin\Routing\Router;
 

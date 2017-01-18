@@ -8,7 +8,11 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Models\PayonePaymentStatus;
+use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
+use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Modules\Payment\Models\PaymentProperty;
 
 /**
  * Class PaymentHelper
@@ -22,15 +26,23 @@ class PaymentHelper
      * @var PaymentMethodRepositoryContract
      */
     private $paymentMethodRepo;
+    /**
+     * @var PaymentRepositoryContract
+     */
+    private $paymentRepository;
 
     /**
      * PaymentHelper constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
+     * @param PaymentRepositoryContract $paymentRepository
      */
-    public function __construct(PaymentMethodRepositoryContract $paymentMethodRepo)
-    {
+    public function __construct(
+        PaymentMethodRepositoryContract $paymentMethodRepo,
+        PaymentRepositoryContract $paymentRepository
+    ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
@@ -80,5 +92,27 @@ class PaymentHelper
             $mops[] = $this->getPayoneMopId($paymentCode);
         }
         return $mops;
+    }
+
+    /**
+     * @param $orderId
+     * @param $txid
+     * @param string $txaction
+     * @return void
+     */
+    public function updatePaymentStatus($orderId, $txid, $txaction)
+    {
+        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+
+        /* @var $payment Payment */
+        foreach ($payments as $payment) {
+            /* @var $property PaymentProperty */
+            foreach ($payment->property as $property) {
+                if ($property->typeId === 30 && $property->id === $txid) {
+                    $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
+                    $this->paymentRepository->updatePayment($payment);
+                }
+            }
+        }
     }
 }

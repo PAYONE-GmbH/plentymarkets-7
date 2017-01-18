@@ -165,7 +165,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_INVOICE.allowedTrafficLights._green": "Grün",
+      "PAYONE_INVOICE.allowedTrafficLights.green": "Grün",
       "PAYONE_INVOICE.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_INVOICE.allowedTrafficLights.red": "Rot"
     },
@@ -251,7 +251,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_PAYDIREKT.allowedTrafficLights._green": "Grün",
+      "PAYONE_PAYDIREKT.allowedTrafficLights.green": "Grün",
       "PAYONE_PAYDIREKT.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_PAYDIREKT.allowedTrafficLights.red": "Rot"
     },
@@ -337,7 +337,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights._green": "Grün",
+      "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.green": "Grün",
       "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_PAYOLUTION_INSTALLMENT.allowedTrafficLights.red": "Rot"
     },
@@ -423,7 +423,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_PAYPAL.allowedTrafficLights._green": "Grün",
+      "PAYONE_PAYPAL.allowedTrafficLights.green": "Grün",
       "PAYONE_PAYPAL.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_PAYPAL.allowedTrafficLights.red": "Rot"
     },
@@ -509,7 +509,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights._green": "Grün",
+      "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.green": "Grün",
       "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_RATEPAY_INSTALLMENT.allowedTrafficLights.red": "Rot"
     },
@@ -595,7 +595,7 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_SOFORT.allowedTrafficLights._green": "Grün",
+      "PAYONE_SOFORT.allowedTrafficLights.green": "Grün",
       "PAYONE_SOFORT.allowedTrafficLights.yellow": "Gelb",
       "PAYONE_SOFORT.allowedTrafficLights.red": "Rot"
     },
@@ -624,7 +624,7 @@
     "key": "PAYONE_PRE_PAYMENT.name",
     "label": "Name",
     "type": "text",
-    "default": "Sofortüberweisung"
+    "default": "Vorkasse"
   },
   {
     "tab": "Vorkasse",
@@ -681,9 +681,9 @@
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_SOFORT.allowedTrafficLights._green": "Grün",
-      "PAYONE_SOFORT.allowedTrafficLights.yellow": "Gelb",
-      "PAYONE_SOFORT.allowedTrafficLights.red": "Rot"
+      "PAYONE_PRE_PAYMENT.allowedTrafficLights.green": "Grün",
+      "PAYONE_PRE_PAYMENT.allowedTrafficLights.yellow": "Gelb",
+      "PAYONE_PRE_PAYMENT.allowedTrafficLights.red": "Rot"
     },
     "default": "PAYONE_PRE_PAYMENT.allowedTrafficLights.green"
   },{
@@ -709,7 +709,7 @@
     "key": "PAYONE_CASH_ON_DELIVERY.name",
     "label": "Name",
     "type": "text",
-    "default": "Sofortüberweisung"
+    "default": "Nachnahme"
   },
   {
     "tab": "Nachnahme",
@@ -762,14 +762,14 @@
   },
   {
     "tab": "Nachnahme",
-    "key": "PAYONE_SOFORT.allowedTrafficLights",
+    "key": "PAYONE_CASH_ON_DELIVERY.allowedTrafficLights",
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_SOFORT.allowedTrafficLights._green": "Grün",
-      "PAYONE_SOFORT.allowedTrafficLights.yellow": "Gelb",
-      "PAYONE_SOFORT.allowedTrafficLights.red": "Rot"
+      "PAYONE_CASH_ON_DELIVERY.allowedTrafficLights.green": "Grün",
+      "PAYONE_CASH_ON_DELIVERY.allowedTrafficLights.yellow": "Gelb",
+      "PAYONE_CASH_ON_DELIVERY.allowedTrafficLights.red": "Rot"
     },
     "default": "PAYONE_CASH_ON_DELIVERY.allowedTrafficLights.green"
-  },
+  }
 ]

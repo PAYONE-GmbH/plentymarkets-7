@@ -2,10 +2,12 @@
 
 namespace Payone\Helper;
 
+use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
+use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\PayonePaymentStatus;
@@ -79,6 +81,8 @@ class PaymentHelper
             PayonePayPalPaymentMethod::PAYMENT_CODE,
             PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
             PayoneSofortPaymentMethod::PAYMENT_CODE,
+            PayoneCODPaymentMethod::PAYMENT_CODE,
+            PayonePrePaymentPaymentMethod::PAYMENT_CODE,
         ];
     }
 

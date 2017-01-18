@@ -18,7 +18,8 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
     {
         $router->get('payone/config/', 'Payone\Controllers\ConfigController@index');
         $router->any('payone/test/', 'Payone\Controllers\ConfigController@test');
-        $router->any('payone/test2/', 'Payone\Controllers\ConfigController@test');
+        $router->any('payone/test2/', 'Payone\Controllers\ConfigController@test2');
+        $router->any('payone/test3/', 'Payone\Controllers\ConfigController@test3');
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
     }
 }

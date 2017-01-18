@@ -2,7 +2,6 @@
 
 namespace Payone\Controllers;
 
-use League\Flysystem\Exception;
 use Payone\Services\MailLogger;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
@@ -23,13 +22,22 @@ class ConfigController extends Controller
     private $configRepo;
 
     /**
+     * @var PaymentMethodRepositoryContract
+     */
+    private $paymentMethodRepo;
+
+    /**
      * ConfigController constructor.
      * @param MailLogger $logger
      */
-    public function __construct(MailLogger $logger, ConfigRepository $configRepo)
-    {
+    public function __construct(
+        MailLogger $logger,
+        ConfigRepository $configRepo,
+        PaymentMethodRepositoryContract $paymentMethodRepo
+    ) {
         $this->logger = $logger;
         $this->configRepo = $configRepo;
+        $this->paymentMethodRepo = $paymentMethodRepo;
     }
 
     /**
@@ -38,18 +46,12 @@ class ConfigController extends Controller
     public function index()
     {
         echo 'index';
-        echo 'config:';
-        try {
-            $config = '';
 
-            foreach ($this->configRepo->get('Payone') as $key => $value) {
-                $config .= $key . '=>' . $value . PHP_EOL;
-            }
-            echo $config;
+        try {
 
             echo 'log:';
             $this->logger->log('test');
-        }catch (Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -61,14 +63,13 @@ class ConfigController extends Controller
     {
         echo 'test';
         try {
-            echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');
-            $config = '';
 
+            $config = '';
             foreach ($this->configRepo->get('Payone') as $key => $value) {
                 $config .= $key . '=>' . $value . PHP_EOL;
             }
             echo $config;
-        }catch (Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }
@@ -78,14 +79,24 @@ class ConfigController extends Controller
      */
     public function test2()
     {
-        echo 'test';
+        echo 'test2';
         echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');
-        $config = '';
 
-        foreach ($this->configRepo->get('Payone') as $key => $value) {
-            $config .= $key . '=>' . $value . PHP_EOL;
+    }
+
+    /**
+     * @return void
+     */
+    public function test3()
+    {
+        echo 'test3';
+        $paymentMethods = $this->paymentMethodRepo->all();
+
+
+        foreach ($paymentMethods as $paymentMethod) {
+            echo $paymentMethod->paymentKey;
         }
-        echo $config;
+
     }
 
 

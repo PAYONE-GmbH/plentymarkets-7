@@ -3,6 +3,7 @@
 namespace Payone\Controllers;
 
 use Payone\Services\MailLogger;
+use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
 
@@ -46,14 +47,14 @@ class ConfigController extends Controller
     public function index()
     {
         echo 'index';
-
+/*
         try {
 
             echo 'log:';
             $this->logger->log('test');
         } catch (\Exception $e) {
             echo $e->getMessage();
-        }
+        }*/
     }
 
     /**
@@ -62,7 +63,7 @@ class ConfigController extends Controller
     public function test()
     {
         echo 'test';
-        try {
+        /*try {
 
             $config = '';
             foreach ($this->configRepo->get('Payone') as $key => $value) {
@@ -71,7 +72,7 @@ class ConfigController extends Controller
             echo $config;
         } catch (\Exception $e) {
             echo $e->getMessage();
-        }
+        }*/
     }
 
     /**
@@ -80,7 +81,7 @@ class ConfigController extends Controller
     public function test2()
     {
         echo 'test2';
-        echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');
+       /* echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');*/
 
     }
 

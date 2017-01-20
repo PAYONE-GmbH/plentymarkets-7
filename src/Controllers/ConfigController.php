@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use Payone\Helper\PaymentHelper;
 use Payone\Services\MailLogger;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -27,18 +28,26 @@ class ConfigController extends Controller
      */
     private $paymentMethodRepo;
 
+    /** @var  PaymentHelper */
+    private $paymentHelper;
+
     /**
      * ConfigController constructor.
      * @param MailLogger $logger
+     * @param ConfigRepository $configRepo
+     * @param PaymentMethodRepositoryContract $paymentMethodRepo
+     * @param PaymentHelper $paymentHelper
      */
     public function __construct(
         MailLogger $logger,
         ConfigRepository $configRepo,
-        PaymentMethodRepositoryContract $paymentMethodRepo
+        PaymentMethodRepositoryContract $paymentMethodRepo,
+        PaymentHelper $paymentHelper
     ) {
         $this->logger = $logger;
         $this->configRepo = $configRepo;
         $this->paymentMethodRepo = $paymentMethodRepo;
+        $this->paymentHelper = $paymentHelper;
     }
 
     /**
@@ -47,14 +56,14 @@ class ConfigController extends Controller
     public function index()
     {
         echo 'index';
-/*
+
         try {
 
             echo 'log:';
             $this->logger->log('test');
         } catch (\Exception $e) {
             echo $e->getMessage();
-        }*/
+        }
     }
 
     /**
@@ -63,7 +72,8 @@ class ConfigController extends Controller
     public function test()
     {
         echo 'test';
-        /*try {
+        echo 'PAYONE config', PHP_EOL;
+        try {
 
             $config = '';
             foreach ($this->configRepo->get('Payone') as $key => $value) {
@@ -72,7 +82,7 @@ class ConfigController extends Controller
             echo $config;
         } catch (\Exception $e) {
             echo $e->getMessage();
-        }*/
+        }
     }
 
     /**
@@ -81,7 +91,7 @@ class ConfigController extends Controller
     public function test2()
     {
         echo 'test2';
-       /* echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');*/
+        echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');
 
     }
 
@@ -95,9 +105,25 @@ class ConfigController extends Controller
 
 
         foreach ($paymentMethods as $paymentMethod) {
-            echo $paymentMethod->paymentKey;
+            echo $paymentMethod->id, ': ', $paymentMethod->paymentKey, PHP_EOL;
         }
 
+    }
+
+    /**
+     * @return void
+     */
+    public function test4(Request $request)
+    {
+        echo 'test4';
+        $paymentCode = $request->get('paymentCode');
+        $config = $this->paymentHelper->getApiContextParams($paymentCode);
+
+        $configText = '';
+        foreach ($config as $key => $value) {
+            $configText .= $key . '=>' . $value . PHP_EOL;
+        }
+        echo $configText;
     }
 
 

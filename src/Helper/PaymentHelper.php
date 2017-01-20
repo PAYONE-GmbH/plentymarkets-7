@@ -119,4 +119,25 @@ class PaymentHelper
             }
         }
     }
+
+    /**
+     * @param string $paymentCode
+     * @return array
+     */
+    public function getApiContextParams($paymentCode)
+    {
+        $apiContextParams = [];
+
+        $apiContextParams['aid'] = $this->config->get('aid');
+        $apiContextParams['mid'] = $this->config->get('mid');
+        $apiContextParams['portalid'] = $this->config->get('portalid');
+        $apiContextParams['key'] = $this->config->get('key');
+        $apiContextParams['mode'] = $this->config->get('mode');
+
+        if ($this->config->get($paymentCode . '.useGlobalConfig')) {
+            $apiContextParams['mode'] = $this->config->get('mode');
+        }
+
+        return $apiContextParams;
+    }
 }

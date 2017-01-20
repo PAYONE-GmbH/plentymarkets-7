@@ -14,9 +14,7 @@ For detailed information about plugin provisioning refer to [plentymarkets devel
 
 ## Plugin documentation
 
-- Learn how to create your [first plentymarkets plugin](https://developers.plentymarkets.com/tutorials/helloworld)
-- Overview of plentymarkets [plugin interfaces](https://developers.plentymarkets.com/dev-doc/basics#guide-interface)
-- The plentymarkets [REST API](https://developers.plentymarkets.com/rest-doc/introduction)
+[Setting the plugin up](./meta/documents/user_guide_de.md)
 
 ## Join our community
 

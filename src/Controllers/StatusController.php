@@ -56,9 +56,10 @@ class StatusController extends Controller
      */
     public function index()
     {
+        /* TODO: php function "hash" is not allowed
         if ($this->request->get("key") != hash("md5", $this->config->get('key'))) {
             return;
-        }
+        }*/
         $txid = $this->request->get("txid");
         $reference = $this->request->get("reference");
         $txaction = $this->request->get("txaction");

@@ -3,9 +3,6 @@
 
 namespace Payone\Models;
 
-
-use League\Flysystem\Exception;
-
 class PayonePaymentStatus
 {
     const APPOINTED = 'appointed';// transaction_status pending / completed
@@ -31,7 +28,7 @@ class PayonePaymentStatus
     /**
      * @param string $payoneStatus
      * @return int
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getPlentyStatus(string $payoneStatus)
     {
@@ -50,6 +47,6 @@ class PayonePaymentStatus
             case self::REFUND:
                 return PaymentStatus::REFUNDED;
         }
-        throw new Exception('Payment status "' . $payoneStatus . '" not mapped to plentymarkets status.');
+        throw new \Exception('Payment status "' . $payoneStatus . '" not mapped to plentymarkets status.');
     }
 }

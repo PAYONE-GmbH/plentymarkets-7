@@ -142,7 +142,7 @@ class PayoneServiceProvider extends ServiceProvider
 
                 $orderId = $event->getOrderId();
                 // Execute the paymentData
-                $paymentData = $paymentService->executePayment();
+                $paymentData = $paymentService->executePayment($orderId);
 
                 // Check whether the PayPal paymentData has been executed successfully
                 if ($paymentService->getReturnType() != 'errorCode') {

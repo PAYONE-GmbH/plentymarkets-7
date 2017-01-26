@@ -118,11 +118,11 @@ class PaymentService
     /**
      * @return array|string
      */
-    public function executePayment()
+    public function executePayment($orderId)
     {
         // Execute the PayPal payment
         $mode = 'test';
-        $executeResponse = $this->libCall->call('Payone::preAuth', $this->getPreAuthData(null, $mode));
+        $executeResponse = $this->libCall->call('Payone::preAuth', $this->getPreAuthData(null, $orderId));
 
         if (!isset($executeResponse['success'])) {
             $this->returnType = 'errorCode';
@@ -137,10 +137,10 @@ class PaymentService
      * Fill and return the Paypal parameters
      *
      * @param Basket $basket
-     * @param String $mode
+     * @param $orderId
      * @return array
      */
-    private function getPreAuthData(Basket $basket = null, $mode)
+    private function getPreAuthData(Basket $basket = null, $orderId)
     {
         $requestParams = [];
         $paymentCode = PayoneCODPaymentMethod::PAYMENT_CODE;
@@ -151,7 +151,7 @@ class PaymentService
 
         $requestParams['basketItems'] = $this->getCartItemData($basket);
         $requestParams['shippingAddress'] = $this->getShippingData();
-        $requestParams['shippingProvider'] = $this->getShippingProviderData();
+        $requestParams['shippingProvider'] = $this->getShippingProviderData($orderId);
         $requestParams['country'] = $this->getCountryData($basket);
 
         return $requestParams;

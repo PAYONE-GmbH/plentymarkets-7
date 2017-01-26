@@ -10,14 +10,14 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Services\PaymentService;
-use Plenty\Modules\EventProcedures\Services\EventProceduresService;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
-use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
-use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
-
+use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
+use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
+use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
+use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 
@@ -39,15 +39,13 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
      * @param PaymentMethodContainer $payContainer
-     * @param EventProceduresService $eventProceduresService
      */
     public function boot(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
         BasketRepositoryContract $basket,
-        PaymentMethodContainer $payContainer,
-        EventProceduresService $eventProceduresService
+        PaymentMethodContainer $payContainer
     ) {
         $this->registerPaymentMethods($payContainer);
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
@@ -143,21 +141,20 @@ class PayoneServiceProvider extends ServiceProvider
                 }
 
                 $orderId = $event->getOrderId();
-                // Execute the payment
-                $payPalPaymentData = $paymentService->executePayment();
+                // Execute the paymentData
+                $paymentData = $paymentService->executePayment();
 
-                // Check whether the PayPal payment has been executed successfully
+                // Check whether the PayPal paymentData has been executed successfully
                 if ($paymentService->getReturnType() != 'errorCode') {
-                    // Create a plentymarkets payment from the paypal execution params
-                    $plentyPayment = $paymentHelper->createPlentyPayment($payPalPaymentData);
+                    // Create a plentymarkets paymentData from the paypal execution params
+                   /* $plentyPayment = $paymentHelper->createPlentyPayment($paymentData);
 
                     if ($plentyPayment instanceof Payment) {
-                        // Assign the payment to an order in plentymarkets
-                        $paymentHelper->assignPlentyPaymentToPlentyOrder($plentyPayment, $orderId);
+                        // Assign the paymentData to an order in plentymarkets
 
                         $event->setType('success');
                         $event->setValue('The Payment has been executed successfully!');
-                    }
+                    }*/
                 } else {
                     $event->setType('error');
                     $event->setValue('The PayPal-Payment could not be executed!');

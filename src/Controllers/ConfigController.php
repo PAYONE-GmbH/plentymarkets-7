@@ -7,6 +7,7 @@ use Payone\Services\MailLogger;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
+use Plenty\Plugin\Http\Request;
 
 /**
  * Class ConfigController
@@ -91,7 +92,6 @@ class ConfigController extends Controller
     public function test2()
     {
         echo 'test2';
-        echo 'disabled php functions', PHP_EOL, ini_get('disable_functions');
 
     }
 

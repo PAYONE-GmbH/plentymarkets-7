@@ -11,6 +11,7 @@ use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
+use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
@@ -114,6 +115,9 @@ class PaymentService
         return 'html content';
     }
 
+    /**
+     * @return array|string
+     */
     public function executePayment()
     {
         // Execute the PayPal payment
@@ -216,6 +220,9 @@ class PaymentService
         return $country;
     }
 
+    /**
+     * @return bool|mixed
+     */
     private function getShippingAddressId()
     {
         $shippingAddressId = $this->sessionStorage->getSessionValue(SessionStorageService::DELIVERY_ADDRESS_ID);
@@ -226,9 +233,15 @@ class PaymentService
         return $shippingAddressId ? $shippingAddressId : false;
     }
 
-    private function getShippingProviderData()
+    /**
+     * @param int $orderId
+     * @return array
+     */
+    private function getShippingProviderData(int $orderId)
     {
-        //TODO
-        return [];
+        /** @var ShippingInformationRepositoryContract $shippingRepo */
+        $shippingRepo = pluginApp(ShippingInformationRepositoryContract::class);
+        $shippingInfo = $shippingRepo->getShippingInformationByOrderId($orderId);
+        return $shippingInfo->toArray();
     }
 }

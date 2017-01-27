@@ -3,6 +3,7 @@
 namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
+use Payone\PluginConstants;
 use Payone\Services\MailLogger;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -78,7 +79,7 @@ class ConfigController extends Controller
 
         try {
 
-            echo json_encode($this->configRepo->get('Payone')), PHP_EOL;
+            echo json_encode($this->configRepo->get(PluginConstants::NAME . '.' )), PHP_EOL;
             echo $request->get('configPath'), PHP_EOL;
             echo json_encode($this->configRepo->get($request->get('configPath')));
         } catch (\Exception $e) {

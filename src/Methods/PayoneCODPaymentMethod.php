@@ -1,4 +1,4 @@
-<?php // strict
+<?php
 
 namespace Payone\Methods;
 

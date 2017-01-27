@@ -11,6 +11,7 @@ use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\PayonePaymentStatus;
+use Payone\PluginConstants;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
@@ -144,7 +145,7 @@ class PaymentHelper
         $apiContextParams['key'] = $this->config->get('key');
         $apiContextParams['mode'] = $this->config->get('mode');
 
-        if ($this->config->get($paymentCode . '.useGlobalConfig')) {
+        if ($this->config->get(PluginConstants::NAME . '.' . $paymentCode . '.useGlobalConfig')) {
             $apiContextParams['mode'] = $this->config->get('mode');
         }
 

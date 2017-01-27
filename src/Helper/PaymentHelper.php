@@ -139,14 +139,14 @@ class PaymentHelper
     {
         $apiContextParams = [];
 
-        $apiContextParams['aid'] = $this->config->get('aid');
-        $apiContextParams['mid'] = $this->config->get('mid');
-        $apiContextParams['portalid'] = $this->config->get('portalid');
-        $apiContextParams['key'] = $this->config->get('key');
-        $apiContextParams['mode'] = $this->config->get('mode');
+        $apiContextParams['aid'] = $this->config->get(PluginConstants::NAME . '.aid');
+        $apiContextParams['mid'] = $this->config->get(PluginConstants::NAME . '.mid');
+        $apiContextParams['portalid'] = $this->config->get(PluginConstants::NAME . '.portalid');
+        $apiContextParams['key'] = $this->config->get(PluginConstants::NAME . '.key');
+        $apiContextParams['mode'] = $this->config->get(PluginConstants::NAME . '.mode');
 
         if ($this->config->get(PluginConstants::NAME . '.' . $paymentCode . '.useGlobalConfig')) {
-            $apiContextParams['mode'] = $this->config->get('mode');
+            $apiContextParams['mode'] = $this->config->get(PluginConstants::NAME . '.mode');
         }
 
         return $apiContextParams;

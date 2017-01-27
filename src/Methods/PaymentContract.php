@@ -50,7 +50,7 @@ abstract class PaymentContract extends PaymentMethodService
     public function getName(): string
     {
         $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
-        return $name;
+        return $name ? $name : '';
     }
 
     /**
@@ -80,6 +80,7 @@ abstract class PaymentContract extends PaymentMethodService
      */
     public function getDescription(): string
     {
-        return $this->configRepo->get($this::PAYMENT_CODE . '.description');
+        $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
+        return $description ? $description : '';
     }
 }

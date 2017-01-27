@@ -2,11 +2,6 @@
 
 namespace Payone\Methods;
 
-use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
-use Plenty\Plugin\ConfigRepository;
-
 /**
  * Class PayoneCODPaymentMethod
  *
@@ -14,5 +9,5 @@ use Plenty\Plugin\ConfigRepository;
  */
 class PayoneCODPaymentMethod extends PaymentContract
 {
-    const PAYMENT_CODE = 'PAYONE_CASH_ON_DELIVERY';
+    const PAYMENT_CODE = 'PAYONE_PAYONE_CASH_ON_DELIVERY';
 }

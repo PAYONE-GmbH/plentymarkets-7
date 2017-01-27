@@ -61,26 +61,26 @@ class ConfigController extends Controller
         try {
 
             echo 'log:';
-            $this->logger->log('test');
+            echo json_encode($this->logger->log('test'));
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }
 
     /**
+     * @param Request $request
      * @return void
      */
-    public function test()
+    public function test(Request $request)
     {
         echo 'test';
         echo 'PAYONE config', PHP_EOL;
+
         try {
 
-            $config = '';
-            foreach ($this->configRepo->get('Payone') as $key => $value) {
-                $config .= $key . '=>' . $value . PHP_EOL;
-            }
-            echo $config;
+            echo json_encode($this->configRepo->get('Payone')), PHP_EOL;
+            echo $request->get('configPath'), PHP_EOL;
+            echo json_encode($this->configRepo->get($request->get('configPath')));
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -119,11 +119,7 @@ class ConfigController extends Controller
         $paymentCode = $request->get('paymentCode');
         $config = $this->paymentHelper->getApiContextParams($paymentCode);
 
-        $configText = '';
-        foreach ($config as $key => $value) {
-            $configText .= $key . '=>' . $value . PHP_EOL;
-        }
-        echo $configText;
+        echo json_encode($config);
     }
 
 

@@ -39,7 +39,6 @@ abstract class PaymentContract extends PaymentMethodService
      */
     public function isActive(): bool
     {
-        return true; //TODO
         return (bool)$this->configRepo->get(PluginConstants::NAME . '.' . $this::PAYMENT_CODE . '.active');
     }
 

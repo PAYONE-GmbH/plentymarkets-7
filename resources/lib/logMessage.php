@@ -14,4 +14,4 @@ $monolog->pushHandler(new Monolog\Handler\NativeMailerHandler(
     Monolog\Logger::DEBUG
 ));
 
-return $loger->log(Logger::DEBUG, $message);
+return $monolog->log(Logger::DEBUG, $message);

@@ -59,14 +59,14 @@ class PaymentHelper
     }
 
     /**
-     * Get the ID of the Payone payment method
+     * Get the ID of the payment method
      *
      * @param string $paymentCode
      * @return string
      */
     public function getPayoneMopId($paymentCode)
     {
-        $paymentMethods = $this->paymentMethodRepo->allForPlugin('Payone');
+        $paymentMethods = $this->paymentMethodRepo->allForPlugin(PluginConstants::NAME);
 
         if (!$paymentMethods) {
             return 'no_paymentmethod_found';

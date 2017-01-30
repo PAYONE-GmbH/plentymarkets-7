@@ -4,7 +4,7 @@ namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
-use Payone\Services\MailLogger;
+use Payone\Services\Logger;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
@@ -16,7 +16,7 @@ use Plenty\Plugin\Http\Request;
 class ConfigController extends Controller
 {
     /**
-     * @var MailLogger
+     * @var Logger
      */
     private $logger;
 
@@ -35,13 +35,13 @@ class ConfigController extends Controller
 
     /**
      * ConfigController constructor.
-     * @param MailLogger $logger
+     * @param Logger $logger
      * @param ConfigRepository $configRepo
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
      * @param PaymentHelper $paymentHelper
      */
     public function __construct(
-        MailLogger $logger,
+        Logger $logger,
         ConfigRepository $configRepo,
         PaymentMethodRepositoryContract $paymentMethodRepo,
         PaymentHelper $paymentHelper

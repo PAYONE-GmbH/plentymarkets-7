@@ -14,7 +14,6 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
-use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
@@ -123,19 +122,18 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
-     * @param BasketRepositoryContract $basket
      * @return void
      */
     private function executePayment(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
-        PaymentService $paymentService,
-        BasketRepositoryContract $basket
+        PaymentService $paymentService
     ) {
 
         // Listen for the event that executes the payment
         $eventDispatcher->listen(ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService) {
+
                 if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
                     return;
                 }

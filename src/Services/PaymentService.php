@@ -4,6 +4,7 @@ namespace Payone\Services;
 
 use Payone\Helper\PaymentHelper;
 use Payone\Methods\PayoneCODPaymentMethod;
+use Payone\PluginConstants;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Basket\Models\BasketItem;
@@ -63,6 +64,11 @@ class PaymentService
     private $sessionStorage;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * PaymentService constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepository
@@ -80,7 +86,8 @@ class PaymentService
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        SessionStorageService $sessionStorage
+        SessionStorageService $sessionStorage,
+        Logger $logger
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -90,6 +97,7 @@ class PaymentService
         $this->config = $config;
         $this->sessionStorage = $sessionStorage;
         $this->returnType = 'continue';
+        $this->logger = $logger;
     }
 
     /**
@@ -120,10 +128,24 @@ class PaymentService
      */
     public function executePayment($orderId)
     {
-        // Execute the PayPal payment
-        $mode = 'test';
-        $executeResponse = $this->libCall->call('Payone::preAuth', $this->getPreAuthData(null, $orderId));
-
+        try {
+            // Execute the PayPal payment
+            $authType = $this->config->get(PluginConstants::NAME . '.authType');
+            $this->logger->log('executePayment');
+            if ($authType == '1') {
+                $requestData = $this->getPreAuthData(null, $orderId);
+                $this->logger->log('requestData');
+                $this->logger->log($requestData);
+                $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
+                $this->logger->log('responseData');
+                $this->logger->log($executeResponse);
+            } else {
+                $requestData = $this->getPreAuthData(null, $orderId);
+                $executeResponse = $this->libCall->call(PluginConstants::NAME . '::preAuth', $requestData);
+            }
+        } catch (\Exception $e) {
+            $this->logger->log($e->getMessage());
+        }
         if (!isset($executeResponse['success'])) {
             $this->returnType = 'errorCode';
             return isset($executeResponse['errorMessage']) ? $executeResponse['errorMessage'] : '';

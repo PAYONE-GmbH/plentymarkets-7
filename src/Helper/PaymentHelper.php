@@ -143,7 +143,8 @@ class PaymentHelper
         $apiContextParams['mid'] = $this->config->get(PluginConstants::NAME . '.mid');
         $apiContextParams['portalid'] = $this->config->get(PluginConstants::NAME . '.portalid');
         $apiContextParams['key'] = $this->config->get(PluginConstants::NAME . '.key');
-        $apiContextParams['mode'] = $this->config->get(PluginConstants::NAME . '.mode');
+        $mode = $this->config->get(PluginConstants::NAME . '.mode');
+        $apiContextParams['mode'] = ($mode == 1) ? 'test':'live';
 
         if ($this->config->get(PluginConstants::NAME . '.' . $paymentCode . '.useGlobalConfig')) {
             $apiContextParams['mode'] = $this->config->get(PluginConstants::NAME . '.mode');

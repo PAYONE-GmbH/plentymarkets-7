@@ -2,7 +2,7 @@
   "version": 1.0,
   "license":"",
   "pluginIcon":"",
-  "price":0,
+  "price":0.0,
   "authorIcon":"",
   "name": "Payone",
   "description": "The official Payone plugin for plentymarkets",

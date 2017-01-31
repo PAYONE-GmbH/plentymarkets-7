@@ -78,10 +78,9 @@ class ConfigController extends Controller
         echo 'PAYONE config', PHP_EOL;
 
         try {
-
-            echo json_encode($this->configRepo->get(PluginConstants::NAME . '.' )), PHP_EOL;
+            echo json_encode($this->configRepo->get(PluginConstants::NAME)), PHP_EOL;
             echo $request->get('configPath'), PHP_EOL;
-            echo json_encode($this->configRepo->get($request->get('configPath')));
+            echo json_encode($this->configRepo->get($request->get('configPath')), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

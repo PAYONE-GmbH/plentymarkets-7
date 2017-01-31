@@ -9,7 +9,8 @@
   "require-dev": {
     "plentymarkets/plugin-interface": "@dev",
     "phpunit/phpunit": "~5",
-    "fzaninotto/faker": "^1.6"
+    "fzaninotto/faker": "^1.6",
+    "phpmetrics/phpmetrics": "^1.10"
   },
   "repositories": [
     {

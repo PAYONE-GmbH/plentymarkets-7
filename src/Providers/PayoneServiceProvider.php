@@ -9,6 +9,7 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Services\LoggerContract;
 use Payone\Services\PaymentService;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
@@ -22,6 +23,11 @@ use Plenty\Plugin\ServiceProvider;
 
 class PayoneServiceProvider extends ServiceProvider
 {
+    /**
+     * @var LoggerContract
+     */
+    private $logger;
+
     /**
      * Register the service provider.
      */
@@ -44,13 +50,14 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
         BasketRepositoryContract $basket,
-        PaymentMethodContainer $payContainer
+        PaymentMethodContainer $payContainer,
+        LoggerContract $logger
     ) {
         $this->registerPaymentMethods($payContainer);
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
-        $this->executePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->executePayment($eventDispatcher, $paymentHelper, $paymentService);
 
-
+        $this->logger = $logger;
     }
 
     /**
@@ -134,30 +141,36 @@ class PayoneServiceProvider extends ServiceProvider
         $eventDispatcher->listen(ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService) {
 
-                if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
-                    return;
+                try {
+                    if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
+                        return;
+                    }
+
+                    $orderId = $event->getOrderId();
+                    // Execute the paymentData
+                    $paymentData = $paymentService->executePayment($orderId);
+
+                    // Check whether the PayPal paymentData has been executed successfully
+                    if ($paymentService->getReturnType() != 'errorCode') {
+                        // Create a plentymarkets paymentData from the paypal execution params
+                        /* $plentyPayment = $paymentHelper->createPlentyPayment($paymentData);
+
+                         if ($plentyPayment instanceof Payment) {
+                             // Assign the paymentData to an order in plentymarkets
+
+                             $event->setType('success');
+                             $event->setValue('The Payment has been executed successfully!');
+                         }*/
+                    } else {
+                        $event->setType('error');
+                        $event->setValue('The PayPal-Payment could not be executed!');
+                    }
+                } catch (\Exception $e) {
+                    $this->logger->log($e->getMessage());
                 }
 
-                $orderId = $event->getOrderId();
-                // Execute the paymentData
-                $paymentData = $paymentService->executePayment($orderId);
-
-                // Check whether the PayPal paymentData has been executed successfully
-                if ($paymentService->getReturnType() != 'errorCode') {
-                    // Create a plentymarkets paymentData from the paypal execution params
-                   /* $plentyPayment = $paymentHelper->createPlentyPayment($paymentData);
-
-                    if ($plentyPayment instanceof Payment) {
-                        // Assign the paymentData to an order in plentymarkets
-
-                        $event->setType('success');
-                        $event->setValue('The Payment has been executed successfully!');
-                    }*/
-                } else {
-                    $event->setType('error');
-                    $event->setValue('The PayPal-Payment could not be executed!');
-                }
             }
+
         );
     }
 

@@ -62,7 +62,7 @@ class ConfigController extends Controller
         try {
 
             echo 'log:';
-            echo json_encode($this->logger->log('test'));
+            echo json_encode($this->logger->log('test'), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -78,7 +78,7 @@ class ConfigController extends Controller
         echo 'PAYONE config', PHP_EOL;
 
         try {
-            echo json_encode($this->configRepo->get(PluginConstants::NAME)), PHP_EOL;
+            echo json_encode($this->configRepo->get(PluginConstants::NAME), JSON_PRETTY_PRINT), PHP_EOL;
             echo $request->get('configPath'), PHP_EOL;
             echo json_encode($this->configRepo->get($request->get('configPath')), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
@@ -119,7 +119,7 @@ class ConfigController extends Controller
         $paymentCode = $request->get('paymentCode');
         $config = $this->paymentHelper->getApiContextParams($paymentCode);
 
-        echo json_encode($config);
+        echo json_encode($config, JSON_PRETTY_PRINT);
     }
 
 

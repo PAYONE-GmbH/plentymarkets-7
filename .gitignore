@@ -2,3 +2,5 @@
 /vendor
 composer.lock
 phpunit.ini
+/build/
+/phpunit.ini

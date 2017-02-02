@@ -29,6 +29,15 @@ class PayoneServiceProvider extends ServiceProvider
     private $logger;
 
     /**
+     * PayoneServiceProvider constructor.
+     * @param LoggerContract $logger
+     */
+    public function __construct(LoggerContract $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * Register the service provider.
      */
     public function register()
@@ -50,14 +59,11 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
         BasketRepositoryContract $basket,
-        PaymentMethodContainer $payContainer,
-        LoggerContract $logger
+        PaymentMethodContainer $payContainer
     ) {
         $this->registerPaymentMethods($payContainer);
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
         $this->executePayment($eventDispatcher, $paymentHelper, $paymentService);
-
-        $this->logger = $logger;
     }
 
     /**

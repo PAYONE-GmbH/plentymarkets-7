@@ -23,19 +23,6 @@ use Plenty\Plugin\ServiceProvider;
 
 class PayoneServiceProvider extends ServiceProvider
 {
-    /**
-     * @var LoggerContract
-     */
-    private $logger;
-
-    /**
-     * PayoneServiceProvider constructor.
-     * @param LoggerContract $logger
-     */
-    public function __construct(LoggerContract $logger)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * Register the service provider.
@@ -59,11 +46,12 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
         BasketRepositoryContract $basket,
-        PaymentMethodContainer $payContainer
+        PaymentMethodContainer $payContainer,
+        LoggerContract $logger
     ) {
         $this->registerPaymentMethods($payContainer);
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
-        $this->executePayment($eventDispatcher, $paymentHelper, $paymentService);
+        $this->executePayment($eventDispatcher, $paymentHelper, $paymentService, $logger);
     }
 
     /**
@@ -135,17 +123,19 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
+     * @param LoggerContract $logger
      * @return void
      */
     private function executePayment(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
-        PaymentService $paymentService
+        PaymentService $paymentService,
+        LoggerContract $logger
     ) {
 
         // Listen for the event that executes the payment
         $eventDispatcher->listen(ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService) {
+            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $logger) {
 
                 try {
                     if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
@@ -172,7 +162,7 @@ class PayoneServiceProvider extends ServiceProvider
                         $event->setValue('The PayPal-Payment could not be executed!');
                     }
                 } catch (\Exception $e) {
-                    $this->logger->log($e->getMessage());
+                    $logger->log($e->getMessage());
                 }
 
             }

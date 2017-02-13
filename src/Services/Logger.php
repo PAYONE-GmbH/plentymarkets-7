@@ -10,7 +10,7 @@ use Plenty\Plugin\ConfigRepository;
 /**
  * Class MailLogger
  */
-class Logger implements LoggerContract
+class Logger
 {
 
     /**

@@ -78,6 +78,7 @@ class PaymentService
      * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
      * @param SessionStorageService $sessionStorage
+     * @param Logger $logger
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepository,
@@ -108,7 +109,7 @@ class PaymentService
     public function getReturnType()
     {
         /*  'redirectUrl'|'externalContentUrl'|'errorCode'|'continue'  */
-        return $this->returnType;
+        return 'htmlContent';
     }
 
     /**
@@ -120,6 +121,8 @@ class PaymentService
      */
     public function getPaymentContent(Basket $basket, $mode = ''): string
     {
+
+        $this->logger->log('getPaymentContent');
         return 'html content';
     }
 

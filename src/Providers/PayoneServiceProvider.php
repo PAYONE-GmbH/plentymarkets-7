@@ -23,7 +23,6 @@ use Plenty\Plugin\ServiceProvider;
 
 class PayoneServiceProvider extends ServiceProvider
 {
-
     use Loggable;
 
     /**
@@ -50,9 +49,14 @@ class PayoneServiceProvider extends ServiceProvider
         BasketRepositoryContract $basket,
         PaymentMethodContainer $payContainer
     ) {
+        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::start');
         $this->registerPaymentMethods($payContainer);
+        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::registerPaymentMethods');
         $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::addPaymentMethodContent');
         $this->executePayment($eventDispatcher, $paymentHelper, $paymentService);
+        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::executePayment');
+        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::end');
     }
 
     /**
@@ -99,7 +103,6 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
-     * @return void
      */
     private function addPaymentMethodContent(
         Dispatcher $eventDispatcher,
@@ -124,19 +127,16 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
-     * @return void
      */
     private function executePayment(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService
     ) {
-
         // Listen for the event that executes the payment
         $eventDispatcher->listen(
             ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService) {
-
                 if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
                     return;
                 }

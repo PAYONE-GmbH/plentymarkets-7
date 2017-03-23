@@ -1,4 +1,6 @@
-<?php //strict
+<?php
+
+//strict
 
 namespace Payone\Helper;
 
@@ -20,12 +22,9 @@ use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class PaymentHelper
- *
- * @package Payone\Helper
  */
 class PaymentHelper
 {
-
     /**
      * @var PaymentMethodRepositoryContract
      */
@@ -34,7 +33,6 @@ class PaymentHelper
      * @var PaymentRepositoryContract
      */
     private $paymentRepository;
-
 
     /**
      * @var ConfigRepository
@@ -62,6 +60,7 @@ class PaymentHelper
      * Get the ID of the payment method
      *
      * @param string $paymentCode
+     *
      * @return string
      */
     public function getPayoneMopId($paymentCode)
@@ -106,6 +105,7 @@ class PaymentHelper
         foreach ($this->getPayonePaymentCodes() as $paymentCode) {
             $mops[] = $this->getPayoneMopId($paymentCode);
         }
+
         return $mops;
     }
 
@@ -113,7 +113,6 @@ class PaymentHelper
      * @param $orderId
      * @param $txid
      * @param string $txaction
-     * @return void
      */
     public function updatePaymentStatus($orderId, $txid, $txaction)
     {
@@ -133,6 +132,7 @@ class PaymentHelper
 
     /**
      * @param string $paymentCode
+     *
      * @return array
      */
     public function getApiContextParams($paymentCode)
@@ -144,10 +144,11 @@ class PaymentHelper
         $apiContextParams['portalid'] = $this->config->get(PluginConstants::NAME . '.portalid');
         $apiContextParams['key'] = $this->config->get(PluginConstants::NAME . '.key');
         $mode = $this->config->get(PluginConstants::NAME . '.mode');
-        $apiContextParams['mode'] = ($mode == 1) ? 'test':'live';
+        $apiContextParams['mode'] = ($mode == 1) ? 'test' : 'live';
 
         if ($this->config->get(PluginConstants::NAME . '.' . $paymentCode . '.useGlobalConfig')) {
-            $apiContextParams['mode'] = $this->config->get(PluginConstants::NAME . '.mode');
+            $mode = $this->config->get(PluginConstants::NAME . '.mode');
+            $apiContextParams['mode'] = ($mode == 1) ? 'test' : 'live';
         }
 
         return $apiContextParams;

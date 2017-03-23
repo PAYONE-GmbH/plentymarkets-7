@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Payone\Models;
 
 /**
@@ -8,7 +7,6 @@ namespace Payone\Models;
  */
 class PaymentStatus
 {
-
     /**
      * @see https://developers.plentymarkets.com/rest-doc/introduction#payment-statuses
      */

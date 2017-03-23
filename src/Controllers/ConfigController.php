@@ -4,6 +4,7 @@ namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
+use Payone\Providers\ApiRequestDataProvider;
 use Payone\Services\Logger;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -30,11 +31,12 @@ class ConfigController extends Controller
      */
     private $paymentMethodRepo;
 
-    /** @var  PaymentHelper */
+    /** @var PaymentHelper */
     private $paymentHelper;
 
     /**
      * ConfigController constructor.
+     *
      * @param Logger $logger
      * @param ConfigRepository $configRepo
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
@@ -52,15 +54,11 @@ class ConfigController extends Controller
         $this->paymentHelper = $paymentHelper;
     }
 
-    /**
-     * @return void
-     */
     public function index()
     {
         echo 'index';
 
         try {
-
             echo 'log:';
             echo json_encode($this->logger->log('test'), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
@@ -70,7 +68,6 @@ class ConfigController extends Controller
 
     /**
      * @param Request $request
-     * @return void
      */
     public function test(Request $request)
     {
@@ -86,33 +83,21 @@ class ConfigController extends Controller
         }
     }
 
-    /**
-     * @return void
-     */
     public function test2()
     {
         echo 'test2';
-
     }
 
-    /**
-     * @return void
-     */
     public function test3()
     {
         echo 'test3';
         $paymentMethods = $this->paymentMethodRepo->all();
 
-
         foreach ($paymentMethods as $paymentMethod) {
             echo $paymentMethod->id, ': ', $paymentMethod->paymentKey, PHP_EOL;
         }
-
     }
 
-    /**
-     * @return void
-     */
     public function test4(Request $request)
     {
         echo 'test4';
@@ -122,5 +107,12 @@ class ConfigController extends Controller
         echo json_encode($config, JSON_PRETTY_PRINT);
     }
 
-
+    /**
+     * @param ApiRequestDataProvider $provider
+     * @param Basket $basket
+     */
+    public function testRequestData(ApiRequestDataProvider $provider, Basket $basket)
+    {
+        echo json_encode($provider->getPreAuthData($basket));
+    }
 }

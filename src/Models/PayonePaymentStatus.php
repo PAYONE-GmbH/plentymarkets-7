@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Payone\Models;
 
 class PayonePaymentStatus
 {
-    const APPOINTED = 'appointed';// transaction_status pending / completed
-    const APPOINTED_PENDING = 'appointed_complete';// transaction_status pending / completed
-    const APPOINTED_COMPLETE = 'appointed_pending';// transaction_status pending / completed
+    const APPOINTED = 'appointed'; // transaction_status pending / completed
+    const APPOINTED_PENDING = 'appointed_complete'; // transaction_status pending / completed
+    const APPOINTED_COMPLETE = 'appointed_pending'; // transaction_status pending / completed
     const CAPTURE = 'capture';
     const  PAID = 'paid';
     const UNDERPAID = 'underpaid';
@@ -27,8 +26,10 @@ class PayonePaymentStatus
 
     /**
      * @param string $payoneStatus
-     * @return int
+     *
      * @throws \Exception
+     *
+     * @return int
      */
     public static function getPlentyStatus(string $payoneStatus)
     {

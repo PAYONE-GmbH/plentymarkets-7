@@ -49,14 +49,10 @@ class PayoneServiceProvider extends ServiceProvider
         BasketRepositoryContract $basket,
         PaymentMethodContainer $payContainer
     ) {
-        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::start');
         $this->registerPaymentMethods($payContainer);
-        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::registerPaymentMethods');
-        $this->addPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
-        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::addPaymentMethodContent');
-        $this->executePayment($eventDispatcher, $paymentHelper, $paymentService);
-        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::executePayment');
-        $this->getLogger('Payone_PayoneServiceProvider')->debug('boot::end');
+
+        $this->subscribeGetPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
     }
 
     /**
@@ -104,7 +100,7 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
      */
-    private function addPaymentMethodContent(
+    private function subscribeGetPaymentMethodContent(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
@@ -128,22 +124,23 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
      */
-    private function executePayment(
+    private function subscribeExecutePayment(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
-        PaymentService $paymentService
+        PaymentService $paymentService,
+        BasketRepositoryContract $basket
     ) {
         // Listen for the event that executes the payment
         $eventDispatcher->listen(
             ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService) {
+            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $basket) {
                 if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
                     return;
                 }
 
                 $orderId = $event->getOrderId();
                 // Execute the paymentData
-                $paymentData = $paymentService->executePayment($orderId);
+                $paymentData = $paymentService->executePayment($basket);
 
                 // Check whether the PayPal paymentData has been executed successfully
                 if ($paymentService->getReturnType() != 'errorCode') {

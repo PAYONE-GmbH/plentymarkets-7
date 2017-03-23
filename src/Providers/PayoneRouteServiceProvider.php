@@ -12,7 +12,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
 {
     /**
      * @param Router $router
-     * @return void
      */
     public function map(Router $router)
     {
@@ -21,6 +20,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->any('payone/test2/', 'Payone\Controllers\ConfigController@test2');
         $router->any('payone/test3/', 'Payone\Controllers\ConfigController@test3');
         $router->any('payone/test4/', 'Payone\Controllers\ConfigController@test4');
+        $router->any('payone/testRequestData/', 'Payone\Controllers\ConfigController@testRequestData');
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
         $router->get('payone/migrate', 'Payone\Controllers\StatusController@migrate');
     }

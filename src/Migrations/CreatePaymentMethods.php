@@ -2,16 +2,14 @@
 
 namespace Payone\Migrations;
 
+use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
-use Payone\Helper\PaymentHelper;
 
 /**
  * Migration to create payment mehtods
  *
  * Class CreatePaymentMethod
- *
- * @package Payone\Migrations
  */
 class CreatePaymentMethods
 {
@@ -54,7 +52,7 @@ class CreatePaymentMethods
                 [
                     'pluginKey' => PluginConstants::NAME,
                     'paymentKey' => $paymentCode,
-                    'name' => $paymentCode
+                    'name' => $paymentCode,
                 ]
             );
         }

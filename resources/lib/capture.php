@@ -1,4 +1,5 @@
 <?php
+
 use Payone\Api\Client;
 use Payone\Api\PostApi;
 use Payone\Request\RequestFactory;

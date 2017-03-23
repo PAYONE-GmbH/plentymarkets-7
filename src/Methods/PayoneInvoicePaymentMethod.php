@@ -1,11 +1,11 @@
-<?php // strict
+<?php
+
+// strict
 
 namespace Payone\Methods;
 
 /**
  * Class PayoneInstallmentPaymentMethod
- *
- * @package Payone\Methods
  */
 class PayoneInvoicePaymentMethod extends PaymentContract
 {

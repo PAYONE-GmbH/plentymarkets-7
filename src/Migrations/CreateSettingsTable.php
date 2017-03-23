@@ -10,7 +10,6 @@ use Plenty\Modules\Plugin\DataBase\Contracts\Migrate;
  */
 class CreateSettingsTable
 {
-
     /**
      * @param Migrate $migrate
      */

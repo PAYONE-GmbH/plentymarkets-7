@@ -1,4 +1,6 @@
-<?php //strict
+<?php
+
+//strict
 
 namespace Payone\Services;
 
@@ -6,12 +8,11 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 
 /**
  * Class SessionStorageService
- * @package Payone\Services
  */
 class SessionStorageService
 {
-    const DELIVERY_ADDRESS_ID   = "deliveryAddressId";
-    const BILLING_ADDRESS_ID    = "billingAddressId";
+    const DELIVERY_ADDRESS_ID = 'deliveryAddressId';
+    const BILLING_ADDRESS_ID = 'billingAddressId';
 
     /**
      * @var FrontendSessionStorageFactoryContract
@@ -20,6 +21,7 @@ class SessionStorageService
 
     /**
      * SessionStorageService constructor.
+     *
      * @param FrontendSessionStorageFactoryContract $sessionStorage
      */
     public function __construct(FrontendSessionStorageFactoryContract $sessionStorage)
@@ -42,6 +44,7 @@ class SessionStorageService
      * Get the session value
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getSessionValue(string $name)

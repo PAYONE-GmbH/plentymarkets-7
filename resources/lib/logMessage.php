@@ -1,4 +1,6 @@
-<?php //require_once 'vendor/autoload.php';
+<?php
+
+//require_once 'vendor/autoload.php';
 use Monolog\Logger;
 
 $mail = SdkRestApi::getParam('mail', true);

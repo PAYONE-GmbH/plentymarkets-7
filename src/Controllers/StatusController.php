@@ -51,32 +51,27 @@ class StatusController extends Controller
         $this->paymentMigration = $paymentMigration;
     }
 
-    /**
-     * @return void
-     */
     public function index()
     {
         /* TODO: php function "hash" is not allowed
         if ($this->request->get("key") != hash("md5", $this->config->get('key'))) {
             return;
         }*/
-        $txid = $this->request->get("txid");
-        $reference = $this->request->get("reference");
-        $txaction = $this->request->get("txaction");
-        $transactionStatus = $this->request->get("transaction_status");
+        $txid = $this->request->get('txid');
+        $reference = $this->request->get('reference');
+        $txaction = $this->request->get('txaction');
+        $transactionStatus = $this->request->get('transaction_status');
         if ($transactionStatus) {
             $txaction = $txaction . '_' . $transactionStatus;
         }
 
         $this->paymentHelper->updatePaymentStatus($reference, $txid, $txaction);
 
-        echo "TSOK";
+        echo 'TSOK';
     }
 
     public function migrate()
     {
-
         $this->paymentMigration->run();
     }
-
 }

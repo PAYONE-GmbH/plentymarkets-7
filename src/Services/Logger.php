@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Payone\Services;
 
 use Payone\PluginConstants;
@@ -12,7 +11,6 @@ use Plenty\Plugin\ConfigRepository;
  */
 class Logger
 {
-
     /**
      * @var LibraryCallContract
      */
@@ -25,6 +23,7 @@ class Logger
 
     /**
      * MailLogger constructor.
+     *
      * @param LibraryCallContract $libCall
      * @param $
      */
@@ -36,6 +35,7 @@ class Logger
 
     /**
      * @param string $message
+     *
      * @return array
      */
     public function log($message)
@@ -51,9 +51,9 @@ class Logger
                 'channel' => $this->config->get(PluginConstants::NAME . '.slack.channel'),
                 'user' => $this->config->get(PluginConstants::NAME . '.slack.user'),
                 'token' => $this->config->get(PluginConstants::NAME . '.slack.token'),
-            ]
+            ],
         ];
-        return $this->libCall->call('Payone::logMessage', $requestParams);
 
+        return $this->libCall->call('Payone::logMessage', $requestParams);
     }
 }

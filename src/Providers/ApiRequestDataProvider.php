@@ -13,25 +13,12 @@ use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
-use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class ApiRequestDataProvider
  */
 class ApiRequestDataProvider
 {
-    /**
-     * @var PaymentMethodRepositoryContract
-     */
-    private $paymentMethodRepository;
-
-    /**
-     * @var PaymentRepositoryContract
-     */
-    private $paymentRepository;
 
     /**
      * @var PaymentHelper
@@ -44,42 +31,23 @@ class ApiRequestDataProvider
     private $addressRepo;
 
     /**
-     * @var ConfigRepository
-     */
-    private $config;
-
-    /**
      * @var SessionStorageService
      */
     private $sessionStorage;
 
     /**
-     * PaymentService constructor.
-     *
-     * @param PaymentMethodRepositoryContract $paymentMethodRepository
-     * @param PaymentRepositoryContract $paymentRepository
-     * @param ConfigRepository $config
+     * ApiRequestDataProvider constructor.
      * @param PaymentHelper $paymentHelper
-     * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
      * @param SessionStorageService $sessionStorage
-     * @param ApiRequestDataProvider $requestDataProvider
      */
     public function __construct(
-        PaymentMethodRepositoryContract $paymentMethodRepository,
-        PaymentRepositoryContract $paymentRepository,
-        ConfigRepository $config,
         PaymentHelper $paymentHelper,
-        LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        SessionStorageService $sessionStorage,
-        ApiRequestDataProvider $requestDataProvider
+        SessionStorageService $sessionStorage
     ) {
-        $this->paymentMethodRepository = $paymentMethodRepository;
-        $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
         $this->addressRepo = $addressRepo;
-        $this->config = $config;
         $this->sessionStorage = $sessionStorage;
     }
 

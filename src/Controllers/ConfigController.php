@@ -6,6 +6,7 @@ use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Payone\Services\Logger;
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -112,8 +113,8 @@ class ConfigController extends Controller
      * @param ApiRequestDataProvider $provider
      * @param Basket $basket
      */
-    public function testRequestData(ApiRequestDataProvider $provider, Basket $basket)
+    public function testRequestData(ApiRequestDataProvider $provider, BasketRepositoryContract $basket)
     {
-        echo json_encode($provider->getPreAuthData($basket));
+        echo json_encode($provider->getPreAuthData($basket->load()), JSON_PRETTY_PRINT);
     }
 }

@@ -3,17 +3,10 @@
 namespace Payone\Services;
 
 use Payone\Helper\PaymentHelper;
-use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
-use Plenty\Modules\Basket\Models\BasketItem;
-use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
-use Plenty\Modules\Item\Item\Models\Item;
-use Plenty\Modules\Item\Item\Models\ItemText;
-use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
-use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
@@ -65,11 +58,6 @@ class PaymentService
     private $sessionStorage;
 
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
      * @var ApiRequestDataProvider
      */
     private $requestDataProvider;
@@ -84,7 +72,6 @@ class PaymentService
      * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
      * @param SessionStorageService $sessionStorage
-     * @param Logger $logger
      * @param ApiRequestDataProvider $requestDataProvider
      */
     public function __construct(
@@ -95,7 +82,6 @@ class PaymentService
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
         SessionStorageService $sessionStorage,
-        Logger $logger,
         ApiRequestDataProvider $requestDataProvider
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
@@ -106,7 +92,7 @@ class PaymentService
         $this->config = $config;
         $this->sessionStorage = $sessionStorage;
         $this->returnType = 'continue';
-        $this->logger = $logger;
+        $this->requestDataProvider = $requestDataProvider;
     }
 
     /**
@@ -130,7 +116,6 @@ class PaymentService
     public function getPaymentContent(Basket $basket, $mode = ''): string
     {
 
-        $this->logger->log('getPaymentContent');
         return 'html content';
     }
 
@@ -140,18 +125,14 @@ class PaymentService
     public function executePayment($orderId)
     {
         $executeResponse = [];
+        return $executeResponse;
         $this->returnType = 'errorCode';
         try {
             // Execute the PayPal payment
             $authType = $this->config->get(PluginConstants::NAME . '.authType');
-            $this->logger->log('executePayment');
             if ($authType == '1') {
                 $requestData = $this->requestDataProvider->getPreAuthData(null, $orderId);
-                $this->logger->log('requestData');
-                $this->logger->log($requestData);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
-                $this->logger->log('responseData');
-                $this->logger->log($executeResponse);
             } else {
                 $requestData = $this->getPreAuthData(null, $orderId);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::preAuth', $requestData);
@@ -161,7 +142,7 @@ class PaymentService
             }
             $this->returnType = 'success';
         } catch (\Exception $e) {
-            $this->logger->log($e->getMessage());
+            echo $e->getMessage();
         }
 
         return $executeResponse;

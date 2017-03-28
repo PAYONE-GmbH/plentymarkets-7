@@ -6,6 +6,8 @@ use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Payone\Services\Logger;
+use Payone\Services\SessionStorageService;
+use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -109,14 +111,21 @@ class ConfigController extends Controller
     }
 
     /**
-     * @param ApiRequestDataProvider $provider
+     * @param PaymentHelper $paymentHelper
+     * @param AddressRepositoryContract $addressRepo
+     * @param SessionStorageService $sessionStorage
      * @param BasketRepositoryContract $basket
      * @return void
      */
-    public function testRequestData(ApiRequestDataProvider $provider, BasketRepositoryContract $basket)
-    {
+    public function testRequestData(
+        PaymentHelper $paymentHelper,
+        AddressRepositoryContract $addressRepo,
+        SessionStorageService $sessionStorage,
+        BasketRepositoryContract $basket
+    ) {
 
         try {
+            $provider = new ApiRequestDataProvider($paymentHelper, $addressRepo, $sessionStorage);
             echo json_encode($provider->getPreAuthData($basket->load()), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             echo $e->getMessage();

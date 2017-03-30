@@ -19,8 +19,19 @@ use Plenty\Modules\Order\Shipping\ServiceProvider\Contracts\ShippingServiceProvi
  */
 class ApiRequestDataProvider
 {
+    /**
+     * @var CountryRepositoryContract
+     */
     private $itemRepo;
+
+    /**
+     * @var CountryRepositoryContract
+     */
     private $countryRepo;
+
+    /**
+     * @var ShippingServiceProviderRepositoryContract
+     */
     private $shippingInfoRepo;
 
     /**
@@ -83,15 +94,14 @@ class ApiRequestDataProvider
         $requestParams['shippingAddress'] = $this->getAddressData(
             $basket->customerShippingAddressId ? $basket->customerShippingAddressId : $basket->customerInvoiceAddressId
         );
-        if ($basket->orderId) {
-            $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->shippingProviderId);
-        }
+        $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->shippingProviderId);
         $requestParams['country'] = $this->getCountryData($basket);
 
         return $requestParams;
     }
 
     /**
+     * @param $addressId
      * @return array
      */
     private function getAddressData($addressId)
@@ -166,6 +176,9 @@ class ApiRequestDataProvider
      */
     private function getShippingProviderData($providerId)
     {
+        if (!$providerId) {
+            return [];
+        }
         $shippingInfo = $this->shippingInfoRepo->find($providerId);
 
         return $shippingInfo->toArray();

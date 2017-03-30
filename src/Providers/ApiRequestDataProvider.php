@@ -95,7 +95,7 @@ class ApiRequestDataProvider
             $basket->customerShippingAddressId ? $basket->customerShippingAddressId : $basket->customerInvoiceAddressId
         );
         $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->shippingProviderId);
-        $requestParams['country'] = $this->getCountryData($basket);
+        $requestParams['country'] = $this->getCountryData($basket->shippingCountryId);
 
         return $requestParams;
     }
@@ -155,17 +155,16 @@ class ApiRequestDataProvider
     }
 
     /**
-     * @param Basket $basket
-     *
+     * @param $shippingCountryId
      * @return array
      */
-    private function getCountryData(Basket $basket)
+    private function getCountryData($shippingCountryId)
     {
-        if (!$basket->shippingCountryId || !$this->countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2')) {
+        if (!$shippingCountryId || !$this->countryRepo->findIsoCode($shippingCountryId, 'iso_code_2')) {
             return ['isoCode2' => 'DE'];
         }
 
-        return ['isoCode2' => $this->countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2')];
+        return ['isoCode2' => $this->countryRepo->findIsoCode($shippingCountryId, 'iso_code_2')];
 
     }
 

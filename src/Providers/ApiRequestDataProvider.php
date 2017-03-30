@@ -80,7 +80,7 @@ class ApiRequestDataProvider
         $requestParams['basket'] = $basket;
 
         $requestParams['basketItems'] = $this->getCartItemData($basket);
-        $requestParams['shippingAddress'] = $this->getShippingData();
+        $requestParams['shippingAddress'] = $this->getAddressData($basket->customerShippingAddressId);
         if ($basket->orderId) {
             $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->orderId);
         }
@@ -92,16 +92,15 @@ class ApiRequestDataProvider
     /**
      * @return array
      */
-    private function getShippingData()
+    private function getAddressData($addressId)
     {
         $data = [];
-        $shippingAddressId = $this->getShippingAddressId();
 
-        if ($shippingAddressId === false) {
+        if (!$addressId) {
             return $data;
         }
 
-        $shippingAddress = $this->addressRepo->findAddressById($shippingAddressId);
+        $shippingAddress = $this->addressRepo->findAddressById($addressId);
         $data['town'] = $shippingAddress->town;
         $data['postalCode'] = $shippingAddress->postalCode;
         $data['firstname'] = $shippingAddress->firstName;
@@ -122,7 +121,7 @@ class ApiRequestDataProvider
 
         $items = [];
 
-        if (!is_array($basket->basketItems) || !is_object($basket->basketItems)) {
+        if (!is_array($basket->basketItems) | !is_object($basket->basketItems)) {
             return $items;
         }
         /** @var BasketItem $basketItem */
@@ -156,20 +155,6 @@ class ApiRequestDataProvider
 
         return ['isoCode2' => $this->countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2')];
 
-    }
-
-    /**
-     * @return bool|mixed
-     */
-    private function getShippingAddressId()
-    {
-        $shippingAddressId = $this->sessionStorage->getSessionValue(SessionStorageService::DELIVERY_ADDRESS_ID);
-
-        if ($shippingAddressId == -99) {
-            $shippingAddressId = $this->sessionStorage->getSessionValue(SessionStorageService::BILLING_ADDRESS_ID);
-        }
-
-        return $shippingAddressId ? $shippingAddressId : false;
     }
 
     /**

@@ -12,7 +12,7 @@ use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
-use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
+use Plenty\Modules\Order\Shipping\ServiceProvider\Contracts\ShippingServiceProviderRepositoryContract;
 
 /**
  * Class ApiRequestDataProvider
@@ -45,7 +45,7 @@ class ApiRequestDataProvider
      * @param SessionStorageService $sessionStorage
      * @param ItemRepositoryContract $itemRepo
      * @param CountryRepositoryContract $countryRepo
-     * @param ShippingInformationRepositoryContract $shippingRepo
+     * @param ShippingServiceProviderRepositoryContract $shippingRepo
      */
     public function __construct(
         PaymentHelper $paymentHelper,
@@ -53,7 +53,7 @@ class ApiRequestDataProvider
         SessionStorageService $sessionStorage,
         ItemRepositoryContract $itemRepo,
         CountryRepositoryContract $countryRepo,
-        ShippingInformationRepositoryContract $shippingRepo
+        ShippingServiceProviderRepositoryContract $shippingRepo
     ) {
         $this->paymentHelper = $paymentHelper;
         $this->addressRepo = $addressRepo;
@@ -80,9 +80,11 @@ class ApiRequestDataProvider
         $requestParams['basket'] = $basket;
 
         $requestParams['basketItems'] = $this->getCartItemData($basket);
-        $requestParams['shippingAddress'] = $this->getAddressData($basket->customerShippingAddressId);
+        $requestParams['shippingAddress'] = $this->getAddressData(
+            $basket->customerShippingAddressId ? $basket->customerShippingAddressId : $basket->customerInvoiceAddressId
+        );
         if ($basket->orderId) {
-            $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->orderId);
+            $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->shippingProviderId);
         }
         $requestParams['country'] = $this->getCountryData($basket);
 
@@ -121,7 +123,7 @@ class ApiRequestDataProvider
 
         $items = [];
 
-        if (!is_array($basket->basketItems) | !is_object($basket->basketItems)) {
+        if (!$basket->basketItems) {
             return $items;
         }
         /** @var BasketItem $basketItem */
@@ -158,13 +160,13 @@ class ApiRequestDataProvider
     }
 
     /**
-     * @param int $orderId
+     * @param int $providerId
      *
      * @return array
      */
-    private function getShippingProviderData(int $orderId)
+    private function getShippingProviderData($providerId)
     {
-        $shippingInfo = $this->shippingInfoRepo->getShippingInformationByOrderId($orderId);
+        $shippingInfo = $this->shippingInfoRepo->find($providerId);
 
         return $shippingInfo->toArray();
     }

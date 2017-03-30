@@ -19,6 +19,9 @@ use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepos
  */
 class ApiRequestDataProvider
 {
+    private $itemRepo;
+    private $countryRepo;
+    private $shippingInfoRepo;
 
     /**
      * @var PaymentHelper
@@ -40,15 +43,24 @@ class ApiRequestDataProvider
      * @param PaymentHelper $paymentHelper
      * @param AddressRepositoryContract $addressRepo
      * @param SessionStorageService $sessionStorage
+     * @param ItemRepositoryContract $itemRepo
+     * @param CountryRepositoryContract $countryRepo
+     * @param ShippingInformationRepositoryContract $shippingRepo
      */
     public function __construct(
         PaymentHelper $paymentHelper,
         AddressRepositoryContract $addressRepo,
-        SessionStorageService $sessionStorage
+        SessionStorageService $sessionStorage,
+        ItemRepositoryContract $itemRepo,
+        CountryRepositoryContract $countryRepo,
+        ShippingInformationRepositoryContract $shippingRepo
     ) {
         $this->paymentHelper = $paymentHelper;
         $this->addressRepo = $addressRepo;
         $this->sessionStorage = $sessionStorage;
+        $this->itemRepo = $countryRepo;
+        $this->countryRepo = $countryRepo;
+        $this->shippingInfoRepo = $shippingRepo;
     }
 
     /**
@@ -69,7 +81,9 @@ class ApiRequestDataProvider
 
         $requestParams['basketItems'] = $this->getCartItemData($basket);
         $requestParams['shippingAddress'] = $this->getShippingData();
-        $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->orderId);
+        if ($basket->orderId) {
+            $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->orderId);
+        }
         $requestParams['country'] = $this->getCountryData($basket);
 
         return $requestParams;
@@ -105,13 +119,16 @@ class ApiRequestDataProvider
      */
     private function getCartItemData(Basket $basket)
     {
-        /** @var ItemRepositoryContract $itemContract */
-        $itemContract = pluginApp(ItemRepositoryContract::class);
+
         $items = [];
+
+        if (!is_array($basket->basketItems) || !is_object($basket->basketItems)) {
+            return $items;
+        }
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
             /** @var Item $item */
-            $item = $itemContract->show($basketItem->itemId);
+            $item = $this->itemRepo->show($basketItem->itemId);
 
             $basketItem = $basketItem->getAttributes();
 
@@ -133,13 +150,12 @@ class ApiRequestDataProvider
      */
     private function getCountryData(Basket $basket)
     {
-        /** @var CountryRepositoryContract $countryRepo */
-        $countryRepo = pluginApp(CountryRepositoryContract::class);
+        if (!$basket->shippingCountryId || !$this->countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2')) {
+            return ['isoCode2' => 'DE'];
+        }
 
-        // Fill the country for PayPal parameters
-        $country['isoCode2'] = $countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2');
+        return ['isoCode2' => $this->countryRepo->findIsoCode($basket->shippingCountryId, 'iso_code_2')];
 
-        return $country;
     }
 
     /**
@@ -163,9 +179,7 @@ class ApiRequestDataProvider
      */
     private function getShippingProviderData(int $orderId)
     {
-        /** @var ShippingInformationRepositoryContract $shippingRepo */
-        $shippingRepo = pluginApp(ShippingInformationRepositoryContract::class);
-        $shippingInfo = $shippingRepo->getShippingInformationByOrderId($orderId);
+        $shippingInfo = $this->shippingInfoRepo->getShippingInformationByOrderId($orderId);
 
         return $shippingInfo->toArray();
     }

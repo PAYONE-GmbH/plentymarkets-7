@@ -117,7 +117,7 @@ class ConfigController extends Controller
     {
 
         try {
-           // echo json_encode($provider->getPreAuthData($basket->load()), JSON_PRETTY_PRINT);
+           echo json_encode($provider->getPreAuthData($basket->load()), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

@@ -1,0 +1,1 @@
+php-cs-fixer fix --config=.php_cs.dist --path-mode=intersection `git diff --name-only --diff-filter=ACMRTUXB $COMMIT_RANGE` -q

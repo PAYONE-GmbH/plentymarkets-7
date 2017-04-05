@@ -5,7 +5,7 @@
   "price":0.0,
   "authorIcon":"",
   "name": "Payone",
-  "shortDescription": "The official Payone plugin for plentymarkets",
+  "shortDescription": {"de": "Das offizielle Payone plugin für plentymarkets","en": "The official Payone plugin for plentymarkets"},
   "description": "The official Payone plugin for plentymarkets",
   "author": "arvatis media GmbH",
   "keywords": ["Payone", "plentymarkets", "payment"],

@@ -1,9 +1,9 @@
 {
   "version": "0.0.3",
-  "license":"",
-  "pluginIcon":"",
+  "license":"MIT",
+  "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
-  "authorIcon":"",
+  "authorIcon":"icon_author_xs.png",
   "name": "Payone",
   "shortDescription": {"de": "Das offizielle Payone plugin für plentymarkets","en": "The official Payone plugin for plentymarkets"},
   "description": "The official Payone plugin for plentymarkets",

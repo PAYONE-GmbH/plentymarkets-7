@@ -5,13 +5,21 @@
   "price":0.0,
   "authorIcon":"icon_author_xs.png",
   "name": "Payone",
-  "shortDescription": {"de": "Das offizielle Payone plugin für plentymarkets","en": "The official Payone plugin for plentymarkets"},
+  "marketplaceName" : {"de":"Payone","en":"Payone"},
+  "shortDescription": {
+    "de": "Das offizielle Payone plugin für plentymarkets",
+    "en": "The official Payone plugin for plentymarkets"
+  },
   "description": "The official Payone plugin for plentymarkets",
   "author": "arvatis media GmbH",
   "keywords": ["Payone", "plentymarkets", "payment"],
+  "email": "info@arvatis.com",
+  "phone": "+49 (0)211 - 63 55 31 60",
   "categories": [3519],
   "type": "payment",
   "namespace": "Payone",
+  "javaScriptFiles": [],
+  "containers": [],
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{

@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
+use Payone\Services\Api;
 use Payone\Services\Logger;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
@@ -109,17 +111,30 @@ class ConfigController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param Api $api
      * @param ApiRequestDataProvider $provider
      * @param BasketRepositoryContract $basket
-     * @return void
      */
-    public function testRequestData(ApiRequestDataProvider $provider, BasketRepositoryContract $basket)
-    {
+    public function doPreCheck(
+        Request $request,
+        Api $api,
+        ApiRequestDataProvider $provider,
+        BasketRepositoryContract $basket
+    ) {
 
         try {
-           echo json_encode($provider->getPreAuthData($basket->load()), JSON_PRETTY_PRINT);
+            $paymentCode = $request->get('paymentCode');
+            $response = $api->doPreCheck(
+                $paymentCode,
+                $provider->getPreAuthData($paymentCode, $basket->load())
+            );
+            echo json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            echo PHP_EOL,
+            $e->getCode(), PHP_EOL,
+            $e->getMessage(), PHP_EOL,
+            $e->getTraceAsString();
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Payone\Providers;
 
 use Plenty\Plugin\RouteServiceProvider;
@@ -22,6 +24,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->any('payone/test4/', 'Payone\Controllers\ConfigController@test4');
         $router->any('payone/testRequestData/', 'Payone\Controllers\ConfigController@testRequestData');
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
-        $router->get('payone/migrate', 'Payone\Controllers\StatusController@migrate');
+        $router->get('payone/doPreCheck', 'Payone\Controllers\ConfigController@doPreCheck');
     }
 }

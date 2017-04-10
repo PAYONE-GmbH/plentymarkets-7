@@ -53,11 +53,6 @@ class PaymentService
     private $config;
 
     /**
-     * @var SessionStorageService
-     */
-    private $sessionStorage;
-
-    /**
      * @var ApiRequestDataProvider
      */
     private $requestDataProvider;
@@ -71,7 +66,6 @@ class PaymentService
      * @param PaymentHelper $paymentHelper
      * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
-     * @param SessionStorageService $sessionStorage
      * @param ApiRequestDataProvider $requestDataProvider
      */
     public function __construct(
@@ -81,7 +75,6 @@ class PaymentService
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        SessionStorageService $sessionStorage,
         ApiRequestDataProvider $requestDataProvider
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
@@ -90,7 +83,6 @@ class PaymentService
         $this->libCall = $libCall;
         $this->addressRepo = $addressRepo;
         $this->config = $config;
-        $this->sessionStorage = $sessionStorage;
         $this->returnType = 'continue';
         $this->requestDataProvider = $requestDataProvider;
     }
@@ -122,7 +114,7 @@ class PaymentService
     /**
      * @return array|string
      */
-    public function executePayment($orderId)
+    public function executePayment(Basket $basket)
     {
         $executeResponse = [];
         return $executeResponse;
@@ -131,7 +123,7 @@ class PaymentService
             // Execute the PayPal payment
             $authType = $this->config->get(PluginConstants::NAME . '.authType');
             if ($authType == '1') {
-                $requestData = $this->requestDataProvider->getPreAuthData(null, $orderId);
+                $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
             } else {
                 $requestData = $this->getPreAuthData(null, $orderId);

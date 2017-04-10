@@ -4,6 +4,7 @@ use Payone\Api\Client;
 use Payone\Api\PostApi;
 use Payone\Request\RequestFactory;
 use Payone\Request\Types;
+use Payone\Response\ClientErrorResponse;
 
 $basket = SdkRestApi::getParam('basket');
 $basketItems = SdkRestApi::getParam('basketItems');
@@ -28,6 +29,11 @@ $orderId = SdkRestApi::getParam('orderId');
 
 $request = RequestFactory::create(Types::AUTHORIZATION, $paymentMethod, $orderId, $data);
 $client = new PostApi(new Client());
-$response = $client->doRequest($request->toArray());
 
+try {
+    $response = $client->doRequest($request->toArray());
+} catch (Exception $e) {
+    $errorResponse = new ClientErrorResponse($e->getMessage());
+    return $errorResponse->toArray();
+}
 return $response->toArray();

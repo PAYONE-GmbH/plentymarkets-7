@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Payone\Services;
 
 use Payone\Helper\PaymentHelper;
+use Payone\PluginConstants;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\Log\Loggable;
 

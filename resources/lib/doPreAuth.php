@@ -12,7 +12,6 @@ try {
     $basketItems = SdkRestApi::getParam('basketItems');
     $country = SdkRestApi::getParam('country');
     $shippingAddress = SdkRestApi::getParam('shippingAddress');
-    $shippingAddress['country'] = $country['isoCode2'];
     $context = SdkRestApi::getParam('context');
     $order = SdkRestApi::getParam('order');
     $customer = SdkRestApi::getParam('customer');

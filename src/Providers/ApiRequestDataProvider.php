@@ -178,17 +178,21 @@ class ApiRequestDataProvider
         }
 
         try {
-            $shippingAddress = $this->addressRepo->findAddressById($addressId);
+            $address = $this->addressRepo->findAddressById($addressId);
         } catch (AuthorizationException $e) {
             // Maybe not logged in anymore?
             return $data;
         }
-        $data['town'] = $shippingAddress->town;
-        $data['postalCode'] = $shippingAddress->postalCode;
-        $data['firstname'] = $shippingAddress->firstName;
-        $data['lastname'] = $shippingAddress->lastName;
-        $data['street'] = $shippingAddress->street;
-        $data['houseNumber'] = $shippingAddress->houseNumber;
+        $data = $address->toArray();
+        $data['town'] = $address->town;
+        $data['postalCode'] = $address->postalCode;
+        $data['firstname'] = $address->firstName;
+        $data['lastname'] = $address->lastName;
+        $data['street'] = $address->street;
+        $data['houseNumber'] = $address->houseNumber;
+        $data['country'] = $address->country;
+        $data['addressaddition'] = $address->additional;
+
 
         return $data;
     }
@@ -225,17 +229,17 @@ class ApiRequestDataProvider
     }
 
     /**
-     * @param $shippingCountryId
+     * @param $countryId
      *
-     * @return array
+     * @return string iso_code_2 country code
      */
-    private function getCountryData($shippingCountryId)
+    private function getCountryData($countryId)
     {
-        if (!$shippingCountryId || !$this->countryRepo->findIsoCode($shippingCountryId, 'iso_code_2')) {
-            return ['isoCode2' => 'DE'];
+        if (!$countryId || !$this->countryRepo->findIsoCode($countryId, 'iso_code_2')) {
+            return 'DE';
         }
 
-        return ['isoCode2' => $this->countryRepo->findIsoCode($shippingCountryId, 'iso_code_2')];
+        return $this->countryRepo->findIsoCode($countryId, 'iso_code_2');
     }
 
     /**
@@ -267,21 +271,25 @@ class ApiRequestDataProvider
 
         $contactId = $this->accountService->getAccountContactId();
         if (!$contactId) {
-            return [];
+            return $customer;
         }
         try {
             /** @var Contact $contact */
             $contact = $this->contactRepositoryContract->findContactById($contactId);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return [];
+            return $customer;
         }
+        $customer = $customer + $contact->toArray();
         $customer['email'] = $contact->email;
-        $customer['customerIp'] = '127.0.0.1';
-        $customer['firstName'] = $contact->firstName;
-        $customer['lastName'] = $contact->lastName;
+        $customer['ip'] = '127.0.0.1';
+        $customer['firstname'] = $contact->firstName;
+        $customer['lastname'] = $contact->lastName;
         //TODO: Check format
-        $customer['gender'] = $contact->gender;
-        $customer['dob'] = $contact->birthdayAt;
+        $customer['gender'] = ((string)$contact->gender)[0];
+        $customer['birthday'] = $contact->birthdayAt;
+        $customer['title'] = $contact->AdditionalName;
+        $customer['telephonenumber'] = $contact->privatePhone;
+        $customer['language'] = $contact->lang;
 
         return $customer;
     }

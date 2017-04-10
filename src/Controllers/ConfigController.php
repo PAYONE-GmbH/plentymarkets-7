@@ -10,7 +10,6 @@ use Payone\Services\Api;
 use Payone\Services\Logger;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
-use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -139,24 +138,4 @@ class ConfigController extends Controller
         }
     }
 
-
-    /**
-     * @param LibraryCallContract $libCall
-     * @param Request $request
-     * @return mixed
-     */
-    public function testSdkApi(
-        LibraryCallContract $libCall,
-        Request $request
-    ) {
-        try {
-
-            echo json_encode($libCall->call(
-                PluginConstants::NAME . '::guzzle_connector',
-                ['packagist_query' => $request->get('search')]
-            ), JSON_PRETTY_PRINT);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
 }

@@ -152,7 +152,7 @@ class ConfigController extends Controller
         try {
 
             echo json_encode($libCall->call(
-                'HelloWorld::guzzle_connector',
+                PluginConstants::NAME . '::guzzle_connector',
                 ['packagist_query' => $request->get('search')]
             ), JSON_PRETTY_PRINT);
         } catch (\Exception $e) {

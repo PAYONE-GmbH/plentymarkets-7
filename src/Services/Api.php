@@ -53,7 +53,7 @@ class Api
             'module_version' => 1,
         ];
         $requestParams['context'] = $this->paymentHelper->getApiContextParams($paymentCode);
-        $response = $this->libCall->call('Payone::doPreAuth', $requestParams);
+        $response = $this->libCall->call(PluginConstants::NAME . 'doPreAuth', $requestParams);
         $this->getLogger(__CLASS__ . '::' . __METHOD__)->debug('doPreAuth', $response);
 
         return $response;

@@ -33,7 +33,7 @@ try {
     $client = new PostApi(new Client());
 
     $response = $client->doRequest($request->toArray());
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $errorResponse = new ClientErrorResponse($e->getMessage());
     return $errorResponse->toArray();
 }

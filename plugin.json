@@ -23,7 +23,7 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "guzzlehttp/guzzle":"*",
+    "guzzlehttp/guzzle": "6.2.*",
     "monolog/monolog": "^1.22"
   },
   "runOnBuild": [

@@ -25,5 +25,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->any('payone/testRequestData/', 'Payone\Controllers\ConfigController@testRequestData');
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
         $router->get('payone/doPreCheck', 'Payone\Controllers\ConfigController@doPreCheck');
+        $router->get('payone/testSdkApi', 'Payone\Controllers\ConfigController@testSdkApi');
     }
 }

@@ -287,7 +287,7 @@ class ApiRequestDataProvider
         //TODO: Check format
         $customer['gender'] = ((string)$contact->gender)[0];
         $customer['birthday'] = $contact->birthdayAt;
-        $customer['title'] = $contact->AdditionalName;
+        $customer['title'] = '';//$contact->AdditionalName;
         $customer['telephonenumber'] = $contact->privatePhone;
         $customer['language'] = $contact->lang;
 

@@ -138,4 +138,24 @@ class ConfigController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param ApiRequestDataProvider $provider
+     * @param BasketRepositoryContract $basket
+     */
+    public function testRequestData(
+        Request $request,
+        ApiRequestDataProvider $provider,
+        BasketRepositoryContract $basket
+    ) {
+        try {
+            echo json_encode($provider->getPreAuthData($request->get('paymentCode'), $basket->load()),
+                JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            echo PHP_EOL,
+            $e->getCode(), PHP_EOL,
+            $e->getMessage(), PHP_EOL,
+            $e->getTraceAsString();
+        }
+    }
 }

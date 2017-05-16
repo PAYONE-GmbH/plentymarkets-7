@@ -275,7 +275,7 @@ class ApiRequestDataProvider
         try {
             /** @var Contact $contact */
             $contact = $this->contactRepositoryContract->findContactById($contactId);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (\Exception $e) {
             return $customer;
         }
         $customer = $customer + $contact->toArray();

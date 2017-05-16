@@ -123,11 +123,10 @@ class PaymentService
         try {
             // Execute the PayPal payment
             $authType = $this->config->get(PluginConstants::NAME . '.authType');
+            $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
             if ($authType == '1') {
-                $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
             } else {
-                $requestData = $this->requestDataProvider->getPreAuthData(null, $orderId);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::preAuth', $requestData);
             }
             if (!isset($executeResponse['success'])) {

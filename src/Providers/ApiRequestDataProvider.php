@@ -253,7 +253,7 @@ class ApiRequestDataProvider
         }
         try {
             $shippingInfo = $this->shippingInfoRepo->find($providerId);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (\Exception $e) {
             return [];
         }
 

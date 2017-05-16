@@ -33,7 +33,7 @@ try {
 
     $response = $client->doRequest($request->toArray());
 } catch (\Exception $e) {
-    $errorResponse = new ClientErrorResponse($e->getMessage());
+    $errorResponse = new ClientErrorResponse('SdkRestApi error: ' . $e->getMessage());
     return $errorResponse->toArray();
 }
 

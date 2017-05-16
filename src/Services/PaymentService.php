@@ -116,6 +116,7 @@ class PaymentService
      */
     public function executePayment(Basket $basket)
     {
+        return;
         $executeResponse = [];
         return $executeResponse;
         $this->returnType = 'errorCode';
@@ -126,7 +127,7 @@ class PaymentService
                 $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
             } else {
-                $requestData = $this->getPreAuthData(null, $orderId);
+                $requestData = $this->requestDataProvider->getPreAuthData(null, $orderId);
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::preAuth', $requestData);
             }
             if (!isset($executeResponse['success'])) {

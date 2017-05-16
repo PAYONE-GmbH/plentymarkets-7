@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
+
 
 namespace Payone\Providers;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Payone\Helper\PaymentHelper;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
@@ -179,7 +178,7 @@ class ApiRequestDataProvider
 
         try {
             $address = $this->addressRepo->findAddressById($addressId);
-        } catch (AuthorizationException $e) {
+        } catch (\Exception $e) {
             // Maybe not logged in anymore?
             return $data;
         }

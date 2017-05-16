@@ -1,7 +1,6 @@
 <?php
 
 
-
 namespace Payone\Providers;
 
 use Payone\Helper\PaymentHelper;
@@ -9,10 +8,8 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Account\Contact\Models\Contact;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Basket\Models\BasketItem;
-use Plenty\Modules\Frontend\Services\AccountService;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
@@ -56,11 +53,6 @@ class ApiRequestDataProvider
     private $addressRepo;
 
     /**
-     * @var AccountService
-     */
-    private $accountService;
-
-    /**
      * @var FrontendSessionStorageFactoryContract
      */
     private $sessionStorageFactory;
@@ -73,8 +65,8 @@ class ApiRequestDataProvider
      * @param ItemRepositoryContract $itemRepo
      * @param CountryRepositoryContract $countryRepo
      * @param ShippingServiceProviderRepositoryContract $shippingRepo
-     * @param AccountService $accountService
      * @param ContactRepositoryContract $contactRepositoryContract
+     * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
      */
     public function __construct(
         PaymentHelper $paymentHelper,
@@ -82,7 +74,6 @@ class ApiRequestDataProvider
         ItemRepositoryContract $itemRepo,
         CountryRepositoryContract $countryRepo,
         ShippingServiceProviderRepositoryContract $shippingRepo,
-        AccountService $accountService,
         ContactRepositoryContract $contactRepositoryContract,
         FrontendSessionStorageFactoryContract $sessionStorageFactory
     ) {
@@ -91,8 +82,6 @@ class ApiRequestDataProvider
         $this->itemRepo = $itemRepo;
         $this->countryRepo = $countryRepo;
         $this->shippingInfoRepo = $shippingRepo;
-        $this->accountService = $accountService;
-        $this->accountService = $accountService;
         $this->contactRepositoryContract = $contactRepositoryContract;
         $this->sessionStorageFactory = $sessionStorageFactory;
     }
@@ -123,7 +112,7 @@ class ApiRequestDataProvider
         );
         $requestParams['shippingProvider'] = $this->getShippingProviderData($basket->shippingProviderId);
         $requestParams['country'] = $this->getCountryData($basket->shippingCountryId);
-        $requestParams['customer'] = $this->getCustomerData();
+        $requestParams['customer'] = $this->getCustomerData($basket->customerId, $requestParams['billingAddress']);
         if ($paymentCode == PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE ||
             $paymentCode == PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE
         ) {
@@ -260,35 +249,22 @@ class ApiRequestDataProvider
         return $shippingInfo->toArray();
     }
 
-    private function getCustomerData()
+    private function getCustomerData($customerId, $address)
     {
-        $customer = $this->sessionStorageFactory->getCustomer()->toArray();
-
-        if (!$this->accountService->getIsAccountLoggedIn()) {
-            //TODO: Load Guest data
+        if (!$address) {
+            return ['customerId' => $customerId];
         }
 
-        $contactId = $this->accountService->getAccountContactId();
-        if (!$contactId) {
-            return $customer;
-        }
-        try {
-            /** @var Contact $contact */
-            $contact = $this->contactRepositoryContract->findContactById($contactId);
-        } catch (\Exception $e) {
-            return $customer;
-        }
-        $customer = $customer + $contact->toArray();
-        $customer['email'] = $contact->email;
+        $customer['email'] = $address['options'][0]['value'];
         $customer['ip'] = '127.0.0.1';
-        $customer['firstname'] = $contact->firstName;
-        $customer['lastname'] = $contact->lastName;
+        $customer['firstname'] = $address['firstName'];
+        $customer['lastname'] = $address['lastName'];
         //TODO: Check format
-        $customer['gender'] = ((string)$contact->gender)[0];
-        $customer['birthday'] = $contact->birthdayAt;
+        $customer['gender'] = 'm';
+        $customer['birthday'] = '1970-01-01';
         $customer['title'] = '';//$contact->AdditionalName;
-        $customer['telephonenumber'] = $contact->privatePhone;
-        $customer['language'] = $contact->lang;
+        $customer['telephonenumber'] = '';
+        $customer['language'] = $address['lang'];
 
         return $customer;
     }

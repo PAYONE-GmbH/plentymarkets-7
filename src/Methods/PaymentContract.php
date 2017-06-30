@@ -1,9 +1,10 @@
 <?php
+
 namespace Payone\Methods;
 
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
 use Plenty\Plugin\ConfigRepository;
 
 abstract class PaymentContract extends PaymentMethodService
@@ -39,7 +40,7 @@ abstract class PaymentContract extends PaymentMethodService
      */
     public function isActive(): bool
     {
-        return (bool)$this->configRepo->get(PluginConstants::NAME . '.' . $this::PAYMENT_CODE . '.active');
+        return (bool) $this->configRepo->get(PluginConstants::NAME . '.' . $this::PAYMENT_CODE . '.active');
     }
 
     /**
@@ -50,7 +51,8 @@ abstract class PaymentContract extends PaymentMethodService
     public function getName(): string
     {
         $name = $this->configRepo->get(PluginConstants::NAME . '.' . $this::PAYMENT_CODE . '.name');
-        return $name ? (string)$name : '';
+
+        return $name ? (string) $name : '';
     }
 
     /**
@@ -81,6 +83,7 @@ abstract class PaymentContract extends PaymentMethodService
     public function getDescription(): string
     {
         $description = $this->configRepo->get(PluginConstants::NAME . '.' . $this::PAYMENT_CODE . '.description');
+
         return $description ? $description : '';
     }
 }

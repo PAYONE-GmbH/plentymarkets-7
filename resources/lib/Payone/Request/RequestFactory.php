@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Payone\Request;
-
 
 use Payone\Request\Parts\Config;
 use Payone\Request\Parts\Customer;
@@ -18,8 +16,10 @@ class RequestFactory
      * @param string $paymentMethod
      * @param string|bool $referenceId Reference to previous request
      * @param array $data
-     * @return RequestDataContract
+     *
      * @throws \Exception
+     *
+     * @return RequestDataContract
      */
     public static function create($requestType, $paymentMethod, $referenceId = false, $data = []): RequestDataContract
     {
@@ -83,11 +83,11 @@ class RequestFactory
                             $customer,
                             $data['shippingProvider']['name']
                         );
-
                 }
                 break;
             case Types::CAPTURE:
                 $order = $data['order'];
+
                 return new Capture(
                     $config,
                     $referenceId,
@@ -97,9 +97,7 @@ class RequestFactory
                     $context['sequencenumber']
                 );
                 break;
-
         }
         throw new \Exception('Uknown request type ' . $requestType . ' for ' . $paymentMethod . ' payment method.');
     }
 }
-

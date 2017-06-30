@@ -38,6 +38,7 @@ class Api
     /**
      * @param $paymentCode
      * @param $requestParams
+     *
      * @return array
      */
     public function doPreCheck($paymentCode, $requestParams)

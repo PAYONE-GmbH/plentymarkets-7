@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Payone\Providers;
 
 use Plenty\Plugin\RouteServiceProvider;

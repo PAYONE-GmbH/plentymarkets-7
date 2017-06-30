@@ -2,11 +2,12 @@
 
 class SdkRestApi
 {
-    static $payload;
+    public static $payload;
 
     /**
      * @param $key
      * @param string $default
+     *
      * @return mixed|string
      */
     public static function getParam($key, $default = '')
@@ -15,8 +16,10 @@ class SdkRestApi
             if (!property_exists(self::$payload, $key)) {
                 return $default;
             }
+
             return self::$payload->{$key};
         }
+
         return isset(self::$payload[$key]) ? self::$payload[$key] : $default;
     }
 

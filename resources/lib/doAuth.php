@@ -30,10 +30,11 @@ try {
     $request = RequestFactory::create(Types::AUTHORIZATION, $paymentMethod, $orderId, $data);
     $client = new PostApi(new Client());
 
-
     $response = $client->doRequest($request->toArray());
 } catch (\Exception $e) {
     $errorResponse = new ClientErrorResponse('SdkRestApi error: ' . $e->getMessage());
+
     return $errorResponse->toArray();
 }
+
 return $response->toArray();

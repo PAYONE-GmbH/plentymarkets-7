@@ -9,7 +9,6 @@ use PHPUnit_Framework_TestCase;
  */
 class SdkRestApiTest extends PHPUnit_Framework_TestCase
 {
-
     private $payloadJSON = <<<JSON
 {
   "context": {
@@ -141,7 +140,6 @@ JSON;
         \SdkRestApi::setPayload(\json_decode($this->payloadJSON, true));
     }
 
-
     public function testdoAuth()
     {
         $response = require_once 'resources/lib/doAuth.php';
@@ -157,5 +155,4 @@ JSON;
         //print_r($response);
         self::assertSame('SdkRestApi error: Uknown request type preauthorization for  payment method.', $response['errorMessage']);
     }
-
 }

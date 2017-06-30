@@ -14,16 +14,16 @@ use Plenty\Modules\Plugin\DataBase\Contracts\Model;
  */
 class Settings extends Model
 {
-    public $id          = 0;
-    public $name        = '';
-    public $value       = '';
-    public $createdAt   = '';
-    public $updatedAt   = '';
+    public $id = 0;
+    public $name = '';
+    public $value = '';
+    public $createdAt = '';
+    public $updatedAt = '';
 
     /**
      * @return string
      */
-    public function getTableName():string
+    public function getTableName(): string
     {
         return 'Payone::settings';
     }

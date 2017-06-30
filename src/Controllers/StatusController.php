@@ -2,9 +2,9 @@
 
 namespace Payone\Controllers;
 
+use Payone\Adapter\Config;
 use Payone\Helper\PaymentHelper;
 use Payone\Migrations\CreatePaymentMethods;
-use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -36,12 +36,13 @@ class StatusController extends Controller
      * PaymentController constructor.
      *
      * @param Request $request
-     * @param ConfigRepository $config
+     * @param Config $config
      * @param PaymentHelper $paymentHelper
+     * @param CreatePaymentMethods $paymentMigration
      */
     public function __construct(
         Request $request,
-        ConfigRepository $config,
+        Config $config,
         PaymentHelper $paymentHelper,
         CreatePaymentMethods $paymentMigration
     ) {
@@ -53,10 +54,9 @@ class StatusController extends Controller
 
     public function index()
     {
-        /* TODO: php function "hash" is not allowed
-        if ($this->request->get("key") != hash("md5", $this->config->get('key'))) {
+        if ($this->request->get('key') != md5($this->config->get('key'))) {
             return;
-        }*/
+        }
         $txid = $this->request->get('txid');
         $reference = $this->request->get('reference');
         $txaction = $this->request->get('txaction');
@@ -70,8 +70,4 @@ class StatusController extends Controller
         echo 'TSOK';
     }
 
-    public function migrate()
-    {
-        $this->paymentMigration->run();
-    }
 }

@@ -6,7 +6,6 @@ use Payone\Request\RequestFactory;
 use Payone\Request\Types;
 use Payone\Response\ClientErrorResponse;
 
-
 try {
     $basket = SdkRestApi::getParam('basket');
     $basketItems = SdkRestApi::getParam('basketItems');
@@ -34,6 +33,7 @@ try {
     $response = $client->doRequest($request->toArray());
 } catch (\Exception $e) {
     $errorResponse = new ClientErrorResponse('SdkRestApi error: ' . $e->getMessage());
+
     return $errorResponse->toArray();
 }
 

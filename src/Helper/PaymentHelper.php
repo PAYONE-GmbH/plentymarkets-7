@@ -121,7 +121,10 @@ class PaymentHelper
         /* @var $payment Payment */
         foreach ($payments as $payment) {
             /* @var $property PaymentProperty */
-            foreach ($payment->property as $property) {
+            foreach ($payment->properties as $property) {
+                if (!($property instanceof PaymentProperty)) {
+                    continue;
+                }
                 if ($property->typeId === 30 && $property->id === $txid) {
                     $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
                     $this->paymentRepository->updatePayment($payment);

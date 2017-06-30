@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
@@ -122,7 +121,6 @@ class ConfigController extends Controller
         ApiRequestDataProvider $provider,
         BasketRepositoryContract $basket
     ) {
-
         try {
             $paymentCode = $request->get('paymentCode');
             $response = $api->doPreCheck(

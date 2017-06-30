@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Payone\Providers;
 
 use Payone\Helper\PaymentHelper;
@@ -181,7 +180,6 @@ class ApiRequestDataProvider
         $data['country'] = $address->country;
         $data['addressaddition'] = $address->additional;
 
-
         return $data;
     }
 
@@ -262,7 +260,7 @@ class ApiRequestDataProvider
         //TODO: Check format
         $customer['gender'] = 'm';
         $customer['birthday'] = '1970-01-01';
-        $customer['title'] = '';//$contact->AdditionalName;
+        $customer['title'] = ''; //$contact->AdditionalName;
         $customer['telephonenumber'] = '';
         $customer['language'] = $address['lang'];
 

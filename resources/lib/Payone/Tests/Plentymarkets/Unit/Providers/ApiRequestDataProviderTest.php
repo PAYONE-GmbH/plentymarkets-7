@@ -47,5 +47,4 @@ class ApiRequestDataProviderTest extends \PHPUnit_Framework_TestCase
         self::assertArrayHasKey('country', $requestData);
         self::assertArrayHasKey('customer', $requestData);
     }
-
 }

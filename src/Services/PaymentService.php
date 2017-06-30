@@ -1,4 +1,6 @@
-<?php //strict
+<?php
+
+//strict
 
 namespace Payone\Services;
 
@@ -103,11 +105,11 @@ class PaymentService
      *
      * @param Basket $basket
      * @param string $mode
+     *
      * @return string
      */
     public function getPaymentContent(Basket $basket, $mode = ''): string
     {
-
         return 'html content';
     }
 
@@ -118,6 +120,7 @@ class PaymentService
     {
         return;
         $executeResponse = [];
+
         return $executeResponse;
         $this->returnType = 'errorCode';
         try {
@@ -139,5 +142,4 @@ class PaymentService
 
         return $executeResponse;
     }
-
 }

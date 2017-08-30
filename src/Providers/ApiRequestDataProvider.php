@@ -178,7 +178,7 @@ class ApiRequestDataProvider
         $data['street'] = $address->street;
         $data['houseNumber'] = $address->houseNumber;
         $data['country'] = $address->country;
-        $data['addressaddition'] = $address->additional;
+        $data['addressaddition'] = $address->address3;
 
         return $data;
     }

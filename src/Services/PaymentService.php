@@ -118,15 +118,11 @@ class PaymentService
      */
     public function executePayment(Basket $basket)
     {
-        return;
-        $executeResponse = [];
-
-        return $executeResponse;
-        $this->returnType = 'errorCode';
         try {
             // Execute the PayPal payment
             $authType = $this->config->get(PluginConstants::NAME . '.authType');
             $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
+            $requestData['order']['orderId']= 'basket-'.$basket->id;//todo: transaction id
             if ($authType == '1') {
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
             } else {
@@ -135,7 +131,6 @@ class PaymentService
             if (!isset($executeResponse['success'])) {
                 return isset($executeResponse['errorMessage']) ? $executeResponse['errorMessage'] : '';
             }
-            $this->returnType = 'success';
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

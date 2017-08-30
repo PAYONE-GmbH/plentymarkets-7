@@ -12,22 +12,11 @@ try {
     } else {
         $sdkRestApi = \SdkRestApi::class;
     }
-    $basket = $sdkRestApi::getParam('basket');
-    $basketItems = $sdkRestApi::getParam('basketItems');
-    $country = $sdkRestApi::getParam('country');
-    $shippingAddress = $sdkRestApi::getParam('shippingAddress');
     $context = $sdkRestApi::getParam('context');
     $order = $sdkRestApi::getParam('order');
-    $customer = $sdkRestApi::getParam('customer');
-    $shippingProvider = $sdkRestApi::getParam('shippingProvider');
 
-    $data['basket'] = $basket;
-    $data['basketItems'] = $basketItems;
-    $data['shippingAddress'] = $shippingAddress;
     $data['context'] = $context;
     $data['order'] = $order;
-    $data['customer'] = $customer;
-    $data['shippingProvider'] = $shippingProvider;
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
     $orderId = $sdkRestApi::getParam('orderId');

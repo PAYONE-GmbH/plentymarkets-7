@@ -20,6 +20,7 @@
   ],
   "require": {
     "guzzlehttp/guzzle": "^6.2",
-    "monolog/monolog": "^1.22"
+    "plentymarkets/plugin-interface": "dev-beta7",
+    "arvatis/payone-php-api":"dev-master"
   }
 }

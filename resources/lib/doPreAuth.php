@@ -1,20 +1,25 @@
 <?php
 
-use Payone\Api\Client;
-use Payone\Api\PostApi;
-use Payone\Request\RequestFactory;
-use Payone\Request\Types;
-use Payone\Response\ClientErrorResponse;
+use ArvPayoneApi\Api\Client;
+use ArvPayoneApi\Api\PostApi;
+use ArvPayoneApi\Lib\Version;
+use ArvPayoneApi\Request\Authorization\RequestFactory;
+use ArvPayoneApi\Response\ClientErrorResponse;
 
 try {
-    $basket = SdkRestApi::getParam('basket');
-    $basketItems = SdkRestApi::getParam('basketItems');
-    $country = SdkRestApi::getParam('country');
-    $shippingAddress = SdkRestApi::getParam('shippingAddress');
-    $context = SdkRestApi::getParam('context');
-    $order = SdkRestApi::getParam('order');
-    $customer = SdkRestApi::getParam('customer');
-    $shippingProvider = SdkRestApi::getParam('shippingProvider');
+    if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {
+        $sdkRestApi = Payone\Tests\Integration\Mock\SdkRestApi::class;
+    } else {
+        $sdkRestApi = \SdkRestApi::class;
+    }
+    $basket = $sdkRestApi::getParam('basket');
+    $basketItems = $sdkRestApi::getParam('basketItems');
+    $country = $sdkRestApi::getParam('country');
+    $shippingAddress = $sdkRestApi::getParam('shippingAddress');
+    $context = $sdkRestApi::getParam('context');
+    $order = $sdkRestApi::getParam('order');
+    $customer = $sdkRestApi::getParam('customer');
+    $shippingProvider = $sdkRestApi::getParam('shippingProvider');
 
     $data['basket'] = $basket;
     $data['basketItems'] = $basketItems;
@@ -24,17 +29,33 @@ try {
     $data['customer'] = $customer;
     $data['shippingProvider'] = $shippingProvider;
 
-    $paymentMethod = SdkRestApi::getParam('paymentMethod');
-    $orderId = SdkRestApi::getParam('orderId');
+    $paymentMethod = $sdkRestApi::getParam('paymentMethod');
+    $orderId = $sdkRestApi::getParam('orderId');
 
-    $request = RequestFactory::create(Types::PREAUTHORIZATION, $paymentMethod, $orderId, $data);
+    $request = RequestFactory::create($paymentMethod, $orderId, $data);
     $client = new PostApi(new Client());
+    $response = $client->doRequest($request);
 
-    $response = $client->doRequest($request->toArray());
-} catch (\Exception $e) {
-    $errorResponse = new ClientErrorResponse('SdkRestApi error: ' . $e->getMessage());
+} catch (Exception $e) {
+    $errorResponse = new ClientErrorResponse(
+        'SdkRestApi error: ' . $e->getMessage() . PHP_EOL .
+        'Lib version: ' . Version::getVersion() . PHP_EOL .
+        $e->getTraceAsString()
+    );
 
-    return $errorResponse->toArray();
+    return $errorResponse->jsonSerialize();
 }
 
-return $response->toArray();
+if (!$response->getSuccess()) {
+    $errorResponse = new ClientErrorResponse(
+        'Request successful but response invalid. ' . PHP_EOL .
+        'Lib version: ' . Version::getVersion() . PHP_EOL .
+        'Message: ' . $response->getErrorMessage() . PHP_EOL .
+        'Request was : ' . json_encode($request, JSON_PRETTY_PRINT) . PHP_EOL .
+        'Response was: ' . json_encode($response, JSON_PRETTY_PRINT)
+    );
+
+    return $errorResponse->jsonSerialize();
+}
+
+return $response->jsonSerialize();

@@ -24,7 +24,7 @@
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
     "guzzlehttp/guzzle": "6.2.*",
-    "monolog/monolog": "^1.22"
+    "arvatis/payolution-php-api":"dev-master"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",

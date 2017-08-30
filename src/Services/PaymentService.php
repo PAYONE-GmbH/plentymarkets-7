@@ -122,7 +122,7 @@ class PaymentService
             // Execute the PayPal payment
             $authType = $this->config->get(PluginConstants::NAME . '.authType');
             $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
-            $requestData['order']['orderId']= 'basket-'.$basket->id;//todo: transaction id
+            $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
             if ($authType == '1') {
                 $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
             } else {

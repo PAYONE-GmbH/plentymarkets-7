@@ -4,7 +4,6 @@ namespace Payone\Tests\Integration\Unit;
 
 use Tests\Payone\Helpers\Config;
 
-
 /**
  * Class doPreAuthTest
  */

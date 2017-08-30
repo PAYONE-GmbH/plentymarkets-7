@@ -69,5 +69,4 @@ class StatusController extends Controller
 
         echo 'TSOK';
     }
-
 }

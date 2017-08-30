@@ -24,7 +24,6 @@ try {
     $request = RequestFactory::create($paymentMethod, $orderId, $data);
     $client = new PostApi(new Client());
     $response = $client->doRequest($request);
-
 } catch (Exception $e) {
     $errorResponse = new ClientErrorResponse(
         'SdkRestApi error: ' . $e->getMessage() . PHP_EOL .

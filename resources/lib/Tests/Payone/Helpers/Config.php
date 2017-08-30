@@ -25,5 +25,4 @@ class Config
 
         return $config;
     }
-
 }

@@ -98,13 +98,6 @@
   },
   {
     "tab": "Rechnung",
-    "key": "PAYONE_PAYONE_INVOICE.position",
-    "default": "10",
-    "label": "Position",
-    "type": "text"
-  },
-  {
-    "tab": "Rechnung",
     "key": "PAYONE_PAYONE_INVOICE.name",
     "label": "Name",
     "type": "text",
@@ -170,13 +163,6 @@
       "1": "Ja"
     },
     "default": "1"
-  },
-  {
-    "tab": "Paydirekt",
-    "key": "PAYONE_PAYONE_PAYDIREKT.position",
-    "default": "20",
-    "label": "Position",
-    "type": "text"
   },
   {
     "tab": "Paydirekt",
@@ -248,13 +234,6 @@
   },
   {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.position",
-    "default": "30",
-    "label": "Position",
-    "type": "text"
-  },
-  {
-    "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.name",
     "label": "Name",
     "type": "text",
@@ -320,13 +299,6 @@
       "1": "Ja"
     },
     "default": "1"
-  },
-  {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.position",
-    "default": "40",
-    "label": "Position",
-    "type": "text"
   },
   {
     "tab": "PayPal",
@@ -398,13 +370,6 @@
   },
   {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.position",
-    "default": "50",
-    "label": "Position",
-    "type": "text"
-  },
-  {
-    "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.name",
     "label": "Name",
     "type": "text",
@@ -470,13 +435,6 @@
       "1": "Ja"
     },
     "default": "1"
-  },
-  {
-    "tab": "Sofortüberweisung",
-    "key": "PAYONE_PAYONE_SOFORT.position",
-    "default": "60",
-    "label": "Position",
-    "type": "text"
   },
   {
     "tab": "Sofortüberweisung",
@@ -548,13 +506,6 @@
   },
   {
     "tab": "Vorkasse",
-    "key": "PAYONE_PAYONE_PRE_PAYMENT.position",
-    "default": "70",
-    "label": "Position",
-    "type": "text"
-  },
-  {
-    "tab": "Vorkasse",
     "key": "PAYONE_PAYONE_PRE_PAYMENT.name",
     "label": "Name",
     "type": "text",
@@ -620,13 +571,6 @@
       "1": "Ja"
     },
     "default": "1"
-  },
-  {
-    "tab": "Nachnahme",
-    "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.position",
-    "default": "80",
-    "label": "Position",
-    "type": "text"
   },
   {
     "tab": "Nachnahme",

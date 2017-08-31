@@ -22,7 +22,6 @@ class Config
             . '..' . DIRECTORY_SEPARATOR
             . '..' . DIRECTORY_SEPARATOR
             . '..' . DIRECTORY_SEPARATOR
-            . '..' . DIRECTORY_SEPARATOR
             . '..' . DIRECTORY_SEPARATOR .
             'config.json'));
         $config = json_decode($configJson);

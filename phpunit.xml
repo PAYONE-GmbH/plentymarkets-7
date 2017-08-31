@@ -19,20 +19,19 @@
 >
     <testsuites>
         <testsuite name="API Test Suite">
-            <directory suffix="Test.php">./resources/lib/Payone/Tests/*</directory>
+            <directory suffix="Test.php">./resources/lib/Tests/*</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
-            <directory suffix=".php">resources/lib/Payone</directory>
         </whitelist>
     </filter>
 
     <logging>
         <log type="coverage-html" target="build/php/coverage"/>
-        <!--log type="coverage-clover" target="build/php/coverage.xml"/>
-        <log type="junit" target="build/php/test-results.xml"/-->
+        <log type="coverage-clover" target="build/php/coverage.xml"/>
+        <log type="junit" target="build/php/test-results.xml"/>
     </logging>
 
 </phpunit>

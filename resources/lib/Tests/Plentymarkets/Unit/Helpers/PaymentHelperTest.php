@@ -3,9 +3,10 @@
 namespace Payone\Tests\Unit\Helpers;
 
 use Payone\Helper\PaymentHelper;
+use Payone\Methods\PayoneInstallmentPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
-use Payone\Methods\PayonePayoneInstallmentPaymentMethod;
+use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
@@ -41,7 +42,7 @@ class PaymentHelperTest extends \PHPUnit_Framework_TestCase
                     ],
                     (object)
                     [
-                        'paymentKey' => PayonePayoneInstallmentPaymentMethod::PAYMENT_CODE,
+                        'paymentKey' => PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
                         'id' => 'inst_mop',
                     ],
                     (object)

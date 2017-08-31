@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Payone\Helpers;
+namespace Payone\Tests\Helpers;
 
 /**
  * Class Config

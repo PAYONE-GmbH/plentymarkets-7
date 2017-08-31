@@ -2,7 +2,7 @@
   "autoload-dev": {
     "classmap": [
       "src/",
-      "resources/lib/",
+      "resources/lib/Tests",
       "vendor/plentymarkets/plugin-interface"
     ]
   },

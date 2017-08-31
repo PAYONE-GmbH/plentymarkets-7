@@ -9,13 +9,12 @@ class PluginConfigTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $configJson = file_get_contents(
-            realpath(__DIR__ . DIRECTORY_SEPARATOR
-                . '..' . DIRECTORY_SEPARATOR
+            __DIR__ . DIRECTORY_SEPARATOR
                 . '..' . DIRECTORY_SEPARATOR
                 . '..' . DIRECTORY_SEPARATOR
                 . '..' . DIRECTORY_SEPARATOR
                 . '..' . DIRECTORY_SEPARATOR .
-                'plugin.json')
+                'plugin.json'
         );
         $this->pluginConfig = json_decode($configJson, true);
         if (!$this->pluginConfig) {

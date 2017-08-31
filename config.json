@@ -146,7 +146,7 @@
     "key": "PAYONE_PAYONE_INVOICE.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Rechnung",
@@ -221,7 +221,7 @@
     "key": "PAYONE_PAYONE_PAYDIREKT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Paydirekt",
@@ -296,7 +296,7 @@
     "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Payolution Ratenzahlung",
@@ -371,7 +371,7 @@
     "key": "PAYONE_PAYONE_PAYPAL.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "PayPal",
@@ -446,7 +446,7 @@
     "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "RatePay Ratenzahlung",
@@ -521,7 +521,7 @@
     "key": "PAYONE_PAYONE_SOFORT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Sofortüberweisung",
@@ -596,7 +596,7 @@
     "key": "PAYONE_PAYONE_SOFORT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Vorkasse",
@@ -671,7 +671,7 @@
     "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
-    "default": "DEU,AUT,CHE"
+    "default": "DE,AT,CH"
   },
   {
     "tab": "Nachnahme",

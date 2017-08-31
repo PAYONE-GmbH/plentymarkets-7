@@ -3,7 +3,6 @@
 namespace Payone\Tests\Unit\Migrations;
 
 use Payone\Helpers\PaymentHelper;
-use Payone\Methods\PayoneInstallmentPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;

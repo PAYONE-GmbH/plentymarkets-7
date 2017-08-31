@@ -189,4 +189,14 @@ class Logger //implements LoggerContract
     ): LoggerContract {
         return $this->getLogger($this->identifier)->addReference($referenceType, $referenceValue);
     }
+
+    /**
+     * Report information.
+     */
+    public function report(
+        string $code,
+        $additionalInfo = null
+    ) {
+        return $this->getLogger($this->identifier)->report($code, $additionalInfo);
+    }
 }

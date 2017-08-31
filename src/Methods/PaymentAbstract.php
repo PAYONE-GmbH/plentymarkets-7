@@ -25,6 +25,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      * @var Application
      */
     private $app;
+
     /**
      * PayonePaymentMethod constructor.
      *
@@ -42,7 +43,6 @@ abstract class PaymentAbstract extends PaymentMethodService
         $this->app = $app = $application;
     }
 
-
     /**
      * Check whether Payolution is active or not
      *
@@ -50,7 +50,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      */
     public function isActive()
     {
-        return (bool) $this->configRepo->get( $this::PAYMENT_CODE . '.active')
+        return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
             && $this->paymentValidator->validate($this);
     }
 
@@ -61,7 +61,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      */
     public function getName(): string
     {
-        $name = $this->configRepo->get( $this::PAYMENT_CODE . '.name');
+        $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
 
         return $name ? (string) $name : '';
     }
@@ -95,7 +95,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      */
     public function getDescription(): string
     {
-        $description = $this->configRepo->get( $this::PAYMENT_CODE . '.description');
+        $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
 
         return $description ? $description : '';
     }
@@ -113,7 +113,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      */
     public function getMaxCartAmount()
     {
-        $amount = $this->configRepo->get( $this::PAYMENT_CODE . '.maxCartAmount');
+        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.maxCartAmount');
 
         return $amount ? (float) $amount : 0.;
     }
@@ -123,11 +123,10 @@ abstract class PaymentAbstract extends PaymentMethodService
      */
     public function getMinCartAmount()
     {
-        $amount = $this->configRepo->get( $this::PAYMENT_CODE . '.minCartAmount');
+        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.minCartAmount');
 
         return $amount ? (float) $amount : 0.;
     }
-
 
     /**
      * @return array
@@ -136,10 +135,9 @@ abstract class PaymentAbstract extends PaymentMethodService
     {
         $countries = explode(
             ',',
-            $this->configRepo->get( $this::PAYMENT_CODE . '.allowedCountries')
+            $this->configRepo->get($this::PAYMENT_CODE . '.allowedCountries')
         );
 
         return $countries;
     }
-
 }

@@ -71,15 +71,14 @@ class ConfigController extends Controller
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
-        echo 'test';
-        echo 'PAYONE config', PHP_EOL;
 
         try {
-            echo json_encode($this->configRepo->get(PluginConstants::NAME), JSON_PRETTY_PRINT), PHP_EOL;
-            echo $request->get('configPath'), PHP_EOL;
-            echo json_encode($this->configRepo->get($request->get('configPath')), JSON_PRETTY_PRINT);
+            return json_encode($this->configRepo->get(PluginConstants::NAME), JSON_PRETTY_PRINT) .
+                PHP_EOL . $request->get('configPath') . PHP_EOL .
+                json_encode($this->configRepo->get($request->get('configPath')),
+                    JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
     }
 
@@ -91,7 +90,7 @@ class ConfigController extends Controller
         try {
             $migration->run();
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
     }
 
@@ -100,12 +99,14 @@ class ConfigController extends Controller
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
-        echo 'test3';
         $paymentMethods = $this->paymentMethodRepo->all();
 
+        $text = '';
         foreach ($paymentMethods as $paymentMethod) {
-            echo $paymentMethod->id, ': ', $paymentMethod->paymentKey, PHP_EOL;
+            $text .= $paymentMethod->id . ': ' . $paymentMethod->paymentKey . PHP_EOL;
         }
+
+        return $text;
     }
 
     public function test4(Request $request)
@@ -113,11 +114,10 @@ class ConfigController extends Controller
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
-        echo 'test4';
         $paymentCode = $request->get('paymentCode');
         $config = $this->paymentHelper->getApiContextParams($paymentCode);
 
-        echo json_encode($config, JSON_PRETTY_PRINT);
+        return json_encode($config, JSON_PRETTY_PRINT);
     }
 
     /**
@@ -141,12 +141,13 @@ class ConfigController extends Controller
                 $paymentCode,
                 $provider->getPreAuthData($paymentCode, $basket->load())
             );
-            echo json_encode($response, JSON_PRETTY_PRINT);
+
+            return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
-            echo PHP_EOL,
-            $e->getCode(), PHP_EOL,
-            $e->getMessage(), PHP_EOL,
-            $e->getTraceAsString();
+            return PHP_EOL .
+                $e->getCode() . PHP_EOL .
+                $e->getMessage() . PHP_EOL .
+                $e->getTraceAsString();
         }
     }
 
@@ -164,13 +165,13 @@ class ConfigController extends Controller
             return;
         }
         try {
-            echo json_encode($provider->getPreAuthData($request->get('paymentCode'), $basket->load()),
+            return json_encode($provider->getPreAuthData($request->get('paymentCode'), $basket->load()),
                 JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
-            echo PHP_EOL,
-            $e->getCode(), PHP_EOL,
-            $e->getMessage(), PHP_EOL,
-            $e->getTraceAsString();
+            return PHP_EOL .
+                $e->getCode() . PHP_EOL .
+                $e->getMessage() . PHP_EOL .
+                $e->getTraceAsString();
         }
     }
 }

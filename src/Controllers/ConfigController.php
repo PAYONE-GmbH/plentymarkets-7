@@ -4,6 +4,7 @@ namespace Payone\Controllers;
 
 use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Migrations\CreatePaymentMethods;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Payone\Services\Api;
@@ -82,12 +83,16 @@ class ConfigController extends Controller
         }
     }
 
-    public function test2()
+    public function test2(CreatePaymentMethods $migration)
     {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
-        echo 'test2';
+        try {
+            $migration->run();
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function test3()

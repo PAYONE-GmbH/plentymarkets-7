@@ -639,28 +639,5 @@
       "1": "Ja"
     },
     "default": "1"
-  },
-  {
-    "tab": "Debugging",
-    "key": "slack.channel",
-    "label": "Slack Channel",
-    "type": "text"
-  },
-  {
-    "tab": "Debugging",
-    "key": "slack.user",
-    "label": "Slack Benutzer",
-    "type": "text"
-  },
-  {
-    "tab": "Debugging",
-    "key": "slack.token",
-    "label": "Slack Token",
-    "type": "text"
-  },  {
-    "tab": "Debugging",
-    "key": "debugging.email",
-    "label": "E-Mailadresse",
-    "type": "text"
   }
 ]

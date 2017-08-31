@@ -2,7 +2,7 @@
 
 namespace Payone\Providers;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;

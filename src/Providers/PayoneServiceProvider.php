@@ -2,7 +2,7 @@
 
 namespace Payone\Providers;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;

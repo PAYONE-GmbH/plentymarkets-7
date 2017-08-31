@@ -4,7 +4,7 @@
 
 namespace Payone\Services;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;

@@ -2,7 +2,7 @@
 
 namespace Payone\Controllers;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;

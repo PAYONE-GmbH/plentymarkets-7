@@ -2,7 +2,7 @@
 
 namespace Payone\Tests\Unit\Providers;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Providers\ApiRequestDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;

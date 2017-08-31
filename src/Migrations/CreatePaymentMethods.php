@@ -2,7 +2,7 @@
 
 namespace Payone\Migrations;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 

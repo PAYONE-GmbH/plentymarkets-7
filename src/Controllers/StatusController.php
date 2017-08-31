@@ -3,7 +3,7 @@
 namespace Payone\Controllers;
 
 use Payone\Adapter\Config as ConfigAdapter;
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Migrations\CreatePaymentMethods;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;

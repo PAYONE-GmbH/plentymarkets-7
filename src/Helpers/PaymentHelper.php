@@ -2,7 +2,7 @@
 
 //strict
 
-namespace Payone\Helper;
+namespace Payone\Helpers;
 
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;

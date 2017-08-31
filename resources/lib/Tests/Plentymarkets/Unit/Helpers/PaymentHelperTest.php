@@ -2,7 +2,7 @@
 
 namespace Payone\Tests\Unit\Helpers;
 
-use Payone\Helper\PaymentHelper;
+use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneInstallmentPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;

@@ -7,7 +7,7 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
 use Plenty\Plugin\ConfigRepository;
 
-abstract class PaymentContract extends PaymentMethodService
+abstract class PaymentAbstract extends PaymentMethodService
 {
     const PAYMENT_CODE = 'Payone';
     /**

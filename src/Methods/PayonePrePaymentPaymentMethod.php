@@ -7,7 +7,7 @@ namespace Payone\Methods;
 /**
  * Class PayonePrePaymentPaymentMethod
  */
-class PayonePrePaymentPaymentMethod extends PaymentContract
+class PayonePrePaymentPaymentMethod extends PaymentAbstract
 {
     const PAYMENT_CODE = 'PAYONE_PAYONE_PRE_PAYMENT';
 }

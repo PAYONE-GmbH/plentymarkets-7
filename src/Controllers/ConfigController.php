@@ -3,10 +3,10 @@
 namespace Payone\Controllers;
 
 use Payone\Helper\PaymentHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\PluginConstants;
 use Payone\Providers\ApiRequestDataProvider;
 use Payone\Services\Api;
-use Payone\Services\Logger;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -18,11 +18,6 @@ use Plenty\Plugin\Http\Request;
  */
 class ConfigController extends Controller
 {
-    /**
-     * @var Logger
-     */
-    private $logger;
-
     /**
      * @var ConfigRepository
      */
@@ -37,34 +32,33 @@ class ConfigController extends Controller
     private $paymentHelper;
 
     /**
+     * @var ShopHelper
+     */
+    private $shopHelper;
+
+    /**
      * ConfigController constructor.
      *
-     * @param Logger $logger
      * @param ConfigRepository $configRepo
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
      * @param PaymentHelper $paymentHelper
      */
     public function __construct(
-        Logger $logger,
         ConfigRepository $configRepo,
         PaymentMethodRepositoryContract $paymentMethodRepo,
-        PaymentHelper $paymentHelper
+        PaymentHelper $paymentHelper,
+        ShopHelper $shopHelper
     ) {
-        $this->logger = $logger;
         $this->configRepo = $configRepo;
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentHelper = $paymentHelper;
+        $this->shopHelper = $shopHelper;
     }
 
     public function index()
     {
-        echo 'index';
-
-        try {
-            echo 'log:';
-            echo json_encode($this->logger->log('test'), JSON_PRETTY_PRINT);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
         }
     }
 
@@ -73,6 +67,9 @@ class ConfigController extends Controller
      */
     public function test(Request $request)
     {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         echo 'test';
         echo 'PAYONE config', PHP_EOL;
 
@@ -87,11 +84,17 @@ class ConfigController extends Controller
 
     public function test2()
     {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         echo 'test2';
     }
 
     public function test3()
     {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         echo 'test3';
         $paymentMethods = $this->paymentMethodRepo->all();
 
@@ -102,6 +105,9 @@ class ConfigController extends Controller
 
     public function test4(Request $request)
     {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         echo 'test4';
         $paymentCode = $request->get('paymentCode');
         $config = $this->paymentHelper->getApiContextParams($paymentCode);
@@ -121,6 +127,9 @@ class ConfigController extends Controller
         ApiRequestDataProvider $provider,
         BasketRepositoryContract $basket
     ) {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         try {
             $paymentCode = $request->get('paymentCode');
             $response = $api->doPreCheck(
@@ -146,6 +155,9 @@ class ConfigController extends Controller
         ApiRequestDataProvider $provider,
         BasketRepositoryContract $basket
     ) {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
         try {
             echo json_encode($provider->getPreAuthData($request->get('paymentCode'), $basket->load()),
                 JSON_PRETTY_PRINT);

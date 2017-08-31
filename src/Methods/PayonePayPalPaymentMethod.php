@@ -7,7 +7,7 @@ namespace Payone\Methods;
 /**
  * Class PayoneInstallmentPaymentMethod
  */
-class PayonePayPalPaymentMethod extends PaymentContract
+class PayonePayPalPaymentMethod extends PaymentAbstract
 {
     const PAYMENT_CODE = 'PAYONE_PAYONE_PAYPAL';
 }

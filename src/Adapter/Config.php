@@ -54,9 +54,13 @@ class Config //extends ConfigRepository
         string $key,
         $default = null
     ) {
-        $this->logger->setIdentifier(__METHOD__)->debug('Config.get', ['key' => $key, 'default' => $default]);
+        $value = $this->config->get(PluginConstants::NAME . '.' . $key);
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'Config.get',
+            ['key' => $key, 'default' => $default, 'value' => $value]
+        );
 
-        return $this->config->get(PluginConstants::NAME . '.' . $default);
+        return $value;
     }
 
     /**
@@ -80,7 +84,7 @@ class Config //extends ConfigRepository
         $value
     ) {
         $this->logger->setIdentifier(__METHOD__)->debug('Config.prepend', ['key' => $key, 'value' => $value]);
-        $this->config->prepend(PluginConstants::NAME . '.' . $key, $value);
+        $this->config->prepend(PluginConstants::NAME . $key, $value);
     }
 
     /**
@@ -92,7 +96,7 @@ class Config //extends ConfigRepository
         $value
     ) {
         $this->logger->setIdentifier(__METHOD__)->debug('Config.push', ['key' => $key, 'value' => $value]);
-        $this->config->prepend(PluginConstants::NAME . '.' . $key, $value);
+        $this->config->push(PluginConstants::NAME . $key, $value);
     }
 
     /**
@@ -105,5 +109,6 @@ class Config //extends ConfigRepository
         $logger = pluginApp(Logger::class);
         $logger->setIdentifier(__METHOD__)->debug('Config.getPrefix', []);
         throw new \Exception('not implemented');
+        return '';
     }
 }

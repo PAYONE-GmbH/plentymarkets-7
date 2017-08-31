@@ -143,17 +143,6 @@
   },
   {
     "tab": "Rechnung",
-    "key": "PAYONE_PAYONE_INVOICE.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
-  },
-  {
-    "tab": "Rechnung",
     "key": "PAYONE_PAYONE_INVOICE.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -226,17 +215,6 @@
       "1": "Live"
     },
     "default": "0"
-  },
-  {
-    "tab": "Paydirekt",
-    "key": "PAYONE_PAYONE_PAYDIREKT.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
   },
   {
     "tab": "Paydirekt",
@@ -315,17 +293,6 @@
   },
   {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
-  },
-  {
-    "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -398,17 +365,6 @@
       "1": "Live"
     },
     "default": "0"
-  },
-  {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
   },
   {
     "tab": "PayPal",
@@ -487,17 +443,6 @@
   },
   {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
-  },
-  {
-    "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -570,17 +515,6 @@
       "1": "Live"
     },
     "default": "0"
-  },
-  {
-    "tab": "Sofortüberweisung",
-    "key": "PAYONE_PAYONE_SOFORT.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
   },
   {
     "tab": "Sofortüberweisung",
@@ -659,17 +593,6 @@
   },
   {
     "tab": "Vorkasse",
-    "key": "PAYONE_PAYONE_PRE_PAYMENT.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
-  },
-  {
-    "tab": "Vorkasse",
     "key": "PAYONE_PAYONE_SOFORT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -742,17 +665,6 @@
       "1": "Live"
     },
     "default": "0"
-  },
-  {
-    "tab": "Nachnahme",
-    "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.useGlobalConfig",
-    "label": "Globale Einstellungen benutzen",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Nein",
-      "1": "Ja"
-    },
-    "default": "1"
   },
   {
     "tab": "Nachnahme",

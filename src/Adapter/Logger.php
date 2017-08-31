@@ -40,7 +40,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -53,7 +53,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -66,7 +66,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -79,7 +79,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -92,7 +92,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array|null $additionalInfo
      *
      * @return mixed
      */
@@ -105,7 +105,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -118,7 +118,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param string $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */
@@ -131,7 +131,7 @@ class Logger //implements LoggerContract
 
     /**
      * @param $code
-     * @param null $additionalInfo
+     * @param array $additionalInfo
      *
      * @return mixed
      */

@@ -139,12 +139,15 @@ class PayoneServiceProvider extends ServiceProvider
                 $logger,
                 $basket
             ) {
-                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
                 if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
                     return;
                 }
                 $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
+                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent', [
+                    'payment' => $paymentCode,
+                    'basket' => $basket
+                ]);
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 

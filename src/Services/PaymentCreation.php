@@ -7,6 +7,7 @@ use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
 use Payone\Models\ApiResponseCache;
+use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Payone\Providers\Api\Request\BankAccount;
 use Payone\Providers\Api\Request\CaptureDataProvider;
@@ -422,6 +423,30 @@ class PaymentCreation
         }
 
         return $payment;
+    }
+
+    /**
+     * @param $orderId
+     * @param $txid
+     * @param string $txaction
+     */
+    public function updatePaymentStatus($orderId, $txid, $txaction)
+    {
+        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+
+        /* @var $payment Payment */
+        foreach ($payments as $payment) {
+            /* @var $property PaymentProperty */
+            foreach ($payment->properties as $property) {
+                if (!($property instanceof PaymentProperty)) {
+                    continue;
+                }
+                if ($property->typeId === 30 && $property->id === $txid) {
+                    $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
+                    $this->paymentRepository->updatePayment($payment);
+                }
+            }
+        }
     }
 
     /**

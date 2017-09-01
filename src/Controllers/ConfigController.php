@@ -6,7 +6,7 @@ use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Migrations\CreatePaymentMethods;
 use Payone\PluginConstants;
-use Payone\Providers\ApiRequestDataProvider;
+use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Payone\Services\Api;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
@@ -123,13 +123,15 @@ class ConfigController extends Controller
     /**
      * @param Request $request
      * @param Api $api
-     * @param ApiRequestDataProvider $provider
+     * @param PreAuthDataProvider $provider
      * @param BasketRepositoryContract $basket
+     *
+     * @return string|void
      */
     public function doPreCheck(
         Request $request,
         Api $api,
-        ApiRequestDataProvider $provider,
+        PreAuthDataProvider $provider,
         BasketRepositoryContract $basket
     ) {
         if (!$this->shopHelper->isDebugModeActive()) {
@@ -137,9 +139,8 @@ class ConfigController extends Controller
         }
         try {
             $paymentCode = $request->get('paymentCode');
-            $response = $api->doPreCheck(
-                $paymentCode,
-                $provider->getPreAuthData($paymentCode, $basket->load())
+            $response = $api->doPreAuth(
+                $provider->getDataFromBasket($paymentCode, $basket->load())
             );
 
             return json_encode($response, JSON_PRETTY_PRINT);
@@ -153,19 +154,21 @@ class ConfigController extends Controller
 
     /**
      * @param Request $request
-     * @param ApiRequestDataProvider $provider
+     * @param PreAuthDataProvider $provider
      * @param BasketRepositoryContract $basket
+     *
+     * @return string|void
      */
     public function testRequestData(
         Request $request,
-        ApiRequestDataProvider $provider,
+        PreAuthDataProvider $provider,
         BasketRepositoryContract $basket
     ) {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
         try {
-            return json_encode($provider->getPreAuthData($request->get('paymentCode'), $basket->load()),
+            return json_encode($provider->getDataFromBasket($request->get('paymentCode'), $basket->load()),
                 JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .

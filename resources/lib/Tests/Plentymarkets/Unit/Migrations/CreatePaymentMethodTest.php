@@ -10,6 +10,8 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Migrations\CreatePaymentMethods;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -70,7 +72,12 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
             );
         $paymentRepository = $this->createMock(PaymentRepositoryContract::class);
         $confRepos = $this->createMock(ConfigRepository::class);
-        $this->helper = new PaymentHelper($this->paymentRepo, $paymentRepository, $confRepos);
+        $this->helper = new PaymentHelper(
+            $this->paymentRepo,
+            self::createMock(PaymentOrderRelationRepositoryContract::class),
+            self::createMock(OrderRepositoryContract::class),
+            $confRepos
+        );
         $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper);
     }
 

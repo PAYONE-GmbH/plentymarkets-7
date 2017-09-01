@@ -122,9 +122,9 @@ class PaymentService
             $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
             $executeResponse = $this->api->doPreAuth($requestData);
         }
-        if (!isset($executeResponse['success'])) {
+        if (!$executeResponse->getSuccess()) {
             throw new \Exception(
-                $executeResponse['errorMessage'] ?? 'Could not initialize payment. Please choose another payment and retry'
+                $executeResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment and retry'
             );
         }
 

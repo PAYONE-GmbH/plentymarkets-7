@@ -4,6 +4,8 @@ namespace Payone\Tests\Unit;
 
 use Payone\Helpers\PaymentHelper;
 use Payone\Mocks\Config;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
@@ -17,10 +19,15 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $configRepo = $this->createMock(ConfigRepository::class);
 
         $config = new Config();
-        $paymentHelper = new PaymentHelper($paymentMethodRepo, $paymentRepo, $configRepo);
+        $paymentHelper = new PaymentHelper(
+            $paymentMethodRepo,
+            self::createMock(PaymentOrderRelationRepositoryContract::class),
+            self::createMock(OrderRepositoryContract::class),
+            $configRepo
+        );
 
         $config = $config->getConfig();
-        $paymentMethods = $paymentHelper->getPayonePaymentCodes();
+        $paymentMethods = $paymentHelper->getPaymentCodes();
         $this->assertTrue(count($paymentMethods) > 0, 'No payment methods defined');
 
         foreach ($paymentMethods as $method) {

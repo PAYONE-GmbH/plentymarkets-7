@@ -146,7 +146,7 @@ class PayoneServiceProvider extends ServiceProvider
                 $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent', [
                     'payment' => $paymentCode,
-                    'basket' => $basket
+                    'basket' => $basket,
                 ]);
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
@@ -183,26 +183,6 @@ class PayoneServiceProvider extends ServiceProvider
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $basket) {
                 if (!in_array($event->getMop(), $paymentHelper->getMops())) {
                     return;
-                }
-
-                $orderId = $event->getOrderId();
-                // Execute the paymentData
-                $paymentData = $paymentService->executePayment($basket->load());
-
-                // Check whether the PayPal paymentData has been executed successfully
-                if ($paymentService->getReturnType() != 'errorCode') {
-                    // Create a plentymarkets paymentData from the paypal execution params
-                    /* $plentyPayment = $paymentHelper->createPlentyPayment($paymentData);
-
-                     if ($plentyPayment instanceof Payment) {
-                         // Assign the paymentData to an order in plentymarkets
-
-                         $event->setType('success');
-                         $event->setValue('The Payment has been executed successfully!');
-                     }*/
-                } else {
-                    $event->setType('error');
-                    $event->setValue('The PayPal-Payment could not be executed!');
                 }
             }
         );

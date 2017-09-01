@@ -5,6 +5,7 @@ namespace Payone\Controllers;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
 use Payone\Migrations\CreatePaymentMethods;
+use Payone\Services\PaymentCreation;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -43,7 +44,7 @@ class StatusController extends Controller
     public function __construct(
         Request $request,
         ConfigAdapter $config,
-        PaymentHelper $paymentHelper,
+        PaymentCreation $paymentHelper,
         CreatePaymentMethods $paymentMigration
     ) {
         $this->request = $request;

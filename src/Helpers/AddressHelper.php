@@ -85,16 +85,14 @@ class AddressHelper
         }
 
         $data = $address->toArray();
-        $data['city'] = $address->town;
-        $data['postCode'] = $address->postalCode;
-        $data['countryCode'] = $address->country;
-        $data['company'] = $address->companyName;
-        $data['firstName'] = $address->name2;
-        $data['lastName'] = $address->name3;
-        $data['street'] = $address->address1;
-        $data['countryCode'] = $address->country->isoCode2;
-        $data['lang'] = $address->country->lang;
-        $data['houseNumber'] = $address->address2;
+        $data['town'] = $address->town;
+        $data['postalCode'] = $address->postalCode;
+        $data['firstname'] = $address->firstName;
+        $data['lastname'] = $address->lastName;
+        $data['street'] = $address->street;
+        $data['houseNumber'] = $address->houseNumber;
+        $data['country'] = $address->country;
+        $data['addressaddition'] = $address->address3;
 
         return $data;
     }

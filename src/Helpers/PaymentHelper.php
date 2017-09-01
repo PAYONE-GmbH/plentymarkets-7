@@ -12,9 +12,7 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
-use Payone\Models\PayonePaymentStatus;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
@@ -25,35 +23,46 @@ use Plenty\Plugin\ConfigRepository;
  */
 class PaymentHelper
 {
+    private $mops = [];
+
     /**
      * @var PaymentMethodRepositoryContract
      */
     private $paymentMethodRepo;
+
     /**
-     * @var PaymentRepositoryContract
+     * @var PaymentOrderRelationRepositoryContract
      */
-    private $paymentRepository;
+    private $paymentOrderRelationRepo;
+
+    /**
+     * @var OrderRepositoryContract
+     */
+    private $orderRepo;
 
     /**
      * @var ConfigRepository
      */
-    private $config;
+    private $configRepo;
 
     /**
      * PaymentHelper constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
-     * @param PaymentRepositoryContract $paymentRepository
-     * @param ConfigRepository $config
+     * @param PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
+     * @param OrderRepositoryContract $orderRepo
+     * @param ConfigRepository $configRepository
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
-        PaymentRepositoryContract $paymentRepository,
-        ConfigRepository $config
+        PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo,
+        OrderRepositoryContract $orderRepo,
+        ConfigRepository $configRepository
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
-        $this->paymentRepository = $paymentRepository;
-        $this->config = $config;
+        $this->paymentOrderRelationRepo = $paymentOrderRelationRepo;
+        $this->orderRepo = $orderRepo;
+        $this->configRepo = $configRepository;
     }
 
     /**
@@ -63,10 +72,12 @@ class PaymentHelper
      *
      * @return string
      */
-    public function getPayoneMopId($paymentCode)
+    public function getMopId($paymentCode)
     {
+        if (isset($this->mops[$paymentCode])) {
+            return $this->mops[$paymentCode];
+        }
         $paymentMethods = $this->paymentMethodRepo->allForPlugin(PluginConstants::NAME);
-
         if (!$paymentMethods) {
             return 'no_paymentmethod_found';
         }
@@ -80,9 +91,43 @@ class PaymentHelper
     }
 
     /**
+     * Get all Payolution payment ids
+     *
      * @return array
      */
-    public function getPayonePaymentCodes()
+    public function getMops()
+    {
+        if ($this->mops) {
+            return $this->mops;
+        }
+        foreach ($this->getPaymentCodes() as $paymentCode) {
+            $this->mops[$paymentCode] = $this->getMopId($paymentCode);
+        }
+
+        return $this->mops;
+    }
+
+    /**
+     * @param int $mopId
+     *
+     * @return string
+     */
+    public function getPaymentCodeByMop($mopId)
+    {
+        if (!$this->mops) {
+            $this->getMops();
+        }
+        $mops = array_flip($this->mops);
+
+        return $mops[$mopId];
+    }
+
+    /**
+     * Get all payolution payment codes
+     *
+     * @return array
+     */
+    public function getPaymentCodes()
     {
         return [
             PayoneInvoicePaymentMethod::PAYMENT_CODE,
@@ -97,63 +142,47 @@ class PaymentHelper
     }
 
     /**
-     * @return array
+     * @param int $selectedPaymentId
+     *
+     * @return \Plenty\Modules\Payment\Method\Models\PaymentMethod
      */
-    public function getPayoneMops()
+    public function getPaymentMethodById(int $selectedPaymentId)
     {
-        $mops = [];
-        foreach ($this->getPayonePaymentCodes() as $paymentCode) {
-            $mops[] = $this->getPayoneMopId($paymentCode);
-        }
-
-        return $mops;
+        return $this->paymentMethodRepo->findByPaymentMethodId($selectedPaymentId);
     }
 
     /**
-     * @param $orderId
-     * @param $txid
-     * @param string $txaction
+     * @param int $mopId
+     *
+     * @return bool
      */
-    public function updatePaymentStatus($orderId, $txid, $txaction)
+    public function isPayonePayment($mopId)
     {
-        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+        return in_array($mopId, $this->getMops());
+    }
 
-        /* @var $payment Payment */
-        foreach ($payments as $payment) {
-            /* @var $property PaymentProperty */
-            foreach ($payment->properties as $property) {
-                if (!($property instanceof PaymentProperty)) {
-                    continue;
-                }
-                if ($property->typeId === 30 && $property->id === $txid) {
-                    $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
-                    $this->paymentRepository->updatePayment($payment);
-                }
+    /**
+     * @param Payment $payment
+     * @param int $propertyTypeConstant
+     *
+     * @return string
+     */
+    public function getPaymentPropertyValue($payment, $propertyTypeConstant)
+    {
+        $properties = $payment->properties;
+        if (empty($properties)) {
+            return '';
+        }
+        /* @var $property PaymentProperty */
+        foreach ($properties as $property) {
+            if (!($property instanceof PaymentProperty)) {
+                continue;
+            }
+            if ($property->typeId === $propertyTypeConstant) {
+                return (string) $property->value;
             }
         }
-    }
 
-    /**
-     * @param string $paymentCode
-     *
-     * @return array
-     */
-    public function getApiContextParams($paymentCode)
-    {
-        $apiContextParams = [];
-
-        $apiContextParams['aid'] = $this->config->get(PluginConstants::NAME . '.aid');
-        $apiContextParams['mid'] = $this->config->get(PluginConstants::NAME . '.mid');
-        $apiContextParams['portalid'] = $this->config->get(PluginConstants::NAME . '.portalid');
-        $apiContextParams['key'] = $this->config->get(PluginConstants::NAME . '.key');
-        $mode = $this->config->get(PluginConstants::NAME . '.mode');
-        $apiContextParams['mode'] = ($mode == 1) ? 'test' : 'live';
-
-        if ($this->config->get(PluginConstants::NAME . '.' . $paymentCode . '.useGlobalConfig')) {
-            $mode = $this->config->get(PluginConstants::NAME . '.mode');
-            $apiContextParams['mode'] = ($mode == 1) ? 'test' : 'live';
-        }
-
-        return $apiContextParams;
+        return '';
     }
 }

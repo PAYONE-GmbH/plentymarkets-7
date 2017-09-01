@@ -4,25 +4,23 @@
 
 namespace Payone\Services;
 
+use ArvPayoneApi\Response\ResponseContract;
+use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
-use Payone\PluginConstants;
-use Payone\Providers\ApiRequestDataProvider;
+use Payone\Providers\Api\Request\AuthDataProvider;
+use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class PaymentService
  */
 class PaymentService
 {
-    /**
-     * @var string
-     */
-    private $returnType = '';
+    const AUTH_TYPE_AUTH = '1';
 
     /**
      * @var PaymentMethodRepositoryContract
@@ -50,34 +48,45 @@ class PaymentService
     private $addressRepo;
 
     /**
-     * @var ConfigRepository
+     * @var ConfigAdapter
      */
     private $config;
-
     /**
-     * @var ApiRequestDataProvider
+     * @var Api
      */
-    private $requestDataProvider;
+    private $api;
+    /**
+     * @var PreAuthDataProvider
+     */
+    private $preAuthDataProvider;
+    /**
+     * @var AuthDataProvider
+     */
+    private $authDataProvider;
 
     /**
      * PaymentService constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepository
      * @param PaymentRepositoryContract $paymentRepository
-     * @param ConfigRepository $config
+     * @param ConfigAdapter $config
      * @param PaymentHelper $paymentHelper
      * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
-     * @param ApiRequestDataProvider $requestDataProvider
+     * @param PreAuthDataProvider $preAuthDataProvider
+     * @param AuthDataProvider $authDataProvider
+     * @param Api $api
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepository,
         PaymentRepositoryContract $paymentRepository,
-        ConfigRepository $config,
+        ConfigAdapter $config,
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        ApiRequestDataProvider $requestDataProvider
+        PreAuthDataProvider $preAuthDataProvider,
+        AuthDataProvider $authDataProvider,
+        Api $api
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -85,54 +94,38 @@ class PaymentService
         $this->libCall = $libCall;
         $this->addressRepo = $addressRepo;
         $this->config = $config;
-        $this->returnType = 'continue';
-        $this->requestDataProvider = $requestDataProvider;
-    }
-
-    /**
-     * Get the type of payment from the content of the PayPal container
-     *
-     * @return string
-     */
-    public function getReturnType()
-    {
-        /*  'redirectUrl'|'externalContentUrl'|'errorCode'|'continue'  */
-        return 'htmlContent';
-    }
-
-    /**
-     * Get the PayPal payment content
-     *
-     * @param Basket $basket
-     * @param string $mode
-     *
-     * @return string
-     */
-    public function getPaymentContent(Basket $basket, $mode = ''): string
-    {
-        return 'html content';
+        $this->api = $api;
+        $this->preAuthDataProvider = $preAuthDataProvider;
+        $this->authDataProvider = $authDataProvider;
     }
 
     /**
      * @return array|string
      */
-    public function executePayment(Basket $basket)
+    public function openTransaction(Basket $basket): ResponseContract
     {
-        try {
-            // Execute the PayPal payment
-            $authType = $this->config->get(PluginConstants::NAME . '.authType');
-            $requestData = $this->requestDataProvider->getPreAuthData(null, $basket);
+        $authType = $this->config->get('authType');
+        $selectedPaymentMopId = $basket->methodOfPaymentId;
+        if (!$selectedPaymentMopId || !$this->paymentHelper->isPayonePayment($selectedPaymentMopId)) {
+            throw new \Exception(
+                'Can no initialize payment. Not a Payone payment method'
+            );
+        }
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
+
+        if ($authType == self::AUTH_TYPE_AUTH) {
+            $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket);
             $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
-            if ($authType == '1') {
-                $executeResponse = $this->libCall->call(PluginConstants::NAME . '::auth', $requestData);
-            } else {
-                $executeResponse = $this->libCall->call(PluginConstants::NAME . '::preAuth', $requestData);
-            }
-            if (!isset($executeResponse['success'])) {
-                return isset($executeResponse['errorMessage']) ? $executeResponse['errorMessage'] : '';
-            }
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+            $executeResponse = $this->api->doAuth($requestData);
+        } else {
+            $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket);
+            $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
+            $executeResponse = $this->api->doPreAuth($requestData);
+        }
+        if (!isset($executeResponse['success'])) {
+            throw new \Exception(
+                $executeResponse['errorMessage'] ?? 'Could not initialize payment. Please choose another payment and retry'
+            );
         }
 
         return $executeResponse;

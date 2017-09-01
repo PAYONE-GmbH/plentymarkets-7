@@ -2,18 +2,24 @@
 
 namespace Payone\Providers;
 
+use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PaymentAbstract;
+use Payone\Methods\PaymentMethodServiceFactory;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Models\PaymentMethodContent;
 use Payone\Services\PaymentService;
+use Payone\Views\PaymentRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
+use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
@@ -47,11 +53,22 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
         BasketRepositoryContract $basket,
-        PaymentMethodContainer $payContainer
+        PaymentMethodContainer $payContainer,
+        PaymentRenderer $paymentRenderer,
+        PaymentMethodContent $content,
+        Logger $logger
     ) {
         $this->registerPaymentMethods($payContainer);
 
-        $this->subscribeGetPaymentMethodContent($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->registerPaymentRendering(
+            $eventDispatcher,
+            $paymentHelper,
+            $paymentService,
+            $paymentRenderer,
+            $content,
+            $logger,
+            $basket->load()
+        );
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
     }
 
@@ -98,23 +115,50 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
-     * @param BasketRepositoryContract $basket
+     * @param PaymentRenderer $paymentRenderer
+     * @param PaymentMethodContent $content
+     * @param Logger $logger
      */
-    private function subscribeGetPaymentMethodContent(
+    private function registerPaymentRendering(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
-        BasketRepositoryContract $basket
+        PaymentRenderer $paymentRenderer,
+        PaymentMethodContent $content,
+        Logger $logger,
+        Basket $basket
     ) {
+        $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,
-            function (GetPaymentMethodContent $event) use ($paymentHelper, $basket, $paymentService) {
-                if (in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
-                    $basket = $basket->load();
-
-                    $event->setValue($paymentService->getPaymentContent($basket));
-                    $event->setType($paymentService->getReturnType());
+            function (GetPaymentMethodContent $event) use (
+                $paymentService,
+                $paymentHelper,
+                $paymentRenderer,
+                $content,
+                $logger,
+                $basket
+            ) {
+                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
+                $selectedPaymentMopId = $event->getMop();
+                if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
+                    return;
                 }
+                $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
+                /** @var PaymentAbstract $payment */
+                $payment = PaymentMethodServiceFactory::create($paymentCode);
+
+                try {
+                    $auth = $paymentService->openTransaction($basket);
+                } catch (\Exception $e) {
+                    $errorMessage = $e->getMessage();
+                    $event->setValue($paymentRenderer->render($payment, $errorMessage));
+                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+
+                    return;
+                }
+                $event->setType($content->getPaymentContentType($paymentCode));
+                $event->setValue($paymentRenderer->render($payment, ''));
             }
         );
     }
@@ -134,7 +178,7 @@ class PayoneServiceProvider extends ServiceProvider
         $eventDispatcher->listen(
             ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $basket) {
-                if (!in_array($event->getMop(), $paymentHelper->getPayoneMops())) {
+                if (!in_array($event->getMop(), $paymentHelper->getMops())) {
                     return;
                 }
 

@@ -44,8 +44,6 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
-     * Check whether Payolution is active or not
-     *
      * @return bool
      */
     public function isActive()
@@ -67,8 +65,6 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
-     * Get Payolution Fee
-     *
      * @return float
      */
     public function getFee(): float
@@ -77,8 +73,6 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
-     * Get Payolution Icon
-     *
      * @return string
      */
     public function getIcon(): string
@@ -89,8 +83,6 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
-     * Get PayolutionDescription
-     *
      * @return string
      */
     public function getDescription(): string

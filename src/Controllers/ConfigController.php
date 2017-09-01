@@ -114,10 +114,6 @@ class ConfigController extends Controller
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
-        $paymentCode = $request->get('paymentCode');
-        $config = $this->paymentHelper->getApiContextParams($paymentCode);
-
-        return json_encode($config, JSON_PRETTY_PRINT);
     }
 
     /**

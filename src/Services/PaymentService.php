@@ -4,9 +4,9 @@
 
 namespace Payone\Services;
 
-use ArvPayoneApi\Response\ResponseContract;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\Api\ResponseAbstract;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
@@ -102,7 +102,7 @@ class PaymentService
     /**
      * @return array|string
      */
-    public function openTransaction(Basket $basket): ResponseContract
+    public function openTransaction(Basket $basket): ResponseAbstract
     {
         $authType = $this->config->get('authType');
         $selectedPaymentMopId = $basket->methodOfPaymentId;

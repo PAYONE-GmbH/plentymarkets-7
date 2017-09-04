@@ -19,9 +19,9 @@ try {
     $data['order'] = $order;
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
-    $orderId = $order['orderId'];
+    $previousRequestId = $sdkRestApi::getParam('referenceId');
 
-    $request = RequestFactory::create($paymentMethod, $orderId, $data);
+    $request = RequestFactory::create($paymentMethod, $previousRequestId, $data);
     $client = new PostApi(new Client());
     $response = $client->doRequest($request);
 } catch (Exception $e) {

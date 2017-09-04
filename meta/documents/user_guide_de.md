@@ -29,3 +29,59 @@ Im Folgenden wird beschrieben, wo Sie die Konfiguration der Zahlarten finden und
 ![config](./config.png)
 
 * Änderungen vornehmen und speichern
+
+## Ereignisaktionen einrichten
+
+Ereignisaktionen müssen eingerichtet werden. Nur über sie kann das erfassen und die Gutschrift von Bestellungen erfolgen. Ereignisaktionen stellen eine flexible Möglichkeit dar, notwendige Request an die Payone Schnittstelle in Ihren Bestellablauf zu integrieren.
+
+###Ereignisaktion für die Buchung des Warenausgangs erstellen:
+
+1. Öffnen Sie das Menü "Einstellungen ›› Aufträge ›› Ereignisaktionen".
+2. Klicken Sie links unten auf das grüne Plus, um eine neue Ereignisaktion zu erstellen.
+3. Tragen Sie im Bearbeitungsfenster einen Namen ein, z.B. „Warenausgang Payone“.
+4. Wählen Sie unter Ereignis die Option "Auftragsänderung ›› Warenausgang gebucht".
+5. Klicken Sie auf "Speichern". 
+5. Fügen Sie mit dem grünen Plus einen Filter des Filtertyps "Auftrag ›› Zahlungsart" hinzu.
+6. Markieren Sie im Filteralle mit Payone beginnenden Zahlarten.
+7. Fügen Sie mit dem grünen Plus einen Filter des Filtertyps "Auftrag ›› Auftragstyp" hinzu.
+8. Markieren Sie im Filter den Auftragstyp "Auftrag".
+9. Fügen Sie mit dem grünen Plus eine Aktion des Aktionstyps "Plugin ›› Payone | Bestellung erfassen" hinzu.
+10. Wählen Sie bei der Aktion den neuen Status, z.B. 7.1 (der Status, den Sie nutzen wenn die Bestellung verschickt wurde).
+11. Setzen Sie ein Häkchen bei Aktiv.
+12. Klicken Sie auf Speichern, um die Einstellungen zu sichern.
+
+###Ereignisaktion für Retoure über den Auftrag erstellen:
+
+1. Öffnen Sie das Menü "Einstellungen ›› Aufträge ›› Ereignisaktionen".
+2. Klicken Sie links unten auf das grüne Plus, um eine neue Ereignisaktion zu erstellen.
+3. Tragen Sie im Bearbeitungsfenster einen Namen ein, z.B. "Rückerstattung Payone".
+4. Wählen Sie unter Ereignis die Option "Auftragsänderung ›› Statuswechsel".
+5. Wählen Sie den Auftragsstatus für geprüfte Retouren.
+6. Klicken Sie auf "Speichern". 
+7. Fügen Sie mit dem grünen Plus einen Filter des Filtertyps "Auftrag ›› Auftragstyp" hinzu.
+8. Markieren Sie im Filter die Option "Retoure".
+6. Klicken Sie auf "Speichern". 
+11. Fügen Sie mit dem grünen Plus eine Aktion des Aktionstyps "Plugin ›› Payone Gutschrift erstellen" hinzu.
+12. Setzen Sie ein Häkchen bei Aktiv.
+13. Klicken Sie auf Speichern, um die Einstellungen zu sichern.
+
+Die Rückerstattung könnte auch wie beim Warenausgang oder Stornierung über den Status erfolgen, dann könnte jedoch nur 
+die vollständige Bestellung erstattet werden.
+
+
+###Ereignisaktion für Gutschrift über den Auftrag erstellen:
+
+1. Öffnen Sie das Menü "Einstellungen ›› Aufträge ›› Ereignisaktionen".
+2. Klicken Sie links unten auf das grüne Plus, um eine neue Ereignisaktion zu erstellen.
+3. Tragen Sie im Bearbeitungsfenster einen Namen ein, z.B. "Rückerstattung Payone".
+4. Wählen Sie unter Ereignis die Option "Auftragsänderung ›› Statuswechsel".
+5. Wählen Sie den Auftragsstatus für geprüfte Gutschriften.
+6. Klicken Sie auf "Speichern". 
+7. Fügen Sie mit dem grünen Plus einen Filter des Filtertyps "Auftrag ›› Auftragstyp" hinzu.
+8. Markieren Sie im Filter die Option "Gutschrift".
+11. Fügen Sie mit dem grünen Plus eine Aktion des Aktionstyps "Plugin ›› Payone Gutschrift erstellen" hinzu.
+12. Setzen Sie ein Häkchen bei Aktiv.
+13. Klicken Sie auf Speichern, um die Einstellungen zu sichern.
+
+Die Rückerstattung könnte auch wie beim Warenausgang oder Stornierung über den Status erfolgen, dann könnte jedoch nur 
+die vollständige Bestellung erstattet werden.

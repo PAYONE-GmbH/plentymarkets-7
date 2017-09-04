@@ -1,6 +1,6 @@
 <?php
 
-namespace Payolution\Procedures;
+namespace Payone\Procedures;
 
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderReference;

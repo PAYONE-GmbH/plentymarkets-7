@@ -3,7 +3,7 @@
 use ArvPayoneApi\Api\Client;
 use ArvPayoneApi\Api\PostApi;
 use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\Authorization\RequestFactory;
+use ArvPayoneApi\Request\PreAuthorization\RequestFactory;
 use ArvPayoneApi\Response\ClientErrorResponse;
 
 try {
@@ -30,9 +30,8 @@ try {
     $data['shippingProvider'] = $shippingProvider;
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
-    $orderId = $sdkRestApi::getParam('orderId');
 
-    $request = RequestFactory::create($paymentMethod, $orderId, $data);
+    $request = RequestFactory::create($paymentMethod, '', $data);
     $client = new PostApi(new Client());
     $response = $client->doRequest($request);
 } catch (Exception $e) {

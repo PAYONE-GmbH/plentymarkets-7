@@ -3,7 +3,7 @@
 use ArvPayoneApi\Api\Client;
 use ArvPayoneApi\Api\PostApi;
 use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\Authorization\RequestFactory;
+use ArvPayoneApi\Request\Capture\RequestFactory;
 use ArvPayoneApi\Response\ClientErrorResponse;
 
 try {
@@ -19,7 +19,7 @@ try {
     $data['order'] = $order;
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
-    $orderId = $sdkRestApi::getParam('orderId');
+    $orderId = $order['orderId'];
 
     $request = RequestFactory::create($paymentMethod, $orderId, $data);
     $client = new PostApi(new Client());

@@ -13,6 +13,7 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\PaymentMethodContent;
+use Payone\PluginConstants;
 use Payone\Services\PaymentService;
 use Payone\Views\PaymentRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
@@ -20,6 +21,7 @@ use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
@@ -70,6 +72,17 @@ class PayoneServiceProvider extends ServiceProvider
             $basket->load()
         );
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
+
+        $captureProcedureTitle = [
+            'de' => PluginConstants::NAME . ' | Bestellung erfassen',
+            'en' => PluginConstants::NAME . ' | Capture order',
+        ];
+        $eventProceduresService->registerProcedure(
+            PluginConstants::NAME,
+            ProcedureEntry::EVENT_TYPE_ORDER,
+            $captureProcedureTitle,
+            '\Payone\Procedures\CaptureEventProcedure@run'
+        );
     }
 
     /**

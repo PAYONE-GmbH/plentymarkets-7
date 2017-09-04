@@ -104,7 +104,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['referenceId'] = $requestReference;
 
         $requestParams['invoice'] = $this->getInvoiceData();
-        $requestParams['order'] = $this->getOrderData($order->id);
+        $requestParams['order'] = $this->getOrderData($order);
         $requestParams['tracking'] = $this->getTrackingData($order->id);
 
         $this->validator->validate($requestParams);
@@ -117,9 +117,15 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
      *
      * @return array
      */
-    protected function getOrderData($orderId)
+    protected function getOrderData(Order $order)
     {
-        return ['orderId' => $orderId];
+        $amount = $order->amounts[0];
+
+        return [
+            'orderId' => $order->id,
+            'amount' => (int) round($amount->invoiceTotal * 100),
+            'currency' => $amount->currency,
+        ];
     }
 
     /**

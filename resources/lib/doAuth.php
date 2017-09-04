@@ -30,9 +30,8 @@ try {
     $data['shippingProvider'] = $shippingProvider;
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
-    $orderId = $sdkRestApi::getParam('orderId');
 
-    $request = RequestFactory::create($paymentMethod, $orderId, $data);
+    $request = RequestFactory::create($paymentMethod, '', $data);
     $client = new PostApi(new Client());
     $response = $client->doRequest($request);
 } catch (Exception $e) {

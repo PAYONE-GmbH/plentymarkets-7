@@ -220,11 +220,11 @@ abstract class DataProviderAbstract
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
             $orderItemData = $orderItem->toArray();
-            $orderItemData['tax'] = sprintf(
-                '%01.2f',
-                $orderItemData['amounts'][0]['priceGross'] - $orderItemData['amounts'][0]['priceGross'] * 100 / ($orderItem->vatRate + 100.)
-            );
-            $orderItemData['price'] = $orderItemData['amounts'][0]['priceGross'];
+            $tax = $orderItemData['amounts'][0]['priceGross'] - $orderItemData['amounts'][0]['priceGross'] * 100 / ($orderItem->vatRate + 100.);
+            $orderItemData['tax'] = (int) round($tax * 100);
+
+            $priceGross = $orderItemData['amounts'][0]['priceGross'];
+            $orderItemData['price'] = (int) round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -351,7 +351,7 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = $requestParams['amounts'][0]['grossTotal'];
+        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
         $requestParams['cartId'] = $order->id;
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 

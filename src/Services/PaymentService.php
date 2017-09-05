@@ -7,8 +7,6 @@ namespace Payone\Services;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\ResponseAbstract;
-use Payone\Providers\Api\Request\AuthDataProvider;
-use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -51,18 +49,15 @@ class PaymentService
      * @var ConfigAdapter
      */
     private $config;
+
     /**
-     * @var Api
+     * @var Auth
      */
-    private $api;
+    private $authService;
     /**
-     * @var PreAuthDataProvider
+     * @var PreAuth
      */
-    private $preAuthDataProvider;
-    /**
-     * @var AuthDataProvider
-     */
-    private $authDataProvider;
+    private $preAuthService;
 
     /**
      * PaymentService constructor.
@@ -73,9 +68,8 @@ class PaymentService
      * @param PaymentHelper $paymentHelper
      * @param LibraryCallContract $libCall
      * @param AddressRepositoryContract $addressRepo
-     * @param PreAuthDataProvider $preAuthDataProvider
-     * @param AuthDataProvider $authDataProvider
-     * @param Api $api
+     * @param Auth $authService
+     * @param PreAuth $preAuthService
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepository,
@@ -84,9 +78,8 @@ class PaymentService
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-        PreAuthDataProvider $preAuthDataProvider,
-        AuthDataProvider $authDataProvider,
-        Api $api
+    Auth $authService,
+    PreAuth $preAuthService
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -94,13 +87,16 @@ class PaymentService
         $this->libCall = $libCall;
         $this->addressRepo = $addressRepo;
         $this->config = $config;
-        $this->api = $api;
-        $this->preAuthDataProvider = $preAuthDataProvider;
-        $this->authDataProvider = $authDataProvider;
+        $this->authService = $authService;
+        $this->preAuthService = $preAuthService;
     }
 
     /**
-     * @return array|string
+     * @param Basket $basket
+     *
+     * @throws \Exception
+     *
+     * @return ResponseAbstract
      */
     public function openTransaction(Basket $basket): ResponseAbstract
     {
@@ -111,16 +107,11 @@ class PaymentService
                 'Can no initialize payment. Not a Payone payment method'
             );
         }
-        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
 
         if ($authType == self::AUTH_TYPE_AUTH) {
-            $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket);
-            $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
-            $executeResponse = $this->api->doAuth($requestData);
+            $executeResponse = $this->authService->executeAuth($basket);
         } else {
-            $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket);
-            $requestData['order']['orderId'] = 'basket-' . $basket->id; //todo: transaction id
-            $executeResponse = $this->api->doPreAuth($requestData);
+            $executeResponse = $this->preAuthService->executePreAuth($basket);
         }
         if (!$executeResponse->getSuccess()) {
             throw new \Exception(

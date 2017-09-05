@@ -22,6 +22,7 @@ use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
@@ -42,13 +43,15 @@ class PayoneServiceProvider extends ServiceProvider
     }
 
     /**
-     * Boot additional Payone services
-     *
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
      * @param PaymentMethodContainer $payContainer
+     * @param PaymentRenderer $paymentRenderer
+     * @param PaymentMethodContent $content
+     * @param Logger $logger
+     * @param EventProceduresService $eventProceduresService
      */
     public function boot(
         Dispatcher $eventDispatcher,
@@ -58,7 +61,8 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentMethodContainer $payContainer,
         PaymentRenderer $paymentRenderer,
         PaymentMethodContent $content,
-        Logger $logger
+        Logger $logger,
+        EventProceduresService $eventProceduresService
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -82,6 +86,17 @@ class PayoneServiceProvider extends ServiceProvider
             ProcedureEntry::EVENT_TYPE_ORDER,
             $captureProcedureTitle,
             '\Payone\Procedures\CaptureEventProcedure@run'
+        );
+
+        $refundProcedureTitle = [
+            'de' => PluginConstants::NAME . ' | Gutschrift erstellen',
+            'en' => PluginConstants::NAME . ' | Refund order',
+        ];
+        $eventProceduresService->registerProcedure(
+            PluginConstants::NAME,
+            ProcedureEntry::EVENT_TYPE_ORDER,
+            $refundProcedureTitle,
+            '\Payone\Procedures\RefundEventProcedure@run'
         );
     }
 
@@ -165,7 +180,7 @@ class PayoneServiceProvider extends ServiceProvider
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
                 try {
-                    $auth = $paymentService->openTransaction($basket);
+                    $paymentService->openTransaction($basket);
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $event->setValue($paymentRenderer->render($payment, $errorMessage));

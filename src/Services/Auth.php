@@ -8,13 +8,13 @@ use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
 use Payone\Models\PaymentCache;
-use Payone\Providers\Api\Request\PreAuthDataProvider;
+use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 
-class PreAuth
+class Auth
 {
     /**
      * @var PaymentService
@@ -54,9 +54,9 @@ class PreAuth
     private $paymentCache;
 
     /**
-     * @var PreAuthDataProvider
+     * @var AuthDataProvider
      */
-    private $preAuthDataProvider;
+    private $authDataProvider;
     /**
      * @var Api
      */
@@ -86,7 +86,7 @@ class PreAuth
         ConfigAdapter $config,
         PaymentCache $paymentCache,
         Api $api,
-        PreAuthDataProvider $preAuthDataProvider
+        AuthDataProvider $authDataProvider
     ) {
         $this->paymentService = $paymentService;
         $this->paymentRepository = $paymentRepository;
@@ -98,7 +98,7 @@ class PreAuth
         $this->config = $config;
         $this->paymentCache = $paymentCache;
         $this->api = $api;
-        $this->preAuthDataProvider = $preAuthDataProvider;
+        $this->authDataProvider = $authDataProvider;
     }
 
     /**
@@ -106,7 +106,7 @@ class PreAuth
      *
      * @return Response
      */
-    public function executePreAuth(Basket $basket)
+    public function executeAuth(Basket $basket)
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
 
@@ -114,29 +114,29 @@ class PreAuth
             throw new \Exception('No Payone payment method');
         }
 
-        $preAuthResponse = $this->doPreAuth($basket);
+        $authResponse = $this->doAuth($basket);
 
-        $payment = $this->createPayment($selectedPaymentId, $preAuthResponse, $basket);
+        $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
 
-        return $preAuthResponse;
+        return $authResponse;
     }
 
     /**
      * @param $selectedPaymentId
-     * @param Response $preAuthResponse
+     * @param Response $authResponse
      * @param $orderId
      *
      * @throws \Exception
      *
      * @return Payment
      */
-    private function createPayment($selectedPaymentId, $preAuthResponse, $basket): Payment
+    private function createPayment($selectedPaymentId, $authResponse, $basket): Payment
     {
         try {
             $plentyPayment = $this->paymentCreationService->createPayment(
                 $selectedPaymentId,
-                $preAuthResponse,
+                $authResponse,
                 $basket
             );
             if (!$plentyPayment instanceof Payment) {
@@ -157,20 +157,20 @@ class PreAuth
      *
      * @return Response
      */
-    private function doPreAuth(Basket $basket): Response
+    private function doAuth(Basket $basket): Response
     {
         try {
             //TODO: have nice error messages for customer
-            $preAuthResponse = $this->doPreAuthFromBasket($basket);
+            $authResponse = $this->doAuthFromBasket($basket);
         } catch (\Exception $e) {
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($preAuthResponse instanceof Response) || !$preAuthResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! PreAuth request failed.');
+        if (!($authResponse instanceof Response) || !$authResponse->getSuccess()) {
+            throw new \Exception('The payment could not be executed! Auth request failed.');
         }
 
-        return $preAuthResponse;
+        return $authResponse;
     }
 
     /**
@@ -180,17 +180,17 @@ class PreAuth
      *
      * @return Response
      */
-    private function doPreAuthFromBasket(Basket $basket)
+    private function doAuthFromBasket(Basket $basket)
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentId);
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'Api.doPreAuth',
+            'Api.doAuth',
             ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
         );
 
-        $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket, '');
-        $response = $this->api->doPreAuth($requestData);
+        $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
+        $response = $this->api->doAuth($requestData);
 
         return $response;
     }

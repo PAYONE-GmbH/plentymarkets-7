@@ -220,11 +220,12 @@ abstract class DataProviderAbstract
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
             $orderItemData = $orderItem->toArray();
-            $tax = $orderItemData['amounts'][0]['priceGross'] - $orderItemData['amounts'][0]['priceGross'] * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int) round($tax * 100);
+            $amount = $orderItemData['amounts'][0];
+            $priceGross = $amount->priceGross;
+            $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
+            $orderItemData['tax'] = (int)round($tax * 100);
 
-            $priceGross = $orderItemData['amounts'][0]['priceGross'];
-            $orderItemData['price'] = (int) round($priceGross * 100);
+            $orderItemData['price'] = (int)round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -246,18 +247,18 @@ abstract class DataProviderAbstract
             return ['customerId' => $customerId];
         }
         $customerData = [
-            'email' => (string) $addressObj->email,
-            'firstname' => (string) $addressObj->firstName,
-            'lastname' => (string) $addressObj->lastName,
+            'email' => (string)$addressObj->email,
+            'firstname' => (string)$addressObj->firstName,
+            'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
             'language' => $addressObj->country->lang,
-            'ip' => (string) $this->shopHelper->getIpAddress(),
-            'customerId' => (string) $customerId,
+            'ip' => (string)$this->shopHelper->getIpAddress(),
+            'customerId' => (string)$customerId,
             'registrationDate' => '1970-01-01',
             'group' => 'default',
-            'company' => (string) $addressObj->companyName,
-            'telephonenumber' => (string) $addressObj->phone,
+            'company' => (string)$addressObj->companyName,
+            'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
         //TODO: Check format
@@ -336,7 +337,7 @@ abstract class DataProviderAbstract
     protected function getBasketData(Basket $basket)
     {
         $requestParams = $basket->toArray();
-        $requestParams['currency'] = (bool) $basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
+        $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
         $requestParams['grandTotal'] = $basket->basketAmount;
         $requestParams['cartId'] = $basket->id;
 
@@ -351,7 +352,7 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
         $requestParams['cartId'] = $order->id;
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 

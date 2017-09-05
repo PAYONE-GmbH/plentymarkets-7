@@ -7,6 +7,7 @@ namespace Payone\Services;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\ResponseAbstract;
+use Payone\Services\Auth as AuthService;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -51,7 +52,7 @@ class PaymentService
     private $config;
 
     /**
-     * @var Auth
+     * @var AuthService
      */
     private $authService;
     /**
@@ -78,8 +79,8 @@ class PaymentService
         PaymentHelper $paymentHelper,
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
-    Auth $authService,
-    PreAuth $preAuthService
+        AuthService $authService,
+        PreAuth $preAuthService
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;

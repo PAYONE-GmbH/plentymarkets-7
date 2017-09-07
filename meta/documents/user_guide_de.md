@@ -85,3 +85,11 @@ die vollständige Bestellung erstattet werden.
 
 Die Rückerstattung könnte auch wie beim Warenausgang oder Stornierung über den Status erfolgen, dann könnte jedoch nur 
 die vollständige Bestellung erstattet werden.
+
+#Clearing-Daten auf der Bestellbestätigungsseite anzeigen
+
+Damit zusätzliche Zahlungsdaten, wie z.B. die Payone Kontodaten bei Zahlart Rechnung, auf der Bestellbestätigungsseite 
+angezeigt werden können, müss der Payone Template Container "Payone Order Confirmation Page Payment Data" mit einem 
+ Container des Checkouts verknüpft werden. Am besten eignet sich dazu der Container 
+ "Order confirmation: Additional payment information". Sie finden die Template Container unter "Plugins ›› Content" im 
+ Admin-Bereich.

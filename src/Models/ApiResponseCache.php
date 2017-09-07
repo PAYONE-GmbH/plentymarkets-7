@@ -46,7 +46,7 @@ class ApiResponseCache
      *
      * @return Response|void
      */
-    public function loadPreCheck($paymentCode, $lastUpdatedAt = null)
+    public function loadAuth($paymentCode, $lastUpdatedAt = null)
     {
         $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);
         $sessionData = $this->sessionStorage->getSessionValue($requestHash);
@@ -69,7 +69,7 @@ class ApiResponseCache
      * @param $response
      * @param $updatedAt
      */
-    public function storePreCheckResponse($paymentCode, Response $response, $updatedAt)
+    public function storeAuth($paymentCode, Response $response, $updatedAt = null)
     {
         $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);
         $this->sessionStorage->setSessionValue(
@@ -84,7 +84,7 @@ class ApiResponseCache
     /**
      * @param $paymentCode
      */
-    public function deletePreCheckResponse($paymentCode)
+    public function deleteAuthResponse($paymentCode)
     {
         $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);
         $this->sessionStorage->setSessionValue(
@@ -93,7 +93,7 @@ class ApiResponseCache
         );
     }
 
-    public function deletePreCheckResponses()
+    public function deleteAuthResponses()
     {
         foreach ($this->paymentHelper->getPaymentCodes() as $paymentCode) {
             $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);

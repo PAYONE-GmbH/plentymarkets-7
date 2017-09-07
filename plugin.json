@@ -24,10 +24,16 @@
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
     "guzzlehttp/guzzle": "6.2.*",
-    "arvatis/payolution-php-api":"dev-master"
+    "arvatis/payone-php-api":"dev-master"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",
     "Payone\\Migrations\\CreateSettingsTable"
-  ]
+  ],
+  "dataProviders": [
+  {"key":"Payone\\Providers\\DataProviders\\ConfirmationAdditinalPaymentData",
+    "name":"Payone Order Confirmation Page Payment Data",
+    "description": "Block to display additional payment data on order success page."
+  }
+]
 }

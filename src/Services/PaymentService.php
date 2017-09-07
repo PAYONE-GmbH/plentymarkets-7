@@ -7,6 +7,7 @@ namespace Payone\Services;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\ResponseAbstract;
+use Payone\Models\ApiResponseCache;
 use Payone\Services\Auth as AuthService;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
@@ -59,10 +60,13 @@ class PaymentService
      * @var PreAuth
      */
     private $preAuthService;
+    /**
+     * @var ApiResponseCache
+     */
+    private $responseCache;
 
     /**
      * PaymentService constructor.
-     *
      * @param PaymentMethodRepositoryContract $paymentMethodRepository
      * @param PaymentRepositoryContract $paymentRepository
      * @param ConfigAdapter $config
@@ -71,6 +75,7 @@ class PaymentService
      * @param AddressRepositoryContract $addressRepo
      * @param Auth $authService
      * @param PreAuth $preAuthService
+     * @param ApiResponseCache $responseCache
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepository,
@@ -80,7 +85,8 @@ class PaymentService
         LibraryCallContract $libCall,
         AddressRepositoryContract $addressRepo,
         AuthService $authService,
-        PreAuth $preAuthService
+        PreAuth $preAuthService,
+        ApiResponseCache $responseCache
     ) {
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -90,6 +96,7 @@ class PaymentService
         $this->config = $config;
         $this->authService = $authService;
         $this->preAuthService = $preAuthService;
+        $this->responseCache = $responseCache;
     }
 
     /**
@@ -119,6 +126,7 @@ class PaymentService
                 $executeResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment and retry'
             );
         }
+        $this->responseCache->storeAuth($selectedPaymentMopId, $executeResponse);
 
         return $executeResponse;
     }

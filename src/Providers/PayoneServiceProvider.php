@@ -13,6 +13,7 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\PaymentMethodContent;
+use Payone\PluginConstants;
 use Payone\Services\PaymentService;
 use Payone\Views\PaymentRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
@@ -20,6 +21,8 @@ use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
@@ -48,6 +51,7 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentRenderer $paymentRenderer
      * @param PaymentMethodContent $content
      * @param Logger $logger
+     * @param EventProceduresService $eventProceduresService
      */
     public function boot(
         Dispatcher $eventDispatcher,
@@ -57,7 +61,8 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentMethodContainer $payContainer,
         PaymentRenderer $paymentRenderer,
         PaymentMethodContent $content,
-        Logger $logger
+        Logger $logger,
+        EventProceduresService $eventProceduresService
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -72,7 +77,6 @@ class PayoneServiceProvider extends ServiceProvider
         );
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
 
-        /*
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',
             'en' => PluginConstants::NAME . ' | Capture order',
@@ -93,7 +97,7 @@ class PayoneServiceProvider extends ServiceProvider
             ProcedureEntry::EVENT_TYPE_ORDER,
             $refundProcedureTitle,
             '\Payone\Procedures\RefundEventProcedure@run'
-        );*/
+        );
     }
 
     /**

@@ -20,6 +20,5 @@
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": [],
-  "serviceProvider": "Payone\\Providers\\PayoneServiceProvider"
+  "require": []
 }

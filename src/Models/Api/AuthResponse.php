@@ -19,6 +19,7 @@ class AuthResponse extends ResponseAbstract implements \JsonSerializable
      * @param $errorMessage
      * @param $transactionID
      * @param ClearingAbstract $clearing
+     *
      * @return $this
      */
     public function init($success, $errorMessage, $transactionID, ClearingAbstract $clearing)
@@ -27,11 +28,13 @@ class AuthResponse extends ResponseAbstract implements \JsonSerializable
         $this->errorMessage = $errorMessage;
         $this->transactionID = $transactionID;
         $this->clearing = $clearing;
+
         return $this;
     }
 
     /**
      * Getter for Clearing
+     *
      * @return ClearingAbstract
      */
     public function getClearing(): ClearingAbstract

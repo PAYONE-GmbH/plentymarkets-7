@@ -8,12 +8,9 @@ namespace Payone\Models\Api;
 class Response extends ResponseAbstract implements \JsonSerializable
 {
     /**
-     * @param bool $success
-     * @param string $errorMessage
-     * @param string $shortId
-     * @param string $uniqueID
-     * @param string $transactionID
-     * @param $paymentReference
+     * @param $success
+     * @param $errorMessage
+     * @param $transactionID
      *
      * @return $this
      */

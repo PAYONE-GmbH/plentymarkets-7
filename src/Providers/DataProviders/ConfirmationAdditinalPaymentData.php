@@ -12,12 +12,12 @@ use Plenty\Plugin\Templates\Twig;
 
 class ConfirmationAdditinalPaymentData
 {
-
     /**
      * @param Twig $twig
      * @param ApiResponseCache $paymentCache
      * @param PaymentHelper $paymentHelper
      * @param $arg
+     *
      * @return string
      */
     public function call(
@@ -41,6 +41,7 @@ class ConfirmationAdditinalPaymentData
         if (!$clearing || !($clearing instanceof Bank)) {
             return '';
         }
+
         return $twig->render(
             PluginConstants::NAME . '::Partials.ConfirmationAdditinalPaymentData.twig',
             [

@@ -5,6 +5,7 @@ namespace Payone\Models;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Response;
 use Payone\Services\Api;
 
@@ -44,7 +45,7 @@ class ApiResponseCache
      * @param $paymentCode
      * @param $lastUpdatedAt
      *
-     * @return Response|void
+     * @return AuthResponse|null
      */
     public function loadAuth($paymentCode, $lastUpdatedAt = null)
     {

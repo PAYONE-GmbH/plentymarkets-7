@@ -89,7 +89,7 @@ class Refund
     {
         $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $order->id]);
         if (!in_array($order->typeId, $this->getAllowedOrderTypes())) {
-            $this->logger->error('Invalid order type ' . $order->typeId . ' for order ' . $order->id);
+            $this->logger->error('Invalid order type ' . $order->typeId . ' for order ' . $order->id, null);
 
             return;
         }
@@ -101,7 +101,7 @@ class Refund
             return;
         }
         if (!$originalOrder) {
-            $this->logger->error('Refunding Payone payment failed! The given order is invalid!');
+            $this->logger->error('Refunding Payone payment failed! The given order is invalid!', null);
 
             return;
         }

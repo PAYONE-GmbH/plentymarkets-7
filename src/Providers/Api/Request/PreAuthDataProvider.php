@@ -11,11 +11,7 @@ use Plenty\Modules\Order\Models\Order;
 class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOrder, DataProviderBasket
 {
     /**
-     * @param string $paymentCode
-     * @param Order $order
-     * @param string|null $requestReference
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
@@ -44,11 +40,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
     }
 
     /**
-     * @param string $paymentCode
-     * @param Basket $basket
-     * @param string|null $requestReference
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null)
     {

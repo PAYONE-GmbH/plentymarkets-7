@@ -67,6 +67,7 @@ class PaymentService
 
     /**
      * PaymentService constructor.
+     *
      * @param PaymentMethodRepositoryContract $paymentMethodRepository
      * @param PaymentRepositoryContract $paymentRepository
      * @param ConfigAdapter $config

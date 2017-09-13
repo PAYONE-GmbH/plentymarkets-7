@@ -19,7 +19,6 @@ class ClearingFactory
         }
 
         return self::createBankClearing($responseData);
-
     }
 
     /**
@@ -42,6 +41,5 @@ class ClearingFactory
             $responseData['clearing_bankiban'] ?? '',
             $responseData['clearing_bankbic'] ?? ''
         );
-
     }
 }

@@ -21,6 +21,7 @@ try {
     $customer = $sdkRestApi::getParam('customer');
     $shippingProvider = $sdkRestApi::getParam('shippingProvider');
 
+    $data = [];
     $data['basket'] = $basket;
     $data['basketItems'] = $basketItems;
     $data['shippingAddress'] = $shippingAddress;

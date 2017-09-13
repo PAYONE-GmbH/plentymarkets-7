@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Payone\Models\Api\Clearing;
 
 class Bank extends ClearingAbstract
 {
-
     private $account;
     private $code;
     private $country;
@@ -24,6 +22,7 @@ class Bank extends ClearingAbstract
      * @param $city
      * @param $iban
      * @param $bic
+     *
      * @return $this
      */
     public function init(
@@ -50,6 +49,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Account
+     *
      * @return mixed
      */
     public function getAccount()
@@ -59,6 +59,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Code
+     *
      * @return mixed
      */
     public function getCode()
@@ -68,6 +69,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Country
+     *
      * @return mixed
      */
     public function getCountry()
@@ -77,6 +79,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Name
+     *
      * @return mixed
      */
     public function getName()
@@ -86,6 +89,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Accountholder
+     *
      * @return mixed
      */
     public function getAccountholder()
@@ -95,6 +99,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for City
+     *
      * @return mixed
      */
     public function getCity()
@@ -104,6 +109,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Iban
+     *
      * @return mixed
      */
     public function getIban()
@@ -113,6 +119,7 @@ class Bank extends ClearingAbstract
 
     /**
      * Getter for Bic
+     *
      * @return mixed
      */
     public function getBic()

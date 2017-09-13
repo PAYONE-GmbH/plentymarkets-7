@@ -2,22 +2,8 @@
 
 namespace Payone\Providers\Api\Request;
 
-use Payone\Adapter\Config as ConfigAdapter;
-use Payone\Adapter\SessionStorage;
-use Payone\Helpers\AddressHelper;
-use Payone\Helpers\PaymentHelper;
-use Payone\Helpers\ShopHelper;
-use Payone\Services\RequestDataValidator;
-use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
-use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Account\Contracts\AccountRepositoryContract;
 use Plenty\Modules\Frontend\Events\FrontendUpdateInvoiceAddress;
-use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
-use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
-use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
-use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
-use Plenty\Modules\Order\Shipping\ServiceProvider\Contracts\ShippingServiceProviderRepositoryContract;
 
 /**
  * Class CaptureDataProvider
@@ -27,66 +13,8 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     /** @var FrontendUpdateInvoiceAddress */
     protected $invoice;
 
-    /**
-     * @var ShippingInformationRepositoryContract
-     */
-    private $shippingInformationRepo;
-
-    /**
-     * ApiRequestDataProvider constructor.
-     *
-     * @param PaymentHelper $paymentHelper
-     * @param AddressRepositoryContract $addressRepo
-     * @param SessionStorage $sessionStorage
-     * @param ItemRepositoryContract $itemRepo
-     * @param CountryRepositoryContract $countryRepo
-     * @param ShippingServiceProviderRepositoryContract $shippingRepo
-     * @param ContactRepositoryContract $contactRepositoryContract
-     * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
-     * @param AccountRepositoryContract $accountRepositoryContract
-     * @param ShopHelper $shopHelper
-     * @param AddressHelper $addressHelper
-     * @param ConfigAdapter $config
-     * @param ShippingInformationRepositoryContract $shippingInformationRepo
-     */
-    public function __construct(
-        PaymentHelper $paymentHelper,
-        AddressRepositoryContract $addressRepo,
-        SessionStorage $sessionStorage,
-        ItemRepositoryContract $itemRepo,
-        CountryRepositoryContract $countryRepo,
-        ShippingServiceProviderRepositoryContract $shippingRepo,
-        ContactRepositoryContract $contactRepositoryContract,
-        FrontendSessionStorageFactoryContract $sessionStorageFactory,
-        AccountRepositoryContract $accountRepositoryContract,
-        ShopHelper $shopHelper,
-        AddressHelper $addressHelper,
-        ConfigAdapter $config,
-        RequestDataValidator $validator,
-        ShippingInformationRepositoryContract $shippingInformationRepo
-    ) {
-        parent::__construct(
-            $paymentHelper,
-            $addressRepo,
-            $sessionStorage,
-            $itemRepo,
-            $countryRepo,
-            $shippingRepo,
-            $contactRepositoryContract,
-            $sessionStorageFactory,
-            $accountRepositoryContract,
-            $shopHelper,
-            $addressHelper,
-            $config,
-            $validator
-        );
-        $this->shippingInformationRepo = $shippingInformationRepo;
-    }
-
-    /**
-     * @param string $paymentCode
-     * @param Order $order
-     * @param string|null $requestReference
+      /**
+     * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
@@ -136,7 +64,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     protected function getTrackingData($orderId)
     {
         try {
-            $shippingInfo = $this->shippingInformationRepo->getShippingInformationByOrderId($orderId);
+            $shippingInfo = $this->shippingProviderRepository->getShippingInformationByOrderId($orderId);
         } catch (\Exception $e) {
             return [];
         }

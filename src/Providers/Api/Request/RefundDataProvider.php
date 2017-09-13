@@ -4,7 +4,6 @@ namespace Payone\Providers\Api\Request;
 
 use Plenty\Modules\Frontend\Events\FrontendUpdateInvoiceAddress;
 use Plenty\Modules\Order\Models\Order;
-use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
 
 /**
  * Class RefundDataProvider
@@ -14,17 +13,8 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
     /** @var FrontendUpdateInvoiceAddress */
     protected $invoice;
 
-    /**
-     * @var ShippingInformationRepositoryContract
-     */
-    protected $shippingInfoRepo;
-
-    /**
-     * @param string $paymentCode
-     * @param Order $order
-     * @param string|null $requestReference
-     *
-     * @return array
+     /**
+     * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
@@ -73,7 +63,7 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
     protected function getTrackingData($orderId)
     {
         try {//TODO:
-            $shippingInfo = $this->shippingInfoRepo->getShippingInformationByOrderId($orderId);
+            $shippingInfo = $this->shippingProviderRepository->getShippingInformationByOrderId($orderId);
         } catch (\Exception $e) {
             return [];
         }

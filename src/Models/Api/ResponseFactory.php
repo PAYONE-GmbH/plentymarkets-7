@@ -31,6 +31,7 @@ class ResponseFactory
             $clearing = ClearingFactory::create($responseData['responseData']);
             /** @var AuthResponse $response */
             $response = pluginApp(AuthResponse::class);
+
             return $response->init(
                 isset($responseData['success']) ?? false,
                 isset($responseData['errorMessage']) ?? '',
@@ -38,6 +39,7 @@ class ResponseFactory
                 $clearing
             );
         }
+
         return $genericResponse;
     }
 
@@ -54,7 +56,6 @@ class ResponseFactory
         $success = isset($responseData['success']) ?? false;
         $errorMessage = isset($responseData['errorMessage']) ?? '';
         $transactionID = isset($responseData['transactionID']) ?? '';
-
 
         return $response->init($success, $errorMessage, $transactionID);
     }

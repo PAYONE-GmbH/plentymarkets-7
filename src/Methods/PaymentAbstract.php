@@ -4,7 +4,6 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
-use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
 use Plenty\Plugin\Application;
 
@@ -27,9 +26,9 @@ abstract class PaymentAbstract extends PaymentMethodService
     private $app;
 
     /**
-     * PayonePaymentMethod constructor.
+     * PaymentAbstract constructor.
      *
-     * @param BasketRepositoryContract $basketRepo
+     * @param Application $application
      * @param PaymentValidator $paymentValidator
      * @param ConfigAdapter $configRepo
      */

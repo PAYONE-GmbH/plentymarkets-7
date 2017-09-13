@@ -15,6 +15,7 @@ try {
     $context = $sdkRestApi::getParam('context');
     $order = $sdkRestApi::getParam('order');
 
+    $data = [];
     $data['context'] = $context;
     $data['order'] = $order;
 

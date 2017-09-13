@@ -21,6 +21,7 @@
   "require": {
     "guzzlehttp/guzzle": "^6.2",
     "plentymarkets/plugin-interface": "dev-beta7",
-    "arvatis/payone-php-api":"dev-master"
+    "arvatis/payone-php-api":"dev-master",
+    "etsy/phan": "0.8.x-dev"
   }
 }

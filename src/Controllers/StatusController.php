@@ -3,7 +3,6 @@
 namespace Payone\Controllers;
 
 use Payone\Adapter\Config as ConfigAdapter;
-use Payone\Helpers\PaymentHelper;
 use Payone\Migrations\CreatePaymentMethods;
 use Payone\Services\PaymentCreation;
 use Plenty\Plugin\Controller;
@@ -25,31 +24,31 @@ class StatusController extends Controller
     private $config;
 
     /**
-     * @var PaymentHelper
+     * @var PaymentCreation
      */
-    private $paymentHelper;
+    private $paymentCreation;
     /**
      * @var CreatePaymentMethods
      */
     private $paymentMigration;
 
     /**
-     * PaymentController constructor.
+     * StatusController constructor.
      *
      * @param Request $request
      * @param ConfigAdapter $config
-     * @param PaymentHelper $paymentHelper
+     * @param PaymentCreation $paymentCreation
      * @param CreatePaymentMethods $paymentMigration
      */
     public function __construct(
         Request $request,
         ConfigAdapter $config,
-        PaymentCreation $paymentHelper,
+        PaymentCreation $paymentCreation,
         CreatePaymentMethods $paymentMigration
     ) {
         $this->request = $request;
         $this->config = $config;
-        $this->paymentHelper = $paymentHelper;
+        $this->paymentCreation = $paymentCreation;
         $this->paymentMigration = $paymentMigration;
     }
 
@@ -66,7 +65,7 @@ class StatusController extends Controller
             $txaction = $txaction . '_' . $transactionStatus;
         }
 
-        $this->paymentHelper->updatePaymentStatus($reference, $txid, $txaction);
+        $this->paymentCreation->updatePaymentStatus($reference, $txid, $txaction);
 
         echo 'TSOK';
     }

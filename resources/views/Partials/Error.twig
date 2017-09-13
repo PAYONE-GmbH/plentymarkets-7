@@ -1,0 +1,18 @@
+<div id="checkoutError" class="row is-table-row error">
+    <div class="col-md-8">
+        <p>
+            <strong>{{ trans("Payone::Template.orderErrorTitle") }}</strong>
+        </p>
+        <p class="small">
+            <strong>
+                <span class="text-muted">
+                       {% if isDebugModeEnabled %}
+                           {{ trans(errorMessage) }}
+                       {% else %}
+                           {{ trans('Payone::Template.orderErrorMessage') }}
+                       {% endif %}
+                </span>
+            </strong>
+        </p>
+    </div>
+</div>

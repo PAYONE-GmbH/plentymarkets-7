@@ -4,7 +4,6 @@ namespace Payone\Procedures;
 
 use Payone\Adapter\Logger;
 use Payone\Services\Capture;
-use Payone\Services\PaymentService;
 use Plenty\Modules\EventProcedures\Events\EventProceduresTriggered;
 use Plenty\Modules\Order\Models\Order;
 
@@ -15,10 +14,8 @@ class CaptureEventProcedure extends AbstractEventProcedure
 {
     /**
      * @param EventProceduresTriggered $eventTriggered
-     * @param PaymentService $paymentService
      * @param Logger $logger
-     *
-     * @throws \Exception
+     * @param Capture $captureService
      */
     public function run(
         EventProceduresTriggered $eventTriggered,

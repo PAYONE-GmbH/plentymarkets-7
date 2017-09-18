@@ -16,10 +16,7 @@ use Plenty\Modules\Payment\Models\Payment;
 
 class PreAuth
 {
-    /**
-     * @var PaymentService
-     */
-    private $paymentService;
+
     /**
      * @var PaymentRepositoryContract
      */
@@ -65,7 +62,6 @@ class PreAuth
     /**
      * ReAuth constructor.
      *
-     * @param PaymentService $paymentService
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
@@ -76,7 +72,6 @@ class PreAuth
      * @param PaymentCache $paymentCache
      */
     public function __construct(
-        PaymentService $paymentService,
         PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
         Logger $logger,
@@ -88,7 +83,6 @@ class PreAuth
         Api $api,
         PreAuthDataProvider $preAuthDataProvider
     ) {
-        $this->paymentService = $paymentService;
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;

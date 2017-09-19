@@ -13,12 +13,12 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     /** @var FrontendUpdateInvoiceAddress */
     protected $invoice;
 
-      /**
+    /**
      * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode, 'order-' . $order->id); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
         $requestParams['basketItems'] = $this->getOrderItemData($order);
@@ -51,7 +51,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
 
         return [
             'orderId' => $order->id,
-            'amount' => (int) round($amount->invoiceTotal * 100),
+            'amount' => (int)round($amount->invoiceTotal * 100),
             'currency' => $amount->currency,
         ];
     }
@@ -63,16 +63,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
      */
     protected function getTrackingData($orderId)
     {
-        try {
-            $shippingInfo = $this->shippingProviderRepository->getShippingInformationByOrderId($orderId);
-        } catch (\Exception $e) {
-            return [];
-        }
-
-        return [
-            'trackingId' => $shippingInfo->transactionId,
-            'returnTrackingId' => '',
-            'shippingCompany' => $shippingInfo->shippingServiceProvider,
-        ];
+        //TODO:
+        return [];
     }
 }

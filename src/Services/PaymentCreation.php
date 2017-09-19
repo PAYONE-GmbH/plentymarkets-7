@@ -3,36 +3,23 @@
 namespace Payone\Services;
 
 use Payone\Adapter\Logger;
-use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
-use Payone\Models\ApiResponseCache;
 use Payone\Models\PayonePaymentStatus;
-use Payone\Providers\Api\Request\AuthDataProvider;
 use Payone\Providers\Api\Request\BankAccount;
-use Payone\Providers\Api\Request\CaptureDataProvider;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
-use Payone\Providers\Api\Request\RefundDataProvider;
-use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
-use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 
 /**
  * Class PaymentCreation
  */
 class PaymentCreation
 {
-    /**
-     * @var PaymentMethodRepositoryContract
-     */
-    private $paymentMethodRepository;
 
     /**
      * @var PaymentRepositoryContract
@@ -45,28 +32,9 @@ class PaymentCreation
     private $paymentHelper;
 
     /**
-     * @var LibraryCallContract
-     */
-    private $libCall;
-
-    /**
-     * @var AddressRepositoryContract
-     */
-    private $addressRepo;
-
-    /**
      * @var PaymentOrderRelationRepositoryContract
      */
     private $paymentOrderRelationRepo;
-    /**
-     * @var OrderRepositoryContract
-     */
-    private $orderRepo;
-
-    /**
-     * @var AuthDataProvider
-     */
-    private $preCheckDataProvider;
 
     /**
      * @var Api
@@ -78,78 +46,34 @@ class PaymentCreation
     private $preAuhtDataProvider;
 
     /**
-     * @var CaptureDataProvider
-     */
-    private $captureDataProvider;
-
-    /**
-     * @var RefundDataProvider
-     */
-    private $refundDataProvider;
-    /**
      * @var Logger
      */
     private $logger;
-    /**
-     * @var ApiResponseCache
-     */
-    private $apiResponseCache;
-    /**
-     * @var PaymentHistory
-     */
-    private $paymentHistory;
+
 
     /**
-     * PaymentService constructor.
-     *
-     * @param PaymentMethodRepositoryContract $paymentMethodRepository
+     * PaymentCreation constructor.
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
-     * @param LibraryCallContract $libCall
-     * @param AddressRepositoryContract $addressRepo
      * @param PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
-     * @param OrderRepositoryContract $orderRepo
-     * @param AuthDataProvider $preCheckDataProvider
      * @param PreAuthDataProvider $preAuhtDataProvider
-     * @param ApiResponseCache $apiResponseCache
      * @param Api $api
-     * @param CaptureDataProvider $captureDataProvide
-     * @param RefundDataProvider $refundDataProvider
      * @param Logger $logger
-     * @param PaymentHistory $paymentHistoryRepo
      */
     public function __construct(
-        PaymentMethodRepositoryContract $paymentMethodRepository,
         PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
-        LibraryCallContract $libCall,
-        AddressRepositoryContract $addressRepo,
         PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo,
-        OrderRepositoryContract $orderRepo,
-        AuthDataProvider $preCheckDataProvider,
         PreAuthDataProvider $preAuhtDataProvider,
-        ApiResponseCache $apiResponseCache,
         Api $api,
-        CaptureDataProvider $captureDataProvide,
-        RefundDataProvider $refundDataProvider,
-        Logger $logger,
-        PaymentHistory $paymentHistoryRepo
+        Logger $logger
     ) {
-        $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
-        $this->libCall = $libCall;
-        $this->addressRepo = $addressRepo;
         $this->paymentOrderRelationRepo = $paymentOrderRelationRepo;
-        $this->orderRepo = $orderRepo;
         $this->api = $api;
-        $this->preCheckDataProvider = $preCheckDataProvider;
         $this->preAuhtDataProvider = $preAuhtDataProvider;
-        $this->captureDataProvider = $captureDataProvide;
-        $this->refundDataProvider = $refundDataProvider;
         $this->logger = $logger;
-        $this->apiResponseCache = $apiResponseCache;
-        $this->paymentHistory = $paymentHistoryRepo;
     }
 
     /**

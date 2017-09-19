@@ -15,7 +15,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode, 'order-' . $order->id); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
 
@@ -44,8 +44,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
      */
     public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode,
-            'basket-' . $basket->id . '-' . $basket->updatedAt); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketData($basket);
 

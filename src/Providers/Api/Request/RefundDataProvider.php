@@ -13,12 +13,12 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
     /** @var FrontendUpdateInvoiceAddress */
     protected $invoice;
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode, 'order-' . $order->id); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
 
@@ -62,16 +62,7 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
      */
     protected function getTrackingData($orderId)
     {
-        try {//TODO:
-            $shippingInfo = $this->shippingProviderRepository->getShippingInformationByOrderId($orderId);
-        } catch (\Exception $e) {
-            return [];
-        }
-
-        return [
-            'trackingId' => $shippingInfo->transactionId,
-            'returnTrackingId' => '',
-            'shippingCompany' => $shippingInfo->shippingServiceProvider,
-        ];
+        //TODO:
+        return [];
     }
 }

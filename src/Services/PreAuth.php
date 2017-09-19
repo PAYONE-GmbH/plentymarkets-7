@@ -2,25 +2,18 @@
 
 namespace Payone\Services;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
-use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
 use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 
 class PreAuth
 {
 
-    /**
-     * @var PaymentRepositoryContract
-     */
-    private $paymentRepository;
+
     /**
      * @var PaymentHelper
      */
@@ -29,22 +22,12 @@ class PreAuth
      * @var Logger
      */
     private $logger;
-    /**
-     * @var PaymentHistory
-     */
-    private $paymentHistory;
+
     /**
      * @var PaymentCreation
      */
     private $paymentCreationService;
-    /**
-     * @var OrderRepositoryContract
-     */
-    private $orderRepo;
-    /**
-     * @var ConfigAdapter
-     */
-    private $config;
+
     /**
      * @var PaymentCache
      */
@@ -60,36 +43,25 @@ class PreAuth
     private $api;
 
     /**
-     * ReAuth constructor.
-     *
-     * @param PaymentRepositoryContract $paymentRepository
+     * PreAuth constructor.
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
-     * @param PaymentHistory $paymentHistory
      * @param PaymentCreation $paymentCreation
-     * @param OrderRepositoryContract $orderRepositoryContract
-     * @param ConfigAdapter $config
      * @param PaymentCache $paymentCache
+     * @param Api $api
+     * @param PreAuthDataProvider $preAuthDataProvider
      */
     public function __construct(
-        PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
         Logger $logger,
-        PaymentHistory $paymentHistory,
         PaymentCreation $paymentCreation,
-        OrderRepositoryContract $orderRepositoryContract,
-        ConfigAdapter $config,
         PaymentCache $paymentCache,
         Api $api,
         PreAuthDataProvider $preAuthDataProvider
     ) {
-        $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
-        $this->paymentHistory = $paymentHistory;
         $this->paymentCreationService = $paymentCreation;
-        $this->orderRepo = $orderRepositoryContract;
-        $this->config = $config;
         $this->paymentCache = $paymentCache;
         $this->api = $api;
         $this->preAuthDataProvider = $preAuthDataProvider;

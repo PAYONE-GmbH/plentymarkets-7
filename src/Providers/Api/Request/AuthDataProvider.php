@@ -15,9 +15,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
      */
     public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData(
-            $paymentCode, 'basket-' . $basket->id . '-' . $basket->updatedAt
-        ); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketData($basket);
 
@@ -40,27 +38,11 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
     }
 
     /**
-     * @param string $paymentCode
-     * @param $transactionId
-     *
-     * @return array
-     */
-    public function getApiContextParams($paymentCode, $transactionId)
-    {
-        $apiContextParams = parent::getApiContextParams($paymentCode, $transactionId);
-        $apiContextParams['channel'] = $this->config->get('channelPre');
-
-        return $apiContextParams;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData(
-            $paymentCode, 'order-' . $order->id
-        ); //TODO: get transaction id
+        $requestParams = $this->getDefaultRequestData($paymentCode);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
 

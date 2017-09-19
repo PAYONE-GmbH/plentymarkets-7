@@ -3,13 +3,11 @@
 namespace Payone\Services;
 
 use Payone\Adapter\Logger;
-use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\Api\ResponseFactory;
 use Payone\PluginConstants;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
-use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class Api
@@ -33,37 +31,20 @@ class Api
     private $libCall;
 
     /**
-     * @var PaymentHelper
-     */
-    private $paymentHelper;
-
-    /**
-     * @var ConfigRepository
-     */
-    private $config;
-
-    /**
      * @var Logger
      */
     private $logger;
 
     /**
      * Api constructor.
-     *
      * @param LibraryCallContract $libCall
-     * @param PaymentHelper $paymentHelper
-     * @param ConfigRepository $configRepository
      * @param Logger $logger
      */
     public function __construct(
         LibraryCallContract $libCall,
-        PaymentHelper $paymentHelper,
-        ConfigRepository $configRepository,
         Logger $logger
     ) {
         $this->libCall = $libCall;
-        $this->paymentHelper = $paymentHelper;
-        $this->config = $configRepository;
         $this->logger = $logger;
     }
 

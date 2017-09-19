@@ -4,23 +4,17 @@ namespace Payone\Services;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
-use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
 use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 
 class Auth
 {
 
-    /**
-     * @var PaymentRepositoryContract
-     */
-    private $paymentRepository;
     /**
      * @var PaymentHelper
      */
@@ -29,18 +23,12 @@ class Auth
      * @var Logger
      */
     private $logger;
-    /**
-     * @var PaymentHistory
-     */
-    private $paymentHistory;
+
     /**
      * @var PaymentCreation
      */
     private $paymentCreationService;
-    /**
-     * @var OrderRepositoryContract
-     */
-    private $orderRepo;
+
     /**
      * @var ConfigAdapter
      */
@@ -62,33 +50,25 @@ class Auth
     /**
      * ReAuth constructor.
      *
-     * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
-     * @param PaymentHistory $paymentHistory
      * @param PaymentCreation $paymentCreation
      * @param OrderRepositoryContract $orderRepositoryContract
      * @param ConfigAdapter $config
      * @param PaymentCache $paymentCache
      */
     public function __construct(
-        PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
         Logger $logger,
-        PaymentHistory $paymentHistory,
         PaymentCreation $paymentCreation,
-        OrderRepositoryContract $orderRepositoryContract,
         ConfigAdapter $config,
         PaymentCache $paymentCache,
         Api $api,
         AuthDataProvider $authDataProvider
     ) {
-        $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
-        $this->paymentHistory = $paymentHistory;
         $this->paymentCreationService = $paymentCreation;
-        $this->orderRepo = $orderRepositoryContract;
         $this->config = $config;
         $this->paymentCache = $paymentCache;
         $this->api = $api;

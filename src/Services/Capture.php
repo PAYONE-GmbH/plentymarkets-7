@@ -30,10 +30,7 @@ class Capture
      * @var PaymentHistory
      */
     private $paymentHistory;
-    /**
-     * @var PaymentCreation
-     */
-    private $paymentCreationService;
+
     /**
      * @var ConfigAdapter
      */
@@ -46,37 +43,40 @@ class Capture
      * @var Api
      */
     private $api;
+    /**
+     * @var PaymentCreation
+     */
+    private $paymentCreation;
 
     /**
      * Capture constructor.
-     *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
      * @param PaymentHistory $paymentHistory
-     * @param PaymentCreation $paymentCreation
      * @param ConfigAdapter $config
      * @param CaptureDataProvider $captureDataProvider
      * @param Api $api
+     * @param PaymentCreation $paymentCreation
      */
     public function __construct(
         PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
         Logger $logger,
         PaymentHistory $paymentHistory,
-        PaymentCreation $paymentCreation,
         ConfigAdapter $config,
         CaptureDataProvider $captureDataProvider,
-        Api $api
+        Api $api,
+        PaymentCreation $paymentCreation
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
         $this->paymentHistory = $paymentHistory;
-        $this->paymentCreationService = $paymentCreation;
         $this->config = $config;
         $this->captureDataProvider = $captureDataProvider;
         $this->api = $api;
+        $this->paymentCreation = $paymentCreation;
     }
 
     /**
@@ -139,7 +139,7 @@ class Capture
                 continue;
             }
 
-            $this->paymentCreationService->capturePayment($payment, $order);
+            $this->paymentCreation->capturePayment($payment, $order);
         }
     }
 }

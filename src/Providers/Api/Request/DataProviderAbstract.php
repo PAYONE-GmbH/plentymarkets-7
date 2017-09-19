@@ -5,13 +5,9 @@ namespace Payone\Providers\Api\Request;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
-use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Services\RequestDataValidator;
-use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Account\Address\Models\Address;
-use Plenty\Modules\Account\Contact\Contracts\ContactRepositoryContract;
-use Plenty\Modules\Account\Contracts\AccountRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Basket\Models\BasketItem;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
@@ -20,7 +16,6 @@ use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
-use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
 
 /**
@@ -29,58 +24,26 @@ use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepos
 abstract class DataProviderAbstract
 {
     const ACCOUNT_DATA_KEY = 'paymentAccount';
-
-    /**
-     * @var ContactRepositoryContract
-     */
-    protected $contactRepo;
-
-    /**
-     * @var ItemRepositoryContract
-     */
-    protected $itemRepo;
-
-    /**
-     * @var CountryRepositoryContract
-     */
-    protected $countryRepo;
-
-    /**
-     * @var ShippingInformationRepositoryContract
-     */
-    protected $shippingProviderRepository;
-
-    /**
-     * @var PaymentHelper
-     */
-    protected $paymentHelper;
-
-    /**
-     * @var AddressRepositoryContract
-     */
-    protected $addressRepo;
-
-    /**
-     * @var SessionStorage
-     */
-    protected $sessionStorage;
-
     /**
      * @var FrontendSessionStorageFactoryContract
      */
     protected $sessionStorageFactory;
     /**
-     * @var AccountRepositoryContract
+     * @var ItemRepositoryContract
      */
-    protected $accountRepositoryContract;
+    protected $itemRepo;
     /**
-     * @var AddressHelper
+     * @var ShippingInformationRepositoryContract
      */
-    protected $addressHelper;
+    protected $shippingRepo;
     /**
      * @var ShopHelper
      */
     protected $shopHelper;
+    /**
+     * @var AddressHelper
+     */
+    protected $addressHelper;
     /**
      * @var ConfigAdapter
      */
@@ -89,51 +52,40 @@ abstract class DataProviderAbstract
      * @var RequestDataValidator
      */
     protected $validator;
+    /**
+     * @var SessionStorage
+     */
+    protected $sessionStorage;
 
     /**
      * DataProviderAbstract constructor.
-     * @param PaymentHelper $paymentHelper
-     * @param AddressRepositoryContract $addressRepo
-     * @param SessionStorage $sessionStorage
      * @param ItemRepositoryContract $itemRepo
-     * @param CountryRepositoryContract $countryRepo
      * @param ShippingInformationRepositoryContract $shippingRepo
-     * @param ContactRepositoryContract $contactRepositoryContract
      * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
-     * @param AccountRepositoryContract $accountRepositoryContract
      * @param ShopHelper $shopHelper
      * @param AddressHelper $addressHelper
      * @param ConfigAdapter $config
      * @param RequestDataValidator $validator
+     * @param SessionStorage $sessionStorage
      */
     public function __construct(
-        PaymentHelper $paymentHelper,
-        AddressRepositoryContract $addressRepo,
-        SessionStorage $sessionStorage,
         ItemRepositoryContract $itemRepo,
-        CountryRepositoryContract $countryRepo,
         ShippingInformationRepositoryContract $shippingRepo,
-        ContactRepositoryContract $contactRepositoryContract,
         FrontendSessionStorageFactoryContract $sessionStorageFactory,
-        AccountRepositoryContract $accountRepositoryContract,
         ShopHelper $shopHelper,
         AddressHelper $addressHelper,
         ConfigAdapter $config,
-        RequestDataValidator $validator
+        RequestDataValidator $validator,
+    SessionStorage $sessionStorage
     ) {
-        $this->paymentHelper = $paymentHelper;
-        $this->addressRepo = $addressRepo;
-        $this->sessionStorage = $sessionStorage;
         $this->itemRepo = $itemRepo;
-        $this->countryRepo = $countryRepo;
-        $this->shippingProviderRepository = $shippingRepo;
-        $this->contactRepo = $contactRepositoryContract;
+        $this->shippingRepo = $shippingRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
-        $this->accountRepositoryContract = $accountRepositoryContract;
         $this->shopHelper = $shopHelper;
         $this->addressHelper = $addressHelper;
         $this->config = $config;
         $this->validator = $validator;
+        $this->sessionStorage = $sessionStorage;
     }
 
     /**
@@ -251,7 +203,6 @@ abstract class DataProviderAbstract
             'lastname' => (string) $addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
-            'language' => $addressObj->country->lang,
             'ip' => (string) $this->shopHelper->getIpAddress(),
             'customerId' => (string) $customerId,
             'registrationDate' => '1970-01-01',
@@ -272,22 +223,19 @@ abstract class DataProviderAbstract
      *
      * @return array
      */
-    protected function getDefaultRequestData($paymentCode, $transactionId)
+    protected function getDefaultRequestData($paymentCode)
     {
         return [
             'paymentCode' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
-            'context' => $this->getApiContextParams($paymentCode, $transactionId),
+            'context' => $this->getApiContextParams(),
         ];
     }
 
     /**
-     * @param string $paymentCode
-     * @param $transactionId
-     *
      * @return array
      */
-    protected function getApiContextParams($paymentCode, $transactionId)
+    protected function getApiContextParams()
     {
         $apiContextParams = [];
 
@@ -363,7 +311,7 @@ abstract class DataProviderAbstract
      *
      * @return bool|string
      */
-    private function mapPaymentCode($paymentCode)
+    protected function mapPaymentCode($paymentCode)
     {
         return substr($paymentCode, 11);
     }
@@ -371,7 +319,7 @@ abstract class DataProviderAbstract
     /**
      * @return array
      */
-    private function getSystemInfo()
+    protected function getSystemInfo()
     {
         return [
             'vendor' => 'arvatis media GmbH',

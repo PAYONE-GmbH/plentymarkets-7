@@ -52,31 +52,18 @@ class Refund
 
     /**
      * Refund constructor.
-     *
-     * @param PaymentRepositoryContract $paymentRepository
-     * @param PaymentHelper $paymentHelper
      * @param Logger $logger
-     * @param PaymentCreation $paymentCreation
-     * @param PaymentHistory $paymentHistory
      * @param OrderRepositoryContract $orderRepo
      * @param RefundDataProvider $refundDataProvider
      * @param Api $api
      */
     public function __construct(
-        PaymentRepositoryContract $paymentRepository,
-        PaymentHelper $paymentHelper,
         Logger $logger,
-        PaymentCreation $paymentCreation,
-        PaymentHistory $paymentHistory,
         OrderRepositoryContract $orderRepo,
         RefundDataProvider $refundDataProvider,
         Api $api
     ) {
-        $this->paymentRepository = $paymentRepository;
-        $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
-        $this->paymentCreation = $paymentCreation;
-        $this->paymentHistory = $paymentHistory;
         $this->orderRepo = $orderRepo;
         $this->refundDataProvider = $refundDataProvider;
         $this->api = $api;

@@ -18,7 +18,6 @@ use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
-use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class PaymentHelper
@@ -42,10 +41,6 @@ class PaymentHelper
      */
     private $orderRepo;
 
-    /**
-     * @var ConfigRepository
-     */
-    private $configRepo;
 
     /**
      * PaymentHelper constructor.
@@ -53,18 +48,15 @@ class PaymentHelper
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
      * @param PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
      * @param OrderRepositoryContract $orderRepo
-     * @param ConfigRepository $configRepository
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
         PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo,
-        OrderRepositoryContract $orderRepo,
-        ConfigRepository $configRepository
+        OrderRepositoryContract $orderRepo
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentOrderRelationRepo = $paymentOrderRelationRepo;
         $this->orderRepo = $orderRepo;
-        $this->configRepo = $configRepository;
     }
 
     /**

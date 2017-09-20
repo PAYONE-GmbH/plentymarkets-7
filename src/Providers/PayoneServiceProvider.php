@@ -27,12 +27,10 @@ use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Plugin\Events\Dispatcher;
-use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\ServiceProvider;
 
 class PayoneServiceProvider extends ServiceProvider
 {
-    use Loggable;
 
     /**
      * Register the service provider.
@@ -75,7 +73,7 @@ class PayoneServiceProvider extends ServiceProvider
             $logger,
             $basket->load()
         );
-        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket->load());
 
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',
@@ -167,15 +165,12 @@ class PayoneServiceProvider extends ServiceProvider
                 $logger,
                 $basket
             ) {
+                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
                 if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
                     return;
                 }
                 $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
-                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent', [
-                    'payment' => $paymentCode,
-                    'basket' => $basket,
-                ]);
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
@@ -198,12 +193,13 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param PaymentService $paymentService
+     * @param Basket $basket
      */
     private function subscribeExecutePayment(
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
-        BasketRepositoryContract $basket
+        Basket $basket
     ) {
         // Listen for the event that executes the payment
         $eventDispatcher->listen(

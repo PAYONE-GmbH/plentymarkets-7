@@ -3,4 +3,4 @@
 composer.lock
 phpunit.ini
 /build/
-/phpunit.ini
+/.phan/

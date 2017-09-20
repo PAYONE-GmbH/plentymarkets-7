@@ -64,6 +64,7 @@ class PayoneServiceProvider extends ServiceProvider
     ) {
         $this->registerPaymentMethods($payContainer);
 
+        /*
         $this->registerPaymentRendering(
             $eventDispatcher,
             $paymentHelper,
@@ -74,6 +75,7 @@ class PayoneServiceProvider extends ServiceProvider
             $basket->load()
         );
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket->load());
+        */
 
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',

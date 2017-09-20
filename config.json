@@ -25,7 +25,7 @@
   },
   {
     "tab": "Grundeinstellungen",
-    "key": "mode",
+    "key": "",
     "label": "Modus",
     "type": "dropdown",
     "possibleValues": {
@@ -125,17 +125,6 @@
   },
   {
     "tab": "Rechnung",
-    "key": "PAYONE_PAYONE_INVOICE.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
-  },
-  {
-    "tab": "Rechnung",
     "key": "PAYONE_PAYONE_INVOICE.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -190,17 +179,6 @@
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
-  },
-  {
-    "tab": "Paydirekt",
-    "key": "PAYONE_PAYONE_PAYDIREKT.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
   },
   {
     "tab": "Paydirekt",
@@ -261,17 +239,6 @@
   },
   {
     "tab": "Payolution Ratenzahlung",
-    "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
-  },
-  {
-    "tab": "Payolution Ratenzahlung",
     "key": "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -326,17 +293,6 @@
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
-  },
-  {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
   },
   {
     "tab": "PayPal",
@@ -397,17 +353,6 @@
   },
   {
     "tab": "RatePay Ratenzahlung",
-    "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
-  },
-  {
-    "tab": "RatePay Ratenzahlung",
     "key": "PAYONE_PAYONE_RATEPAY_INSTALLMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -462,17 +407,6 @@
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
-  },
-  {
-    "tab": "Sofortüberweisung",
-    "key": "PAYONE_PAYONE_SOFORT.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
   },
   {
     "tab": "Sofortüberweisung",
@@ -533,17 +467,6 @@
   },
   {
     "tab": "Vorkasse",
-    "key": "PAYONE_PAYONE_PRE_PAYMENT.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
-  },
-  {
-    "tab": "Vorkasse",
     "key": "PAYONE_PAYONE_SOFORT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
@@ -598,17 +521,6 @@
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
-  },
-  {
-    "tab": "Nachnahme",
-    "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.mode",
-    "label": "Modus",
-    "type": "dropdown",
-    "possibleValues": {
-      "0": "Test",
-      "1": "Live"
-    },
-    "default": "0"
   },
   {
     "tab": "Nachnahme",

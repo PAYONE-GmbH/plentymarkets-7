@@ -178,7 +178,7 @@ class PayoneServiceProvider extends ServiceProvider
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
                 try {
-                    $paymentService->openTransaction($basket);
+                 //   $paymentService->openTransaction($basket);
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $event->setValue($paymentRenderer->render($payment, $errorMessage));

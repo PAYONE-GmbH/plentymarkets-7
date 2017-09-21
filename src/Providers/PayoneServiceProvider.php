@@ -157,6 +157,7 @@ class PayoneServiceProvider extends ServiceProvider
         Logger $logger,
         Basket $basket
     ) {
+        return;
         $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,

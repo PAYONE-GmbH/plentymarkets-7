@@ -72,7 +72,6 @@ abstract class DataProviderAbstract
         SessionStorage $sessionStorage
     ) {
         $this->itemRepo = $itemRepo;
-        $this->shippingRepo = $shippingRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
         $this->shopHelper = $shopHelper;
         $this->addressHelper = $addressHelper;
@@ -212,8 +211,6 @@ abstract class DataProviderAbstract
 
     /**
      * @param $paymentCode
-     * @param $transactionId
-     *
      * @return array
      */
     protected function getDefaultRequestData($paymentCode)

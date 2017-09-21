@@ -88,10 +88,10 @@ class Auth
             throw new \Exception('No Payone payment method');
         }
 
-        $authResponse = $this->doAuth($basket);
+        $authResponse = $this->doAuthFromBasket($basket);
 
         $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
-        $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->storePayment((string)$selectedPaymentId, $payment);
 
         return $authResponse;
     }
@@ -131,29 +131,6 @@ class Auth
      *
      * @return Response
      */
-    private function doAuth(Basket $basket): Response
-    {
-        try {
-            //TODO: have nice error messages for customer
-            $authResponse = $this->doAuthFromBasket($basket);
-        } catch (\Exception $e) {
-            $this->logger->logException($e);
-            throw $e;
-        }
-        if (!($authResponse instanceof Response) || !$authResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! Auth request failed.');
-        }
-
-        return $authResponse;
-    }
-
-    /**
-     * @param Basket $basket
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
     private function doAuthFromBasket(Basket $basket)
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
@@ -164,8 +141,16 @@ class Auth
         );
 
         $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
-        $response = $this->api->doAuth($requestData);
+        try {
+            $authResponse = $this->api->doAuth($requestData);
 
-        return $response;
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            throw $e;
+        }
+        if (!($authResponse instanceof Response) || !$authResponse->getSuccess()) {
+            throw new \Exception('The payment could not be executed! Auth request failed.');
+        }
+        return $authResponse;
     }
 }

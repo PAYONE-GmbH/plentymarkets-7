@@ -80,10 +80,10 @@ class PreAuth
             throw new \Exception('No Payone payment method');
         }
 
-        $preAuthResponse = $this->doPreAuth($basket);
+        $preAuthResponse = $this->doPreAuthFromBasket($basket);
 
         $payment = $this->createPayment($selectedPaymentId, $preAuthResponse, $basket);
-        $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->storePayment((string)$selectedPaymentId, $payment);
 
         return $preAuthResponse;
     }
@@ -116,28 +116,7 @@ class PreAuth
         return $plentyPayment;
     }
 
-    /**
-     * @param Basket $basket
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    private function doPreAuth(Basket $basket): Response
-    {
-        try {
-            //TODO: have nice error messages for customer
-            $preAuthResponse = $this->doPreAuthFromBasket($basket);
-        } catch (\Exception $e) {
-            $this->logger->logException($e);
-            throw $e;
-        }
-        if (!($preAuthResponse instanceof Response) || !$preAuthResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! PreAuth request failed.');
-        }
 
-        return $preAuthResponse;
-    }
 
     /**
      * @param Basket $basket
@@ -154,10 +133,16 @@ class PreAuth
             'Api.doPreAuth',
             ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
         );
-
-        $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket, '');
-        $response = $this->api->doPreAuth($requestData);
-
-        return $response;
+        try {
+            $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket, '');
+            $preAuthResponse = $this->api->doPreAuth($requestData);
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            throw $e;
+        }
+        if (!($preAuthResponse instanceof Response) || !$preAuthResponse->getSuccess()) {
+            throw new \Exception('The payment could not be executed! PreAuth request failed.');
+        }
+        return $preAuthResponse;
     }
 }

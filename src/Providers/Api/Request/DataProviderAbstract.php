@@ -16,7 +16,6 @@ use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
-use Plenty\Modules\Order\Shipping\Information\Contracts\ShippingInformationRepositoryContract;
 
 /**
  * Class DataProviderAbstract
@@ -32,10 +31,6 @@ abstract class DataProviderAbstract
      * @var ItemRepositoryContract
      */
     protected $itemRepo;
-    /**
-     * @var ShippingInformationRepositoryContract
-     */
-    protected $shippingRepo;
     /**
      * @var ShopHelper
      */
@@ -60,7 +55,6 @@ abstract class DataProviderAbstract
     /**
      * DataProviderAbstract constructor.
      * @param ItemRepositoryContract $itemRepo
-     * @param ShippingInformationRepositoryContract $shippingRepo
      * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
      * @param ShopHelper $shopHelper
      * @param AddressHelper $addressHelper
@@ -70,13 +64,12 @@ abstract class DataProviderAbstract
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
-        ShippingInformationRepositoryContract $shippingRepo,
         FrontendSessionStorageFactoryContract $sessionStorageFactory,
         ShopHelper $shopHelper,
         AddressHelper $addressHelper,
         ConfigAdapter $config,
         RequestDataValidator $validator,
-    SessionStorage $sessionStorage
+        SessionStorage $sessionStorage
     ) {
         $this->itemRepo = $itemRepo;
         $this->shippingRepo = $shippingRepo;
@@ -174,9 +167,9 @@ abstract class DataProviderAbstract
             $amount = $orderItemData['amounts'][0];
             $priceGross = $amount->priceGross;
             $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int) round($tax * 100);
+            $orderItemData['tax'] = (int)round($tax * 100);
 
-            $orderItemData['price'] = (int) round($priceGross * 100);
+            $orderItemData['price'] = (int)round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -198,17 +191,17 @@ abstract class DataProviderAbstract
             return ['customerId' => $customerId];
         }
         $customerData = [
-            'email' => (string) $addressObj->email,
-            'firstname' => (string) $addressObj->firstName,
-            'lastname' => (string) $addressObj->lastName,
+            'email' => (string)$addressObj->email,
+            'firstname' => (string)$addressObj->firstName,
+            'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
-            'ip' => (string) $this->shopHelper->getIpAddress(),
-            'customerId' => (string) $customerId,
+            'ip' => (string)$this->shopHelper->getIpAddress(),
+            'customerId' => (string)$customerId,
             'registrationDate' => '1970-01-01',
             'group' => 'default',
-            'company' => (string) $addressObj->companyName,
-            'telephonenumber' => (string) $addressObj->phone,
+            'company' => (string)$addressObj->companyName,
+            'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
         //TODO: Check format
@@ -284,7 +277,7 @@ abstract class DataProviderAbstract
     protected function getBasketData(Basket $basket)
     {
         $requestParams = $basket->toArray();
-        $requestParams['currency'] = (bool) $basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
+        $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
         $requestParams['grandTotal'] = $basket->basketAmount;
         $requestParams['cartId'] = $basket->id;
 
@@ -299,7 +292,7 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
         $requestParams['cartId'] = $order->id;
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 

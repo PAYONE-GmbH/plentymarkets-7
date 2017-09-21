@@ -13,7 +13,6 @@ use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\PluginConstants;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
@@ -37,26 +36,17 @@ class PaymentHelper
     private $paymentOrderRelationRepo;
 
     /**
-     * @var OrderRepositoryContract
-     */
-    private $orderRepo;
-
-
-    /**
      * PaymentHelper constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
      * @param PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
-     * @param OrderRepositoryContract $orderRepo
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
-        PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo,
-        OrderRepositoryContract $orderRepo
+        PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentOrderRelationRepo = $paymentOrderRelationRepo;
-        $this->orderRepo = $orderRepo;
     }
 
     /**

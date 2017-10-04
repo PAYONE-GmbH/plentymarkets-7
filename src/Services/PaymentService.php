@@ -46,15 +46,18 @@ class PaymentService
      * @param Auth $authService
      * @param PreAuth $preAuthService
      * @param ApiResponseCache $responseCache
+     * @param ConfigAdapter $config
      */
     public function __construct(
         AuthService $authService,
         PreAuth $preAuthService,
-        ApiResponseCache $responseCache
+        ApiResponseCache $responseCache,
+        ConfigAdapter $config
     ) {
         $this->authService = $authService;
         $this->preAuthService = $preAuthService;
         $this->responseCache = $responseCache;
+        $this->config = $config;
     }
 
     /**

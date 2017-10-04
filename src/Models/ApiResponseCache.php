@@ -6,7 +6,6 @@ use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
-use Payone\Models\Api\Response;
 use Payone\Services\Api;
 
 class ApiResponseCache
@@ -59,7 +58,7 @@ class ApiResponseCache
         if (
             $sessionData
             && isset($sessionData['response'])
-            && $sessionData['response'] instanceof Response
+            && $sessionData['response'] instanceof AuthResponse
         ) {
             return $sessionData['response'];
         }
@@ -70,7 +69,7 @@ class ApiResponseCache
      * @param $response
      * @param $updatedAt
      */
-    public function storeAuth($paymentCode, Response $response, $updatedAt = null)
+    public function storeAuth($paymentCode, AuthResponse $response, $updatedAt = null)
     {
         $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);
         $this->sessionStorage->setSessionValue(

@@ -2,7 +2,6 @@
 
 namespace Payone\Providers\Api\Request;
 
-use Plenty\Modules\Frontend\Events\FrontendUpdateInvoiceAddress;
 use Plenty\Modules\Order\Models\Order;
 
 /**
@@ -10,8 +9,6 @@ use Plenty\Modules\Order\Models\Order;
  */
 class CaptureDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
-    /** @var FrontendUpdateInvoiceAddress */
-    protected $invoice;
 
     /**
      * {@inheritdoc}

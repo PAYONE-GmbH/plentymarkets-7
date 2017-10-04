@@ -74,9 +74,8 @@ class PayoneServiceProvider extends ServiceProvider
             $logger,
             $basket->load()
         );
-        /*
+
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket->load());
-        */
 
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',

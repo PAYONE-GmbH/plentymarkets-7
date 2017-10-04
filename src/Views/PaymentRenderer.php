@@ -46,10 +46,12 @@ class PaymentRenderer
      */
     public function render(PaymentAbstract $payment, $message)
     {
+
+        return '';//no payment with additional data available yet
+
         if (!$payment instanceof PaymentAbstract) {
             throw new \Exception('Payment method is not a Payone payment. Can not render it.');
         }
-
         return $this->twig->render(
             PluginConstants::NAME . '::Partials.PaymentMethod',
             [

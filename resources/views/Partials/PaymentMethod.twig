@@ -1,0 +1,45 @@
+{# @var paymentMethod \Payone\Methods\PaymentAbstract #}
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/plugin-payment-Payone.css">
+{{ errorMessage|raw }}
+<div id="PayoneSpinner" class="overlay" style="display: none">
+    {% include "Ceres::ItemList.Partials.LoadingAnimationSpinner" ignore missing %}
+</div>
+<div id="PayonePaymentModal" class="method-presentation">
+    <div class="method-title">
+        <div class="method-option form-check-label">
+            <h3>{{ paymentMethod.name }}:</h3>
+            <div class="method-icon">
+                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon">
+            </div>
+            <div class="description">{{ paymentMethod.description }}</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var Templates = {};
+
+    Templates.locale = '{{ locale }}';
+    Templates.errorMessage =
+        '<div id="checkoutError" class="row is-table-row error">' +
+        '     <div class="col-sm-12">' +
+        '        <p>' +
+        '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+        '        </p>' +
+        '        <p>' +
+        '                <span class="text-muted">' +
+        '                       {% if isDebugModeEnabled %}' +
+        '                           {errorMessage}' +
+        '                       {% else %}' +
+        '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+        '                       {% endif %}' +
+        '                </span>' +
+        '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+        '                <i class="fa fa-arrow-right"' +
+        '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+        '        </button></a>'+
+        '        </p>' +
+        '    </div>' +
+        '</div>';
+</script>
+<script src="{{ plugin_path('Payone') }}/js/plugin-payment-Payone.js"></script>

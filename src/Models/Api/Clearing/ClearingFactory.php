@@ -8,11 +8,11 @@ namespace Payone\Models\Api\Clearing;
 class ClearingFactory
 {
     /**
-     * @param array $responseData
+     * @param array|null $responseData
      *
      * @return ClearingAbstract
      */
-    public static function create(array $responseData)
+    public static function create($responseData)
     {
         if (!($responseData['clearing_bankaccount'] ?? false)) {
             return pluginApp(EmptyClearing::class);

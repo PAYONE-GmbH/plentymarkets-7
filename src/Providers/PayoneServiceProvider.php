@@ -72,10 +72,10 @@ class PayoneServiceProvider extends ServiceProvider
             $paymentRenderer,
             $content,
             $logger,
-            $basket->load()
+            $basket
         );
 
-        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket->load());
+        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
 
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',
@@ -154,9 +154,8 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentRenderer $paymentRenderer,
         PaymentMethodContent $content,
         Logger $logger,
-        Basket $basket
+        BasketRepositoryContract $basketRepository
     ) {
-        return;
         $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,
@@ -166,7 +165,7 @@ class PayoneServiceProvider extends ServiceProvider
                 $paymentRenderer,
                 $content,
                 $logger,
-                $basket
+                $basketRepository
             ) {
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
@@ -178,7 +177,7 @@ class PayoneServiceProvider extends ServiceProvider
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
                 try {
-                 //   $paymentService->openTransaction($basket);
+                    $paymentService->openTransaction($basketRepository->load());
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $event->setValue($paymentRenderer->render($payment, $errorMessage));
@@ -202,7 +201,7 @@ class PayoneServiceProvider extends ServiceProvider
         Dispatcher $eventDispatcher,
         PaymentHelper $paymentHelper,
         PaymentService $paymentService,
-        Basket $basket
+        BasketRepositoryContract $basket
     ) {
         // Listen for the event that executes the payment
         $eventDispatcher->listen(

@@ -3,6 +3,7 @@
 namespace Payone\Services;
 
 use Payone\Adapter\Logger;
+use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\Api\ResponseFactory;
@@ -53,9 +54,9 @@ class Api
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return AuthResponse
      */
-    public function doAuth($requestParams): Response
+    public function doAuth($requestParams): AuthResponse
     {
         return $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
     }
@@ -65,9 +66,9 @@ class Api
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return AuthResponse
      */
-    public function doPreAuth($requestParams): Response
+    public function doPreAuth($requestParams): AuthResponse
     {
         return $this->doLibCall((self::REQUEST_TYPE_PRE_AUTH), $requestParams);
     }
@@ -122,7 +123,7 @@ class Api
      * @param string $call request type
      * @param $requestParams
      *
-     * @return Response|ResponseAbstract
+     * @return Response|ResponseAbstract|AuthResponse
      */
     public function doLibCall($call, $requestParams): ResponseAbstract
     {

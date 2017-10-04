@@ -5,6 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Response;
 use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\AuthDataProvider;
@@ -78,7 +79,7 @@ class Auth
     /**
      * @param Basket $basket
      *
-     * @return Response
+     * @return AuthResponse
      */
     public function executeAuth(Basket $basket)
     {
@@ -129,7 +130,7 @@ class Auth
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return AuthResponse
      */
     private function doAuthFromBasket(Basket $basket)
     {
@@ -148,7 +149,7 @@ class Auth
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($authResponse instanceof Response) || !$authResponse->getSuccess()) {
+        if (!($authResponse instanceof AuthResponse) || !$authResponse->getSuccess()) {
             throw new \Exception('The payment could not be executed! Auth request failed.');
         }
         return $authResponse;

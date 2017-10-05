@@ -15,6 +15,7 @@ use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
 use Payone\Services\PaymentService;
+use Payone\Views\ErrorMessageRenderer;
 use Payone\Views\PaymentRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
@@ -50,6 +51,7 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentMethodContent $content
      * @param Logger $logger
      * @param EventProceduresService $eventProceduresService
+     * @param ErrorMessageRenderer $errorMessageRenderer
      */
     public function boot(
         Dispatcher $eventDispatcher,
@@ -60,7 +62,8 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentRenderer $paymentRenderer,
         PaymentMethodContent $content,
         Logger $logger,
-        EventProceduresService $eventProceduresService
+        EventProceduresService $eventProceduresService,
+        ErrorMessageRenderer $errorMessageRenderer
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -72,7 +75,8 @@ class PayoneServiceProvider extends ServiceProvider
             $paymentRenderer,
             $content,
             $logger,
-            $basket
+            $basket,
+            $errorMessageRenderer
         );
 
         $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
@@ -154,7 +158,8 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentRenderer $paymentRenderer,
         PaymentMethodContent $content,
         Logger $logger,
-        BasketRepositoryContract $basketRepository
+        BasketRepositoryContract $basketRepository,
+        ErrorMessageRenderer $errorMessageRenderer
     ) {
         $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
@@ -165,7 +170,8 @@ class PayoneServiceProvider extends ServiceProvider
                 $paymentRenderer,
                 $content,
                 $logger,
-                $basketRepository
+                $basketRepository,
+                $errorMessageRenderer
             ) {
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
@@ -180,7 +186,8 @@ class PayoneServiceProvider extends ServiceProvider
                     $paymentService->openTransaction($basketRepository->load());
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
-                    $event->setValue($paymentRenderer->render($payment, $errorMessage));
+                    $logger->logException($e);
+                    $event->setValue($errorMessageRenderer->render($errorMessage));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
 
                     return;

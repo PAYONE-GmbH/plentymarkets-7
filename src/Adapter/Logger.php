@@ -2,6 +2,7 @@
 
 namespace Payone\Adapter;
 
+use Payone\Helpers\ShopHelper;
 use Payone\PluginConstants;
 use Plenty\Log\Contracts\LoggerContract;
 use Plenty\Plugin\Log\Loggable;
@@ -17,12 +18,18 @@ class Logger //implements LoggerContract
      * @var string
      */
     private $identifier;
+    /**
+     * @var ShopHelper
+     */
+    private $shopHelper;
 
     /**
      * Logger constructor.
+     * @param ShopHelper $shopHelper
      */
-    public function __construct()
-    {
+    public function __construct(ShopHelper $shopHelper
+    ) {
+        $this->shopHelper = $shopHelper;
         $this->identifier = __CLASS__;
     }
 
@@ -48,6 +55,9 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
+        if ($this->shopHelper->isDebugModeActive()) {
+            return $this->critical($code, $additionalInfo);
+        }
         return $this->getLogger($this->identifier)->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -61,6 +71,9 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
+        if ($this->shopHelper->isDebugModeActive()) {
+            return $this->critical($code, $additionalInfo);
+        }
         return $this->getLogger($this->identifier)->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -74,6 +87,9 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
+        if ($this->shopHelper->isDebugModeActive()) {
+            return $this->critical($code, $additionalInfo);
+        }
         return $this->getLogger($this->identifier)->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -87,6 +103,9 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
+        if ($this->shopHelper->isDebugModeActive()) {
+            return $this->critical($code, $additionalInfo);
+        }
         return $this->getLogger($this->identifier)->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -191,7 +210,9 @@ class Logger //implements LoggerContract
     }
 
     /**
-     * Report information.
+     * @param string $code
+     * @param null $additionalInfo
+     * @return mixed
      */
     public function report(
         string $code,

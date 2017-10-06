@@ -5,6 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\Response;
+use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\BankAccount;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
@@ -86,7 +87,7 @@ class PaymentCreation
      *
      * @return Payment
      */
-    public function createPayment($mopId, Response $response, Basket $basket, BankAccount $account = null)
+    public function createPayment($mopId, ResponseAbstract $response, Basket $basket, BankAccount $account = null)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.createPayment',

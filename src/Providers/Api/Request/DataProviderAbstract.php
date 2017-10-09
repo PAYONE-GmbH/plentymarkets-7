@@ -303,7 +303,7 @@ abstract class DataProviderAbstract
      */
     protected function mapPaymentCode($paymentCode)
     {
-        return str_replace_first('PAYONE_PAYONE_', '', $paymentCode);
+        return str_replace('PAYONE_PAYONE_', '', $paymentCode);
     }
 
     /**

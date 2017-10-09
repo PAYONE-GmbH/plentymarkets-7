@@ -12,8 +12,11 @@ use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
+use Payone\Services\Capture;
+use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentService;
 use Payone\Views\ErrorMessageRenderer;
 use Payone\Views\PaymentRenderer;
@@ -24,9 +27,12 @@ use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
+use Plenty\Modules\Order\Events\OrderCreated;
+use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
+use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 
@@ -63,7 +69,9 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentMethodContent $content,
         Logger $logger,
         EventProceduresService $eventProceduresService,
-        ErrorMessageRenderer $errorMessageRenderer
+        ErrorMessageRenderer $errorMessageRenderer,
+        PaymentCreation $paymentCreationService,
+        PaymentCache $paymentCache
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -79,7 +87,13 @@ class PayoneServiceProvider extends ServiceProvider
             $errorMessageRenderer
         );
 
-        $this->subscribeExecutePayment($eventDispatcher, $paymentHelper, $paymentService, $basket);
+        $this->registerOrderCreationEvents(
+            $eventDispatcher,
+            $paymentHelper,
+            $logger,
+            $paymentCreationService,
+            $paymentCache
+        );
 
         $captureProcedureTitle = [
             'de' => PluginConstants::NAME . ' | Bestellung erfassen',
@@ -217,6 +231,50 @@ class PayoneServiceProvider extends ServiceProvider
                 if (!in_array($event->getMop(), $paymentHelper->getMops())) {
                     return;
                 }
+            }
+        );
+    }
+
+    /**
+     * @param Dispatcher $eventDispatcher
+     * @param PaymentHelper $paymentHelper
+     * @param Logger $logger
+     * @param Capture $captureService
+     * @param PaymentCreation $paymentCreationService
+     */
+    private function registerOrderCreationEvents(
+        Dispatcher $eventDispatcher,
+        PaymentHelper $paymentHelper,
+        Logger $logger,
+        PaymentCreation $paymentCreationService,
+        PaymentCache $paymentCache
+    ) {
+        $logger = $logger->setIdentifier(__METHOD__);
+        $eventDispatcher->listen(OrderCreated::class,
+            function (OrderCreated $event) use (
+                $paymentHelper,
+                $logger,
+                $paymentCreationService,
+                $paymentCache
+            ) {
+                $order = $event->getOrder();
+                $logger->info('Event.orderCreated', [$order, $order->id]);
+                if ($order->typeId != OrderType::TYPE_SALES_ORDER) {
+                    return;
+                }
+                $selectedPaymentId = $order->methodOfPaymentId;
+                if (!$selectedPaymentId || !$paymentHelper->isPayonePayment($selectedPaymentId)) {
+                    return;
+                }
+                $payment = $paymentCache->loadPayment($selectedPaymentId);
+                if (!($payment instanceof Payment)) {
+                    $message = 'Payment could not be assigned to order.';
+                    $logger->error($message, $payment);
+                    throw new \Exception($message);
+                }
+                $paymentCreationService->assignPaymentToOrder($payment, $order);
+                $paymentCache->deletePayment($selectedPaymentId);
+
             }
         );
     }

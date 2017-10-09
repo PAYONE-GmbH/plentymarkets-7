@@ -25,14 +25,14 @@
   },
   {
     "tab": "Grundeinstellungen",
-    "key": "",
+    "key": "mode",
     "label": "Modus",
     "type": "dropdown",
     "possibleValues": {
-      "0": "Live",
-      "1": "Test"
+      "0": "Test",
+      "1": "Live"
     },
-    "default": "1"
+    "default": "0"
   },
   {
     "tab": "Grundeinstellungen",

@@ -234,7 +234,7 @@ abstract class DataProviderAbstract
         $apiContextParams['portalid'] = $this->config->get('portalid');
         $apiContextParams['key'] = $this->config->get('key');
         $mode = $this->config->get('mode');
-        $apiContextParams['mode'] = ($mode == 1) ? 'test' : 'live';
+        $apiContextParams['mode'] = ($mode == 1) ? 'live' : 'test';
 
         return $apiContextParams;
     }

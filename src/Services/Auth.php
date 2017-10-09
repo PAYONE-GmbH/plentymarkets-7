@@ -144,7 +144,6 @@ class Auth
         $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
         try {
             $authResponse = $this->api->doAuth($requestData);
-
         } catch (\Exception $e) {
             $this->logger->logException($e);
             throw $e;

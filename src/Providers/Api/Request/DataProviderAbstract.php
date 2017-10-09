@@ -216,7 +216,7 @@ abstract class DataProviderAbstract
     protected function getDefaultRequestData($paymentCode)
     {
         return [
-            'paymentCode' => $this->mapPaymentCode($paymentCode),
+            'paymentMethod' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
             'context' => $this->getApiContextParams(),
         ];

@@ -11,9 +11,9 @@ use Payone\Services\Api;
 class ResponseFactory
 {
     /**
+     * @param string $transactionType
      * @param array $responseData
-     *
-     * @return Response
+     * @return ResponseAbstract|Response|AuthResponse
      */
     public static function create(string $transactionType, array $responseData)
     {
@@ -33,9 +33,9 @@ class ResponseFactory
             $response = pluginApp(AuthResponse::class);
 
             return $response->init(
-                isset($responseData['success']) ?? false,
-                isset($responseData['errorMessage']) ?? '',
-                isset($responseData['transactionID']) ?? '',
+                $responseData['success'] ?? false,
+                $responseData['errorMessage'] ?? '',
+                $responseData['transactionID'] ?? '',
                 $clearing
             );
         }
@@ -45,17 +45,16 @@ class ResponseFactory
 
     /**
      * @param array $responseData
-     *
-     * @return $this
+     * @return Response
      */
     private static function createGenericResponse(array $responseData): Response
     {
         /** @var Response $response */
         $response = pluginApp(Response::class);
 
-        $success = isset($responseData['success']) ?? false;
-        $errorMessage = isset($responseData['errorMessage']) ?? '';
-        $transactionID = isset($responseData['transactionID']) ?? '';
+        $success = $responseData['success'] ?? false;
+        $errorMessage = $responseData['errorMessage'] ?? '';
+        $transactionID = $responseData['transactionID'] ?? '';
 
         return $response->init($success, $errorMessage, $transactionID);
     }

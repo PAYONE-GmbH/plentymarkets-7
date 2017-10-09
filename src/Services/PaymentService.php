@@ -81,17 +81,17 @@ class PaymentService
         }
 
         if ($authType == self::AUTH_TYPE_AUTH) {
-            $executeResponse = $this->authService->executeAuth($basket);
+            $authResponse = $this->authService->executeAuth($basket);
         } else {
-            $executeResponse = $this->preAuthService->executePreAuth($basket);
+            $authResponse = $this->preAuthService->executePreAuth($basket);
         }
-        if (!$executeResponse->getSuccess()) {
+        if (!$authResponse->getSuccess()) {
             throw new \Exception(
-                $executeResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment and retry'
+                $authResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment and retry'
             );
         }
-        $this->responseCache->storeAuth($selectedPaymentMopId, $executeResponse);
+        $this->responseCache->storeAuth($selectedPaymentMopId, $authResponse);
 
-        return $executeResponse;
+        return $authResponse;
     }
 }

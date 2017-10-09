@@ -275,7 +275,12 @@ abstract class DataProviderAbstract
     {
         $requestParams = $basket->toArray();
         $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
-        $requestParams['grandTotal'] = $basket->basketAmount;
+        $requestParams['grandTotal'] = (int)round($basket->basketAmount*100);
+        $requestParams['itemSumNet'] = (int)round($basket->itemSumNet * 100);
+        $requestParams['basketAmount'] = (int)round($basket->basketAmount* 100);
+        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet* 100);
+        $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
+        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet* 100);
         $requestParams['cartId'] = $basket->id;
 
         return $requestParams;
@@ -290,6 +295,11 @@ abstract class DataProviderAbstract
     {
         $requestParams = $order->toArray();
         $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['itemSumNet'] = (int)round($requestParams['amounts'][0]['itemSumNet'] * 100);
+        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['basketAmount'] * 100);
+        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
+        $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
+        $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
         $requestParams['cartId'] = $order->id;
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 

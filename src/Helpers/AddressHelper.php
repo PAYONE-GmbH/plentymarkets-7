@@ -93,6 +93,7 @@ class AddressHelper
         $data['houseNumber'] = $address->houseNumber;
         $data['country'] =$address->country->isoCode2;
         $data['addressaddition'] = $address->address3;
+        $data['company'] = $address->companyName;
 
         return $data;
     }

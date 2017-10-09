@@ -25,7 +25,7 @@ class doPreAuthTest extends doRequestAbstract
       "mode":"test"
    },
    "basket":{
-      "id":7544,
+      "id":"{$uniqueTransactionId}",
       "sessionId":"ff12cae0696f6a8ea0362edca7786824560f7ffe",
       "orderId":null,
       "customerId":null,
@@ -203,10 +203,7 @@ class doPreAuthTest extends doRequestAbstract
       "url":"https:\/\/arvatis.plentymarkets-cloud01.com\/",
       "module":"plentymarkets 7 Payone plugin",
       "module_version":1
-   },   
-   "order":{
-      "orderId":"{$uniqueTransactionId}"
-      }
+   }
 }
 JSON;
     }

@@ -24,12 +24,10 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
-use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Order\Events\OrderCreated;
 use Plenty\Modules\Order\Models\OrderType;
-use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Modules\Payment\Models\Payment;
@@ -212,30 +210,7 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * @param Dispatcher $eventDispatcher
-     * @param PaymentHelper $paymentHelper
-     * @param PaymentService $paymentService
-     * @param Basket $basket
-     */
-    private function subscribeExecutePayment(
-        Dispatcher $eventDispatcher,
-        PaymentHelper $paymentHelper,
-        PaymentService $paymentService,
-        BasketRepositoryContract $basket
-    ) {
-        // Listen for the event that executes the payment
-        $eventDispatcher->listen(
-            ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $basket) {
-                if (!in_array($event->getMop(), $paymentHelper->getMops())) {
-                    return;
-                }
-            }
-        );
-    }
-
-    /**
+     /**
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger

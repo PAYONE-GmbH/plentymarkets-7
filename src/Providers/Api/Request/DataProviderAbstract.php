@@ -275,13 +275,13 @@ abstract class DataProviderAbstract
     {
         $requestParams = $basket->toArray();
         $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
-        $requestParams['grandTotal'] = (int)round($basket->basketAmount*100);
+        $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
         $requestParams['itemSumNet'] = (int)round($basket->itemSumNet * 100);
-        $requestParams['basketAmount'] = (int)round($basket->basketAmount* 100);
-        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet* 100);
+        $requestParams['basketAmount'] = (int)round($basket->basketAmount * 100);
+        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
         $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
-        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet* 100);
-        $requestParams['cartId'] = $basket->id;
+        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
+        $requestParams['id'] = substr($basket->id . '-' . uniqid(), 0, 20); // workaround for basketid not beeing updated
 
         return $requestParams;
     }
@@ -300,7 +300,6 @@ abstract class DataProviderAbstract
         $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
         $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
         $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
-        $requestParams['cartId'] = $order->id;
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
         return $requestParams;

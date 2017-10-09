@@ -281,7 +281,7 @@ abstract class DataProviderAbstract
         $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
         $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
         $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
-        $requestParams['id'] = substr($basket->id . '-' . uniqid(), 0, 20); // workaround for basketid not beeing updated
+        $requestParams['id'] = substr($basket->id . '-' . time(), 0, 20); // workaround for basketid not beeing updated
 
         return $requestParams;
     }

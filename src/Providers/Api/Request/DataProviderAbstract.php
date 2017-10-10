@@ -281,9 +281,16 @@ abstract class DataProviderAbstract
         $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
         $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
         $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
-        $requestParams['id'] = substr(// workaround for basketid not beeing updated
-            $basket->id . '-' . substr(strlen($basket->id + 1), strlen('' . time()), '' . time()), 0, 14
-        );
+        $basketId = $basket->id . '-';
+        $maxLengthAll = 14;
+        $lengthTime = strlen('' . time());
+        $maxLengthTime = $maxLengthAll - strlen($basketId);
+        $time = time() . '';
+        if ($maxLengthTime < $lengthTime) {
+            $time = substr($time, $lengthTime - $maxLengthTime, $lengthTime);
+        }
+        // workaround for basketid not beeing updated
+        $requestParams['id'] = $basketId . $time;
 
         return $requestParams;
     }

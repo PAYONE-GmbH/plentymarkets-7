@@ -2,6 +2,7 @@
 
 namespace Payone\Models\Api;
 
+use Payone\Adapter\Logger;
 use Payone\Models\Api\Clearing\ClearingFactory;
 use Payone\Services\Api;
 
@@ -17,6 +18,15 @@ class ResponseFactory
      */
     public static function create(string $transactionType, array $responseData)
     {
+        /** @var Logger $logger */
+        $logger = pluginApp(Logger::class);
+        $logger->setIdentifier(__METHOD__)->debug(
+            'Factory.createApiResponse',
+            [
+                'transactionType' => $transactionType,
+                'responseData' => $responseData,
+            ]
+        );
         $genericResponse = self::createGenericResponse($responseData);
 
         if (

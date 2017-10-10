@@ -287,7 +287,7 @@ abstract class DataProviderAbstract
         $maxLengthTime = $maxLengthAll - strlen($basketId);
         $time = time() . '';
         if ($maxLengthTime < $lengthTime) {
-            $time = substr($time, $lengthTime - $maxLengthTime, $lengthTime);
+            $time = substr($time, $lengthTime - $maxLengthTime - 1, $lengthTime);
         }
         // workaround for basketid not beeing updated
         $requestParams['id'] = $basketId . $time;

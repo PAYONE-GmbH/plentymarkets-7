@@ -154,7 +154,7 @@ class PaymentHelper
     public function getPaymentPropertyValue($payment, $propertyTypeConstant)
     {
         $properties = $payment->properties;
-        if (!($properties->count() > 0) || !(is_array($properties) && count($properties) > 0)) {
+        if (!($properties->count() > 0) && !(is_array($properties) && count($properties) > 0)) {
             return '';
         }
         /* @var $property PaymentProperty */

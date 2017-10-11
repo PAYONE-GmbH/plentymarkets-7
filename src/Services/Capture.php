@@ -108,7 +108,11 @@ class Capture
             if (!$preAuthReference) {
                 $this->logger->error(
                     'Api.doCapture',
-                    ['order' => $order, 'payment' => $payment]
+                    [
+                        'order' => $order,
+                        'payment' => $payment,
+                        'payment_properties' => $payment->properties,
+                    ]
                 );
                 //TODO: localise
                 $text = 'Capture failed. No PreAuth';

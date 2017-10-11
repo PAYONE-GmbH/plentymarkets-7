@@ -31,6 +31,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['invoice'] = $this->getInvoiceData();
         $requestParams['order'] = $this->getOrderData($order);
         $requestParams['tracking'] = $this->getTrackingData($order->id);
+        $requestParams['context']['capturemode'] = $this->getCaptureMode($order);
 
         $this->validator->validate($requestParams);
 
@@ -62,5 +63,10 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     {
         //TODO:
         return [];
+    }
+
+    private function getCaptureMode(Order $order)
+    {
+        return 'completed';//TODO: do partial captures
     }
 }

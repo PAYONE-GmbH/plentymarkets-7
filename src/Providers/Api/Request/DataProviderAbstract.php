@@ -281,16 +281,10 @@ abstract class DataProviderAbstract
         $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
         $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
         $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
-        $basketId = $basket->id . '-';
-        $maxLengthAll = 14;
-        $lengthTime = strlen('' . time());
-        $maxLengthTime = $maxLengthAll - strlen($basketId);
-        $time = time() . '';
-        if ($maxLengthTime < $lengthTime) {
-            $time = substr($time, $lengthTime - $maxLengthTime - 1, $lengthTime);
-        }
-        // workaround for basketid not beeing updated
-        $requestParams['id'] = $basketId . $time;
+
+        $uniqueBasketId = $this->getUniqueBasketId($basket->id );
+
+        $requestParams['id'] = $uniqueBasketId;
 
         return $requestParams;
     }
@@ -337,5 +331,23 @@ abstract class DataProviderAbstract
             'module' => 'plentymarkets 7 Payone plugin',
             'module_version' => 1,
         ];
+    }
+
+    /**
+     * @param $basketId
+     * @return string
+     */
+    public function getUniqueBasketId($basketId): string
+    {
+        $maxLengthAll = 12;
+        $lengthTime = strlen('' . time());
+        $maxLengthTime = $maxLengthAll - strlen($basketId);
+        $time = time() . '';
+        if ($maxLengthTime < $lengthTime) {
+            $time = substr($time, $lengthTime - $maxLengthTime, $lengthTime);
+        }
+        // workaround for basketid not beeing updated
+        $uniqueBasketId = $basketId . '-' . $time;
+        return $uniqueBasketId;
     }
 }

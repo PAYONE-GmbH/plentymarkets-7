@@ -162,7 +162,7 @@ class PaymentHelper
             if (!($property instanceof PaymentProperty)) {
                 continue;
             }
-            if ($property->typeId === $propertyTypeConstant) {
+            if ($property->typeId == $propertyTypeConstant) {
                 return (string)$property->value;
             }
         }

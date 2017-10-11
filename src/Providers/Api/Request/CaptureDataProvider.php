@@ -32,6 +32,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['order'] = $this->getOrderData($order);
         $requestParams['tracking'] = $this->getTrackingData($order->id);
         $requestParams['context']['capturemode'] = $this->getCaptureMode($order);
+        $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
 
         $this->validator->validate($requestParams);
 
@@ -68,5 +69,10 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     private function getCaptureMode(Order $order)
     {
         return 'completed';//TODO: do partial captures
+    }
+
+    private function getSequenceNumber($order)
+    {
+        return 1;//TODO: persist sequencenumber per order
     }
 }

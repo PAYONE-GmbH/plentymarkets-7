@@ -145,7 +145,8 @@ class Refund
                     $paymentCode,
                     $originalOrder,
                     $order,
-                    $preAuth);
+                    $preAuth
+                );
             } else {
                 $refundPaymentResult = $this->refundOrder($paymentCode, $order, $preAuth);
             }
@@ -216,7 +217,7 @@ class Refund
             [
                 'paymentCode' => $paymentCode,
                 'order' => $order->toArray(),
-                'selectedPaymentId' => $preAuthUniqueId,
+                'preAuthUniqueId' => $preAuthUniqueId,
             ]
         );
 

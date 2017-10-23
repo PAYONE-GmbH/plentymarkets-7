@@ -18,14 +18,9 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
         $requestParams = $this->getDefaultRequestData($paymentCode);
         $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
 
-        $requestParams['basket'] = $this->getBasketDataFromOrder($order);
+        $requestParams['order'] = $this->getBasketDataFromOrder($order);
 
-        $requestParams['basketItems'] = $this->getOrderItemData($order);
-        $billingAddress = $this->addressHelper->getOrderBillingAddress($order);
-        $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
         $requestParams['referenceId'] = $requestReference;
-
-        $requestParams['invoice'] = $this->getInvoiceData();
 
         $this->validator->validate($requestParams);
 
@@ -37,30 +32,17 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
      * @param Order $order
      * @param Order $refund
      * @param $preAuthUniqueId
-     *
      * @return array
      */
     public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId)
     {
         $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
-        $requestParams['basket'] = $this->getBasketDataFromOrder($refund);
-        $requestParams['basketItems'] = $this->getOrderItemData($refund);
+        $requestParams['order'] = $this->getBasketDataFromOrder($refund);
         $requestParams['context']['transactionId'] = 'order-' . $order->id;
 
         $this->validator->validate($requestParams);
 
         return $requestParams;
-    }
-
-    /**
-     * @param $orderId
-     *
-     * @return array
-     */
-    protected function getTrackingData($orderId)
-    {
-        //TODO:
-        return [];
     }
 }

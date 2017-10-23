@@ -70,9 +70,4 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
     {
         return 'completed';//TODO: do partial captures
     }
-
-    private function getSequenceNumber($order)
-    {
-        return 1;//TODO: persist sequencenumber per order
-    }
 }

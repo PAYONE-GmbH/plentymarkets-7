@@ -350,4 +350,9 @@ abstract class DataProviderAbstract
         $uniqueBasketId = $basketId . '-' . $time;
         return $uniqueBasketId;
     }
+
+    protected function getSequenceNumber($order)
+    {
+        return 1;//TODO: persist sequencenumber per order
+    }
 }

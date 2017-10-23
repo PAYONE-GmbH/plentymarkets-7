@@ -355,4 +355,20 @@ abstract class DataProviderAbstract
     {
         return 1;//TODO: persist sequencenumber per order
     }
+
+    /**
+     * @param $orderId
+     *
+     * @return array
+     */
+    protected function getOrderData(Order $order)
+    {
+        $amount = $order->amounts[0];
+
+        return [
+            'orderId' => $order->id,
+            'amount' => (int)round($amount->invoiceTotal * 100),
+            'currency' => $amount->currency,
+        ];
+    }
 }

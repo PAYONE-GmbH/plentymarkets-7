@@ -18,7 +18,7 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
         $requestParams = $this->getDefaultRequestData($paymentCode);
         $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
 
-        $requestParams['order'] = $this->getBasketDataFromOrder($order);
+        $requestParams['order'] = $this->getOrderData($order);
 
         $requestParams['referenceId'] = $requestReference;
 

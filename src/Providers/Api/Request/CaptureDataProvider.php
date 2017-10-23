@@ -44,22 +44,6 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
      *
      * @return array
      */
-    protected function getOrderData(Order $order)
-    {
-        $amount = $order->amounts[0];
-
-        return [
-            'orderId' => $order->id,
-            'amount' => (int)round($amount->invoiceTotal * 100),
-            'currency' => $amount->currency,
-        ];
-    }
-
-    /**
-     * @param $orderId
-     *
-     * @return array
-     */
     protected function getTrackingData($orderId)
     {
         //TODO:

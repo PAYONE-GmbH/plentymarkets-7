@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\DataProviders;
 
+use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Clearing\Bank;
@@ -16,17 +17,20 @@ class ConfirmationAdditinalPaymentData
      * @param Twig $twig
      * @param ApiResponseCache $paymentCache
      * @param PaymentHelper $paymentHelper
+     * @param Logger $logger
      * @param $arg
-     *
      * @return string
      */
     public function call(
         Twig $twig,
         ApiResponseCache $paymentCache,
         PaymentHelper $paymentHelper,
+        Logger $logger,
         $arg
     ) {
         $order = $arg[0];
+
+        $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData');
         if (!($order instanceof Order)) {
             return '';
         }

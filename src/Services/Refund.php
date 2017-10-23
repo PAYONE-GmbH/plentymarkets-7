@@ -58,6 +58,7 @@ class Refund
      * @param Api $api
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
+     * @param PaymentCreation $paymentCreation
      */
     public function __construct(
         Logger $logger,
@@ -65,7 +66,8 @@ class Refund
         RefundDataProvider $refundDataProvider,
         Api $api,
         PaymentRepositoryContract $paymentRepository,
-        PaymentHelper $paymentHelper
+        PaymentHelper $paymentHelper,
+        PaymentCreation $paymentCreation
     ) {
         $this->logger = $logger;
         $this->orderRepo = $orderRepo;
@@ -73,6 +75,7 @@ class Refund
         $this->api = $api;
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
+        $this->paymentCreation = $paymentCreation;
     }
 
     /**
@@ -253,7 +256,7 @@ class Refund
      *
      * @return int
      */
-    private function getNewPaymentStatus($order)
+    private function getNewPaymentStatus(Order $order)
     {
         //TODO: handle last partial refund for order
         switch ($order->typeId) {

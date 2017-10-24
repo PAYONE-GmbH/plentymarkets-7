@@ -357,6 +357,14 @@ class PaymentCreation
      */
     public function updatePaymentStatus($orderId, $txid, $txaction)
     {
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'PaymentCreation.updatingPayment',
+            [
+                'orderId' => $orderId,
+                'txid' => $txid,
+                'txaction' => $txaction
+            ]
+            );
         $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
 
         /* @var $payment Payment */

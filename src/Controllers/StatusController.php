@@ -3,6 +3,7 @@
 namespace Payone\Controllers;
 
 use Payone\Adapter\Config as ConfigAdapter;
+use Payone\Adapter\Logger;
 use Payone\Migrations\CreatePaymentMethods;
 use Payone\Services\PaymentCreation;
 use Plenty\Plugin\Controller;
@@ -31,6 +32,10 @@ class StatusController extends Controller
      * @var CreatePaymentMethods
      */
     private $paymentMigration;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * StatusController constructor.
@@ -39,21 +44,25 @@ class StatusController extends Controller
      * @param ConfigAdapter $config
      * @param PaymentCreation $paymentCreation
      * @param CreatePaymentMethods $paymentMigration
+     * @param Logger $logger
      */
     public function __construct(
         Request $request,
         ConfigAdapter $config,
         PaymentCreation $paymentCreation,
-        CreatePaymentMethods $paymentMigration
+        CreatePaymentMethods $paymentMigration,
+        Logger $logger
     ) {
         $this->request = $request;
         $this->config = $config;
         $this->paymentCreation = $paymentCreation;
         $this->paymentMigration = $paymentMigration;
+        $this->logger = $logger;
     }
 
     public function index()
     {
+        $this->logger->setIdentifier('Controller.Status', $this->request->all());
         if ($this->request->get('key') != md5($this->config->get('key'))) {
             return;
         }

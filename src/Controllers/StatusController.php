@@ -62,7 +62,7 @@ class StatusController extends Controller
 
     public function index()
     {
-        $this->logger->setIdentifier('Controller.Status', $this->request->all());
+        $this->logger->setIdentifier(__METHOD__)->debug('Controller.Status', $this->request->all());
         if ($this->request->get('key') != md5($this->config->get('key'))) {
             return;
         }

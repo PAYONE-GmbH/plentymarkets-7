@@ -56,7 +56,7 @@ class Config //extends ConfigRepository
     ) {
         $value = $this->config->get(PluginConstants::NAME . '.' . $key);
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'Config.get',
+            'Config.get( ' . $key . ', ' . $default . ' )',
             ['key' => $key, 'default' => $default, 'value' => $value]
         );
 

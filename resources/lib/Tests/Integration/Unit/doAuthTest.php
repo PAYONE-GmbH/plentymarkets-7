@@ -7,7 +7,7 @@ use Payone\Tests\Helpers\Config;
 /**
  * Class doPreAuthTest
  */
-class doPreAuthTest extends doRequestAbstract
+class doAuthTest extends doRequestAbstract
 {
     public function __construct()
     {
@@ -194,7 +194,7 @@ class doPreAuthTest extends doRequestAbstract
       "company":"arvatis media GmbH",
       "gender":""
    },
-   "paymentMethod":"Invoice",
+   "paymentMethod":"PrePayment",
    "referenceId":"8a82944a5b9081a5015ba90e1f213f41",
    "systemInfo":{
       "vendor":"arvatis media GmbH",
@@ -214,9 +214,9 @@ JSON;
      *
      * @return array
      */
-    public function testDoPreAuthSuccessful()
+    public function testDoAuthSuccessful()
     {
-        $response = require getcwd() . '/resources/lib/doPreAuth.php';
+        $response = require getcwd() . '/resources/lib/doAuth.php';
 
         self::assertTrue($response['success'], 'Response was: ' . print_r($response, true));
         self::assertTrue(isset($response['clearing']), 'Response was: ' . print_r($response, true));
@@ -230,12 +230,12 @@ JSON;
      *
      * @return array
      */
-    public function testPreAuthErrorWithDifferentAddress()
+    public function testAuthErrorWithDifferentAddress()
     {
         $this->payload['billingAddress']['houseNumber'] = 29;
         $this->setPayLoad($this->payload);
 
-        $response = require getcwd() . '/resources/lib/doPreAuth.php';
+        $response = require getcwd() . '/resources/lib/doAuth.php';
 
         self::assertTrue($response['success'], 'Response was: ' . print_r($response, true));
 

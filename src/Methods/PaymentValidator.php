@@ -45,7 +45,7 @@ class PaymentValidator
     public function validate(PaymentAbstract $payment)
     {
         $basketAmount = $this->basket->basketAmount;
-        if ($basketAmount < $payment->getMinCartAmount()) {
+        if ($payment->getMinCartAmount() && $basketAmount < $payment->getMinCartAmount()) {
             $this->log($payment->getName(), 'Payment.minCartAmount', $basketAmount);
 
             return false;

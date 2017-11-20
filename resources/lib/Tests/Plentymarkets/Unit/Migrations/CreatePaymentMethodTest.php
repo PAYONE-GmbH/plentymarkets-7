@@ -10,11 +10,8 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Migrations\CreatePaymentMethods;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
-use Plenty\Plugin\ConfigRepository;
 
 /**
  * Class PaymentHelperTest
@@ -35,6 +32,16 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
     {
         $this->paymentRepo = $this->createMock(PaymentMethodRepositoryContract::class);
 
+
+        $this->helper = new PaymentHelper(
+            $this->paymentRepo,
+            self::createMock(PaymentOrderRelationRepositoryContract::class)
+        );
+        $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper);
+    }
+
+    public function testNotRegisteredPaymentsArerRegistered()
+    {
         $this->paymentRepo->method('allForPlugin')
             ->willReturn(
                 [
@@ -70,23 +77,35 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
                     ],
                 ]
             );
-        $paymentRepository = $this->createMock(PaymentRepositoryContract::class);
-        $confRepos = $this->createMock(ConfigRepository::class);
-        $this->helper = new PaymentHelper(
-            $this->paymentRepo,
-            self::createMock(PaymentOrderRelationRepositoryContract::class),
-            self::createMock(OrderRepositoryContract::class),
-            $confRepos
-        );
-        $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper);
-    }
 
-    public function testGetPaymentMethodMop()
-    {
         $countOfUnregisteredPayments = 2;
         $this->paymentRepo->expects($this->exactly($countOfUnregisteredPayments))
             ->method('createPaymentMethod');
 
         $this->migration->run();
+    }
+
+    public function testAllPaymentsAreRegistered()
+    {
+        parent::setUp();
+        $this->paymentRepo->method('allForPlugin')
+            ->willReturn([]);
+        $countOfPaymentMethods = count($this->getAllPaymentMethodClasses());
+        $this->paymentRepo->expects($this->exactly($countOfPaymentMethods))
+            ->method('createPaymentMethod');
+
+        $this->migration->run();
+    }
+
+
+    protected function getAllPaymentMethodClasses()
+    {
+        $children = [];
+        foreach (get_declared_classes() as $class) {
+            if (is_subclass_of($class, 'Payone\Methods\PaymentAbstract')) {
+                $children[] = $class;
+            }
+        }
+        return $children;
     }
 }

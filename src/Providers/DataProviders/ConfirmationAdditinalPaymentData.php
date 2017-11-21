@@ -59,7 +59,7 @@ class ConfirmationAdditinalPaymentData
             }
 
             return $twig->render(
-                PluginConstants::NAME . '::Partials.ConfirmationAdditinalPaymentData.twig',
+                PluginConstants::NAME . '::Partials.ConfirmationAdditionalData.twig',
                 [
                     'clearing' => $clearing,
                 ]

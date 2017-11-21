@@ -36,12 +36,18 @@ class ConfirmationAdditinalPaymentData
 
         $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData', $arg);
         if (!($order instanceof Order)) {
+            $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData', 'Not an order.');
             return '';
         }
         $payments = $paymentRepositoryContract->getPaymentsByOrderId($order->id);
         foreach ($payments as $payment) {
             /** @var Payment $payment */
             if (!$paymentHelper->isPayonePayment($payment->id)) {
+                $logger->setIdentifier(__METHOD__)->debug(
+                    'Dataprovider.ConfirmationAdditinalPaymentData',
+                    ['Not a Payone payment.', 'payment' => $payment]
+                );
+
                 continue;
             }
 

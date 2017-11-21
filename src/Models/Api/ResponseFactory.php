@@ -38,7 +38,7 @@ class ResponseFactory
             ]
         )
         ) {
-            $clearing = ClearingFactory::create($responseData['responseData']);
+            $clearing = ClearingFactory::create($responseData);
             /** @var AuthResponse $response */
             $response = pluginApp(AuthResponse::class);
 

@@ -1,76 +1,78 @@
 {# @var clearing \Payone\Models\Api\Clearing\Bank #}
 
 <div class="payone-payment-addditional">
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearing") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.account }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingCode") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.code }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingCountry") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.country }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingName") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.name }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingAccount") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.account }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingAccountHolder") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.accountholder }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
-            {{ trans("Payone::Template.clearingCity") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+    {% if clearing.city %}
+        <div class="row">
+            <strong class="col-xs-6 col-sm-5">
+                {{ trans("Payone::Template.clearingCity") }}:
+            </strong>
+            <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.city }}
+                    </span>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    {% endif %}
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingIban") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.iban }}
-        </div>
+        </span>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-3 pull-left">
+    <div class="row">
+        <strong class="col-xs-6 col-sm-5">
             {{ trans("Payone::Template.clearingBic") }}:
-        </div>
-        <div class="col-sm-3 pull-right">
+        </strong>
+        <span class="col-xs-6 col-sm-7" id="payment_state_535">
             {{ clearing.bic }}
-        </div>
+        </span>
     </div>
 </div>

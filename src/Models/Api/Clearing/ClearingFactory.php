@@ -14,32 +14,31 @@ class ClearingFactory
      */
     public static function create($responseData)
     {
-        if (!($responseData['bankaccount'] ?? false)) {
+        if (!($responseData['clearing'] ?? false)) {
             return pluginApp(EmptyClearing::class);
         }
 
-        return self::createBankClearing($responseData);
+        return self::createBankClearing($responseData['clearing']);
     }
 
     /**
-     * @param array $responseData
-     *
-     * @return $this
+     * @param Object $clearing
+     * @return ClearingAbstract
      */
-    private static function createBankClearing(array $responseData): ClearingAbstract
+    private static function createBankClearing($clearing): ClearingAbstract
     {
         /** @var Bank $response */
         $response = pluginApp(Bank::class);
 
         return $response->init(
-            $responseData['bankaccount'] ?? '',
-            $responseData['bankcode'] ?? '',
-            $responseData['bankcountry'] ?? '',
-            $responseData['bankname'] ?? '',
-            $responseData['bankaccountholder'] ?? '',
-            $responseData['bankcity'] ?? '',
-            $responseData['bankiban'] ?? '',
-            $responseData['bankbic'] ?? ''
+            $clearing->bankaccount ?? '',
+            $clearing->bankcode ?? '',
+            $clearing->bankcountry ?? '',
+            $clearing->bankname ?? '',
+            $clearing->bankaccountholder ?? '',
+            $clearing->bankcity ?? '',
+            $clearing->bankiban ?? '',
+            $clearing->bankbic ?? ''
         );
     }
 }

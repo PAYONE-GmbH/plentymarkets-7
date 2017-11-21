@@ -9,6 +9,8 @@ use Payone\Models\Api\Clearing\Bank;
 use Payone\Models\ApiResponseCache;
 use Payone\PluginConstants;
 use Plenty\Modules\Order\Models\Order;
+use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Templates\Twig;
 
 class ConfirmationAdditinalPaymentData
@@ -18,6 +20,7 @@ class ConfirmationAdditinalPaymentData
      * @param ApiResponseCache $paymentCache
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
+     * @param PaymentRepositoryContract $paymentRepositoryContract
      * @param $arg
      * @return string
      */
@@ -26,6 +29,7 @@ class ConfirmationAdditinalPaymentData
         ApiResponseCache $paymentCache,
         PaymentHelper $paymentHelper,
         Logger $logger,
+        PaymentRepositoryContract $paymentRepositoryContract,
         $arg
     ) {
         $order = $arg[0];
@@ -34,23 +38,27 @@ class ConfirmationAdditinalPaymentData
         if (!($order instanceof Order)) {
             return '';
         }
+        $payments = $paymentRepositoryContract->getPaymentsByOrderId($order->id);
+        foreach ($payments as $payment) {
+            /** @var Payment $payment */
+            if (!$paymentHelper->isPayonePayment($payment->id)) {
+                continue;
+            }
 
-        if (!$paymentHelper->isPayonePayment($order->methodOfPaymentId)) {
-            return '';
+            /** @var AuthResponse $auth */
+            $auth = $paymentCache->loadAuth($payment->id);
+            $clearing = $auth->getClearing();
+            if (!$clearing || !($clearing instanceof Bank)) {
+                continue;
+            }
+
+            return $twig->render(
+                PluginConstants::NAME . '::Partials.ConfirmationAdditinalPaymentData.twig',
+                [
+                    'clearing' => $clearing,
+                ]
+            );
         }
-
-        /** @var AuthResponse $auth */
-        $auth = $paymentCache->loadAuth($order->methodOfPaymentId);
-        $clearing = $auth->getClearing();
-        if (!$clearing || !($clearing instanceof Bank)) {
-            return '';
-        }
-
-        return $twig->render(
-            PluginConstants::NAME . '::Partials.ConfirmationAdditinalPaymentData.twig',
-            [
-                'clearing' => $clearing,
-            ]
-        );
+        return '';
     }
 }

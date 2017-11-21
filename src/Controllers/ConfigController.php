@@ -189,8 +189,14 @@ class ConfigController extends Controller
         }
         try {
             $shippingProviderId = $request->get('id');
-            $response = $shippingProfileRepositoryContract->get($shippingProviderId);
 
+            /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+            $authHelper = pluginApp(AuthHelper::class);
+            $response = $authHelper->processUnguarded(
+                function () use ($shippingProfileRepositoryContract, $shippingProviderId) {
+                    return $shippingProfileRepositoryContract->get($shippingProviderId);
+                }
+            );
             return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .

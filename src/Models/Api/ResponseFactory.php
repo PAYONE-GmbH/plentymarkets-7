@@ -42,6 +42,13 @@ class ResponseFactory
             /** @var AuthResponse $response */
             $response = pluginApp(AuthResponse::class);
 
+            $logger->setIdentifier(__METHOD__)->debug(
+                'Factory.createApiResponse',
+                [
+                    'created clearing',
+                    'clearing' => $clearing
+                ]
+            );
             return $response->init(
                 $responseData['success'] ?? false,
                 $responseData['errorMessage'] ?? '',

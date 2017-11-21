@@ -1,15 +1,76 @@
 {# @var clearing \Payone\Models\Api\Clearing\Bank #}
 
 <div class="payone-payment-addditional">
-    <ul>
-        <li>{{ clearing.account }}</li>
-        <li>{{ clearing.code }}</li>
-        <li>{{ clearing.country }}</li>
-        <li>{{ clearing.name }}</li>
-        <li>{{ clearing.account }}</li>
-        <li>{{ clearing.accountholder }}</li>
-        <li>{{ clearing.city }}</li>
-        <li>{{ clearing.iban }}</li>
-        <li>{{ clearing.bic }}</li>
-    </ul>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearing") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.account }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingCode") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.code }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingCountry") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.country }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingName") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.name }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingAccount") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.account }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingAccountHolder") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.accountholder }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingCity") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.city }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingIban") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.iban }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-3 pull-left">
+            {{ trans("Payone::Template.clearingBic") }}:
+        </div>
+        <div class="col-sm-3 pull-right">
+            {{ clearing.bic }}
+        </div>
+    </div>
 </div>

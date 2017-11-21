@@ -42,7 +42,7 @@ class ConfirmationAdditinalPaymentData
         $payments = $paymentRepositoryContract->getPaymentsByOrderId($order->id);
         foreach ($payments as $payment) {
             /** @var Payment $payment */
-            if (!$paymentHelper->isPayonePayment($payment->id)) {
+            if (!$paymentHelper->isPayonePayment($payment->mopId)) {
                 $logger->setIdentifier(__METHOD__)->debug(
                     'Dataprovider.ConfirmationAdditinalPaymentData',
                     ['Not a Payone payment.', 'payment' => $payment]
@@ -52,7 +52,7 @@ class ConfirmationAdditinalPaymentData
             }
 
             /** @var AuthResponse $auth */
-            $auth = $paymentCache->loadAuth($payment->id);
+            $auth = $paymentCache->loadAuth($payment->mopId);
             $clearing = $auth->getClearing();
             if (!$clearing || !($clearing instanceof Bank)) {
                 continue;

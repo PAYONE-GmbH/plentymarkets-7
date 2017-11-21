@@ -282,7 +282,7 @@ abstract class DataProviderAbstract
         $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
         $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
 
-        $uniqueBasketId = $this->getUniqueBasketId($basket->id );
+        $uniqueBasketId = $this->getUniqueBasketId($basket->id);
 
         $requestParams['id'] = $uniqueBasketId;
 
@@ -311,11 +311,18 @@ abstract class DataProviderAbstract
     /**
      * @param $paymentCode
      *
-     * @return bool|string
+     * @return string
      */
     protected function mapPaymentCode($paymentCode)
     {
-        return ucfirst(strtolower(str_replace('PAYONE_PAYONE_', '', $paymentCode)));
+        $words = explode('_', str_replace('PAYONE_PAYONE_', '', $paymentCode));
+
+        $paymentCodeLib = '';
+
+        foreach ($words as $word) {
+            $paymentCodeLib .= ucfirst(strtolower($word));
+        }
+        return $paymentCodeLib;
     }
 
     /**

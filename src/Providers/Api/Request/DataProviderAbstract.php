@@ -14,6 +14,7 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
+use Plenty\Modules\Listing\ShippingProfile\Contracts\ShippingProfileRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
 
@@ -52,6 +53,12 @@ abstract class DataProviderAbstract
      */
     protected $sessionStorage;
 
+    private $shippingProvider;
+    /**
+     * @var ShippingProfileRepositoryContract
+     */
+    private $shippingProfileRepositoryContract;
+
     /**
      * DataProviderAbstract constructor.
      * @param ItemRepositoryContract $itemRepo
@@ -61,6 +68,7 @@ abstract class DataProviderAbstract
      * @param ConfigAdapter $config
      * @param RequestDataValidator $validator
      * @param SessionStorage $sessionStorage
+     * @param ShippingProfileRepositoryContract $shippingProfileRepositoryContract
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
@@ -69,7 +77,8 @@ abstract class DataProviderAbstract
         AddressHelper $addressHelper,
         ConfigAdapter $config,
         RequestDataValidator $validator,
-        SessionStorage $sessionStorage
+        SessionStorage $sessionStorage,
+        ShippingProfileRepositoryContract $shippingProfileRepositoryContract
     ) {
         $this->itemRepo = $itemRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
@@ -78,6 +87,7 @@ abstract class DataProviderAbstract
         $this->config = $config;
         $this->validator = $validator;
         $this->sessionStorage = $sessionStorage;
+        $this->shippingProfileRepositoryContract = $shippingProfileRepositoryContract;
     }
 
     /**
@@ -377,5 +387,13 @@ abstract class DataProviderAbstract
             'amount' => (int)round($amount->invoiceTotal * 100),
             'currency' => $amount->currency,
         ];
+    }
+
+    /**
+     * @param $shippingProviderId
+     */
+    protected function getShippingProviderName($shippingProviderId)
+    {
+        return '';
     }
 }

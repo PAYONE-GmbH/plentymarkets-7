@@ -9,6 +9,7 @@ use Payone\PluginConstants;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Payone\Services\Api;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Listing\ShippingProfile\Contracts\ShippingProfileRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
@@ -166,6 +167,31 @@ class ConfigController extends Controller
         try {
             return json_encode($provider->getDataFromBasket($request->get('paymentCode'), $basket->load()),
                 JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            return PHP_EOL .
+                $e->getCode() . PHP_EOL .
+                $e->getMessage() . PHP_EOL .
+                $e->getTraceAsString();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+     * @return string|void
+     */
+    public function printShippingProfiles(
+        Request $request,
+        ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+    ) {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
+        try {
+            $shippingProviderId = $request->get('id');
+            $response = $shippingProfileRepositoryContract->get($shippingProviderId);
+
+            return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .
                 $e->getCode() . PHP_EOL .

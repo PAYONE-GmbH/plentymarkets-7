@@ -31,14 +31,14 @@ class ClearingFactory
         $response = pluginApp(Bank::class);
 
         return $response->init(
-            $responseData['bankaccount'] ?? '',
-            $responseData['bankcode'] ?? '',
-            $responseData['bankcountry'] ?? '',
-            $responseData['bankname'] ?? '',
-            $responseData['bankaccountholder'] ?? '',
-            $responseData['bankcity'] ?? '',
-            $responseData['bankiban'] ?? '',
-            $responseData['bankbic'] ?? ''
+            $clearing['bankaccount'] ?? '',
+            $clearing['bankcode'] ?? '',
+            $clearing['bankcountry'] ?? '',
+            $clearing['bankname'] ?? '',
+            $clearing['bankaccountholder'] ?? '',
+            $clearing['bankcity'] ?? '',
+            $clearing['bankiban'] ?? '',
+            $clearing['bankbic'] ?? ''
         );
     }
 }

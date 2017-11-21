@@ -30,7 +30,7 @@ class ConfirmationAdditinalPaymentData
     ) {
         $order = $arg[0];
 
-        $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData');
+        $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData', $arg);
         if (!($order instanceof Order)) {
             return '';
         }

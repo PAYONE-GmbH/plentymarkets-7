@@ -8,6 +8,7 @@ use Payone\Migrations\CreatePaymentMethods;
 use Payone\PluginConstants;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Payone\Services\Api;
+use Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Listing\ShippingProfile\Contracts\ShippingProfileRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;

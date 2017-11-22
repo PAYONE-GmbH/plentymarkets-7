@@ -14,9 +14,10 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
-use Plenty\Modules\Listing\ShippingProfile\Contracts\ShippingProfileRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
+use Plenty\Modules\Order\Shipping\Contracts\ParcelServicePresetRepositoryContract;
+use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
 
 /**
  * Class DataProviderAbstract
@@ -52,12 +53,10 @@ abstract class DataProviderAbstract
      * @var SessionStorage
      */
     protected $sessionStorage;
-
-    private $shippingProvider;
     /**
-     * @var ShippingProfileRepositoryContract
+     * @var ParcelServicePresetRepositoryContract
      */
-    private $shippingProfileRepositoryContract;
+    private $parcelServicePresetRepository;
 
     /**
      * DataProviderAbstract constructor.
@@ -68,7 +67,7 @@ abstract class DataProviderAbstract
      * @param ConfigAdapter $config
      * @param RequestDataValidator $validator
      * @param SessionStorage $sessionStorage
-     * @param ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+     * @param ParcelServicePresetRepositoryContract $parcelServicePresetRepository
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
@@ -78,7 +77,7 @@ abstract class DataProviderAbstract
         ConfigAdapter $config,
         RequestDataValidator $validator,
         SessionStorage $sessionStorage,
-        ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+        ParcelServicePresetRepositoryContract $parcelServicePresetRepository
     ) {
         $this->itemRepo = $itemRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
@@ -87,7 +86,7 @@ abstract class DataProviderAbstract
         $this->config = $config;
         $this->validator = $validator;
         $this->sessionStorage = $sessionStorage;
-        $this->shippingProfileRepositoryContract = $shippingProfileRepositoryContract;
+        $this->parcelServicePresetRepository = $parcelServicePresetRepository;
     }
 
     /**
@@ -394,6 +393,8 @@ abstract class DataProviderAbstract
      */
     protected function getShippingProvider($shippingProviderId)
     {
-        return ['name' => ''];
+        /** @var ParcelServicePreset $preset */
+        $preset = $this->parcelServicePresetRepository->getPresetById($shippingProviderId);
+        return ['name' => $preset->parcelServiceNames[0]->name];
     }
 }

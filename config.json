@@ -467,7 +467,7 @@
   },
   {
     "tab": "Vorkasse",
-    "key": "PAYONE_PAYONE_SOFORT.allowedCountries",
+    "key": "PAYONE_PAYONE_PRE_PAYMENT.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
     "default": "DE,AT,CH"

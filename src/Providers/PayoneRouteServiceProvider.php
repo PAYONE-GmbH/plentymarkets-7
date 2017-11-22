@@ -23,6 +23,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->any('payone/testRequestData/', 'Payone\Controllers\ConfigController@testRequestData');
         $router->get('payone/doPreCheck', 'Payone\Controllers\ConfigController@doPreCheck');
         $router->get('payone/printShippingProfiles', 'Payone\Controllers\ConfigController@printShippingProfiles');
+        $router->get('payone/printItemShippingProfiles', 'Payone\Controllers\ConfigController@printItemShippingProfiles');
 
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
     }

@@ -32,7 +32,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         if ($this->paymentHasAccount($paymentCode)) {
             $requestParams['account'] = $this->getAccountData();
         }
-        $requestParams['shippingProvider'] = $this->getShippingProviderName($basket->shippingProviderId);
+        $requestParams['shippingProvider'] = $this->getShippingProvider($basket->shippingProviderId);
         $this->validator->validate($requestParams);
 
         return $requestParams;

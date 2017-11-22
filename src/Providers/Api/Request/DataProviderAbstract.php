@@ -392,8 +392,8 @@ abstract class DataProviderAbstract
     /**
      * @param $shippingProviderId
      */
-    protected function getShippingProviderName($shippingProviderId)
+    protected function getShippingProvider($shippingProviderId)
     {
-        return '';
+        return ['name' => ''];
     }
 }

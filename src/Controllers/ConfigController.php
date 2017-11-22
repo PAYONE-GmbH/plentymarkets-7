@@ -12,6 +12,7 @@ use Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Item\ItemShippingProfiles\Contracts\ItemShippingProfilesRepositoryContract;
 use Plenty\Modules\Listing\ShippingProfile\Contracts\ShippingProfileRepositoryContract;
+use Plenty\Modules\Order\Shipping\Contracts\ParcelServicePresetRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Controller;
@@ -216,6 +217,37 @@ class ConfigController extends Controller
     public function printItemShippingProfiles(
         Request $request,
         ItemShippingProfilesRepositoryContract $shippingProfileRepositoryContract
+    ) {
+        if (!$this->shopHelper->isDebugModeActive()) {
+            return;
+        }
+        try {
+            $shippingProviderId = $request->get('id');
+
+            /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+            $authHelper = pluginApp(AuthHelper::class);
+            $response = $authHelper->processUnguarded(
+                function () use ($shippingProfileRepositoryContract, $shippingProviderId) {
+                    return $shippingProfileRepositoryContract->find($shippingProviderId);
+                }
+            );
+            return json_encode($response, JSON_PRETTY_PRINT);
+        } catch (\Exception $e) {
+            return PHP_EOL .
+                $e->getCode() . PHP_EOL .
+                $e->getMessage() . PHP_EOL .
+                $e->getTraceAsString();
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param ParcelServicePresetRepositoryContract $shippingProfileRepositoryContract
+     * @return string|void
+     */
+    public function printParcelServicePreset(
+        Request $request,
+        ParcelServicePresetRepositoryContract $shippingProfileRepositoryContract
     ) {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;

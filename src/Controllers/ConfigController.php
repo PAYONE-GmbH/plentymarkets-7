@@ -259,7 +259,7 @@ class ConfigController extends Controller
             $authHelper = pluginApp(AuthHelper::class);
             $response = $authHelper->processUnguarded(
                 function () use ($shippingProfileRepositoryContract, $shippingProviderId) {
-                    return $shippingProfileRepositoryContract->find($shippingProviderId);
+                    return $shippingProfileRepositoryContract->getPresetById($shippingProviderId);
                 }
             );
             return json_encode($response, JSON_PRETTY_PRINT);

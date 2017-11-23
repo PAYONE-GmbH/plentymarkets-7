@@ -223,7 +223,7 @@ class Refund
 
         $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
-        $response = $this->api->doRefund(
+        $response = $this->api->doDebit(
             $requestData
         );
 
@@ -252,7 +252,7 @@ class Refund
 
         $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId);
 
-        $response = $this->api->doRefund(
+        $response = $this->api->doDebit(
             $requestData
         );
 

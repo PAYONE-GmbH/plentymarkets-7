@@ -25,6 +25,7 @@ class Api
     const REQUEST_TYPE_REVERSAL = 'Reversal';
     const REQUEST_TYPE_REFUND = 'Refund';
     const REQUEST_TYPE_CALCULATION = 'Calculation';
+    const REQUEST_TYPE_DEBIT = 'Debit';
 
     /**
      * @var LibraryCallContract
@@ -117,6 +118,16 @@ class Api
     public function doReAuth($requestParams): Response
     {
         return $this->doLibCall((self::REQUEST_TYPE_RE_AUTH), $requestParams);
+    }
+
+    /**
+     * @param $requestParams
+     *
+     * @return Response
+     */
+    public function doDebit($requestParams): Response
+    {
+        return $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
     }
 
     /**

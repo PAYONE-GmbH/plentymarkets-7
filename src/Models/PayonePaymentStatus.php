@@ -4,9 +4,9 @@ namespace Payone\Models;
 
 class PayonePaymentStatus
 {
-    const APPOINTED = 'appointed'; // transaction_status pending / completed
-    const APPOINTED_PENDING = 'appointed_complete'; // transaction_status pending / completed
-    const APPOINTED_COMPLETE = 'appointed_pending'; // transaction_status pending / completed
+    const APPOINTED = 'appointed';
+    const APPOINTED_PENDING = 'appointed_pending';
+    const APPOINTED_COMPLETE = 'appointed_completed';
     const CAPTURE = 'capture';
     const PAID = 'paid';
     const UNDERPAID = 'underpaid';

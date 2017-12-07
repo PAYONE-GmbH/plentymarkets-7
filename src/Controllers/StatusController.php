@@ -69,7 +69,7 @@ class StatusController extends Controller
         $txid = $this->request->get('txid');
         $reference = $this->request->get('reference');
         $txaction = $this->request->get('txaction');
-        $sequenceNumber = $this->request->get('sequence');
+        $sequenceNumber = $this->request->get('sequencenumber');
         $transactionStatus = $this->request->get('transaction_status');
         if ($transactionStatus) {
             $txaction = $txaction . '_' . $transactionStatus;

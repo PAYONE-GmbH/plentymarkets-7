@@ -392,7 +392,7 @@ abstract class DataProviderAbstract
                     continue;
                 }
                 if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    return (int)$property->value;
+                    return 1 + (int)$property->value;
                 }
             }
         }

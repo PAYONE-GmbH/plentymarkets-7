@@ -106,7 +106,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
 
-        $payment->mopId = (int) $mopId;
+        $payment->mopId = (int)$mopId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_APPROVED;
         $payment->currency = $paymentData['basket']['currency'];
@@ -141,7 +141,10 @@ class PaymentCreation
             PaymentProperty::TYPE_PAYMENT_TEXT,
             json_encode($paymentText)
         );
-
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_BOOKING_TEXT,
+            json_encode($paymentText)
+        );
         $payment->properties = $paymentProperties;
 
         try {
@@ -259,7 +262,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
         $payment->updateOrderPaymentStatus = true;
-        $payment->mopId = (int) $paymentId;
+        $payment->mopId = (int)$paymentId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_CAPTURED;
         $payment->currency = $currency;
@@ -355,17 +358,19 @@ class PaymentCreation
      * @param $txid
      * @param string $txaction
      */
-    public function updatePaymentStatus($orderId, $txid, $txaction)
+    public function updatePaymentStatus($txid, $txaction)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.updatingPayment',
             [
-                'orderId' => $orderId,
                 'txid' => $txid,
                 'txaction' => $txaction
             ]
-            );
-        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+        );
+        $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
+            PaymentProperty::TYPE_TRANSACTION_ID,
+            $txaction
+        );
 
         /* @var $payment Payment */
         foreach ($payments as $payment) {
@@ -401,17 +406,23 @@ class PaymentCreation
         return $paymentProperty;
     }
 
-    public function updatePaymentSeuqenceNumber($orderId, $sequenceNumber)
+    /**
+     * @param string $txaction
+     * @param int $sequenceNumber
+     */
+    public function updatePaymentSeuqenceNumber($txaction, $sequenceNumber)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.updatingPayment',
             [
-                'orderId' => $orderId,
+                'txaction' => $txaction,
                 'sequenceNumber' => $sequenceNumber
             ]
         );
-        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
-
+        $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
+            PaymentProperty::TYPE_TRANSACTION_ID,
+            $txaction
+        );
         /* @var $payment Payment */
         foreach ($payments as $payment) {
             /* @var $property PaymentProperty */

@@ -75,8 +75,8 @@ class StatusController extends Controller
             $txaction = $txaction . '_' . $transactionStatus;
         }
 
-        $this->paymentCreation->updatePaymentStatus($reference, $txid, $txaction);
-        $this->paymentCreation->updatePaymentSeuqenceNumber($reference, $sequenceNumber);
+        $this->paymentCreation->updatePaymentStatus($txid, $txaction);
+        $this->paymentCreation->updatePaymentSeuqenceNumber($txid, $sequenceNumber);
 
         echo 'TSOK';
     }

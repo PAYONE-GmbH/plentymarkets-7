@@ -143,7 +143,7 @@ class PaymentCreation
         );
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_BOOKING_TEXT,
-            json_encode($paymentText)
+            'TransactionID ' . $transactionID
         );
         $payment->properties = $paymentProperties;
 
@@ -354,11 +354,12 @@ class PaymentCreation
     }
 
     /**
-     * @param $orderId
      * @param $txid
-     * @param string $txaction
+     * @param $txaction
+     * @param $sequenceNumber
+     * @throws \Exception
      */
-    public function updatePaymentStatus($txid, $txaction)
+    public function updatePaymentStatus($txid, $txaction, $sequenceNumber)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.updatingPayment',
@@ -372,6 +373,12 @@ class PaymentCreation
             $txaction
         );
 
+        if(!$payments){
+            $this->logger->setIdentifier(__METHOD__)->debug(
+                'PaymentCreation.updatingPayment',
+        'No payments found for txid'
+            );
+        }
         /* @var $payment Payment */
         foreach ($payments as $payment) {
             /* @var $property PaymentProperty */
@@ -381,9 +388,13 @@ class PaymentCreation
                 }
                 if ($property->typeId === PaymentProperty::TYPE_EXTERNAL_TRANSACTION_STATUS) {
                     $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
-                    $this->paymentRepository->updatePayment($payment);
+                }
+                if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
+                    $property->value = $sequenceNumber;
+
                 }
             }
+            $this->paymentRepository->updatePayment($payment);
         }
     }
 
@@ -406,35 +417,4 @@ class PaymentCreation
         return $paymentProperty;
     }
 
-    /**
-     * @param string $txaction
-     * @param int $sequenceNumber
-     */
-    public function updatePaymentSeuqenceNumber($txaction, $sequenceNumber)
-    {
-        $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatingPayment',
-            [
-                'txaction' => $txaction,
-                'sequenceNumber' => $sequenceNumber
-            ]
-        );
-        $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
-            PaymentProperty::TYPE_TRANSACTION_ID,
-            $txaction
-        );
-        /* @var $payment Payment */
-        foreach ($payments as $payment) {
-            /* @var $property PaymentProperty */
-            foreach ($payment->properties as $property) {
-                if (!($property instanceof PaymentProperty)) {
-                    continue;
-                }
-                if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    $this->paymentRepository->updatePayment($payment);
-                }
-            }
-        }
-
-    }
 }

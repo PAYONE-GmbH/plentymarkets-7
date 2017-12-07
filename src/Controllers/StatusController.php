@@ -69,12 +69,14 @@ class StatusController extends Controller
         $txid = $this->request->get('txid');
         $reference = $this->request->get('reference');
         $txaction = $this->request->get('txaction');
+        $sequenceNumber = $this->request->get('sequence');
         $transactionStatus = $this->request->get('transaction_status');
         if ($transactionStatus) {
             $txaction = $txaction . '_' . $transactionStatus;
         }
 
         $this->paymentCreation->updatePaymentStatus($reference, $txid, $txaction);
+        $this->paymentCreation->updatePaymentSeuqenceNumber($reference, $sequenceNumber);
 
         echo 'TSOK';
     }

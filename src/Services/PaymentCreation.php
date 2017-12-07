@@ -374,7 +374,7 @@ class PaymentCreation
                 if (!($property instanceof PaymentProperty)) {
                     continue;
                 }
-                if ($property->typeId === 30 && $property->id === $txid) {
+                if ($property->typeId === PaymentProperty::TYPE_EXTERNAL_TRANSACTION_STATUS) {
                     $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
                     $this->paymentRepository->updatePayment($payment);
                 }
@@ -399,5 +399,31 @@ class PaymentCreation
         $paymentProperty->value = $value . '';
 
         return $paymentProperty;
+    }
+
+    public function updatePaymentSeuqenceNumber($orderId, $sequenceNumber)
+    {
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'PaymentCreation.updatingPayment',
+            [
+                'orderId' => $orderId,
+                'sequenceNumber' => $sequenceNumber
+            ]
+        );
+        $payments = $this->paymentRepository->getPaymentsByOrderId($orderId);
+
+        /* @var $payment Payment */
+        foreach ($payments as $payment) {
+            /* @var $property PaymentProperty */
+            foreach ($payment->properties as $property) {
+                if (!($property instanceof PaymentProperty)) {
+                    continue;
+                }
+                if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
+                    $this->paymentRepository->updatePayment($payment);
+                }
+            }
+        }
+
     }
 }

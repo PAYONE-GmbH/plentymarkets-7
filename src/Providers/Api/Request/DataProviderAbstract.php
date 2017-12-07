@@ -18,6 +18,9 @@ use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
 use Plenty\Modules\Order\Shipping\Contracts\ParcelServicePresetRepositoryContract;
 use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
+use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Modules\Payment\Models\PaymentProperty;
 
 /**
  * Class DataProviderAbstract
@@ -58,6 +61,9 @@ abstract class DataProviderAbstract
      */
     private $parcelServicePresetRepository;
 
+
+    private $paymentRepository;
+
     /**
      * DataProviderAbstract constructor.
      * @param ItemRepositoryContract $itemRepo
@@ -68,6 +74,7 @@ abstract class DataProviderAbstract
      * @param RequestDataValidator $validator
      * @param SessionStorage $sessionStorage
      * @param ParcelServicePresetRepositoryContract $parcelServicePresetRepository
+     * @param PaymentRepositoryContract $paymentRepository
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
@@ -77,7 +84,8 @@ abstract class DataProviderAbstract
         ConfigAdapter $config,
         RequestDataValidator $validator,
         SessionStorage $sessionStorage,
-        ParcelServicePresetRepositoryContract $parcelServicePresetRepository
+        ParcelServicePresetRepositoryContract $parcelServicePresetRepository,
+        PaymentRepositoryContract $paymentRepository
     ) {
         $this->itemRepo = $itemRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
@@ -87,6 +95,7 @@ abstract class DataProviderAbstract
         $this->validator = $validator;
         $this->sessionStorage = $sessionStorage;
         $this->parcelServicePresetRepository = $parcelServicePresetRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
@@ -367,9 +376,28 @@ abstract class DataProviderAbstract
         return $uniqueBasketId;
     }
 
-    protected function getSequenceNumber($order)
+    /**
+     * @param Order $order
+     * @return int
+     */
+    protected function getSequenceNumber(Order $order)
     {
-        return 1;//TODO: persist sequencenumber per order
+        $payments = $this->paymentRepository->getPaymentsByOrderId($order->id);
+
+        /* @var $payment Payment */
+        foreach ($payments as $payment) {
+            /* @var $property PaymentProperty */
+            foreach ($payment->properties as $property) {
+                if (!($property instanceof PaymentProperty)) {
+                    continue;
+                }
+                if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
+                    return (int)$property->value;
+                }
+            }
+        }
+
+        return 1;
     }
 
     /**

@@ -38,6 +38,7 @@ class PayonePaymentStatus
             case self::APPOINTED_COMPLETE:
             case self::CAPTURE:
             case self::PAID:
+            case self::TRANSFER:
                 return PaymentStatus::CAPTURED;
             case self::APPOINTED_PENDING:
                 return PaymentStatus::AWAITING_APPROVAL;
@@ -46,6 +47,7 @@ class PayonePaymentStatus
             case self::CANCELLATION:
                 return PaymentStatus::CANCELLED;
             case self::REFUND:
+            case self::DEBIT:
                 return PaymentStatus::REFUNDED;
         }
         throw new \Exception('Payment status "' . $payoneStatus . '" not mapped to plentymarkets status.');

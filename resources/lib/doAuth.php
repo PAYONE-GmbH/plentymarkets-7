@@ -12,23 +12,15 @@ try {
     } else {
         $sdkRestApi = \SdkRestApi::class;
     }
-    $basket = $sdkRestApi::getParam('basket');
-    $basketItems = $sdkRestApi::getParam('basketItems');
-    $country = $sdkRestApi::getParam('country');
-    $shippingAddress = $sdkRestApi::getParam('shippingAddress');
-    $context = $sdkRestApi::getParam('context');
-    $order = $sdkRestApi::getParam('order');
-    $customer = $sdkRestApi::getParam('customer');
-    $shippingProvider = $sdkRestApi::getParam('shippingProvider');
-
     $data = [];
-    $data['basket'] = $basket;
-    $data['basketItems'] = $basketItems;
-    $data['shippingAddress'] = $shippingAddress;
-    $data['context'] = $context;
-    $data['order'] = $order;
-    $data['customer'] = $customer;
-    $data['shippingProvider'] = $shippingProvider;
+    $data['basket'] = $sdkRestApi::getParam('basket');
+    $data['basketItems'] = $sdkRestApi::getParam('basketItems');
+    $data['shippingAddress'] = $sdkRestApi::getParam('shippingAddress');
+    $data['context'] = $sdkRestApi::getParam('context');
+    $data['order'] = $sdkRestApi::getParam('order');
+    $data['customer'] = $sdkRestApi::getParam('customer');
+    $data['shippingProvider'] = $sdkRestApi::getParam('shippingProvider');;
+    $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

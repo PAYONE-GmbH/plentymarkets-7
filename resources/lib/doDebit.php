@@ -12,12 +12,11 @@ try {
     } else {
         $sdkRestApi = \SdkRestApi::class;
     }
-    $context = $sdkRestApi::getParam('context');
-    $order = $sdkRestApi::getParam('order');
 
     $data = [];
-    $data['context'] = $context;
-    $data['order'] = $order;
+    $data['context'] = $sdkRestApi::getParam('context');
+    $data['order'] = $sdkRestApi::getParam('order');
+    $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
     $previousRequestId = $sdkRestApi::getParam('referenceId');

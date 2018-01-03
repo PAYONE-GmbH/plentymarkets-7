@@ -3,6 +3,7 @@
 use ArvPayoneApi\Api\Client;
 use ArvPayoneApi\Api\PostApi;
 use ArvPayoneApi\Lib\Version;
+use ArvPayoneApi\Request\ArraySerializer;
 use ArvPayoneApi\Request\PreAuthorization\RequestFactory;
 use ArvPayoneApi\Response\ClientErrorResponse;
 
@@ -25,7 +26,7 @@ try {
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
     $request = RequestFactory::create($paymentMethod, '', $data);
-    $client = new PostApi(new Client());
+    $client = new PostApi(new Client(), new ArraySerializer());
     $response = $client->doRequest($request);
 } catch (Exception $e) {
     $errorResponse = new ClientErrorResponse(

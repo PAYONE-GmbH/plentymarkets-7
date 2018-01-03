@@ -6,6 +6,7 @@ use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
 use Plenty\Modules\Account\Address\Models\Address;
 use Plenty\Modules\Basket\Models\Basket;
@@ -354,7 +355,7 @@ abstract class DataProviderAbstract
             'type' => 'Webshop',
             'url' => $this->shopHelper->getPlentyDomain(),
             'module' => 'plentymarkets 7 Payone plugin',
-            'module_version' => 1,
+            'module_version' => PluginConstants::VERSION,
         ];
     }
 

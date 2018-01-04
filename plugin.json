@@ -23,7 +23,6 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "guzzlehttp/guzzle": "6.2.*",
     "arvatis/payone-php-api":"dev-master"
   },
   "runOnBuild": [

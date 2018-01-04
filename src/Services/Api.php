@@ -138,6 +138,7 @@ class Api
      */
     public function doLibCall($call, $requestParams): ResponseAbstract
     {
+        $this->logger->setIdentifier(__METHOD__)->debug('Api.' . $this->getCallAction($call), $requestParams);
         try {
             $response = $this->libCall->call(
                 PluginConstants::NAME . '::' . $this->getCallAction($call), $requestParams

@@ -271,7 +271,7 @@ class PayoneServiceProvider extends ServiceProvider
     /**
      * @param ReferenceContainer $referenceContainer
      */
-    private function registerReferenceTypesForLogging(ReferenceContainer $referenceContainer): void
+    private function registerReferenceTypesForLogging(ReferenceContainer $referenceContainer)
     {
         try {
             $referenceContainer->add([Logger::PAYONE_REQUEST_REFERENCE => Logger::PAYONE_REQUEST_REFERENCE]);

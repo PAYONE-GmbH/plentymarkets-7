@@ -50,6 +50,7 @@ class Capture
 
     /**
      * Capture constructor.
+     *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger

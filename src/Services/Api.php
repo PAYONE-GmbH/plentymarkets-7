@@ -39,6 +39,7 @@ class Api
 
     /**
      * Api constructor.
+     *
      * @param LibraryCallContract $libCall
      * @param Logger $logger
      */
@@ -138,7 +139,10 @@ class Api
      */
     public function doLibCall($call, $requestParams): ResponseAbstract
     {
-        $this->logger->setIdentifier(__METHOD__)->debug('Api.' . $this->getCallAction($call), $requestParams);
+        $this->logger->setIdentifier(__METHOD__)
+            ->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE)
+            ->debug('Api.' . $this->getCallAction($call), $requestParams);
+
         try {
             $response = $this->libCall->call(
                 PluginConstants::NAME . '::' . $this->getCallAction($call), $requestParams
@@ -151,13 +155,18 @@ class Api
             //sdk error
             $response = ['errorMessage' => json_encode($response)];
         }
-        $this->logger->setIdentifier(__METHOD__)->debug('Api.' . $this->getCallAction($call), $response);
+
+        $responseObject = ResponseFactory::create($call, $response);
+
+        $this->logger->setReferenceValue($responseObject->getTransactionID())
+            ->debug('Api.' . $this->getCallAction($call), $response);
+
         $success = $response['success'] ?? false;
         if (!$success) {// log all errors including successful but invalid requests
-            $this->logger->setIdentifier(__METHOD__)->error('Api.' . $this->getCallAction($call), $response);
+            $this->logger->error('Api.' . $this->getCallAction($call), $response);
         }
 
-        return ResponseFactory::create($call, $response);
+        return $responseObject;
     }
 
     /**

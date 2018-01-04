@@ -1,19 +1,14 @@
 <?php
 
-
 namespace Payone\Views;
-
 
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\PluginConstants;
 use Plenty\Plugin\Templates\Twig;
 
-
 class ErrorMessageRenderer
 {
-
-
     /**
      * @var Twig
      */
@@ -46,7 +41,7 @@ class ErrorMessageRenderer
      *
      * @return string
      */
-    public function render( $errorMessage)
+    public function render($errorMessage)
     {
         if (!$errorMessage) {
             return '';

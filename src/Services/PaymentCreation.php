@@ -21,7 +21,6 @@ use Plenty\Modules\Payment\Models\PaymentProperty;
  */
 class PaymentCreation
 {
-
     /**
      * @var PaymentRepositoryContract
      */
@@ -51,9 +50,9 @@ class PaymentCreation
      */
     private $logger;
 
-
     /**
      * PaymentCreation constructor.
+     *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param PaymentOrderRelationRepositoryContract $paymentOrderRelationRepo
@@ -106,7 +105,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
 
-        $payment->mopId = (int)$mopId;
+        $payment->mopId = (int) $mopId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_APPROVED;
         $payment->currency = $paymentData['basket']['currency'];
@@ -262,7 +261,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
         $payment->updateOrderPaymentStatus = true;
-        $payment->mopId = (int)$paymentId;
+        $payment->mopId = (int) $paymentId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_CAPTURED;
         $payment->currency = $currency;
@@ -357,6 +356,7 @@ class PaymentCreation
      * @param $txid
      * @param $txaction
      * @param $sequenceNumber
+     *
      * @throws \Exception
      */
     public function updatePaymentStatus($txid, $txaction, $sequenceNumber)
@@ -365,7 +365,7 @@ class PaymentCreation
             'PaymentCreation.updatingPayment',
             [
                 'txid' => $txid,
-                'txaction' => $txaction
+                'txaction' => $txaction,
             ]
         );
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
@@ -373,7 +373,7 @@ class PaymentCreation
             $txaction
         );
 
-        if(!$payments){
+        if (!$payments) {
             $this->logger->setIdentifier(__METHOD__)->debug(
                 'PaymentCreation.updatingPayment',
         'No payments found for txid'
@@ -391,7 +391,6 @@ class PaymentCreation
                 }
                 if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
                     $property->value = $sequenceNumber;
-
                 }
             }
             $this->paymentRepository->updatePayment($payment);
@@ -416,5 +415,4 @@ class PaymentCreation
 
         return $paymentProperty;
     }
-
 }

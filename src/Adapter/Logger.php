@@ -14,6 +14,7 @@ class Logger //implements LoggerContract
 {
     use Loggable;
 
+    const PAYONE_REQUEST_REFERENCE = 'payone_txid';
     /**
      * @var string
      */
@@ -25,6 +26,7 @@ class Logger //implements LoggerContract
 
     /**
      * Logger constructor.
+     *
      * @param ShopHelper $shopHelper
      */
     public function __construct(ShopHelper $shopHelper
@@ -58,6 +60,7 @@ class Logger //implements LoggerContract
         if ($this->shopHelper->isDebugModeActive()) {
             return $this->critical($code, $additionalInfo);
         }
+
         return $this->getLogger($this->identifier)->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -74,6 +77,7 @@ class Logger //implements LoggerContract
         if ($this->shopHelper->isDebugModeActive()) {
             return $this->critical($code, $additionalInfo);
         }
+
         return $this->getLogger($this->identifier)->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -90,6 +94,7 @@ class Logger //implements LoggerContract
         if ($this->shopHelper->isDebugModeActive()) {
             return $this->critical($code, $additionalInfo);
         }
+
         return $this->getLogger($this->identifier)->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -106,6 +111,7 @@ class Logger //implements LoggerContract
         if ($this->shopHelper->isDebugModeActive()) {
             return $this->critical($code, $additionalInfo);
         }
+
         return $this->getLogger($this->identifier)->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
     }
 
@@ -212,6 +218,7 @@ class Logger //implements LoggerContract
     /**
      * @param string $code
      * @param null $additionalInfo
+     *
      * @return mixed
      */
     public function report(

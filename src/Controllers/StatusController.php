@@ -62,16 +62,21 @@ class StatusController extends Controller
 
     public function index()
     {
-        $this->logger->setIdentifier(__METHOD__)->debug('Controller.Status', $this->request->all());
-        if ($this->request->get('key') != md5($this->config->get('key'))) {
-            return;
-        }
         $txid = $this->request->get('txid');
         $txaction = $this->request->get('txaction');
         $sequenceNumber = $this->request->get('sequencenumber');
         $transactionStatus = $this->request->get('transaction_status');
         if ($transactionStatus) {
             $txaction = $txaction . '_' . $transactionStatus;
+        }
+
+        $this->logger->setIdentifier(__METHOD__)
+            ->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE)
+            ->setReferenceValue($txid)
+            ->debug('Controller.Status', $this->request->all());
+
+        if ($this->request->get('key') != md5($this->config->get('key'))) {
+            return;
         }
 
         $this->paymentCreation->updatePaymentStatus($txid, $txaction, $sequenceNumber);

@@ -65,5 +65,4 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
 
         return $requestParams;
     }
-
 }

@@ -14,6 +14,7 @@ class ResponseFactory
     /**
      * @param string $transactionType
      * @param array $responseData
+     *
      * @return ResponseAbstract|Response|AuthResponse
      */
     public static function create(string $transactionType, array $responseData)
@@ -46,9 +47,10 @@ class ResponseFactory
                 'Factory.createApiResponse',
                 [
                     'created clearing',
-                    'clearing' => $clearing
+                    'clearing' => $clearing,
                 ]
             );
+
             return $response->init(
                 $responseData['success'] ?? false,
                 $responseData['errorMessage'] ?? '',
@@ -62,6 +64,7 @@ class ResponseFactory
 
     /**
      * @param array $responseData
+     *
      * @return Response
      */
     private static function createGenericResponse(array $responseData): Response

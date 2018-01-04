@@ -55,6 +55,7 @@ class Refund
 
     /**
      * Refund constructor.
+     *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
@@ -83,7 +84,6 @@ class Refund
         $this->refundDataProvider = $refundDataProvider;
         $this->api = $api;
     }
-
 
     /**
      * @param Order $order

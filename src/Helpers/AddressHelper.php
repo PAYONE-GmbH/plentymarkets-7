@@ -91,7 +91,7 @@ class AddressHelper
         $data['lastname'] = $address->lastName;
         $data['street'] = $address->street;
         $data['houseNumber'] = $address->houseNumber;
-        $data['country'] =$address->country->isoCode2;
+        $data['country'] = $address->country->isoCode2;
         $data['addressaddition'] = $address->address3;
         $data['company'] = $address->companyName;
 

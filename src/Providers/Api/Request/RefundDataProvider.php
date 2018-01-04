@@ -9,7 +9,6 @@ use Plenty\Modules\Order\Models\Order;
  */
 class RefundDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
-
     /**
      * {@inheritdoc}
      */
@@ -32,6 +31,7 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
      * @param Order $order
      * @param Order $refund
      * @param $preAuthUniqueId
+     *
      * @return array
      */
     public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId)

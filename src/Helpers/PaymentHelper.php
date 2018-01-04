@@ -163,11 +163,10 @@ class PaymentHelper
                 continue;
             }
             if ($property->typeId == $propertyTypeConstant) {
-                return (string)$property->value;
+                return (string) $property->value;
             }
         }
 
         return '';
-
     }
 }

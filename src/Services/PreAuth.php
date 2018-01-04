@@ -14,8 +14,6 @@ use Plenty\Modules\Payment\Models\Payment;
 
 class PreAuth
 {
-
-
     /**
      * @var PaymentHelper
      */
@@ -46,6 +44,7 @@ class PreAuth
 
     /**
      * PreAuth constructor.
+     *
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
      * @param PaymentCreation $paymentCreation
@@ -85,7 +84,7 @@ class PreAuth
         $preAuthResponse = $this->doPreAuthFromBasket($basket);
 
         $payment = $this->createPayment($selectedPaymentId, $preAuthResponse, $basket);
-        $this->paymentCache->storePayment((string)$selectedPaymentId, $payment);
+        $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
 
         return $preAuthResponse;
     }
@@ -118,8 +117,6 @@ class PreAuth
         return $plentyPayment;
     }
 
-
-
     /**
      * @param Basket $basket
      *
@@ -145,6 +142,7 @@ class PreAuth
         if (!($preAuthResponse instanceof ResponseAbstract) || !$preAuthResponse->getSuccess()) {
             throw new \Exception('The payment could not be executed! PreAuth request failed.');
         }
+
         return $preAuthResponse;
     }
 }

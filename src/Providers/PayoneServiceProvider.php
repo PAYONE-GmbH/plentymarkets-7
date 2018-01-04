@@ -22,6 +22,8 @@ use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentService;
 use Payone\Views\ErrorMessageRenderer;
 use Payone\Views\PaymentRenderer;
+use Plenty\Log\Exceptions\ReferenceTypeException;
+use Plenty\Log\Services\ReferenceContainer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
@@ -38,7 +40,6 @@ use Plenty\Plugin\ServiceProvider;
 
 class PayoneServiceProvider extends ServiceProvider
 {
-
     /**
      * Register the service provider.
      */
@@ -71,10 +72,10 @@ class PayoneServiceProvider extends ServiceProvider
         EventProceduresService $eventProceduresService,
         ErrorMessageRenderer $errorMessageRenderer,
         PaymentCreation $paymentCreationService,
-        PaymentCache $paymentCache
+        PaymentCache $paymentCache,
+        ReferenceContainer $referenceContainer
     ) {
         $this->registerPaymentMethods($payContainer);
-
 
         $this->registerPaymentRendering(
             $eventDispatcher,
@@ -116,6 +117,8 @@ class PayoneServiceProvider extends ServiceProvider
             $refundProcedureTitle,
             '\Payone\Procedures\RefundEventProcedure@run'
         );
+
+        $this->registerReferenceTypesForLogging($referenceContainer);
     }
 
     /**
@@ -222,7 +225,7 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-     /**
+    /**
      * @param Dispatcher $eventDispatcher
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
@@ -261,8 +264,19 @@ class PayoneServiceProvider extends ServiceProvider
                 }
                 $paymentCreationService->assignPaymentToOrder($payment, $order);
                 $paymentCache->deletePayment($selectedPaymentId);
-
             }
         );
+    }
+
+    /**
+     * @param ReferenceContainer $referenceContainer
+     */
+    private function registerReferenceTypesForLogging(ReferenceContainer $referenceContainer): void
+    {
+        try {
+            $referenceContainer->add([Logger::PAYONE_REQUEST_REFERENCE => Logger::PAYONE_REQUEST_REFERENCE]);
+        } catch (ReferenceTypeException $ex) {
+            // already registered
+        }
     }
 }

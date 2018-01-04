@@ -181,6 +181,7 @@ class ConfigController extends Controller
     /**
      * @param Request $request
      * @param ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+     *
      * @return string|void
      */
     public function printShippingProfiles(
@@ -200,6 +201,7 @@ class ConfigController extends Controller
                     return $shippingProfileRepositoryContract->get($shippingProviderId);
                 }
             );
+
             return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .
@@ -212,6 +214,7 @@ class ConfigController extends Controller
     /**
      * @param Request $request
      * @param ItemShippingProfilesRepositoryContract $shippingProfileRepositoryContract
+     *
      * @return string|void
      */
     public function printItemShippingProfiles(
@@ -231,6 +234,7 @@ class ConfigController extends Controller
                     return $shippingProfileRepositoryContract->find($shippingProviderId);
                 }
             );
+
             return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .
@@ -243,6 +247,7 @@ class ConfigController extends Controller
     /**
      * @param Request $request
      * @param ParcelServicePresetRepositoryContract $shippingProfileRepositoryContract
+     *
      * @return string|void
      */
     public function printParcelServicePreset(
@@ -262,6 +267,7 @@ class ConfigController extends Controller
                     return $shippingProfileRepositoryContract->getPresetById($shippingProviderId);
                 }
             );
+
             return json_encode($response, JSON_PRETTY_PRINT);
         } catch (\Exception $e) {
             return PHP_EOL .

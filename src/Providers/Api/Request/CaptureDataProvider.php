@@ -9,7 +9,6 @@ use Plenty\Modules\Order\Models\Order;
  */
 class CaptureDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
-
     /**
      * {@inheritdoc}
      */
@@ -52,6 +51,6 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
 
     private function getCaptureMode(Order $order)
     {
-        return 'completed';//TODO: do partial captures
+        return 'completed'; //TODO: do partial captures
     }
 }

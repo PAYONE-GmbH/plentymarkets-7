@@ -62,11 +62,11 @@ abstract class DataProviderAbstract
      */
     private $parcelServicePresetRepository;
 
-
     private $paymentRepository;
 
     /**
      * DataProviderAbstract constructor.
+     *
      * @param ItemRepositoryContract $itemRepo
      * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
      * @param ShopHelper $shopHelper
@@ -97,6 +97,26 @@ abstract class DataProviderAbstract
         $this->sessionStorage = $sessionStorage;
         $this->parcelServicePresetRepository = $parcelServicePresetRepository;
         $this->paymentRepository = $paymentRepository;
+    }
+
+    /**
+     * @param $basketId
+     *
+     * @return string
+     */
+    public function getUniqueBasketId($basketId): string
+    {
+        $maxLengthAll = 12;
+        $lengthTime = strlen('' . time());
+        $maxLengthTime = $maxLengthAll - strlen($basketId);
+        $time = time() . '';
+        if ($maxLengthTime < $lengthTime) {
+            $time = substr($time, $lengthTime - $maxLengthTime, $lengthTime);
+        }
+        // workaround for basketid not beeing updated
+        $uniqueBasketId = $basketId . '-' . $time;
+
+        return $uniqueBasketId;
     }
 
     /**
@@ -185,9 +205,9 @@ abstract class DataProviderAbstract
             $amount = $orderItemData['amounts'][0];
             $priceGross = $amount->priceGross;
             $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int)round($tax * 100);
+            $orderItemData['tax'] = (int) round($tax * 100);
 
-            $orderItemData['price'] = (int)round($priceGross * 100);
+            $orderItemData['price'] = (int) round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -209,17 +229,17 @@ abstract class DataProviderAbstract
             return ['customerId' => $customerId];
         }
         $customerData = [
-            'email' => (string)$addressObj->email,
-            'firstname' => (string)$addressObj->firstName,
-            'lastname' => (string)$addressObj->lastName,
+            'email' => (string) $addressObj->email,
+            'firstname' => (string) $addressObj->firstName,
+            'lastname' => (string) $addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
-            'ip' => (string)$this->shopHelper->getIpAddress(),
-            'customerId' => (string)$customerId,
+            'ip' => (string) $this->shopHelper->getIpAddress(),
+            'customerId' => (string) $customerId,
             'registrationDate' => '1970-01-01',
             'group' => 'default',
-            'company' => (string)$addressObj->companyName,
-            'telephonenumber' => (string)$addressObj->phone,
+            'company' => (string) $addressObj->companyName,
+            'telephonenumber' => (string) $addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
         //TODO: Check format
@@ -230,6 +250,7 @@ abstract class DataProviderAbstract
 
     /**
      * @param $paymentCode
+     *
      * @return array
      */
     protected function getDefaultRequestData($paymentCode)
@@ -293,13 +314,13 @@ abstract class DataProviderAbstract
     protected function getBasketData(Basket $basket)
     {
         $requestParams = $basket->toArray();
-        $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
-        $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
-        $requestParams['itemSumNet'] = (int)round($basket->itemSumNet * 100);
-        $requestParams['basketAmount'] = (int)round($basket->basketAmount * 100);
-        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
-        $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
-        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
+        $requestParams['currency'] = (bool) $basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
+        $requestParams['grandTotal'] = (int) round($basket->basketAmount * 100);
+        $requestParams['itemSumNet'] = (int) round($basket->itemSumNet * 100);
+        $requestParams['basketAmount'] = (int) round($basket->basketAmount * 100);
+        $requestParams['basketAmountNet'] = (int) round($basket->basketAmountNet * 100);
+        $requestParams['shippingAmount'] = (int) round($basket->shippingAmount * 100);
+        $requestParams['shippingAmountNet'] = (int) round($basket->shippingAmountNet * 100);
 
         $uniqueBasketId = $this->getUniqueBasketId($basket->id);
 
@@ -316,12 +337,12 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
-        $requestParams['itemSumNet'] = (int)round($requestParams['amounts'][0]['itemSumNet'] * 100);
-        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['basketAmount'] * 100);
-        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
-        $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
-        $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
+        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['itemSumNet'] = (int) round($requestParams['amounts'][0]['itemSumNet'] * 100);
+        $requestParams['basketAmount'] = (int) round($requestParams['amounts'][0]['basketAmount'] * 100);
+        $requestParams['basketAmountNet'] = (int) round($requestParams['amounts'][0]['basketAmountNet'] * 100);
+        $requestParams['shippingAmount'] = (int) round($requestParams['amounts'][0]['shippingAmount'] * 100);
+        $requestParams['shippingAmountNet'] = (int) round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
         return $requestParams;
@@ -341,6 +362,7 @@ abstract class DataProviderAbstract
         foreach ($words as $word) {
             $paymentCodeLib .= ucfirst(strtolower($word));
         }
+
         return $paymentCodeLib;
     }
 
@@ -360,25 +382,8 @@ abstract class DataProviderAbstract
     }
 
     /**
-     * @param $basketId
-     * @return string
-     */
-    public function getUniqueBasketId($basketId): string
-    {
-        $maxLengthAll = 12;
-        $lengthTime = strlen('' . time());
-        $maxLengthTime = $maxLengthAll - strlen($basketId);
-        $time = time() . '';
-        if ($maxLengthTime < $lengthTime) {
-            $time = substr($time, $lengthTime - $maxLengthTime, $lengthTime);
-        }
-        // workaround for basketid not beeing updated
-        $uniqueBasketId = $basketId . '-' . $time;
-        return $uniqueBasketId;
-    }
-
-    /**
      * @param Order $order
+     *
      * @return int
      */
     protected function getSequenceNumber(Order $order)
@@ -393,7 +398,7 @@ abstract class DataProviderAbstract
                     continue;
                 }
                 if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    return 1 + (int)$property->value;
+                    return 1 + (int) $property->value;
                 }
             }
         }
@@ -412,7 +417,7 @@ abstract class DataProviderAbstract
 
         return [
             'orderId' => $order->id,
-            'amount' => (int)round($amount->invoiceTotal * 100),
+            'amount' => (int) round($amount->invoiceTotal * 100),
             'currency' => $amount->currency,
         ];
     }
@@ -424,6 +429,7 @@ abstract class DataProviderAbstract
     {
         /** @var ParcelServicePreset $preset */
         $preset = $this->parcelServicePresetRepository->getPresetById($shippingProviderId);
+
         return ['name' => $preset->parcelServiceNames[0]->name];
     }
 }

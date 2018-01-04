@@ -22,7 +22,8 @@ class ClearingFactory
     }
 
     /**
-     * @param Object $clearing
+     * @param object $clearing
+     *
      * @return ClearingAbstract
      */
     private static function createBankClearing($clearing): ClearingAbstract

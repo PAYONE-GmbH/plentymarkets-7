@@ -43,6 +43,7 @@ class PaymentService
 
     /**
      * PaymentService constructor.
+     *
      * @param Auth $authService
      * @param PreAuth $preAuthService
      * @param ApiResponseCache $responseCache

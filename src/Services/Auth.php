@@ -15,7 +15,6 @@ use Plenty\Modules\Payment\Models\Payment;
 
 class Auth
 {
-
     /**
      * @var PaymentHelper
      */
@@ -92,7 +91,7 @@ class Auth
         $authResponse = $this->doAuthFromBasket($basket);
 
         $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
-        $this->paymentCache->storePayment((string)$selectedPaymentId, $payment);
+        $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
 
         return $authResponse;
     }
@@ -151,6 +150,7 @@ class Auth
         if (!($authResponse instanceof AuthResponse) || !$authResponse->getSuccess()) {
             throw new \Exception('The payment could not be executed! Auth request failed.');
         }
+
         return $authResponse;
     }
 }

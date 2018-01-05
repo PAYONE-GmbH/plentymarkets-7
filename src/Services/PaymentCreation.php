@@ -110,7 +110,8 @@ class PaymentCreation
         $payment->status = Payment::STATUS_APPROVED;
         $payment->currency = $paymentData['basket']['currency'];
         $payment->amount = 0; // zero till it is captured, so the order paid amount is not updated
-        $payment->type = Payment::PAYMENT_TYPE_CREDIT;
+        $payment->type = 'credit';
+        $payment->method = $this->paymentHelper->getPaymentMethodById($mopId);
 
         $paymentProperties = [];
 
@@ -267,7 +268,7 @@ class PaymentCreation
         $payment->currency = $currency;
         $payment->amount = $grandTotal;
         $payment->receivedAt = date('Y-m-d H:i:s');
-        $payment->type = Payment::PAYMENT_TYPE_DEBIT;
+        $payment->type = 'debit';
         $payment->parentId = $parentPaymentId;
         $paymentProperties = [];
 

@@ -188,6 +188,7 @@ class Logger //implements LoggerContract
     public function setReferenceType(
         string $referenceType
     ): LoggerContract {
+        return $this->getLogger($this->identifier);
         return $this->getLogger($this->identifier)->setReferenceValue($referenceType);
     }
 

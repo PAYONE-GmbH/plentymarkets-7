@@ -111,7 +111,7 @@ class PaymentCreation
         $payment->currency = $paymentData['basket']['currency'];
         $payment->amount = 0; // zero till it is captured, so the order paid amount is not updated
         $payment->type = 'credit';
-        $payment->method = $this->paymentHelper->getPaymentMethodById($mopId);
+        //$payment->method = $this->paymentHelper->getPaymentMethodById($mopId);
 
         $paymentProperties = [];
 

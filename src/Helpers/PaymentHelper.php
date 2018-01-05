@@ -15,6 +15,7 @@ use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\PluginConstants;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
+use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
 
@@ -65,6 +66,7 @@ class PaymentHelper
         if (!$paymentMethods) {
             return 'no_paymentmethod_found';
         }
+        /** @var PaymentMethod $paymentMethod */
         foreach ($paymentMethods as $paymentMethod) {
             if ($paymentMethod->paymentKey == $paymentCode) {
                 return $paymentMethod->id;

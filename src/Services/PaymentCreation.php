@@ -367,6 +367,7 @@ class PaymentCreation
             [
                 'txid' => $txid,
                 'txaction' => $txaction,
+                'sequenceNumber' => $sequenceNumber,
             ]
         );
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(

@@ -200,6 +200,7 @@ class Logger //implements LoggerContract
     public function setReferenceValue(
         $referenceValue
     ): LoggerContract {
+        return $this->getLogger($this->identifier);
         return $this->getLogger($this->identifier)->setReferenceValue($referenceValue);
     }
 

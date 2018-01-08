@@ -216,7 +216,7 @@ class Logger //implements LoggerContract
      */
     public function setReferenceType(
         string $referenceType
-    ): LoggerContract {
+    ) {
         $this->referenceType = $referenceType;
 
         return $this;
@@ -229,7 +229,7 @@ class Logger //implements LoggerContract
      */
     public function setReferenceValue(
         $referenceValue
-    ): LoggerContract {
+    ) {
         $this->referenceValue = $referenceValue;
 
         return $this;

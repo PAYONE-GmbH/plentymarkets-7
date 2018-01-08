@@ -10,9 +10,11 @@ use Plenty\Plugin\Log\Loggable;
 /**
  * Class Logger
  */
-class Logger //implements LoggerContract
+class Logger implements LoggerContract
 {
-    use Loggable;
+    use Loggable {
+        getLogger as private getPlentyLogger;
+    }
 
     const PAYONE_REQUEST_REFERENCE = 'payone_txid';
     /**
@@ -24,6 +26,14 @@ class Logger //implements LoggerContract
      */
     private $shopHelper;
 
+
+    /**
+     * @var LoggerContract
+     */
+    private $logger;
+    private $referenceType;
+    private $referenceValue;
+
     /**
      * Logger constructor.
      *
@@ -33,16 +43,27 @@ class Logger //implements LoggerContract
     ) {
         $this->shopHelper = $shopHelper;
         $this->identifier = __CLASS__;
+        $this->logger = $this->getPlentyLogger($this->identifier);
+    }
+
+    /**
+     * @return LoggerContract
+     */
+    private function getLogger()
+    {
+        return $this->logger;
     }
 
     /**
      * @param string $identifier
      *
-     * @return $this
+     * @return Logger
      */
     public function setIdentifier(string $identifier)
     {
-        $this->identifier = $identifier;
+        $this->logger = $this->getPlentyLogger($identifier);
+        $this->logger->setReferenceType($this->referenceType);
+        $this->logger->setReferenceValue($this->referenceValue);
 
         return $this;
     }
@@ -51,7 +72,7 @@ class Logger //implements LoggerContract
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function debug(
         string $code,
@@ -61,14 +82,16 @@ class Logger //implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        return $this->getLogger($this->identifier)->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function info(
         string $code,
@@ -78,14 +101,16 @@ class Logger //implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        return $this->getLogger($this->identifier)->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function notice(
         string $code,
@@ -95,14 +120,16 @@ class Logger //implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        return $this->getLogger($this->identifier)->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function warning(
         string $code,
@@ -112,121 +139,107 @@ class Logger //implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        return $this->getLogger($this->identifier)->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array|null $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function error(
         string $code,
         $additionalInfo = null
     ) {
-        return $this->getLogger($this->identifier)->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function critical(
         string $code,
         $additionalInfo = null
     ) {
-        return $this->getLogger($this->identifier)->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param string $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function alert(
         string $code,
         $additionalInfo = null
     ) {
-        return $this->getLogger($this->identifier)->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param $code
      * @param array $additionalInfo
      *
-     * @return mixed
+     * @return Logger
      */
     public function emergency(
         $code,
         $additionalInfo = null
     ) {
-        return $this->getLogger($this->identifier)->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getLogger()->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
+
+        return $this;
     }
 
     /**
      * @param \Exception $exception
      * @param int $traceDepth
      *
-     * @return mixed
+     * @return Logger
      */
     public function logException(
-        \Exception $exception,
-        int $traceDepth = 3
+        \Exception $exception
     ) {
-        return $this->getLogger($this->identifier)->logException($exception, $traceDepth);
+        $this->getLogger()->logException($exception);
+
+        return $this;
     }
 
     /**
      * @param string $referenceType
-     *
-     * @return LoggerContract
+     * @return Logger
      */
     public function setReferenceType(
         string $referenceType
     ): LoggerContract {
-        return $this->getLogger($this->identifier);
-        return $this->getLogger($this->identifier)->setReferenceValue($referenceType);
+
+        $this->referenceType = $referenceType;
+
+        return $this;
     }
 
     /**
      * @param $referenceValue
-     *
-     * @return LoggerContract
+     * @return Logger
      */
     public function setReferenceValue(
         $referenceValue
     ): LoggerContract {
-        return $this->getLogger($this->identifier);
-        return $this->getLogger($this->identifier)->setReferenceValue($referenceValue);
-    }
 
-    /**
-     * @param string $referenceType
-     * @param int $referenceValue
-     *
-     * @return LoggerContract
-     */
-    public function addReference(
-        string $referenceType,
-        int $referenceValue
-    ): LoggerContract {
-        return $this->getLogger($this->identifier)->addReference($referenceType, $referenceValue);
-    }
-
-    /**
-     * @param string $code
-     * @param null $additionalInfo
-     *
-     * @return mixed
-     */
-    public function report(
-        string $code,
-        $additionalInfo = null
-    ) {
-        return $this->getLogger($this->identifier)->report($code, $additionalInfo);
+        $this->referenceValue = $referenceValue;
+        return $this;
     }
 }

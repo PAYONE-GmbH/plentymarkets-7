@@ -383,18 +383,21 @@ class PaymentCreation
         }
         /* @var $payment Payment */
         foreach ($payments as $payment) {
+
+            $newStatus = PayonePaymentStatus::getPlentyStatus($txaction);
+            $this->logger->debug(
+                'PaymentCreation.updatingPayment',
+                [
+                    'oldStatus' =>  $payment->status,
+                    'newStatus' => $newStatus,
+                ]
+            );
+            $payment->status = $newStatus;
+
             /* @var $property PaymentProperty */
-            foreach ($payment->properties as $property) {
-                if (!($property instanceof PaymentProperty)) {
-                    continue;
-                }
-                if ($property->typeId === PaymentProperty::TYPE_EXTERNAL_TRANSACTION_STATUS) {
-                    $payment->status = PayonePaymentStatus::getPlentyStatus($txaction);
-                }
-                if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    $property->value = $sequenceNumber;
-                }
-            }
+            $pamentPropertyTypeId = PaymentProperty::TYPE_TRANSACTION_CODE;
+            $this->createOrUpdatePaymentProperty($payment, $pamentPropertyTypeId, $sequenceNumber);
+
             $this->paymentRepository->updatePayment($payment);
         }
     }
@@ -416,5 +419,51 @@ class PaymentCreation
         $paymentProperty->value = $value . '';
 
         return $paymentProperty;
+    }
+
+    /**
+     * @param Payment $payment
+     * @param int $pamentPropertyTypeId
+     * @param string $value
+     * @return Payment
+     */
+    private function createOrUpdatePaymentProperty($payment, $pamentPropertyTypeId, $value)
+    {
+        $updatedSequencenumber = false;
+
+        foreach ($payment->properties as $property) {
+            if (!($property instanceof PaymentProperty)) {
+                continue;
+            }
+            if ($property->typeId === $pamentPropertyTypeId) {
+                $this->logger->debug(
+                    'PaymentCreation.updatingPayment',
+                    [
+                        'property' => $pamentPropertyTypeId,
+                        'oldValue' =>  $property->value,
+                        'newValue' => $value,
+                    ]
+                );
+                $property->value = $value;
+                $updatedSequencenumber = true;
+            }
+        }
+
+        $this->logger->debug(
+            'PaymentCreation.updatingPayment',
+            [
+                'property' => $pamentPropertyTypeId,
+                'newValue' => $value,
+            ]
+        );
+
+        if (!$updatedSequencenumber) {
+            $paymentProperties = $payment->properties;
+
+            $paymentProperties[] = $this->createPaymentProperty($pamentPropertyTypeId,
+                $value);
+        }
+
+        return $payment;
     }
 }

@@ -52,7 +52,7 @@ class Logger implements LoggerContract
      */
     public function setIdentifier(string $identifier)
     {
-        $this->logger = $this->getPlentyLogger($identifier);
+        $this->logger = $this->getLogger($identifier);
         $this->logger->setReferenceType($this->referenceType);
         $this->logger->setReferenceValue($this->referenceValue);
 

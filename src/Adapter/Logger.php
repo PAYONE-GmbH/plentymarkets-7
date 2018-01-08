@@ -10,7 +10,7 @@ use Plenty\Plugin\Log\Loggable;
 /**
  * Class Logger
  */
-class Logger implements LoggerContract
+class Logger //implements LoggerContract
 {
     use Loggable;
 

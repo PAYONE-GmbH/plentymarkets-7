@@ -12,20 +12,19 @@ use Plenty\Plugin\Log\Loggable;
  */
 class Logger implements LoggerContract
 {
-    use Loggable {
-        getLogger as private getPlentyLogger;
-    }
+    use Loggable;
 
     const PAYONE_REQUEST_REFERENCE = 'payone_txid';
+
     /**
      * @var string
      */
     private $identifier;
+
     /**
      * @var ShopHelper
      */
     private $shopHelper;
-
 
     /**
      * @var LoggerContract
@@ -43,15 +42,7 @@ class Logger implements LoggerContract
     ) {
         $this->shopHelper = $shopHelper;
         $this->identifier = __CLASS__;
-        $this->logger = $this->getPlentyLogger($this->identifier);
-    }
-
-    /**
-     * @return LoggerContract
-     */
-    private function getLogger()
-    {
-        return $this->logger;
+        $this->logger = $this->getLogger($this->identifier);
     }
 
     /**
@@ -82,7 +73,7 @@ class Logger implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        $this->getLogger()->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -101,7 +92,7 @@ class Logger implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        $this->getLogger()->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -120,7 +111,7 @@ class Logger implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        $this->getLogger()->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -139,7 +130,7 @@ class Logger implements LoggerContract
             return $this->critical($code, $additionalInfo);
         }
 
-        $this->getLogger()->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -154,7 +145,7 @@ class Logger implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        $this->getLogger()->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -169,7 +160,7 @@ class Logger implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        $this->getLogger()->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -184,7 +175,7 @@ class Logger implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        $this->getLogger()->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -199,7 +190,7 @@ class Logger implements LoggerContract
         $code,
         $additionalInfo = null
     ) {
-        $this->getLogger()->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
+        $this->getPlentyLogger()->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
 
         return $this;
     }
@@ -213,19 +204,19 @@ class Logger implements LoggerContract
     public function logException(
         \Exception $exception
     ) {
-        $this->getLogger()->logException($exception);
+        $this->getPlentyLogger()->logException($exception);
 
         return $this;
     }
 
     /**
      * @param string $referenceType
+     *
      * @return Logger
      */
     public function setReferenceType(
         string $referenceType
     ): LoggerContract {
-
         $this->referenceType = $referenceType;
 
         return $this;
@@ -233,13 +224,22 @@ class Logger implements LoggerContract
 
     /**
      * @param $referenceValue
+     *
      * @return Logger
      */
     public function setReferenceValue(
         $referenceValue
     ): LoggerContract {
-
         $this->referenceValue = $referenceValue;
+
         return $this;
+    }
+
+    /**
+     * @return LoggerContract
+     */
+    private function getPlentyLogger()
+    {
+        return $this->logger;
     }
 }

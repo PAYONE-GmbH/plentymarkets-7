@@ -218,6 +218,7 @@ class Logger //implements LoggerContract
         string $referenceType
     ) {
         $this->referenceType = $referenceType;
+        $this->logger->setReferenceType($referenceType);
 
         return $this;
     }
@@ -231,6 +232,7 @@ class Logger //implements LoggerContract
         $referenceValue
     ) {
         $this->referenceValue = $referenceValue;
+        $this->logger->setReferenceValue($referenceValue);
 
         return $this;
     }

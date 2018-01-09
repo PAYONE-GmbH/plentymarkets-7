@@ -372,8 +372,7 @@ class PaymentCreation
         );
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
             PaymentProperty::TYPE_TRANSACTION_ID,
-            $txaction,
-            1,
+            $txid,
             1
         );
 

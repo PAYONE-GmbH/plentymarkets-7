@@ -375,6 +375,7 @@ class PaymentCreation
             $txaction
         );
 
+        $this->logger->debug('PaymentCreation.updatingPayment', ['payments' => $payments]);
         if (!$payments) {
             $this->logger->debug(
                 'PaymentCreation.updatingPayment',

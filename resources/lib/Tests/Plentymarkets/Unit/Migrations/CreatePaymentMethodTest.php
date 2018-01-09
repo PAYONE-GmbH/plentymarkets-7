@@ -77,7 +77,7 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $countOfUnregisteredPayments = 2;
+        $countOfUnregisteredPayments = 3;
         $this->paymentRepo->expects($this->exactly($countOfUnregisteredPayments))
             ->method('createPaymentMethod');
 

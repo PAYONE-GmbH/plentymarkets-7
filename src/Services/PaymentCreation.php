@@ -372,17 +372,19 @@ class PaymentCreation
         );
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
             PaymentProperty::TYPE_TRANSACTION_ID,
-            $txaction
+            $txaction,
+            1,
+            1
         );
 
         $this->logger->debug('PaymentCreation.updatingPayment', ['payments' => $payments]);
-        if (!$payments) {
+        if (!count($payments)) {
             $this->logger->debug(
                 'PaymentCreation.updatingPayment',
                 'No payments found for txid'
             );
 
-            return;
+            throw new \Exception('Payment not found.');
         }
         /* @var $payment Payment */
         foreach ($payments as $payment) {

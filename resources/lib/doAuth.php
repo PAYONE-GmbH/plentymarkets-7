@@ -20,7 +20,7 @@ try {
     $data['context'] = $sdkRestApi::getParam('context');
     $data['order'] = $sdkRestApi::getParam('order');
     $data['customer'] = $sdkRestApi::getParam('customer');
-    $data['shippingProvider'] = $sdkRestApi::getParam('shippingProvider');;
+    $data['shippingProvider'] = $sdkRestApi::getParam('shippingProvider');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');

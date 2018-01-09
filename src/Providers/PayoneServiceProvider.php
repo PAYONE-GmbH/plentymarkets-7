@@ -6,6 +6,7 @@ use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PaymentMethodServiceFactory;
+use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
@@ -166,6 +167,11 @@ class PayoneServiceProvider extends ServiceProvider
         $payContainer->register(
             'Payone::' . PayoneCODPaymentMethod::PAYMENT_CODE,
             PayoneCODPaymentMethod::class,
+            $events
+        );
+        $payContainer->register(
+            'Payone::' . PayoneCCPaymentMethod::PAYMENT_CODE,
+            PayoneCCPaymentMethod::class,
             $events
         );
     }

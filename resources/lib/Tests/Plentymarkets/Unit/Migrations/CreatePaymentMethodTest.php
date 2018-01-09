@@ -32,7 +32,6 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
     {
         $this->paymentRepo = $this->createMock(PaymentMethodRepositoryContract::class);
 
-
         $this->helper = new PaymentHelper(
             $this->paymentRepo,
             self::createMock(PaymentOrderRelationRepositoryContract::class)
@@ -97,7 +96,6 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
         $this->migration->run();
     }
 
-
     protected function getAllPaymentMethodClasses()
     {
         $children = [];
@@ -106,6 +104,7 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
                 $children[] = $class;
             }
         }
+
         return $children;
     }
 }

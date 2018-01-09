@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Payone\Tests\Unit\Api\Providers;
-
 
 use Payone\Providers\Api\Request\AuthDataProvider;
 
@@ -19,7 +17,6 @@ class AuthDataProviderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
-
     }
 
     public function testBasketIdDoesNotExceedMaxLength()

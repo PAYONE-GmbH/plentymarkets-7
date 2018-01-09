@@ -218,7 +218,7 @@ JSON;
     {
         $response = require getcwd() . '/resources/lib/doPreAuth.php';
 
-        self::assertTrue((bool)$response['success'], 'Success not set. Response was: ' . print_r($response, true));
+        self::assertTrue((bool) $response['success'], 'Success not set. Response was: ' . print_r($response, true));
         self::assertTrue(!isset($response['clearing']), 'Clearing set. Response was: ' . print_r($response, true));
 
         return $response;
@@ -237,7 +237,7 @@ JSON;
 
         $response = require getcwd() . '/resources/lib/doPreAuth.php';
 
-        self::assertTrue((bool)$response['success'], 'Success not set. Response was: ' . print_r($response, true));
+        self::assertTrue((bool) $response['success'], 'Success not set. Response was: ' . print_r($response, true));
 
         return $response;
     }

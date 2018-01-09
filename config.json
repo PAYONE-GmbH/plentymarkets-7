@@ -485,6 +485,63 @@
     "default": "PAYONE_PAYONE_PRE_PAYMENT.allowedTrafficLights.green"
   },
   {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+      "0": "Nein",
+      "1": "Ja"
+    },
+    "default": "1"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.name",
+    "label": "Name",
+    "type": "text",
+    "default": "Kreditkarte"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.description",
+    "label": "Beschreibung",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.minCartAmount",
+    "default": "0",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.maxCartAmount",
+    "default": "2000",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DE,AT,CH"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.allowedTrafficLights",
+    "label": "Erlaubte Ampelfarben",
+    "type": "multi_select",
+    "possibleValues": {
+      "PAYONE_PAYONE_CC.allowedTrafficLights.green": "Grün",
+      "PAYONE_PAYONE_CC.allowedTrafficLights.yellow": "Gelb",
+      "PAYONE_PAYONE_CC.allowedTrafficLights.red": "Rot"
+    },
+    "default": "PAYONE_PAYONE_CC.allowedTrafficLights.green"
+  },
+  {
     "tab": "Nachnahme",
     "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.active",
     "label": "Aktiv",

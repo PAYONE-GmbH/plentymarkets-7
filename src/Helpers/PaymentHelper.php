@@ -4,6 +4,7 @@
 
 namespace Payone\Helpers;
 
+use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
@@ -124,6 +125,7 @@ class PaymentHelper
             PayoneSofortPaymentMethod::PAYMENT_CODE,
             PayoneCODPaymentMethod::PAYMENT_CODE,
             PayonePrePaymentPaymentMethod::PAYMENT_CODE,
+            PayoneCCPaymentMethod::PAYMENT_CODE
         ];
     }
 

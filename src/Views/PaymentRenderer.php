@@ -65,7 +65,7 @@ class PaymentRenderer
                 'paymentMethod' => $payment,
                 'errorMessage' => $message,
                 'locale' => $this->shopHelper->getCurrentLocale(),
-                'creditcardcheck' => \json_encode($this->creditCardCheck),
+                'creditcardcheck' => $this->creditCardCheck,
             ]
         );
     }

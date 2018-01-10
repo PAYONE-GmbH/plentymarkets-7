@@ -26,7 +26,7 @@ class CreditCardCheck implements \JsonSerializable
     public function createHash($data)
     {
         return hash_hmac('sha2-384', $data, $this->configRepo->getKey());
-    };
+    }
 
     /**
      * @return array

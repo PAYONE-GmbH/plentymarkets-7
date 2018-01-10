@@ -38,16 +38,11 @@ class PaymentRenderer
     public function __construct(
         Twig $twig,
         ShopHelper $shopHelper,
-    CreditCardCheck $creditCardCheck
+        CreditCardCheck $creditCardCheck
     ) {
         $this->twig = $twig;
         $this->shopHelper = $shopHelper;
         $this->creditCardCheck = $creditCardCheck;
-    }
-
-    public function __toString()
-    {
-        return json_encode($this);
     }
 
     /**
@@ -70,7 +65,7 @@ class PaymentRenderer
                 'paymentMethod' => $payment,
                 'errorMessage' => $message,
                 'locale' => $this->shopHelper->getCurrentLocale(),
-                'creditcardcheck' => $this->creditCardCheck,
+                'creditcardcheck' => \json_encode($this->creditCardCheck),
             ]
         );
     }

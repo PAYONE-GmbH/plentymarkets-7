@@ -139,7 +139,7 @@
             language: Payone.ClientApi.Language.de
         };
 
-        request = {{ creditcardcheck|json_encode }};
+        request = {{ creditcardcheck|json_encode|raw }};
         var iframes = new Payone.ClientApi.HostedIFrames(config, request);
 
         function check() { // Function called by submitting PAY-button

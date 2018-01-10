@@ -6,6 +6,7 @@ use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Models\PaymentConfig;
 use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
 use Plenty\Modules\Account\Address\Models\Address;
@@ -82,7 +83,7 @@ abstract class DataProviderAbstract
         FrontendSessionStorageFactoryContract $sessionStorageFactory,
         ShopHelper $shopHelper,
         AddressHelper $addressHelper,
-        ConfigAdapter $config,
+        PaymentConfig $config,
         RequestDataValidator $validator,
         SessionStorage $sessionStorage,
         ParcelServicePresetRepositoryContract $parcelServicePresetRepository,
@@ -267,16 +268,7 @@ abstract class DataProviderAbstract
      */
     protected function getApiContextParams()
     {
-        $apiContextParams = [];
-
-        $apiContextParams['aid'] = $this->config->get('aid');
-        $apiContextParams['mid'] = $this->config->get('mid');
-        $apiContextParams['portalid'] = $this->config->get('portalid');
-        $apiContextParams['key'] = $this->config->get('key');
-        $mode = $this->config->get('mode');
-        $apiContextParams['mode'] = ($mode == 1) ? 'live' : 'test';
-
-        return $apiContextParams;
+        return $this->config->getApiCredentials();
     }
 
     /**

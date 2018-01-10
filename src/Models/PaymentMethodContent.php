@@ -2,6 +2,7 @@
 
 namespace Payone\Models;
 
+use Payone\Methods\PayoneCCPaymentMethod;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 
 /**
@@ -18,6 +19,7 @@ class PaymentMethodContent
     {
         switch ($paymentCode) {
             case 'none':
+            case PayoneCCPaymentMethod::PAYMENT_CODE:
                 return GetPaymentMethodContent::RETURN_TYPE_HTML;
         }
 

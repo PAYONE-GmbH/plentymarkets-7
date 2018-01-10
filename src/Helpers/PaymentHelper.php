@@ -125,7 +125,7 @@ class PaymentHelper
             PayoneSofortPaymentMethod::PAYMENT_CODE,
             PayoneCODPaymentMethod::PAYMENT_CODE,
             PayonePrePaymentPaymentMethod::PAYMENT_CODE,
-            PayoneCCPaymentMethod::PAYMENT_CODE
+            PayoneCCPaymentMethod::PAYMENT_CODE,
         ];
     }
 

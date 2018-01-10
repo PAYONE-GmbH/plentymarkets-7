@@ -39,7 +39,7 @@ class PaymentHistory //implements PaymentHistoryRepositoryContract
     {
         /** @var PaymentHistoryModel $paymentHistoryEntry */
         $paymentHistoryEntry = pluginApp(PaymentHistoryModel::class);
-        $paymentHistoryEntry->typeId = PaymentHistoryModel::HISTORY_TYPE_ASSIGNED;
+        $paymentHistoryEntry->typeId = PaymentHistoryModel::HISTORY_TYPE_STATUS_UPDATED;
         $paymentHistoryEntry->paymentId = $payment->id;
         $paymentHistoryEntry->value = $text;
 

@@ -215,8 +215,11 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
+                $renderingType = $content->getPaymentContentType($paymentCode);
                 try {
-                    $paymentService->openTransaction($basketRepository->load());
+                    if ($renderingType == GetPaymentMethodContent::RETURN_TYPE_CONTINUE) {
+                        $paymentService->openTransaction($basketRepository->load());
+                    }
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $logger->logException($e);
@@ -225,7 +228,7 @@ class PayoneServiceProvider extends ServiceProvider
 
                     return;
                 }
-                $event->setType($content->getPaymentContentType($paymentCode));
+                $event->setType($renderingType);
                 $event->setValue($paymentRenderer->render($payment, ''));
             }
         );

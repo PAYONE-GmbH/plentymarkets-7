@@ -80,7 +80,6 @@ class PaymentService
                 'Can no initialize payment. Not a Payone payment method'
             );
         }
-
         if ($authType == self::AUTH_TYPE_AUTH) {
             $authResponse = $this->authService->executeAuth($basket);
         } else {

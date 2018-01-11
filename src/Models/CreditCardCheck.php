@@ -1,26 +1,21 @@
 <?php
 
-
 namespace Payone\Models;
-
 
 class CreditCardCheck implements \JsonSerializable
 {
-
-
     /** @var PaymentConfig */
     private $configRepo;
 
     /**
      * CreditCardCheck constructor.
+     *
      * @param PaymentConfig $configRepo
      */
     public function __construct(
-
         PaymentConfig $configRepo
     ) {
         $this->configRepo = $configRepo;
-
     }
 
     public function createHash($data)
@@ -42,7 +37,7 @@ class CreditCardCheck implements \JsonSerializable
             'portalid' => $this->configRepo->getPortalid(),
             'encoding' => 'UTF-8',
             'storecarddata' => 'yes',
-            'key' => $this->configRepo->getKey()
+            'key' => $this->configRepo->getKey(),
         ];
 
         $data['hash'] = $this->createHash($data);

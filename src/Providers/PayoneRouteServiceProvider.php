@@ -27,5 +27,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->get('payone/printParcelServicePreset', 'Payone\Controllers\ConfigController@printParcelServicePreset');
 
         $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
+
+        $router->get('payone/checkout/doAuth', 'Payone\Controllers\CheckoutController@doAuth');
     }
 }

@@ -1,4 +1,5 @@
 {# @var creditcardcheck \Payone\Models\CreditCardCheck #}
+{{ errorMessage|raw }}
 <style type="text/css" media="screen, projection"> * {
         margin: 0;
         padding: 0;
@@ -68,31 +69,50 @@
             <div class="description">{{ paymentMethod.description }}</div>
         </div>
     </div>
+
     <script type="text/javascript" src="https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js"></script>
+    <script type="text/javascript" rel="stylesheet" href="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
+
     <form name="paymentform" action="" method="post">
         <fieldset>
-            <input type="hidden" name="pseudocardpan" id="pseudocardpan"> <input type="hidden" name="truncatedcardpan"
-                                                                                 id="truncatedcardpan">
-            <!-- place your input fields -->
+            <input type="hidden" name="pseudocardpan" id="pseudocardpan">
+            <input type="hidden" name="truncatedcardpan" id="truncatedcardpan">
+
             <label for="cardtypeInput">Card type:</label> <span id="cardtype" class="inputIframe"></span>
             <label for="cardpanInput">Cardpan:</label> <span id="cardpan" class="inputIframe"></span>
             <label for="cvcInput">CVC:</label>
             <span id="cardcvc2" class="inputIframe"></span>
+
             <label for="expireInput">Expire Date:</label> <span id="expireInput" class="inputIframe">
-<span id="cardexpiremonth"></span>
-<span id="cardexpireyear"></span> </span>
+            <span id="cardexpiremonth"></span>
+            <span id="cardexpireyear"></span> </span>
+
             <label for="firstnameInput">Firstname:</label>
             <input id="firstname" type="text" name="firstname" value="">
+
             <label for="lastnameInput">Lastname:</label>
             <input id="lastname" type="text" name="lastname" value="">
             <div id="errorOutput"></div>
-            <input id="paymentsubmit" type="button" value="Submit" onclick="check();"></fieldset>
+            <input id="paymentsubmit" type="button" value="Submit" onclick="$.payoneIframe.check();">
+
+            <button id="orderCancel" class="btn btn-default btn-block payolution-cancel" data-dismiss="modal"
+                    @click="clearFields"
+                    aria-label="{{ trans('Payolution::Template.orderCancel') }}">
+                <i class="fa fa-arrow-left"></i> {{ trans('Payolution::Template.orderCancel') }}
+            </button>
+            {% if errorMessage is empty %}
+                <button id="orderPlace" class="btn btn-primary btn-block">
+                    <i class="fa fa-arrow-right"
+                       aria-hidden="true"></i> {{ trans('Payolution::Template.orderPlace') }}
+                </button>
+            {% endif %}
+        </fieldset>
     </form>
+
     <div id="paymentform"></div>
 
-    <script>
-        var request, config;
-        config = {
+    <script type="text/javascript">
+        var config = {
             fields: {
                 cardtype: {
                     selector: "cardtype",
@@ -136,27 +156,11 @@
                 }
             },
             error: "errorOutput",
-            language: Payone.ClientApi.Language.de
         };
+        var Templates = {};
+        Templates.locale = '{{ locale }}';
 
-        request = {{ creditcardcheck|json_encode|raw }};
-        var iframes = new Payone.ClientApi.HostedIFrames(config, request);
+        var request = {{ creditcardcheck|json_encode|raw }};
 
-        function check() { // Function called by submitting PAY-button
-            if (iframes.isComplete()) {
-                iframes.creditCardCheck('checkCallback');// Perform "CreditCardCheck" to create and get a // PseudoCardPan; then call your function "checkCallback"
-            } else {
-                console.debug("not complete");
-            }
-        }
-
-        function checkCallback(response) {
-            console.debug(response);
-            if (response.status === "VALID") {
-                document.getElementById("pseudocardpan").value = response.pseudocardpan;
-                document.getElementById("truncatedcardpan").value = response.truncatedcardpan;
-                document.paymentform.submit();
-            }
-        }
     </script>
 </div>

@@ -1,65 +1,9 @@
 {# @var creditcardcheck \Payone\Models\CreditCardCheck #}
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
 {{ errorMessage|raw }}
-<style type="text/css" media="screen, projection"> * {
-        margin: 0;
-        padding: 0;
-    }
+<style type="text/css" media="screen, projection"> </style>
 
-    body {
-        background: #FFF;
-        color: #000;
-        font: 0.9em "Helvetica";
-    }
-
-    fieldset {
-        padding: 1em;
-        border: 1px solid #000;
-        width: 275px;
-        margin: 10px;
-    }
-
-    label {
-        margin-right: 10px;
-        float: left;
-        width: 80px;
-        padding-top: 0.3em;
-        text-align: right;
-    }
-
-    input, select {
-        font-size: 1em;
-        border: 1px solid #000;
-        padding: 0.1em;
-    }
-
-    select {
-        margin-right: 10px;
-    }
-
-    input, .inputIframe, select {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    input {
-        width: 175px;
-    }
-
-    #paymentsubmit {
-        float: right;
-        width: auto;
-        padding: 5px;
-        margin-bottom: 0px;
-        margin-right: 10px;
-    }
-
-    #errorOutput {
-        text-align: center;
-        color: #ff0000;
-        display: block;
-    } </style>
-
-<div id="PayonePaymentModal" class="method-presentation">
+<div id="payonePaymentModal" class="method-presentation">
     <div class="method-title">
         <div class="method-option form-check-label">
             <h3>{{ paymentMethod.name }}:</h3>
@@ -71,9 +15,9 @@
     </div>
 
     <script type="text/javascript" src="https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js"></script>
-    <script type="text/javascript" rel="stylesheet" href="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
+    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
 
-    <form name="paymentform" action="" method="post">
+    <form id="orderPlaceForm" name="paymentform" action="" method="post">
         <fieldset>
             <input type="hidden" name="pseudocardpan" id="pseudocardpan">
             <input type="hidden" name="truncatedcardpan" id="truncatedcardpan">
@@ -93,23 +37,20 @@
             <label for="lastnameInput">Lastname:</label>
             <input id="lastname" type="text" name="lastname" value="">
             <div id="errorOutput"></div>
-            <input id="paymentsubmit" type="button" value="Submit" onclick="$.payoneIframe.check();">
 
-            <button id="orderCancel" class="btn btn-default btn-block payolution-cancel" data-dismiss="modal"
+            <button id="orderCancel" class="btn btn-default btn-block payone-cancel" data-dismiss="modal"
                     @click="clearFields"
-                    aria-label="{{ trans('Payolution::Template.orderCancel') }}">
-                <i class="fa fa-arrow-left"></i> {{ trans('Payolution::Template.orderCancel') }}
+                    aria-label="{{ trans('Payone::Template.orderCancel') }}">
+                <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
             </button>
             {% if errorMessage is empty %}
                 <button id="orderPlace" class="btn btn-primary btn-block">
                     <i class="fa fa-arrow-right"
-                       aria-hidden="true"></i> {{ trans('Payolution::Template.orderPlace') }}
+                       aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}
                 </button>
             {% endif %}
         </fieldset>
     </form>
-
-    <div id="paymentform"></div>
 
     <script type="text/javascript">
         var config = {
@@ -117,18 +58,24 @@
                 cardtype: {
                     selector: "cardtype",
                     cardtypes: ["V", "M", "A"]
-                }, cardpan: {
+                },
+                cardpan: {
 // put name of your div-container here
 // define possible cardtypes in PAYONE iFrame
 // put name of your div-container here // text (default), password, tel
-                    selector: "cardcvc2", // put name of your div-container here type: "password", // select(default), text, password, tel style: "font-size: 1em; border: 1px solid #000;",
                     size: "4",
                     maxlength: "4", // set max. length for CVC input; empty values possible length: { "A": 4, "V": 3, "M": 3, "J": 0 } // set required CVC length per cardtype
                     selector: "cardpan",
                     type: "text",
                     style: "font-size: 1em; border: 1px solid #000;"
                 },
-                cardcvc2: {},
+                cardcvc2: {
+                    selector: "cardcvc2",                // put name of your div-container here
+                    type: "password",                    // select(default), text, password, tel
+                    style: "font-size: 1em; border: 1px solid #000;",
+                    size: "4",
+                    maxlength: "4"
+                },
                 cardexpiremonth: {
                     selector: "cardexpiremonth", type: "select",
                     size: "2",

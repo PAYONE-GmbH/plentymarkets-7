@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Methods\PayoneCCPaymentMethod;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
 
@@ -32,6 +33,12 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         if ($this->paymentHasAccount($paymentCode)) {
             $requestParams['account'] = $this->getAccountData();
         }
+        if ($this->paymentHasRedirect($paymentCode)) {
+            $requestParams['redirect'] = $this->getRedirectUrls();
+        }
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
+        }
         $requestParams['referenceId'] = $requestReference;
 
         $this->validator->validate($requestParams);
@@ -60,6 +67,12 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
 
         if ($this->paymentHasAccount($paymentCode)) {
             $requestParams['account'] = $this->getAccountData();
+        }
+        if ($this->paymentHasRedirect($paymentCode)) {
+            $requestParams['redirect'] = $this->getRedirectUrls();
+        }
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
         }
         $requestParams['referenceId'] = $requestReference;
 

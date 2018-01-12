@@ -21,6 +21,7 @@ class CreditCardCheck implements \JsonSerializable
     public function createHash($data)
     {
         ksort($data);
+
         return hash_hmac('sha384', implode('', $data), $this->configRepo->getKey());
     }
 
@@ -45,4 +46,3 @@ class CreditCardCheck implements \JsonSerializable
         return $data;
     }
 }
-

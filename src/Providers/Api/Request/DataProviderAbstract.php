@@ -6,6 +6,7 @@ use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\PaymentConfig;
 use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
@@ -416,6 +417,8 @@ abstract class DataProviderAbstract
 
     /**
      * @param $shippingProviderId
+     *
+     * @return array
      */
     protected function getShippingProvider($shippingProviderId)
     {
@@ -423,5 +426,41 @@ abstract class DataProviderAbstract
         $preset = $this->parcelServicePresetRepository->getPresetById($shippingProviderId);
 
         return ['name' => $preset->parcelServiceNames[0]->name];
+    }
+
+    /**
+     * @param $paymentCode
+     *
+     * @return bool
+     */
+    protected function paymentHasRedirect($paymentCode)
+    {
+        // URLs might be necessary since some cards require REDIRECT for 3d secure
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRedirectUrls()
+    {
+        return [
+            'successurl' => $this->shopHelper->getPlentyDomain() . '/payone/redirect/success',
+            'errorurl' => $this->shopHelper->getPlentyDomain() . '/payone/redirect/error',
+            'backurl' => $this->shopHelper->getPlentyDomain() . '/payone/redirect/back',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPseudocardpan()
+    {
+        //TODO
+        return '';
     }
 }

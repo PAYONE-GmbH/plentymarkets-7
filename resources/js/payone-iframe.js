@@ -7,8 +7,8 @@
     };
 
     $.payoneIframe.check = function () { // Function called by submitting PAY-button
-        if (iframes.isComplete()) {
-            iframes.creditCardCheck('$.payoneIframe.checkCallback');// Perform "CreditCardCheck" to create and get a // PseudoCardPan; then call your function "checkCallback"
+        if ($.payoneIframe.iframe.isComplete()) {
+            $.payoneIframe.iframe.creditCardCheck('checkCallback');// Perform "CreditCardCheck" to create and get a // PseudoCardPan; then call your function "checkCallback"
         } else {
             console.debug("not complete");
         }
@@ -33,7 +33,7 @@
     $.payoneIframe.createIframe = function (locale, request, config) {
         config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
 
-        $.payoneIframe.iframe = new Payone.ClientApi.Hosted$.payoneIframe.iframe(config, request);
+        $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
         return $.payoneIframe.iframe;
     };
 
@@ -98,7 +98,7 @@
             form = this;
 
             $.payoneIframe.check();
-            if (!$('#pseudocardpan').val()){
+            if (!$('#pseudocardpan').val()) {
                 return;
             }
             $.when($.payoneIframe.doAuth(form)).done(function () {
@@ -114,5 +114,15 @@
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });
+
     });
+
+    function checkCallback(response) {
+        console.debug(response);
+        if (response.status === "VALID") {
+            document.getElementById("pseudocardpan").value = response.pseudocardpan;
+            document.getElementById("truncatedcardpan").value = response.truncatedcardpan;
+        }
+    };
+
 }(window.jQuery, window, document));

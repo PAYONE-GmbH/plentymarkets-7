@@ -38,7 +38,7 @@
             <input id="lastname" type="text" name="lastname" value="">
             <div id="errorOutput"></div>
 
-            <button id="orderCancel" class="btn btn-default btn-block payone-cancel" data-dismiss="modal"
+            <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
                     @click="clearFields"
                     aria-label="{{ trans('Payone::Template.orderCancel') }}">
                 <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
@@ -63,8 +63,8 @@
 // put name of your div-container here
 // define possible cardtypes in PAYONE iFrame
 // put name of your div-container here // text (default), password, tel
-                    size: "4",
-                    maxlength: "4", // set max. length for CVC input; empty values possible length: { "A": 4, "V": 3, "M": 3, "J": 0 } // set required CVC length per cardtype
+                    size: "19",
+                    maxlength: "19", // set max. length for CVC input; empty values possible length: { "A": 4, "V": 3, "M": 3, "J": 0 } // set required CVC length per cardtype
                     selector: "cardpan",
                     type: "text",
                     style: "font-size: 1em; border: 1px solid #000;"
@@ -106,6 +106,27 @@
         };
         var Templates = {};
         Templates.locale = '{{ locale }}';
+        Templates.errorMessage =
+            '<div id="checkoutError" class="row is-table-row error">' +
+            '     <div class="col-sm-12">' +
+            '        <p>' +
+            '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+            '        </p>' +
+            '        <p>' +
+            '                <span class="text-muted">' +
+            '                       {% if isDebugModeEnabled %}' +
+            '                           {errorMessage}' +
+            '                       {% else %}' +
+            '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+            '                       {% endif %}' +
+            '                </span>' +
+            '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+            '                <i class="fa fa-arrow-right"' +
+            '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+            '        </button></a>'+
+            '        </p>' +
+            '    </div>' +
+            '</div>';
 
         var request = {{ creditcardcheck|json_encode|raw }};
 

@@ -1,7 +1,7 @@
 (function ($) {
 
     $.payoneIframe = $.payoneIframe || {};
-
+    $.payoneIframe.iframe = null;
     $.payoneIframe.setCheckoutDisabled = function (isDisabled) {
         $('#orderPlace').prop('disabled', isDisabled);
     };
@@ -33,7 +33,8 @@
     $.payoneIframe.createIframe = function (locale, request, config) {
         config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
 
-        return new Payone.ClientApi.HostedIFrames(config, request);
+        $.payoneIframe.iframe = new Payone.ClientApi.Hosted$.payoneIframe.iframe(config, request);
+        return $.payoneIframe.iframe;
     };
 
     $.payoneIframe.doAuth = function (form) {
@@ -81,7 +82,7 @@
     };
 
     $(function () {
-        var iframes = $.payoneIframe.createIframe(Templates.locale, request, config);
+        $.payoneIframe.createIframe(Templates.locale, request, config);
 
         var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
@@ -97,7 +98,7 @@
             form = this;
 
             $.payoneIframe.check();
-            if (!$('#pseudocardpan').value()){
+            if (!$('#pseudocardpan').val()){
                 return;
             }
             $.when($.payoneIframe.doAuth(form)).done(function () {

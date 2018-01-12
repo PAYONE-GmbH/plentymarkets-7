@@ -46,7 +46,7 @@ class CheckoutErrorRenderer
         }
 
         return $this->twig->render(
-            PluginConstants::NAME . '::Error',
+            PluginConstants::NAME . '::Partial.Error',
             [
                 'errorMessage' => $message,
                 'isDebugModeEnabled' => $this->shopHelper->isDebugModeActive(),

@@ -62,3 +62,9 @@
 #paymentform input {
     width: 175px;
 }
+
+#errorOutput {
+    text-align: center;
+    color: #ff0000;
+    display: block;
+}

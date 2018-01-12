@@ -22,19 +22,19 @@
             <input type="hidden" name="pseudocardpan" id="pseudocardpan">
             <input type="hidden" name="truncatedcardpan" id="truncatedcardpan">
 
-            <label for="cardtypeInput">Card type:</label> <span id="cardtype" class="inputIframe"></span>
-            <label for="cardpanInput">Cardpan:</label> <span id="cardpan" class="inputIframe"></span>
+            <label for="cardtypeInput">{{ trans('Payone::Template.ccType') }}:</label> <span id="cardtype" class="inputIframe"></span>
+            <label for="cardpanInput">{{ trans('Payone::Template.ccNumber') }}:</label> <span id="cardpan" class="inputIframe"></span>
             <label for="cvcInput">CVC:</label>
             <span id="cardcvc2" class="inputIframe"></span>
 
-            <label for="expireInput">Expire Date:</label> <span id="expireInput" class="inputIframe">
+            <label for="expireInput">{{ trans('Payone::Template.ccValidTo') }}:</label> <span id="expireInput" class="inputIframe">
             <span id="cardexpiremonth"></span>
             <span id="cardexpireyear"></span> </span>
 
-            <label for="firstnameInput">Firstname:</label>
+            <label for="firstnameInput">{{ trans('Payone::Template.firstName') }}:</label>
             <input id="firstname" type="text" name="firstname" value="">
 
-            <label for="lastnameInput">Lastname:</label>
+            <label for="lastnameInput">{{ trans('Payone::Template.lastName') }}:</label>
             <input id="lastname" type="text" name="lastname" value="">
             <div id="errorOutput"></div>
 

@@ -20,7 +20,8 @@ class CreditCardCheck implements \JsonSerializable
 
     public function createHash($data)
     {
-        return hash_hmac('sha2-384', implode('', $data), $this->configRepo->getKey());
+        ksort($data);
+        return hash_hmac('sha384', implode('', $data), $this->configRepo->getKey());
     }
 
     /**
@@ -37,13 +38,11 @@ class CreditCardCheck implements \JsonSerializable
             'portalid' => $this->configRepo->getPortalid(),
             'encoding' => 'UTF-8',
             'storecarddata' => 'yes',
-            'key' => $this->configRepo->getKey(),
         ];
 
         $data['hash'] = $this->createHash($data);
 
-        unset($data['key']);
-
         return $data;
     }
 }
+

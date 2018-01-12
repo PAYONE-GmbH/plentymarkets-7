@@ -19,7 +19,6 @@
         if (response.status === "VALID") {
             document.getElementById("pseudocardpan").value = response.pseudocardpan;
             document.getElementById("truncatedcardpan").value = response.truncatedcardpan;
-            document.paymentform.submit();
         }
     };
 
@@ -57,12 +56,6 @@
             }
             console.log('done');
             console.log(data);
-        }).fail(function (data, textStatus, jqXHR) {
-            console.log('fail');
-            console.log(jqXHR);
-            console.log(jqXHR.responseText);
-            form.unbind('submit');
-            $.payoneIframe.showErrorMessage(jqXHR.responseText);
         });
     };
 
@@ -88,9 +81,7 @@
     };
 
     $(function () {
-        window.onload = function () {
-            var iframes = $.payoneIframe.createIframe(Template.locale, request, config);
-        };
+        var iframes = $.payoneIframe.createIframe(Templates.locale, request, config);
 
         var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
@@ -106,14 +97,15 @@
             form = this;
 
             $.payoneIframe.check();
-
+            if (!$('#pseudocardpan').value()){
+                return;
+            }
             $.when($.payoneIframe.doAuth(form)).done(function () {
                 submitted = true;
                 console.log(form);
                 form.submit();
             }).fail(function (data, textStatus, jqXHR) {
                 $.payoneIframe.showErrorMessage(jqXHR.responseText);
-                $.payoneIframe.resetForm(termsCheckboxes);
                 $(this).unbind(event);
             });
 

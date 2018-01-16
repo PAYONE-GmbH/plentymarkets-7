@@ -542,6 +542,25 @@
     "default": "PAYONE_PAYONE_CC.allowedTrafficLights.green"
   },
   {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CC.allowedCardTypes",
+    "label": "Erlaubte Kartentypen",
+    "type": "multi_select",
+    "possibleValues": {
+      "PAYONE_PAYONE_CC.allowedCardTypes.V": "Visa",
+      "PAYONE_PAYONE_CC.allowedCardTypes.M": "Mastercard",
+      "PAYONE_PAYONE_CC.allowedCardTypes.A": "Amex",
+      "PAYONE_PAYONE_CC.allowedCardTypes.O": "Maestro (Int)",
+      "PAYONE_PAYONE_CC.allowedCardTypes.U": "Maestro (UK)",
+      "PAYONE_PAYONE_CC.allowedCardTypes.D": "Diners",
+      "PAYONE_PAYONE_CC.allowedCardTypes.B": "Carte Bleue",
+      "PAYONE_PAYONE_CC.allowedCardTypes.C": "Discover",
+      "PAYONE_PAYONE_CC.allowedCardTypes.J": "JCB",
+      "PAYONE_PAYONE_CC.allowedCardTypes.P": "China Union Pay"
+    },
+    "default": "all"
+  },
+  {
     "tab": "Nachnahme",
     "key": "PAYONE_PAYONE_CASH_ON_DELIVERY.active",
     "label": "Aktiv",

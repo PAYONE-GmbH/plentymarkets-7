@@ -31,10 +31,16 @@
     };
 
     $.payoneIframe.createIframe = function (locale, request, config) {
-        config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
 
-        $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
-        return $.payoneIframe.iframe;
+       var n = document.createElement("script");
+        n.setAttribute("type", "text/javascript");
+        n.setAttribute("src", 'https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js');
+        n.onload = function(){
+            config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
+            $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
+        };
+        document.getElementsByTagName("body")[0].appendChild(n);
+
     };
 
     $.payoneIframe.doAuth = function (form) {

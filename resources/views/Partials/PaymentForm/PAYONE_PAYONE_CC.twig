@@ -17,25 +17,32 @@
     <script type="text/javascript" src="https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js" async></script>
     <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js" defer></script>
 
-    <form id="orderPlaceForm" name="paymentform" action="" method="post">
+    <form id="orderPlaceForm" name="paymentform" action="place-order" method="post">
         <fieldset>
             <input type="hidden" name="pseudocardpan" id="pseudocardpan">
             <input type="hidden" name="truncatedcardpan" id="truncatedcardpan">
 
-            <label for="cardtypeInput">{{ trans('Payone::Template.ccType') }}:</label> <span id="cardtype" class="inputIframe"></span>
-            <label for="cardpanInput">{{ trans('Payone::Template.ccNumber') }}:</label> <span id="cardpan" class="inputIframe"></span>
-            <label for="cvcInput">CVC:</label>
+            <label for="cardtype">{{ trans('Payone::Template.ccType') }}:</label>
+            <span id="cardtype" class="inputIframe"></span>
+
+            <label for="cardpan">{{ trans('Payone::Template.ccNumber') }}:</label>
+            <span id="cardpan" class="inputIframe"></span>
+
+            <label for="cardcvc2">CVC:</label>
             <span id="cardcvc2" class="inputIframe"></span>
 
-            <label for="expireInput">{{ trans('Payone::Template.ccValidTo') }}:</label> <span id="expireInput" class="inputIframe">
-            <span id="cardexpiremonth"></span>
-            <span id="cardexpireyear"></span> </span>
+            <label for="expire">{{ trans('Payone::Template.ccValidTo') }}:</label>
+            <span id="expireInput" class="inputIframe">
+                <span id="cardexpiremonth"></span>
+                <span id="cardexpireyear"></span>
+            </span>
 
-            <label for="firstnameInput">{{ trans('Payone::Template.firstName') }}:</label>
+            <label for="firstname">{{ trans('Payone::Template.firstName') }}:</label>
             <input id="firstname" type="text" name="firstname" value="">
 
-            <label for="lastnameInput">{{ trans('Payone::Template.lastName') }}:</label>
+            <label for="lastname">{{ trans('Payone::Template.lastName') }}:</label>
             <input id="lastname" type="text" name="lastname" value="">
+
             <div id="errorOutput"></div>
 
             <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"

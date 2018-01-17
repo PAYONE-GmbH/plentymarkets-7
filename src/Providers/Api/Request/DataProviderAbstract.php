@@ -470,6 +470,9 @@ abstract class DataProviderAbstract
     {
         $check = $this->creditCardCheckResponseRepository->loadLastResponse();
 
+        if(!is_object($check)){
+            return '';
+        }
         return $check->getPseudocardpan();
     }
 }

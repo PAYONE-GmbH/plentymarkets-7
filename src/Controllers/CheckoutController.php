@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use Payone\Adapter\Logger;
 use Payone\Helpers\SessionHelper;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
@@ -27,20 +28,28 @@ class CheckoutController extends Controller
     private $request;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * CheckoutController constructor.
      *
      * @param SessionHelper $sessionHelper
      * @param CheckoutErrorRenderer $renderer
      * @param Request $request
+     * @param Logger $logger
      */
     public function __construct(
         SessionHelper $sessionHelper,
         CheckoutErrorRenderer $renderer,
-        Request $request
+        Request $request,
+        Logger $logger
     ) {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->logger = $logger;
     }
 
     /**
@@ -53,6 +62,8 @@ class CheckoutController extends Controller
         PaymentService $paymentService,
         BasketRepositoryContract $basket
     ) {
+        $this->logger->setIdentifier(__METHOD__)
+            ->debug('CheckoutController', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
                 'message' => $this->renderer->renderErrorMessage(
@@ -83,6 +94,8 @@ class CheckoutController extends Controller
         CreditCardCheckResponseRepository $repository,
         CreditCardCheckResponse $response
     ) {
+        $this->logger->setIdentifier(__METHOD__)
+            ->debug('CheckoutController', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
                 'message' => $this->renderer->renderErrorMessage(

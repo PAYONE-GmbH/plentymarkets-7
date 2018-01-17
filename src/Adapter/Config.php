@@ -10,6 +10,8 @@ use Plenty\Plugin\ConfigRepository;
  */
 class Config //extends ConfigRepository
 {
+    const MULTI_SELECT_ALL = 'all';
+
     /**
      * @var ConfigRepository
      */
@@ -48,7 +50,7 @@ class Config //extends ConfigRepository
      * @param string $key
      * @param null $default
      *
-     * @return mixed
+     * @return string
      */
     public function get(
         string $key,

@@ -4,9 +4,7 @@ namespace Payone\Tests\Unit;
 
 use Payone\Helpers\PaymentHelper;
 use Payone\Mocks\Config;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
-use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Plugin\ConfigRepository;
 
@@ -14,15 +12,12 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 {
     public function testConfigContainsBasicSettings()
     {
-        $paymentMethodRepo = $this->createMock(PaymentMethodRepositoryContract::class);
-        $paymentRepo = $this->createMock(PaymentRepositoryContract::class);
         $configRepo = $this->createMock(ConfigRepository::class);
 
         $config = new Config();
         $paymentHelper = new PaymentHelper(
-            $paymentMethodRepo,
+            self::createMock(PaymentMethodRepositoryContract::class),
             self::createMock(PaymentOrderRelationRepositoryContract::class),
-            self::createMock(OrderRepositoryContract::class),
             $configRepo
         );
 

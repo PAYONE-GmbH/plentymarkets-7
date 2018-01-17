@@ -64,7 +64,7 @@
             fields: {
                 cardtype: {
                     selector: "cardtype",
-                    cardtypes: ["V", "M", "A"]
+                    cardtypes: {{ ccTypes|json_encode|raw }}
                 },
                 cardpan: {
 // put name of your div-container here

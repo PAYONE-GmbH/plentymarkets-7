@@ -7,6 +7,7 @@ use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentConfig;
 use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
@@ -65,6 +66,10 @@ abstract class DataProviderAbstract
     private $parcelServicePresetRepository;
 
     private $paymentRepository;
+    /**
+     * @var CreditCardCheckResponseRepository
+     */
+    private $creditCardCheckResponseRepository;
 
     /**
      * DataProviderAbstract constructor.
@@ -73,11 +78,12 @@ abstract class DataProviderAbstract
      * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
      * @param ShopHelper $shopHelper
      * @param AddressHelper $addressHelper
-     * @param ConfigAdapter $config
+     * @param PaymentConfig $config
      * @param RequestDataValidator $validator
      * @param SessionStorage $sessionStorage
      * @param ParcelServicePresetRepositoryContract $parcelServicePresetRepository
      * @param PaymentRepositoryContract $paymentRepository
+     * @param CreditCardCheckResponseRepository $creditCardCheckResponseRepository
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
@@ -88,7 +94,8 @@ abstract class DataProviderAbstract
         RequestDataValidator $validator,
         SessionStorage $sessionStorage,
         ParcelServicePresetRepositoryContract $parcelServicePresetRepository,
-        PaymentRepositoryContract $paymentRepository
+        PaymentRepositoryContract $paymentRepository,
+        CreditCardCheckResponseRepository $creditCardCheckResponseRepository
     ) {
         $this->itemRepo = $itemRepo;
         $this->sessionStorageFactory = $sessionStorageFactory;
@@ -99,6 +106,7 @@ abstract class DataProviderAbstract
         $this->sessionStorage = $sessionStorage;
         $this->parcelServicePresetRepository = $parcelServicePresetRepository;
         $this->paymentRepository = $paymentRepository;
+        $this->creditCardCheckResponseRepository = $creditCardCheckResponseRepository;
     }
 
     /**
@@ -207,9 +215,9 @@ abstract class DataProviderAbstract
             $amount = $orderItemData['amounts'][0];
             $priceGross = $amount->priceGross;
             $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int) round($tax * 100);
+            $orderItemData['tax'] = (int)round($tax * 100);
 
-            $orderItemData['price'] = (int) round($priceGross * 100);
+            $orderItemData['price'] = (int)round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -231,17 +239,17 @@ abstract class DataProviderAbstract
             return ['customerId' => $customerId];
         }
         $customerData = [
-            'email' => (string) $addressObj->email,
-            'firstname' => (string) $addressObj->firstName,
-            'lastname' => (string) $addressObj->lastName,
+            'email' => (string)$addressObj->email,
+            'firstname' => (string)$addressObj->firstName,
+            'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
-            'ip' => (string) $this->shopHelper->getIpAddress(),
-            'customerId' => (string) $customerId,
+            'ip' => (string)$this->shopHelper->getIpAddress(),
+            'customerId' => (string)$customerId,
             'registrationDate' => '1970-01-01',
             'group' => 'default',
-            'company' => (string) $addressObj->companyName,
-            'telephonenumber' => (string) $addressObj->phone,
+            'company' => (string)$addressObj->companyName,
+            'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
         //TODO: Check format
@@ -307,13 +315,13 @@ abstract class DataProviderAbstract
     protected function getBasketData(Basket $basket)
     {
         $requestParams = $basket->toArray();
-        $requestParams['currency'] = (bool) $basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
-        $requestParams['grandTotal'] = (int) round($basket->basketAmount * 100);
-        $requestParams['itemSumNet'] = (int) round($basket->itemSumNet * 100);
-        $requestParams['basketAmount'] = (int) round($basket->basketAmount * 100);
-        $requestParams['basketAmountNet'] = (int) round($basket->basketAmountNet * 100);
-        $requestParams['shippingAmount'] = (int) round($basket->shippingAmount * 100);
-        $requestParams['shippingAmountNet'] = (int) round($basket->shippingAmountNet * 100);
+        $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
+        $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
+        $requestParams['itemSumNet'] = (int)round($basket->itemSumNet * 100);
+        $requestParams['basketAmount'] = (int)round($basket->basketAmount * 100);
+        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
+        $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
+        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
 
         $uniqueBasketId = $this->getUniqueBasketId($basket->id);
 
@@ -330,12 +338,12 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
-        $requestParams['itemSumNet'] = (int) round($requestParams['amounts'][0]['itemSumNet'] * 100);
-        $requestParams['basketAmount'] = (int) round($requestParams['amounts'][0]['basketAmount'] * 100);
-        $requestParams['basketAmountNet'] = (int) round($requestParams['amounts'][0]['basketAmountNet'] * 100);
-        $requestParams['shippingAmount'] = (int) round($requestParams['amounts'][0]['shippingAmount'] * 100);
-        $requestParams['shippingAmountNet'] = (int) round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
+        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['itemSumNet'] = (int)round($requestParams['amounts'][0]['itemSumNet'] * 100);
+        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['basketAmount'] * 100);
+        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
+        $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
+        $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
         return $requestParams;
@@ -391,7 +399,7 @@ abstract class DataProviderAbstract
                     continue;
                 }
                 if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    return 1 + (int) $property->value;
+                    return 1 + (int)$property->value;
                 }
             }
         }
@@ -410,7 +418,7 @@ abstract class DataProviderAbstract
 
         return [
             'orderId' => $order->id,
-            'amount' => (int) round($amount->invoiceTotal * 100),
+            'amount' => (int)round($amount->invoiceTotal * 100),
             'currency' => $amount->currency,
         ];
     }
@@ -460,7 +468,8 @@ abstract class DataProviderAbstract
      */
     protected function getPseudocardpan()
     {
-        //TODO
-        return '';
+        $check = $this->creditCardCheckResponseRepository->loadLastResponse();
+
+        return $check->getPseudocardpan();
     }
 }

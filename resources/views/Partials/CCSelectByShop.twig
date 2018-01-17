@@ -150,7 +150,7 @@
 
     function check() { // Function called by submitting PAY-button
         if (iframes.isComplete()) {
-            iframes.creditCardCheck('checkCallback');// Perform "CreditCardCheck" to create and get a // PseudoCardPan; then call your function "checkCallback"
+            iframes.creditCardCheck('checkCallback');// Perform "CreditCardCheckRequestData" to create and get a // PseudoCardPan; then call your function "checkCallback"
         } else {
             console.debug("not complete");
         }

@@ -83,6 +83,11 @@ class CreditCardCheckResponse implements \JsonSerializable
         $cardtype,
         $cardexpiredate
     ) {
+        $this->status = $status;
+        $this->pseudocardpan = $pseudocardpan;
+        $this->truncatedcardpan = $truncatedcardpan;
+        $this->cardtype = $cardtype;
+        $this->cardexpiredate = $cardexpiredate;
     }
 
     /**

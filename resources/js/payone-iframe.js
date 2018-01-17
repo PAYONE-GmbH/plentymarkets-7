@@ -69,7 +69,7 @@
         return $.ajax({
             type: 'POST',
             url: '/payone/checkout/storeCCCheckResponse',
-            data: JSON.stringify(response),
+            data: response,
             dataType: 'json',
             async: true
         }).done(function (data) {

@@ -2,14 +2,14 @@
 
 namespace Payone\Controllers;
 
-use Payone\Adapter\Logger;
-use Payone\Adapter\SessionStorage;
-use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\SessionHelper;
+use Payone\Models\CreditCardCheckResponse;
+use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Services\PaymentService;
 use Payone\Views\CheckoutErrorRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Plugin\Controller;
+use Plenty\Plugin\Http\Request;
 
 /**
  * Class CheckoutController
@@ -21,22 +21,26 @@ class CheckoutController extends Controller
 
     /** @var CheckoutErrorRenderer */
     private $renderer;
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * CheckoutController constructor.
      *
-     * @param Logger $logger
-     * @param SessionStorage $sessionStorage
-     * @param PaymentHelper $paymentHelper
      * @param SessionHelper $sessionHelper
      * @param CheckoutErrorRenderer $renderer
+     * @param Request $request
      */
     public function __construct(
         SessionHelper $sessionHelper,
-        CheckoutErrorRenderer $renderer
+        CheckoutErrorRenderer $renderer,
+        Request $request
     ) {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
+        $this->request = $request;
     }
 
     /**
@@ -58,6 +62,53 @@ class CheckoutController extends Controller
         }
         try {
             $paymentService->openTransaction($basket->load());
+        } catch (\Exception $e) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+                ),
+            ]);
+        }
+
+        return $this->getJsonSuccess();
+    }
+
+    /**
+     * @param CreditCardCheckResponseRepository $repository
+     * @param CreditCardCheckResponse $response
+     *
+     * @return string
+     */
+    public function storeCCCheckResponse(
+        CreditCardCheckResponseRepository $repository,
+        CreditCardCheckResponse $response
+    ) {
+        if (!$this->sessionHelper->isLoggedIn()) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    'Your session expired. Please login and start a new purchase.'
+                ),
+            ]);
+        }
+        $status = $this->request->get('status');
+        if ($status !== 'VALID') {
+            return $this->getJsonErrors(
+                [
+                    'message' => $this->renderer->renderErrorMessage(
+                        'Credit card check failed.'
+                    ),
+                ]
+            );
+        }
+        try {
+            $response->init(
+                $this->request->get('status'),
+                $this->request->get('pseudocardpan'),
+                $this->request->get('truncatedcardpan'),
+                $this->request->get('cardtype'),
+                $this->request->get('cardexpiredate')
+            );
+            $repository->storeLastResponse($response);
         } catch (\Exception $e) {
             return $this->getJsonErrors([
                 'message' => $this->renderer->renderErrorMessage(

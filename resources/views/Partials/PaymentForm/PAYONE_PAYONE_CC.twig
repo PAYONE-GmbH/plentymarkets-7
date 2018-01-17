@@ -1,4 +1,4 @@
-{# @var creditcardcheck \Payone\Models\CreditCardCheck #}
+{# @var creditcardcheck \Payone\Models\CreditCardCheckRequestData #}
 <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
 {{ errorMessage|raw }}
 <style type="text/css" media="screen, projection"> </style>
@@ -19,9 +19,6 @@
 
     <form id="orderPlaceForm" name="paymentform" action="place-order" method="post">
         <fieldset>
-            <input type="hidden" name="pseudocardpan" id="pseudocardpan">
-            <input type="hidden" name="truncatedcardpan" id="truncatedcardpan">
-
             <label for="cardtype">{{ trans('Payone::Template.ccType') }}:</label>
             <span id="cardtype" class="inputIframe"></span>
 

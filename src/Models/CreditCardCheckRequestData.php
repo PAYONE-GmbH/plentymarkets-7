@@ -2,13 +2,13 @@
 
 namespace Payone\Models;
 
-class CreditCardCheck implements \JsonSerializable
+class CreditCardCheckRequestData implements \JsonSerializable
 {
     /** @var PaymentConfig */
     private $configRepo;
 
     /**
-     * CreditCardCheck constructor.
+     * CreditCardCheckRequestData constructor.
      *
      * @param PaymentConfig $configRepo
      */

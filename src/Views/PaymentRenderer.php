@@ -4,7 +4,7 @@ namespace Payone\Views;
 
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
-use Payone\Models\CreditCardCheck;
+use Payone\Models\CreditCardCheckRequestData;
 use Payone\Models\CreditcardTypes;
 use Payone\PluginConstants;
 use Plenty\Plugin\Templates\Twig;
@@ -25,7 +25,7 @@ class PaymentRenderer
     private $shopHelper;
 
     /**
-     * @var CreditCardCheck
+     * @var CreditCardCheckRequestData
      */
     private $creditCardCheck;
     /**
@@ -38,13 +38,13 @@ class PaymentRenderer
      *
      * @param Twig $twig
      * @param ShopHelper $shopHelper
-     * @param CreditCardCheck $creditCardCheck
+     * @param CreditCardCheckRequestData $creditCardCheck
      * @param CreditcardTypes $creditcardTypes
      */
     public function __construct(
         Twig $twig,
         ShopHelper $shopHelper,
-        CreditCardCheck $creditCardCheck,
+        CreditCardCheckRequestData $creditCardCheck,
     CreditcardTypes $creditcardTypes
     ) {
         $this->twig = $twig;
@@ -74,7 +74,7 @@ class PaymentRenderer
                 'errorMessage' => $message,
                 'locale' => $this->shopHelper->getCurrentLocale(),
                 'creditcardcheck' => $this->creditCardCheck,
-                'ccTypes' => $this->creditcardTypes->getAllowedTypes()
+                'ccTypes' => $this->creditcardTypes->getAllowedTypes(),
             ]
         );
     }

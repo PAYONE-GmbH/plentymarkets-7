@@ -8,7 +8,7 @@
 
     $.payoneIframe.check = function () { // Function called by submitting PAY-button
         if ($.payoneIframe.iframe.isComplete()) {
-            $.payoneIframe.iframe.creditCardCheck('checkCallback');// Perform "CreditCardCheck" to create and get a // PseudoCardPan; then call your function "checkCallback"
+            $.payoneIframe.iframe.creditCardCheck('checkCallback');// Perform "CreditCardCheckRequestData" to create and get a // PseudoCardPan; then call your function "checkCallback"
         } else {
             console.debug("not complete");
         }
@@ -32,10 +32,10 @@
 
     $.payoneIframe.createIframe = function (locale, request, config) {
 
-       var n = document.createElement("script");
+        var n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
         n.setAttribute("src", 'https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js');
-        n.onload = function(){
+        n.onload = function () {
             config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
             $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
         };
@@ -43,8 +43,7 @@
 
     };
 
-    $.payoneIframe.doAuth = function (form) {
-
+    $.payoneIframe.doAuth = function () {
         return $.ajax({
             type: 'POST',
             url: '/payone/checkout/doAuth',
@@ -58,8 +57,28 @@
                     console.log(data.errors.message);
                     $.payoneIframe.showErrorMessage(data.errors.message);
                 }
-                form.unbind('submit');
                 success = false;
+            }
+            console.log('done');
+            console.log(data);
+        });
+    };
+
+    $.payoneIframe.storeCCResponse = function (response) {
+
+        return $.ajax({
+            type: 'POST',
+            url: '/payone/checkout/storeCCCheckResponse',
+            data: JSON.stringify(response),
+            dataType: 'json',
+            async: true
+        }).done(function (data) {
+            if (!data.success) {
+                if (data.errors.message) {
+                    console.log('done with errors');
+                    console.log(data.errors.message);
+                    $.payoneIframe.showErrorMessage(data.errors.message);
+                }
             }
             console.log('done');
             console.log(data);
@@ -89,32 +108,11 @@
 
     $(function () {
         $.payoneIframe.createIframe(Templates.locale, request, config);
-
-        var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
-            if (submitted) {
-                return false;
-            }
-            var form = $(this);
-            console.log('submitting orderPlaceForm');
 
             $.payoneIframe.setCheckoutDisabled(true);
-
-            form = this;
-
             $.payoneIframe.check();
-            if (!$('#pseudocardpan').val()) {
-                return;
-            }
-            $.when($.payoneIframe.doAuth(form)).done(function () {
-                submitted = true;
-                console.log(form);
-                form.submit();
-            }).fail(function (data, textStatus, jqXHR) {
-                $.payoneIframe.showErrorMessage(jqXHR.responseText);
-                $(this).unbind(event);
-            });
 
         });
         $(document).on('click', 'button.payone-cancel', function () {
@@ -122,13 +120,33 @@
         });
 
     });
-
-    function checkCallback(response) {
-        console.debug(response);
-        if (response.status === "VALID") {
-            document.getElementById("pseudocardpan").value = response.pseudocardpan;
-            document.getElementById("truncatedcardpan").value = response.truncatedcardpan;
-        }
-    };
-
 }(window.jQuery, window, document));
+
+var submitted = false;
+function checkCallback(response) {
+    console.debug(response);
+    var form = $('#orderPlaceForm');
+    if (submitted) {
+        return false;
+    }
+    if (response.status !== "VALID") {
+        $.payoneIframe.showErrorMessage(jqXHR.responseText);
+        form.unbind(event);
+        return;
+    }
+    console.log('storing cc check response');
+    $.when($.payoneIframe.storeCCResponse(response)).done(function () {
+        console.log('submitting orderPlaceForm');
+        $.when($.payoneIframe.doAuth(form)).done(function () {
+            submitted = true;
+            console.log(form);
+            form.submit();
+        }).fail(function (data, textStatus, jqXHR) {
+            $.payoneIframe.showErrorMessage(jqXHR.responseText);
+            form.unbind(event);
+        });
+    }).fail(function (data, textStatus, jqXHR) {
+        $.payoneIframe.showErrorMessage(jqXHR.responseText);
+        form.unbind(event);
+    });
+}

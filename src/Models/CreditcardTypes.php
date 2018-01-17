@@ -44,7 +44,7 @@ class CreditcardTypes
         }
 
         $allowedTypesFromConfigString = str_replace(
-            'PAYONE_PAYONE_CC.allowedCardTypes.',
+            'PAYONE_PAYONE_CREDITCARD.allowedCardTypes.',
             '',
             $allowedTypesFromConfigString
         );

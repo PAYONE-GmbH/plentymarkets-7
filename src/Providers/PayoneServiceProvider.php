@@ -240,7 +240,9 @@ class PayoneServiceProvider extends ServiceProvider
                     return;
                 }
                 $event->setType($renderingType);
-                $event->setValue($paymentRenderer->render($payment, ''));
+                if ($renderingType == GetPaymentMethodContent::RETURN_TYPE_HTML) {
+                    $event->setValue($paymentRenderer->render($payment, ''));
+                }
             }
         );
     }

@@ -131,7 +131,7 @@ function checkCallback(response) {
     }
     if (response.status !== "VALID") {
         $.payoneIframe.showErrorMessage(jqXHR.responseText);
-        form.unbind(event);
+        form.unbind('submit');
         return;
     }
     console.log('storing cc check response');
@@ -143,10 +143,10 @@ function checkCallback(response) {
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
             $.payoneIframe.showErrorMessage(jqXHR.responseText);
-            form.unbind(event);
+            form.unbind('submit');
         });
     }).fail(function (data, textStatus, jqXHR) {
         $.payoneIframe.showErrorMessage(jqXHR.responseText);
-        form.unbind(event);
+        form.unbind('submit');
     });
 }

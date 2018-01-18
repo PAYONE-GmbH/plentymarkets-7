@@ -174,7 +174,7 @@ class ConfigController extends Controller
      */
     public function printShippingProfiles(
         Request $request,
-        ShippingProfileRepositoryContrac $shippingProfileRepositoryContract
+        ShippingProfileRepositoryContract $shippingProfileRepositoryContract
     ) {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;

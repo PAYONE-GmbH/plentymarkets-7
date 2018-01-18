@@ -38,6 +38,7 @@
         n.onload = function () {
             config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
             $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
+            $.payoneIframe.iframe.enableCardTypeDetection();
         };
         document.getElementsByTagName("body")[0].appendChild(n);
 
@@ -130,9 +131,8 @@ function checkCallback(response) {
         return false;
     }
     if (response.status !== "VALID") {
-        $.payoneIframe.showErrorMessage(jqXHR.responseText);
-        form.unbind('submit');
-        return;
+        $.payoneIframe.setCheckoutDisabled(false);
+        return false;
     }
     console.log('storing cc check response');
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {

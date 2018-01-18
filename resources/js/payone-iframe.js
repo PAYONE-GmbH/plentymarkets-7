@@ -38,7 +38,6 @@
         n.onload = function () {
             config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
             $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
-            $.payoneIframe.iframe.enableCardTypeDetection();
         };
         document.getElementsByTagName("body")[0].appendChild(n);
 

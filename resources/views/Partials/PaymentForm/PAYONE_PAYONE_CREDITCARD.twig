@@ -58,6 +58,11 @@
 
     <script type="text/javascript">
         var config = {
+            autoCardtypeDetection: {
+                supportedCardtypes: {{ ccTypes|json_encode|raw }},
+                deactivate: false,
+                activate: true
+            },
             fields: {
                 cardtype: {
                     selector: "cardtype",

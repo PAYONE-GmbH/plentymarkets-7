@@ -140,6 +140,7 @@ function checkCallback(response) {
         $.when($.payoneIframe.doAuth(form)).done(function () {
             submitted = true;
             console.log(form);
+            form.unbind('submit');
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
             $.payoneIframe.showErrorMessage(jqXHR.responseText);

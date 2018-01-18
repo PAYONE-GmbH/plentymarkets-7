@@ -66,19 +66,13 @@ class CheckoutController extends Controller
             ->debug('CheckoutController', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
-                    'Your session expired. Please login and start a new purchase.'
-                ),
+                'message' => 'Your session expired. Please login and start a new purchase.'
             ]);
         }
         try {
             $paymentService->openTransaction($basket->load());
         } catch (\Exception $e) {
-            return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
-                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
-                ),
-            ]);
+            return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
         }
 
         return $this->getJsonSuccess();
@@ -97,21 +91,11 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__)
             ->debug('CheckoutController', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
-            return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
-                    'Your session expired. Please login and start a new purchase.'
-                ),
-            ]);
+            return $this->getJsonErrors(['message' => 'Your session expired. Please login and start a new purchase.']);
         }
         $status = $this->request->get('status');
         if ($status !== 'VALID') {
-            return $this->getJsonErrors(
-                [
-                    'message' => $this->renderer->renderErrorMessage(
-                        'Credit card check failed.'
-                    ),
-                ]
-            );
+            return $this->getJsonErrors(['message' => 'Credit card check failed.']);
         }
         try {
             $response->init(
@@ -123,11 +107,7 @@ class CheckoutController extends Controller
             );
             $repository->storeLastResponse($response);
         } catch (\Exception $e) {
-            return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
-                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
-                ),
-            ]);
+            return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
         }
 
         return $this->getJsonSuccess();

@@ -27,6 +27,7 @@ class CancelAuthorizationEventProcedure extends AbstractEventProcedure
 
         $logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $order]);
 
+        $order = $this->getOriginalOrder($order);
         $amount = $order->amounts[0];
         $amount->invoiceTotal = 0.;
 

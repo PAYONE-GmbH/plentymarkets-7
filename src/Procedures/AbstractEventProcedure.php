@@ -2,32 +2,41 @@
 
 namespace Payone\Procedures;
 
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
-use Plenty\Modules\Order\Models\OrderReference;
+use Plenty\Modules\Order\Models\OrderType;
 
 /**
  * Class AbstractEventProcedure
  */
 abstract class AbstractEventProcedure
 {
+
+    protected $orderRepo;
+
     /**
-     * Get the parent order from references.
-     *
-     * @param array $references
-     *
-     * @return Order|null
+     * AbstractEventProcedure constructor.
+     * @param OrderRepositoryContract $orderRepo
      */
-    protected function getParentOrder($references)
+    public function __construct(OrderRepositoryContract $orderRepo)
     {
-        $referenceOrder = null;
+        $this->orderRepo = $orderRepo;
+    }
 
-        /* @var $reference OrderReference */
-        foreach ($references as $reference) {
-            if ($reference->referenceType === OrderReference::REFERENCE_TYPE_PARENT) {
-                $referenceOrder = $reference->referenceOrder;
+    /**
+     * @param Order $order
+     *
+     * @return Order
+     */
+    protected function getOriginalOrder(Order $order)
+    {
+        switch ($order->typeId) {
+            case OrderType::TYPE_SALES_ORDER:
+                return $order;
 
-                return $referenceOrder;
-            }
+            default:
+                return $this->orderRepo->findOrderById($order->originOrder);
+
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Payone\Migrations;
 
+use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
@@ -22,19 +23,26 @@ class CreatePaymentMethods
      * @var PaymentHelper
      */
     private $paymentHelper;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * CreatePaymentMethod constructor.
      *
      * @param PaymentMethodRepositoryContract $paymentMethodRepo
      * @param PaymentHelper $paymentHelper
+     * @param Logger $logger
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
-        PaymentHelper $paymentHelper
+        PaymentHelper $paymentHelper,
+        Logger $logger
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentHelper = $paymentHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -46,8 +54,10 @@ class CreatePaymentMethods
     {
         foreach ($this->paymentHelper->getPaymentCodes() as $paymentCode) {
             if ($this->paymentHelper->getMopId($paymentCode) != 'no_paymentmethod_found') {
+                $this->logger->debug(' Skipping payment method creation of ' . $paymentCode);
                 continue;
             }
+            $this->logger->debug(' Creating payment method ' . $paymentCode);
             $this->paymentMethodRepo->createPaymentMethod(
                 [
                     'pluginKey' => PluginConstants::NAME,

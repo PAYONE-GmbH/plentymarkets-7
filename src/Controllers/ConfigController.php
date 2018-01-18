@@ -60,17 +60,10 @@ class ConfigController extends Controller
         $this->shopHelper = $shopHelper;
     }
 
-    public function index()
-    {
-        if (!$this->shopHelper->isDebugModeActive()) {
-            return;
-        }
-    }
-
     /**
      * @param Request $request
      */
-    public function test(Request $request)
+    public function printConfig(Request $request)
     {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
@@ -86,19 +79,20 @@ class ConfigController extends Controller
         }
     }
 
-    public function test2(CreatePaymentMethods $migration)
+    public function migrate(CreatePaymentMethods $migration)
     {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
         }
         try {
             $migration->run();
+            return __METHOD__;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    public function test3()
+    public function printAllPaymentMethods()
     {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;
@@ -113,12 +107,6 @@ class ConfigController extends Controller
         return $text;
     }
 
-    public function test4(Request $request)
-    {
-        if (!$this->shopHelper->isDebugModeActive()) {
-            return;
-        }
-    }
 
     /**
      * @param Request $request
@@ -186,7 +174,7 @@ class ConfigController extends Controller
      */
     public function printShippingProfiles(
         Request $request,
-        ShippingProfileRepositoryContract $shippingProfileRepositoryContract
+        ShippingProfileRepositoryContrac $shippingProfileRepositoryContract
     ) {
         if (!$this->shopHelper->isDebugModeActive()) {
             return;

@@ -70,12 +70,12 @@ class CheckoutController extends Controller
             ]);
         }
         try {
-            $paymentService->openTransaction($basket->load());
+            $auth = $paymentService->openTransaction($basket->load());
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
         }
 
-        return $this->getJsonSuccess();
+        return $this->getJsonSuccess($auth);
     }
 
     /**
@@ -110,15 +110,16 @@ class CheckoutController extends Controller
             return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
         }
 
-        return $this->getJsonSuccess();
+        return $this->getJsonSuccess($response);
     }
 
     /**
+     * @param null $data
      * @return string
      */
-    private function getJsonSuccess(): string
+    private function getJsonSuccess($data = null): string
     {
-        return json_encode(['success' => true]);
+        return json_encode(['success' => true, 'message' => null, 'data' => $data]);
     }
 
     /**

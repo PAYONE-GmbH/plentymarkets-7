@@ -17,7 +17,7 @@
     <script type="text/javascript" src="https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js" async></script>
     <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js" defer></script>
 
-    <form id="orderPlaceForm" name="paymentform" action="place-order" method="post">
+    <form id="orderPlaceForm" name="paymentform" action="place-order">
         <fieldset>
             <label for="cardtype">{{ trans('Payone::Template.ccType') }}:</label>
             <span id="cardtype" class="inputIframe"></span>

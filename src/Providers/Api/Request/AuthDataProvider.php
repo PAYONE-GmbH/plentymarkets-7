@@ -37,7 +37,8 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
-            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
+            $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
+            $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
         $requestParams['shippingProvider'] = $this->getShippingProvider($basket->shippingProfileId);
         $this->validator->validate($requestParams);
@@ -71,7 +72,8 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
-            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
+            $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
+            $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
         $this->validator->validate($requestParams);
 

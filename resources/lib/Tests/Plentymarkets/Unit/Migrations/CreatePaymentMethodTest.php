@@ -2,6 +2,7 @@
 
 namespace Payone\Tests\Unit\Migrations;
 
+use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
@@ -36,7 +37,7 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
             $this->paymentRepo,
             self::createMock(PaymentOrderRelationRepositoryContract::class)
         );
-        $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper);
+        $this->migration = new CreatePaymentMethods($this->paymentRepo, $this->helper, self::createMock(Logger::class));
     }
 
     public function testNotRegisteredPaymentsArerRegistered()

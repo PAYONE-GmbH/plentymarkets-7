@@ -4,16 +4,16 @@ namespace Payone\Models;
 
 class CreditCardCheckRequestData implements \JsonSerializable
 {
-    /** @var PaymentConfig */
+    /** @var Api */
     private $configRepo;
 
     /**
      * CreditCardCheckRequestData constructor.
      *
-     * @param PaymentConfig $configRepo
+     * @param Api $configRepo
      */
     public function __construct(
-        PaymentConfig $configRepo
+        Api $configRepo
     ) {
         $this->configRepo = $configRepo;
     }

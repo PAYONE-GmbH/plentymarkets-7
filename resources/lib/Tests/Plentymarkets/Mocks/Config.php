@@ -106,7 +106,7 @@ class Config extends ConfigRepository
      */
     public static function getPrefix(): string
     {
-        return 'Payolution';
+        return 'Payone';
     }
 
     /**

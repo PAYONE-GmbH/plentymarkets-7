@@ -37,7 +37,8 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
-            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
+            $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
+            $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
         $requestParams['referenceId'] = $requestReference;
 
@@ -72,7 +73,8 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
-            $requestParams['pseudocardpan'] = $this->getPseudocardpan();
+            $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
+            $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
         $requestParams['referenceId'] = $requestReference;
 

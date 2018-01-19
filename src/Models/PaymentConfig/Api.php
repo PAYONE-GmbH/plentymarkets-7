@@ -1,16 +1,16 @@
 <?php
 
-namespace Payone\Models;
+namespace Payone\Models\PaymentConfig;
 
 use Payone\Adapter\Config as ConfigAdapter;
 
-class PaymentConfig
+class Api
 {
     /** @var ConfigAdapter */
     private $configRepo;
 
     /**
-     * PaymentConfig constructor.
+     * Api constructor.
      *
      * @param $paymentCode
      * @param ConfigAdapter $configRepo

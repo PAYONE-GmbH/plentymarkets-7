@@ -524,6 +524,13 @@
   },
   {
     "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CREDITCARD.minExpireTime",
+    "default": "30",
+    "label": "Minmiale Kartengültigkeit in Tagen Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
     "key": "PAYONE_PAYONE_CREDITCARD.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",

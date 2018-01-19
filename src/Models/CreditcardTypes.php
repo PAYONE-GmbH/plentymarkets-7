@@ -22,7 +22,7 @@ class CreditcardTypes
     private $configRepo;
 
     /**
-     * PaymentConfig constructor.
+     * Api constructor.
      *
      * @param $paymentCode
      * @param ConfigAdapter $configRepo

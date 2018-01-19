@@ -86,6 +86,7 @@ class ConfigController extends Controller
         }
         try {
             $migration->run();
+
             return __METHOD__;
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -106,7 +107,6 @@ class ConfigController extends Controller
 
         return $text;
     }
-
 
     /**
      * @param Request $request

@@ -11,11 +11,11 @@ use Plenty\Modules\Order\Models\OrderType;
  */
 abstract class AbstractEventProcedure
 {
-
     protected $orderRepo;
 
     /**
      * AbstractEventProcedure constructor.
+     *
      * @param OrderRepositoryContract $orderRepo
      */
     public function __construct(OrderRepositoryContract $orderRepo)
@@ -36,7 +36,6 @@ abstract class AbstractEventProcedure
 
             default:
                 return $this->orderRepo->findOrderById($order->originOrder);
-
         }
     }
 }

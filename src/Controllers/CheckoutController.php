@@ -7,6 +7,7 @@ use Payone\Helpers\SessionHelper;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Services\PaymentService;
+use Payone\Validator\CardExpireDate;
 use Payone\Views\CheckoutErrorRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -66,7 +67,7 @@ class CheckoutController extends Controller
             ->debug('CheckoutController', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
-                'message' => 'Your session expired. Please login and start a new purchase.'
+                'message' => 'Your session expired. Please login and start a new purchase.',
             ]);
         }
         try {
@@ -86,7 +87,8 @@ class CheckoutController extends Controller
      */
     public function storeCCCheckResponse(
         CreditCardCheckResponseRepository $repository,
-        CreditCardCheckResponse $response
+        CreditCardCheckResponse $response,
+        CardExpireDate $validator
     ) {
         $this->logger->setIdentifier(__METHOD__)
             ->debug('CheckoutController', $this->request->all());
@@ -105,6 +107,7 @@ class CheckoutController extends Controller
                 $this->request->get('cardtype'),
                 $this->request->get('cardexpiredate')
             );
+            $validator->validate(new \DateTime($response->getCardexpiredate()));
             $repository->storeLastResponse($response);
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
@@ -115,6 +118,7 @@ class CheckoutController extends Controller
 
     /**
      * @param null $data
+     *
      * @return string
      */
     private function getJsonSuccess($data = null): string

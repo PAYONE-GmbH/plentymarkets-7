@@ -74,7 +74,7 @@ class CreditCardCheckResponse implements \JsonSerializable
      * @param string $pseudocardpan
      * @param string $truncatedcardpan
      * @param string $cardtype
-     * @param string $cardexpiredate
+     * @param string $cardexpiredate 4 digit Payone date
      */
     public function init(
         $status,
@@ -87,7 +87,12 @@ class CreditCardCheckResponse implements \JsonSerializable
         $this->pseudocardpan = $pseudocardpan;
         $this->truncatedcardpan = $truncatedcardpan;
         $this->cardtype = $cardtype;
-        $this->cardexpiredate = $cardexpiredate;
+
+        $year = 2000 + (int) substr($cardexpiredate, 0, 2);
+        $month = (int) substr($cardexpiredate, 2, 4);
+
+        $datetime = new \DateTime($year . '-' . $month . '-01');
+        $this->cardexpiredate = $datetime->format('Y-m-t');
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Payone\Models;
 
+use Payone\Models\PaymentConfig\Api;
+
 class CreditCardCheckRequestData implements \JsonSerializable
 {
     /** @var Api */

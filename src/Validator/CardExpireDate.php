@@ -39,7 +39,7 @@ class CardExpireDate
         $daysValid = $difference->days;
 
         $isExpireDateInFuture = $expireDate->getTimestamp() > $today->getTimestamp();
-        $isEypiryTimeLongEnough = $daysValid >= (int)$this->expireDateRepo->getMinExpireTimeInDays();
+        $isEypiryTimeLongEnough = $daysValid >= (int) $this->expireDateRepo->getMinExpireTimeInDays();
         if (!$isExpireDateInFuture || !$isEypiryTimeLongEnough) {
             throw new \Exception('Credit card expires too soon. Please choose another payment method.');
         }

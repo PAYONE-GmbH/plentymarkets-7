@@ -22,9 +22,9 @@ class CreditCardExpiration
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getMinExpireTimeInDays(): string
+    public function getMinExpireTimeInDays()
     {
         return (int) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.minExpireTime');
     }

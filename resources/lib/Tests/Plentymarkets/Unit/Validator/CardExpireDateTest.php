@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Payone\Tests\Unit\Validator;
 
 use Payone\Adapter\Logger;

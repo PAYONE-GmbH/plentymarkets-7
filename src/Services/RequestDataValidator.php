@@ -29,7 +29,7 @@ class RequestDataValidator
     {
         $paymentCode = $data['ccCheck'];
         if (isset($data['ccCheck']['expiredate'])) {
-            $this->creditCardExpiration->validate(   \DateTime::createFromFormat('Y-m-d',$data['ccCheck']['expiredate']));
+            $this->creditCardExpiration->validate(\DateTime::createFromFormat('Y-m-d', $data['ccCheck']['expiredate']));
         }
 
         foreach (['aid', 'mid', 'portalid', 'key'] as $key) {

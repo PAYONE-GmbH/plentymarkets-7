@@ -19,11 +19,11 @@
 
     <form id="orderPlaceForm" name="paymentform" action="place-order">
         <fieldset>
-            <label for="cardtype">{{ trans('Payone::Template.ccType') }}:</label>
-            <span id="cardtype" class="inputIframe"></span>
-
             <label for="cardpan">{{ trans('Payone::Template.ccNumber') }}:</label>
             <span id="cardpan" class="inputIframe"></span>
+
+            <label for="cardtype">{{ trans('Payone::Template.ccType') }}:</label>
+            <span id="cardtype" class="inputIframe"></span>
 
             <label for="cardcvc2">CVC:</label>
             <span id="cardcvc2" class="inputIframe"></span>
@@ -60,8 +60,7 @@
         var config = {
             autoCardtypeDetection: {
                 supportedCardtypes: {{ ccTypes|json_encode|raw }},
-                deactivate: false,
-                activate: true
+                deactivate: false
             },
             fields: {
                 cardtype: {

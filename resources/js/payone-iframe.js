@@ -37,6 +37,9 @@
         n.setAttribute("src", 'https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js');
         n.onload = function () {
             config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
+            config.autoCardtypeDetection.callback = function (detectedCardtype) {
+                $.payoneIframe.iframe.setCardType(detectedCardtype);
+            };
             $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
         };
         document.getElementsByTagName("body")[0].appendChild(n);

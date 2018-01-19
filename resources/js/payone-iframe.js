@@ -32,16 +32,11 @@
 
     $.payoneIframe.createIframe = function (locale, request, allowedCCTypes) {
 
-        var config= $.payoneIframe.getPayoneConfig(allowedCCTypes);
         var n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
         n.setAttribute("src", 'https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js');
         n.onload = function () {
-            config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
-            config.autoCardtypeDetection.callback = function (detectedCardtype) {
-                $.payoneIframe.iframe.setCardType(detectedCardtype);
-            };
-            $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames(config, request);
+            $.payoneIframe.iframe = new Payone.ClientApi.HostedIFrames($.payoneIframe.getPayoneConfig(allowedCCTypes, locale), request);
         };
         document.getElementsByTagName("body")[0].appendChild(n);
 
@@ -110,13 +105,9 @@
         });
     };
 
-    $.payoneIframe.getPayoneConfig = function (allowedCCTypes) {
+    $.payoneIframe.getPayoneConfig = function (allowedCCTypes, locale) {
         var defaultWidthInPx = $('#firstname').width();
-        return {
-            autoCardtypeDetection: {
-                supportedCardtypes: allowedCCTypes,
-                deactivate: false
-            },
+        var config = {
             fields: {
                 cardtype: {
                     selector: "cardtype",
@@ -138,7 +129,6 @@
                 cardcvc2: {
                     selector: "cardcvc2",
                     type: "password",
-                    style: "font-size: 1em; border: 1px solid #000;",
                     size: "4",
                     maxlength: "4",
                     iframe: {
@@ -160,16 +150,26 @@
                     }
                 }
             },
+            autoCardtypeDetection: {
+                supportedCardtypes: allowedCCTypes,
+                deactivate: false
+            },
             defaultStyle: {
-                input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
-                select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 17px; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 17px; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
                 iframe: {
                     width: defaultWidthInPx + "px",
-                    height: "30px"
+                    height: "50px"
                 }
             },
             error: "errorOutput"
         };
+        config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
+        config.autoCardtypeDetection.callback = function (detectedCardtype) {
+            $.payoneIframe.iframe.setCardType(detectedCardtype);
+        };
+
+        return config;
     };
 
     $(function () {
@@ -189,6 +189,7 @@
 }(window.jQuery, window, document));
 
 var submitted = false;
+
 function checkCallback(response) {
     console.debug(response);
     var form = $('#orderPlaceForm');

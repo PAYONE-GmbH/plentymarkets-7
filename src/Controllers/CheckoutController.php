@@ -107,7 +107,7 @@ class CheckoutController extends Controller
                 $this->request->get('cardtype'),
                 $this->request->get('cardexpiredate')
             );
-            $validator->validate(new \DateTime($response->getCardexpiredate()));
+            $validator->validate(   \DateTime::createFromFormat('Y-m-d',$response->getCardexpiredate()));
             $repository->storeLastResponse($response);
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);

@@ -91,7 +91,7 @@ class CreditCardCheckResponse implements \JsonSerializable
         $year = 2000 + (int) substr($cardexpiredate, 0, 2);
         $month = (int) substr($cardexpiredate, 2, 4);
 
-        $datetime = new \DateTime($year . '-' . $month . '-01');
+        $datetime =    \DateTime::createFromFormat('Y-m-d',$year . '-' . $month . '-01');
         $this->cardexpiredate = $datetime->format('Y-m-t');
     }
 

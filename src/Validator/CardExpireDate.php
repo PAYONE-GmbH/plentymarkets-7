@@ -25,13 +25,14 @@ class CardExpireDate
      * @param \DateTime $expireDate
      * @param \DateTime $today
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public function validate(\DateTime $expireDate, \DateTime $today = null)
     {
         if (!$today) {
-            $today = new \DateTime();
+            $today = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
         }
         $difference = date_diff($today, $expireDate);
 

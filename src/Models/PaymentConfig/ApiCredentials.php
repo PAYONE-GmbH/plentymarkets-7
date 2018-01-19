@@ -4,7 +4,7 @@ namespace Payone\Models\PaymentConfig;
 
 use Payone\Adapter\Config as ConfigAdapter;
 
-class Api
+class ApiCredentials
 {
     /** @var ConfigAdapter */
     private $configRepo;

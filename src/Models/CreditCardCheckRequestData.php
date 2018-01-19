@@ -2,20 +2,20 @@
 
 namespace Payone\Models;
 
-use Payone\Models\PaymentConfig\Api;
+use Payone\Models\PaymentConfig\ApiCredentials;
 
 class CreditCardCheckRequestData implements \JsonSerializable
 {
-    /** @var Api */
+    /** @var ApiCredentials */
     private $configRepo;
 
     /**
      * CreditCardCheckRequestData constructor.
      *
-     * @param Api $configRepo
+     * @param ApiCredentials $configRepo
      */
     public function __construct(
-        Api $configRepo
+        ApiCredentials $configRepo
     ) {
         $this->configRepo = $configRepo;
     }

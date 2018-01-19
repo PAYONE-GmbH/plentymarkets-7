@@ -2,13 +2,12 @@
 
 namespace Payone\Providers\Api\Request;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\CreditCardCheckResponseRepository;
-use Payone\Models\PaymentConfig\Api;
+use Payone\Models\PaymentConfig\ApiCredentials;
 use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
 use Plenty\Modules\Account\Address\Models\Address;
@@ -49,7 +48,7 @@ abstract class DataProviderAbstract
      */
     protected $addressHelper;
     /**
-     * @var ConfigAdapter
+     * @var ApiCredentials
      */
     protected $config;
     /**
@@ -78,7 +77,7 @@ abstract class DataProviderAbstract
      * @param FrontendSessionStorageFactoryContract $sessionStorageFactory
      * @param ShopHelper $shopHelper
      * @param AddressHelper $addressHelper
-     * @param Api $config
+     * @param ApiCredentials $config
      * @param RequestDataValidator $validator
      * @param SessionStorage $sessionStorage
      * @param ParcelServicePresetRepositoryContract $parcelServicePresetRepository
@@ -90,7 +89,7 @@ abstract class DataProviderAbstract
         FrontendSessionStorageFactoryContract $sessionStorageFactory,
         ShopHelper $shopHelper,
         AddressHelper $addressHelper,
-        Api $config,
+        ApiCredentials $config,
         RequestDataValidator $validator,
         SessionStorage $sessionStorage,
         ParcelServicePresetRepositoryContract $parcelServicePresetRepository,

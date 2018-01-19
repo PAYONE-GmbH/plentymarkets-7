@@ -85,92 +85,32 @@
     </form>
 
     <script type="text/javascript">
-        (function ($) {
-            $(function () {
-                var config = {
-                    autoCardtypeDetection: {
-                        supportedCardtypes: {{ ccTypes|json_encode|raw }},
-                        deactivate: false
-                    },
-                    fields: {
-                        cardtype: {
-                            selector: "cardtype",
-                            cardtypes: {{ ccTypes|json_encode|raw }},
-                            iframe: {
-                                width: $('#firstname').width() + "px"
-                            }
-                        },
-                        cardpan: {
-                            size: "19",
-                            maxlength: "19",
-                            selector: "cardpan",
-                            type: "text",
-                            iframe: {
-                                width: $('#firstname').width() + "px"
-                            }
-                            //style: "font-size: 1em; border: 1px solid #000;"
-                        },
-                        cardcvc2: {
-                            selector: "cardcvc2",
-                            type: "password",
-                            style: "font-size: 1em; border: 1px solid #000;",
-                            size: "4",
-                            maxlength: "4",
-                            iframe: {
-                                width: $('#firstname').width() + "px"
-                            }
-                        },
-                        cardexpiremonth: {
-                            selector: "cardexpiremonth", type: "select",
-                            size: "2",
-                            maxlength: "2",
-                            iframe: {
-                                width: $('#firstname').width() / 2 + "px"
-                            }
-                        },
-                        cardexpireyear: {
-                            selector: "cardexpireyear", type: "select",
-                            iframe: {
-                                width: $('#firstname').width() / 2 + "px"
-                            }
-                        }
-                    },
-                    defaultStyle: {
-                        input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
-                        select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
-                        iframe: {
-                            width: $('#firstname').width() + "px",
-                            height: "30px"
-                        }
-                    },
-                    error: "errorOutput"
-                };
-                var Templates = {};
-                Templates.locale = '{{ locale }}';
-                Templates.errorMessage =
-                    '<div id="checkoutError" class="row is-table-row error">' +
-                    '     <div class="col-sm-12">' +
-                    '        <p>' +
-                    '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
-                    '        </p>' +
-                    '        <p>' +
-                    '                <span class="text-muted">' +
-                    '                       {% if isDebugModeEnabled %}' +
-                    '                           {errorMessage}' +
-                    '                       {% else %}' +
-                    '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
-                    '                       {% endif %}' +
-                    '                </span>' +
-                    '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
-                    '                <i class="fa fa-arrow-right"' +
-                    '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
-                    '        </button></a>' +
-                    '        </p>' +
-                    '    </div>' +
-                    '</div>';
+        var allowedCCTypes = {{ ccTypes|json_encode|raw }};
 
-                var request = {{ creditcardcheck|json_encode|raw }};
-            });
-        }(window.jQuery, window, document));
+        var Templates = {};
+        Templates.locale = '{{ locale }}';
+        Templates.errorMessage =
+            '<div id="checkoutError" class="row is-table-row error">' +
+            '     <div class="col-sm-12">' +
+            '        <p>' +
+            '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+            '        </p>' +
+            '        <p>' +
+            '                <span class="text-muted">' +
+            '                       {% if isDebugModeEnabled %}' +
+            '                           {errorMessage}' +
+            '                       {% else %}' +
+            '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+            '                       {% endif %}' +
+            '                </span>' +
+            '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+            '                <i class="fa fa-arrow-right"' +
+            '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+            '        </button></a>' +
+            '        </p>' +
+            '    </div>' +
+            '</div>';
+
+        var request = {{ creditcardcheck|json_encode|raw }};
     </script>
 </div>

@@ -30,8 +30,9 @@
         return Payone.ClientApi.Language.en;
     };
 
-    $.payoneIframe.createIframe = function (locale, request, config) {
+    $.payoneIframe.createIframe = function (locale, request, allowedCCTypes) {
 
+        var config= $.payoneIframe.getPayoneConfig(allowedCCTypes);
         var n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
         n.setAttribute("src", 'https://secure.pay1.de/client-api/js/v1/payone_hosted_min.js');
@@ -109,8 +110,70 @@
         });
     };
 
+    $.payoneIframe.getPayoneConfig = function (allowedCCTypes) {
+        var defaultWidthInPx = $('#firstname').width();
+        return {
+            autoCardtypeDetection: {
+                supportedCardtypes: allowedCCTypes,
+                deactivate: false
+            },
+            fields: {
+                cardtype: {
+                    selector: "cardtype",
+                    cardtypes: allowedCCTypes,
+                    iframe: {
+                        width: defaultWidthInPx + "px"
+                    }
+                },
+                cardpan: {
+                    size: "19",
+                    maxlength: "19",
+                    selector: "cardpan",
+                    type: "text",
+                    iframe: {
+                        width: defaultWidthInPx + "px"
+                    }
+                    //style: "font-size: 1em; border: 1px solid #000;"
+                },
+                cardcvc2: {
+                    selector: "cardcvc2",
+                    type: "password",
+                    style: "font-size: 1em; border: 1px solid #000;",
+                    size: "4",
+                    maxlength: "4",
+                    iframe: {
+                        width: defaultWidthInPx + "px"
+                    }
+                },
+                cardexpiremonth: {
+                    selector: "cardexpiremonth", type: "select",
+                    size: "2",
+                    maxlength: "2",
+                    iframe: {
+                        width: defaultWidthInPx / 2 + "px"
+                    }
+                },
+                cardexpireyear: {
+                    selector: "cardexpireyear", type: "select",
+                    iframe: {
+                        width: defaultWidthInPx / 2 + "px"
+                    }
+                }
+            },
+            defaultStyle: {
+                input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                iframe: {
+                    width: defaultWidthInPx + "px",
+                    height: "30px"
+                }
+            },
+            error: "errorOutput"
+        };
+    };
+
     $(function () {
-        $.payoneIframe.createIframe(Templates.locale, request, config);
+        $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes);
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
 

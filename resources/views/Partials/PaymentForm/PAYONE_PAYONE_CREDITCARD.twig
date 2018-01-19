@@ -20,156 +20,157 @@
     <form id="orderPlaceForm" name="paymentform" action="place-order">
         <fieldset>
             <div class="form-group row">
-                <div class="form-group row">
-                    <label for="cardpan"
-                           class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccNumber') }}
-                        :</label>
-                    <div id="cardpan" class="inputIframe col-sm-9"></div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="cardtype"
-                           class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccType') }}
-                        :</label>
-                    <div id="cardtypecol-sm-9" class="inputIframe"></div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="cardcvc2" class="col-sm-3 col-form-label col-form-label-lg">CVC:</label>
-                    <div id="cardcvc2" class="inputIframe col-sm-9"></div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="expire"
-                           class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccValidTo') }}
-                        :</label>
-                    <div class="col-sm-9 inputIframe" id="expireInput">
-                        <div id="cardexpiremonth" class="col-sm-3"></div>
-                        <div id="cardexpireyear" class="col-sm-6"></div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="firstname"
-                           class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.firstName') }}
-                        :</label>
-                    <div class="col-sm-9">
-                        <input id="firstname" name="firstname" type="text" class="form-control form-control-lg"
-                               required="required" autocomplete="off">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="lastname"
-                           class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.lastName') }}
-                        :</label>
-                    <div class="col-sm-9">
-                        <input id="lastname" name="lastname" type="text" class="form-control form-control-lg"
-                               required="required" autocomplete="off">
-                    </div>
-                </div>
-
-                <div id="errorOutput"></div>
-
-                <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
-                        @click="clearFields"
-                        aria-label="{{ trans('Payone::Template.orderCancel') }}">
-                    <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
-                </button>
-                {% if errorMessage is empty %}
-                    <button id="orderPlace" class="btn btn-primary btn-block">
-                        <i class="fa fa-arrow-right"
-                           aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}
-                    </button>
-                {% endif %}
+                <label for="cardpan"
+                       class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccNumber') }}
+                    :</label>
+                <div id="cardpan" class="inputIframe col-sm-9"></div>
             </div>
+
+            <div class="form-group row">
+                <label for="cardtype"
+                       class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccType') }}
+                    :</label>
+                <div id="cardtypecol-sm-9" class="inputIframe"></div>
+            </div>
+
+            <div class="form-group row">
+                <label for="cardcvc2" class="col-sm-3 col-form-label col-form-label-lg">CVC:</label>
+                <div id="cardcvc2" class="inputIframe col-sm-9"></div>
+            </div>
+
+            <div class="form-group row">
+                <label for="expire"
+                       class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.ccValidTo') }}
+                    :</label>
+                <div class="col-sm-9 inputIframe" id="expireInput">
+                    <div id="cardexpiremonth" class="col-sm-3"></div>
+                    <div id="cardexpireyear" class="col-sm-6"></div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="firstname"
+                       class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.firstName') }}
+                    :</label>
+                <div class="col-sm-9">
+                    <input id="firstname" name="firstname" type="text" class="form-control form-control-lg"
+                           required="required" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="lastname"
+                       class="col-sm-3 col-form-label col-form-label-lg">{{ trans('Payone::Template.lastName') }}
+                    :</label>
+                <div class="col-sm-9">
+                    <input id="lastname" name="lastname" type="text" class="form-control form-control-lg"
+                           required="required" autocomplete="off">
+                </div>
+            </div>
+
+            <div id="errorOutput"></div>
+
+            <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
+                    @click="clearFields"
+                    aria-label="{{ trans('Payone::Template.orderCancel') }}">
+                <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
+            </button>
+            {% if errorMessage is empty %}
+                <button id="orderPlace" class="btn btn-primary btn-block">
+                    <i class="fa fa-arrow-right"
+                       aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}
+                </button>
+            {% endif %}
         </fieldset>
     </form>
 
     <script type="text/javascript">
-        var config = {
-            autoCardtypeDetection: {
-                supportedCardtypes: {{ ccTypes|json_encode|raw }},
-                deactivate: false
-            },
-            fields: {
-                cardtype: {
-                    selector: "cardtype",
-                    cardtypes: {{ ccTypes|json_encode|raw }},
-                    iframe: {
-                        width: $('#firstname').width() + "px"
-                    }
-                },
-                cardpan: {
-                    size: "19",
-                    maxlength: "19",
-                    selector: "cardpan",
-                    type: "text",
-                    iframe: {
-                        width: $('#firstname').width() + "px"
-                    }
-                    //style: "font-size: 1em; border: 1px solid #000;"
-                },
-                cardcvc2: {
-                    selector: "cardcvc2",
-                    type: "password",
-                    style: "font-size: 1em; border: 1px solid #000;",
-                    size: "4",
-                    maxlength: "4",
-                    iframe: {
-                        width: $('#firstname').width() + "px"
-                    }
-                },
-                cardexpiremonth: {
-                    selector: "cardexpiremonth", type: "select",
-                    size: "2",
-                    maxlength: "2",
-                    iframe: {
-                        width: $('#firstname').width() / 2 + "px"
-                    }
-                },
-                cardexpireyear: {
-                    selector: "cardexpireyear", type: "select",
-                    iframe: {
-                        width: $('#firstname').width() / 2 + "px"
-                    }
-                }
-            },
-            defaultStyle: {
-                input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
-                select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
-                iframe: {
-                    width: $('#firstname').width() + "px",
-                    height: "30px"
-                }
-            },
-            error: "errorOutput"
-        };
-        var Templates = {};
-        Templates.locale = '{{ locale }}';
-        Templates.errorMessage =
-            '<div id="checkoutError" class="row is-table-row error">' +
-            '     <div class="col-sm-12">' +
-            '        <p>' +
-            '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
-            '        </p>' +
-            '        <p>' +
-            '                <span class="text-muted">' +
-            '                       {% if isDebugModeEnabled %}' +
-            '                           {errorMessage}' +
-            '                       {% else %}' +
-            '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
-            '                       {% endif %}' +
-            '                </span>' +
-            '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
-            '                <i class="fa fa-arrow-right"' +
-            '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
-            '        </button></a>' +
-            '        </p>' +
-            '    </div>' +
-            '</div>';
+        (function ($) {
+            $(function () {
+                var config = {
+                    autoCardtypeDetection: {
+                        supportedCardtypes: {{ ccTypes|json_encode|raw }},
+                        deactivate: false
+                    },
+                    fields: {
+                        cardtype: {
+                            selector: "cardtype",
+                            cardtypes: {{ ccTypes|json_encode|raw }},
+                            iframe: {
+                                width: $('#firstname').width() + "px"
+                            }
+                        },
+                        cardpan: {
+                            size: "19",
+                            maxlength: "19",
+                            selector: "cardpan",
+                            type: "text",
+                            iframe: {
+                                width: $('#firstname').width() + "px"
+                            }
+                            //style: "font-size: 1em; border: 1px solid #000;"
+                        },
+                        cardcvc2: {
+                            selector: "cardcvc2",
+                            type: "password",
+                            style: "font-size: 1em; border: 1px solid #000;",
+                            size: "4",
+                            maxlength: "4",
+                            iframe: {
+                                width: $('#firstname').width() + "px"
+                            }
+                        },
+                        cardexpiremonth: {
+                            selector: "cardexpiremonth", type: "select",
+                            size: "2",
+                            maxlength: "2",
+                            iframe: {
+                                width: $('#firstname').width() / 2 + "px"
+                            }
+                        },
+                        cardexpireyear: {
+                            selector: "cardexpireyear", type: "select",
+                            iframe: {
+                                width: $('#firstname').width() / 2 + "px"
+                            }
+                        }
+                    },
+                    defaultStyle: {
+                        input: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                        select: "font-family: Helvetica; padding: .75rem 1.5rem; color: #7a7f7f; font-size: 1.25rem; border-radius: .2rem; border: 1px solid rgba(0,0,0,.15);",
+                        iframe: {
+                            width: $('#firstname').width() + "px",
+                            height: "30px"
+                        }
+                    },
+                    error: "errorOutput"
+                };
+                var Templates = {};
+                Templates.locale = '{{ locale }}';
+                Templates.errorMessage =
+                    '<div id="checkoutError" class="row is-table-row error">' +
+                    '     <div class="col-sm-12">' +
+                    '        <p>' +
+                    '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+                    '        </p>' +
+                    '        <p>' +
+                    '                <span class="text-muted">' +
+                    '                       {% if isDebugModeEnabled %}' +
+                    '                           {errorMessage}' +
+                    '                       {% else %}' +
+                    '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+                    '                       {% endif %}' +
+                    '                </span>' +
+                    '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+                    '                <i class="fa fa-arrow-right"' +
+                    '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+                    '        </button></a>' +
+                    '        </p>' +
+                    '    </div>' +
+                    '</div>';
 
-        var request = {{ creditcardcheck|json_encode|raw }};
-
+                var request = {{ creditcardcheck|json_encode|raw }};
+            });
+        }(window.jQuery, window, document));
     </script>
 </div>

@@ -486,7 +486,7 @@
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.active",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.active",
     "label": "Aktiv",
     "type": "dropdown",
     "possibleValues": {
@@ -497,94 +497,94 @@
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.name",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.name",
     "label": "Name",
     "type": "text",
     "default": "Kreditkarte"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.description",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.description",
     "label": "Beschreibung",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.minCartAmount",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.minCartAmount",
     "default": "0",
     "label": "Minimaler Bestellwert",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.maxCartAmount",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.maxCartAmount",
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.minExpireTime",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.minExpireTime",
     "default": "30",
     "label": "Minmiale Kartengültigkeit in Tagen Bestellwert",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.defaultStyle",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.defaultStyle",
     "default": "font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; height:100%",
     "label": "Kreditkartenfelder default style",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.defaultHeightInPx",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.defaultHeightInPx",
     "default": "",
     "label": "Kreditkartenfelder Höhe in px",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.defaultWidthInPx",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.defaultWidthInPx",
     "default": "",
     "label": "Kreditkartenfelder Breite in px",
     "type": "text"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.allowedCountries",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
     "default": "DE,AT,CH"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.allowedTrafficLights",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.allowedTrafficLights",
     "label": "Erlaubte Ampelfarben",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_PAYONE_CREDITCARD.allowedTrafficLights.green": "Grün",
-      "PAYONE_PAYONE_CREDITCARD.allowedTrafficLights.yellow": "Gelb",
-      "PAYONE_PAYONE_CREDITCARD.allowedTrafficLights.red": "Rot"
+      "PAYONE_PAYONE_CREDIT_CARD.allowedTrafficLights.green": "Grün",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedTrafficLights.yellow": "Gelb",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedTrafficLights.red": "Rot"
     },
-    "default": "PAYONE_PAYONE_CREDITCARD.allowedTrafficLights.green"
+    "default": "PAYONE_PAYONE_CREDIT_CARD.allowedTrafficLights.green"
   },
   {
     "tab": "Kreditkarte",
-    "key": "PAYONE_PAYONE_CREDITCARD.allowedCardTypes",
+    "key": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes",
     "label": "Erlaubte Kartentypen",
     "type": "multi_select",
     "possibleValues": {
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.V": "Visa",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.M": "Mastercard",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.A": "Amex",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.O": "Maestro (Int)",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.U": "Maestro (UK)",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.D": "Diners",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.B": "Carte Bleue",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.C": "Discover",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.J": "JCB",
-      "PAYONE_PAYONE_CREDITCARD.allowedCardTypes.P": "China Union Pay"
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.V": "Visa",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.M": "Mastercard",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.A": "Amex",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.O": "Maestro (Int)",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.U": "Maestro (UK)",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.D": "Diners",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.B": "Carte Bleue",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.C": "Discover",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.J": "JCB",
+      "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.P": "China Union Pay"
     },
     "default": "all"
   },

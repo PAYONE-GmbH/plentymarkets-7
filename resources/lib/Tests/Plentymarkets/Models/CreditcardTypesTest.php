@@ -52,7 +52,7 @@ class CreditcardTypesTest extends \PHPUnit_Framework_TestCase
         $this->configRepo = self::createMock(Config::class);
         $this->configRepo->expects($this->any())
             ->method('get')
-            ->willReturn('PAYONE_PAYONE_CREDITCARD.allowedCardTypes.V, PAYONE_PAYONE_CREDITCARD.allowedCardTypes.M');
+            ->willReturn('PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.V, PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.M');
         $this->ccTyoes = new CreditcardTypes($this->configRepo);
 
         self::assertSame(

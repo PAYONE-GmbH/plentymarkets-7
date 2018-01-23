@@ -6,7 +6,6 @@ use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Models\CreditCardCheckRequestData;
 use Payone\Models\CreditCardStyle;
-use Payone\Models\CreditcardStylecardTypes;
 use Payone\Models\CreditcardTypes;
 use Payone\PluginConstants;
 use Plenty\Plugin\Templates\Twig;

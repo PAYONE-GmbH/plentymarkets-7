@@ -5,7 +5,9 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\Api\Response;
+use Payone\Providers\Api\Request\CaptureDataProvider;
 use Payone\Providers\Api\Request\RefundDataProvider;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
@@ -52,6 +54,10 @@ class Refund
      * @var Api
      */
     private $api;
+    /**
+     * @var CaptureDataProvider
+     */
+    private $captureDataProvider;
 
     /**
      * Refund constructor.
@@ -62,8 +68,9 @@ class Refund
      * @param PaymentCreation $paymentCreation
      * @param PaymentHistory $paymentHistory
      * @param OrderRepositoryContract $orderRepo
-     * @param $refundDataProvider
+     * @param RefundDataProvider $refundDataProvider
      * @param Api $api
+     * @param CaptureDataProvider $captureDataProvider
      */
     public function __construct(
         PaymentRepositoryContract $paymentRepository,
@@ -73,7 +80,8 @@ class Refund
         PaymentHistory $paymentHistory,
         OrderRepositoryContract $orderRepo,
         RefundDataProvider $refundDataProvider,
-        Api $api
+        Api $api,
+        CaptureDataProvider $captureDataProvider
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
@@ -83,6 +91,7 @@ class Refund
         $this->orderRepo = $orderRepo;
         $this->refundDataProvider = $refundDataProvider;
         $this->api = $api;
+        $this->captureDataProvider = $captureDataProvider;
     }
 
     /**
@@ -126,9 +135,8 @@ class Refund
                 continue;
             }
             $preAuth = $this->paymentHelper->getPaymentPropertyValue($payment, PaymentProperty::TYPE_TRANSACTION_ID);
-            $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
             if (!$preAuth) {
-                $text = 'No PreAuth reference found in payment.';
+                $text = 'No Auth reference found in payment.';
                 $this->logger->error('Api.doRefund',
                     [
                         'order' => $order->id,
@@ -142,13 +150,13 @@ class Refund
 
             if ($order->typeId != OrderType::TYPE_SALES_ORDER) {
                 $refundPaymentResult = $this->refundCreditMemo(
-                    $paymentCode,
+                    $payment,
                     $originalOrder,
                     $order,
                     $preAuth
                 );
             } else {
-                $refundPaymentResult = $this->refundOrder($paymentCode, $order, $preAuth);
+                $refundPaymentResult = $this->refundOrder($payment, $order, $preAuth);
             }
             $this->createRefundPayment($payment->mopId, $payment, $originalOrder, $refundPaymentResult);
 
@@ -157,7 +165,7 @@ class Refund
                     [
                         'order' => $order->id,
                         'payment' => $payment,
-                        'preAuthReference' => $preAuth,
+                        'authReference' => $preAuth,
                         'errorMessage' => $refundPaymentResult->getErrorMessage(),
                     ]
                 );
@@ -178,7 +186,7 @@ class Refund
      * @param $order
      * @param Response $transaction
      */
-    public function createRefundPayment(
+    private function createRefundPayment(
         $mopId,
         $payment,
         $order,
@@ -204,30 +212,34 @@ class Refund
     }
 
     /**
-     * @param $paymentCode
+     * @param Payment $payment
      * @param Order $order
      * @param $preAuthUniqueId
      *
      * @return Response
      */
-    public function refundOrder($paymentCode, Order $order, $preAuthUniqueId)
+    private function refundOrder($payment, Order $order, $preAuthUniqueId)
     {
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
+
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Api.doRefund',
             [
                 'paymentCode' => $paymentCode,
                 'order' => $order->toArray(),
-                'preAuthUniqueId' => $preAuthUniqueId,
+                'authUniqueId' => $preAuthUniqueId,
             ]
         );
 
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            if (!$payment->amount) {// already captured?
+                return $this->reverseAuth($payment, $preAuthUniqueId);
+            }
+        }
+
         $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
-        $response = $this->api->doDebit(
-            $requestData
-        );
-
-        return $response;
+        return $this->api->doDebit($requestData);
     }
 
     /**
@@ -238,25 +250,29 @@ class Refund
      *
      * @return Response
      */
-    public function refundCreditMemo($paymentCode, Order $order, Order $refund, $preAuthUniqueId)
+    private function refundCreditMemo($payment, Order $order, Order $refund, $preAuthUniqueId)
     {
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
+
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Api.doRefund',
             [
                 'paymentCode' => $paymentCode,
                 'order' => $order->toArray(),
                 'refundOrder' => $refund->toArray(),
-                'preAuthUniqueId' => $preAuthUniqueId,
+                'authUniqueId' => $preAuthUniqueId,
             ]
         );
 
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            if (!$payment->amount) {// already captured?
+                return $this->reverseAuth($payment, $preAuthUniqueId);
+            }
+        }
+
         $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId);
 
-        $response = $this->api->doDebit(
-            $requestData
-        );
-
-        return $response;
+        return $this->api->doDebit($requestData);
     }
 
     /**
@@ -373,5 +389,26 @@ class Refund
             OrderType::TYPE_CREDIT_NOTE, // partial refund / full refund
             OrderType::TYPE_RETURN, // partial return / full return
         ];
+    }
+
+    /**
+     * @param Payment $payment
+     * @param $authTransactionId
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    private function reverseAuth(Payment $payment, $authTransactionId)
+    {
+        $order = $payment->order;
+        $amount = $order->amounts[0];
+        $amount->invoiceTotal = 0.;
+
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
+
+        $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId);
+
+        return $this->api->doCapture($requestData);
     }
 }

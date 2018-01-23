@@ -119,17 +119,6 @@ class PayoneServiceProvider extends ServiceProvider
             '\Payone\Procedures\RefundEventProcedure@run'
         );
 
-        $cancelAuthProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Autorisierung stornieren',
-            'en' => PluginConstants::NAME . ' | Cancel authorization',
-        ];
-        $eventProceduresService->registerProcedure(
-            PluginConstants::NAME,
-            ProcedureEntry::EVENT_TYPE_ORDER,
-            $cancelAuthProcedureTitle,
-            '\Payone\Procedures\CancelAuthorizationEventProcedure@run'
-        );
-
         $this->registerReferenceTypesForLogging($referenceContainer);
     }
 

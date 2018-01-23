@@ -4,6 +4,7 @@ namespace Payone\Services;
 
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PayonePaymentStatus;
@@ -96,6 +97,7 @@ class PaymentCreation
                 'basket' => $basket,
             ]
         );
+        $basketData = $basket->toArray();
         $transactionID = $response->getTransactionID();
 
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($mopId);
@@ -108,10 +110,18 @@ class PaymentCreation
         $payment->mopId = (int) $mopId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_APPROVED;
+
         $payment->currency = $paymentData['basket']['currency'];
-        $payment->amount = 0; // zero till it is captured, so the order paid amount is not updated
+
+        $payment->amount = 0;
+
+        if ($response instanceof AuthResponse) {
+            $payment->currency = $basketData['amounts'][0]['currency'];
+            $payment->amount = $basketData['amounts'][0]['grossTotal'];
+            $payment->receivedAt = date('Y-m-d H:i:s');
+        }
+
         $payment->type = 'credit';
-        //$payment->method = $this->paymentHelper->getPaymentMethodById($mopId);
 
         $paymentProperties = [];
 

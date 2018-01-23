@@ -27,7 +27,7 @@ class CreditCardStyle
      */
     public function getDefaultWidthInPx()
     {
-        return (float)$this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultWidthInPx');
+        return (float) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultWidthInPx');
     }
 
     /**
@@ -35,7 +35,7 @@ class CreditCardStyle
      */
     public function getDefaultHeightInPx()
     {
-        return (float)$this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultHeightInPx');
+        return (float) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultHeightInPx');
     }
 
     /**

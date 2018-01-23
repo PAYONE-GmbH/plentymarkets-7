@@ -124,9 +124,7 @@ class Capture
             $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
             $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $preAuthReference);
 
-            $captureOrderResult = $this->api->doCapture(
-                $requestData
-            );
+            $captureOrderResult = $this->api->doCapture($requestData);
             $text = 'Capture done. Transaction Id: ' . $captureOrderResult->getTransactionID();
             $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
 

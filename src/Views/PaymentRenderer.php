@@ -40,6 +40,7 @@ class PaymentRenderer
 
     /**
      * PaymentRenderer constructor.
+     *
      * @param Twig $twig
      * @param ShopHelper $shopHelper
      * @param CreditCardCheckRequestData $creditCardCheck

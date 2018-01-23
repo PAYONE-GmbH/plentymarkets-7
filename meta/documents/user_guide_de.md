@@ -86,19 +86,6 @@ die vollständige Bestellung erstattet werden.
 Die Rückerstattung könnte auch wie beim Warenausgang oder Stornierung über den Status erfolgen, dann könnte jedoch nur 
 die vollständige Bestellung erstattet werden.
 
-###Ereignisaktion für Stornierung von Autorisierungen erstellen:
-
-1. Öffnen Sie das Menü "Einstellungen ›› Aufträge ›› Ereignisaktionen".
-2. Klicken Sie links unten auf das grüne Plus, um eine neue Ereignisaktion zu erstellen.
-3. Tragen Sie im Bearbeitungsfenster einen Namen ein, z.B. "Payone - Autorisierung stornieren".
-4. Wählen Sie unter Ereignis die Option "Auftragsänderung ›› Statuswechsel".
-5. Wählen Sie den gewünschten Status zur Ausführung der Stornierung.
-6. Klicken Sie auf "Speichern". 
-7. Fügen Sie mit dem grünen Plus eine Aktion des Aktionstyps "Plugin ›› Payone | Autorisierung stornieren" hinzu.
-8. Setzen Sie ein Häkchen bei Aktiv.
-9. Klicken Sie auf Speichern, um die Einstellungen zu sichern.
-
-
 #Clearing-Daten auf der Bestellbestätigungsseite anzeigen
 
 Damit zusätzliche Zahlungsdaten, wie z.B. die Payone Kontodaten bei Zahlart Rechnung, auf der Bestellbestätigungsseite 

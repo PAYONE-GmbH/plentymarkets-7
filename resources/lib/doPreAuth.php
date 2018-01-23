@@ -27,7 +27,7 @@ try {
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
-    $request = RequestFactory::create($paymentMethod, '', $data);
+    $request = RequestFactory::create($paymentMethod, $data);
     $client = new PostApi(new Client(), new ArraySerializer());
     $response = $client->doRequest($request);
 } catch (Exception $e) {

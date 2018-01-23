@@ -22,7 +22,7 @@ try {
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
     $previousRequestId = $sdkRestApi::getParam('referenceId');
 
-    $request = RequestFactory::create($paymentMethod, $previousRequestId, $data);
+    $request = RequestFactory::create($paymentMethod, $data, $previousRequestId);
     $client = new PostApi(new Client(), new ArraySerializer());
     $response = $client->doRequest($request);
 } catch (Exception $e) {

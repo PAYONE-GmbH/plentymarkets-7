@@ -87,7 +87,7 @@
         var allowedCCTypes = {{ ccTypes|json_encode|raw }};
         var defaultWidthInPx = {{ defaultWidthInPx }};
         var defaultHeightInPx = {{ defaultHeightInPx }};
-        var defaultStyle = {{ defaultStyle }};
+        var defaultStyle = "{{ defaultStyle }}";
 
         var Templates = {};
         Templates.locale = '{{ locale }}';

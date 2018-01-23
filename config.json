@@ -531,6 +531,27 @@
   },
   {
     "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CREDITCARD.defaultStyle",
+    "default": "font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; border-radius: 2.8px; border: 1px solid rgba(0,0,0,.15) width:100%; height:100%",
+    "label": "Kreditkartenfelder default style",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CREDITCARD.defaultHeightInPx",
+    "default": "",
+    "label": "Kreditkartenfelder Höhe in px",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
+    "key": "PAYONE_PAYONE_CREDITCARD.defaultWidthInPx",
+    "default": "30",
+    "label": "Kreditkartenfelder Breite in px",
+    "type": "text"
+  },
+  {
+    "tab": "Kreditkarte",
     "key": "PAYONE_PAYONE_CREDITCARD.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",

@@ -5,6 +5,8 @@ namespace Payone\Views;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Models\CreditCardCheckRequestData;
+use Payone\Models\CreditCardStyle;
+use Payone\Models\CreditcardStylecardTypes;
 use Payone\Models\CreditcardTypes;
 use Payone\PluginConstants;
 use Plenty\Plugin\Templates\Twig;
@@ -32,25 +34,31 @@ class PaymentRenderer
      * @var CreditcardTypes
      */
     private $creditcardTypes;
+    /**
+     * @var CreditCardStyle
+     */
+    private $style;
 
     /**
      * PaymentRenderer constructor.
-     *
      * @param Twig $twig
      * @param ShopHelper $shopHelper
      * @param CreditCardCheckRequestData $creditCardCheck
      * @param CreditcardTypes $creditcardTypes
+     * @param CreditCardStyle $style
      */
     public function __construct(
         Twig $twig,
         ShopHelper $shopHelper,
         CreditCardCheckRequestData $creditCardCheck,
-    CreditcardTypes $creditcardTypes
+        CreditcardTypes $creditcardTypes,
+        CreditCardStyle $style
     ) {
         $this->twig = $twig;
         $this->shopHelper = $shopHelper;
         $this->creditCardCheck = $creditCardCheck;
         $this->creditcardTypes = $creditcardTypes;
+        $this->style = $style;
     }
 
     /**
@@ -75,6 +83,9 @@ class PaymentRenderer
                 'locale' => $this->shopHelper->getCurrentLocale(),
                 'creditcardcheck' => $this->creditCardCheck,
                 'ccTypes' => $this->creditcardTypes->getAllowedTypes(),
+                'defaultWidthInPx' => $this->style->getDefaultWidthInPx(),
+                'defaultHeightInPx' => $this->style->getDefaultHeightInPx(),
+                'defaultStyle' => $this->style->getDefaultStyle(),
             ]
         );
     }

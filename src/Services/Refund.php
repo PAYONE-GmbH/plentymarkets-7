@@ -233,7 +233,7 @@ class Refund
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// already captured?
-                return $this->reverseAuth($payment, $preAuthUniqueId);
+                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
             }
         }
 
@@ -266,7 +266,7 @@ class Refund
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// already captured?
-                return $this->reverseAuth($payment, $preAuthUniqueId);
+                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
             }
         }
 
@@ -392,16 +392,14 @@ class Refund
     }
 
     /**
+     * @param Order $order
      * @param Payment $payment
      * @param $authTransactionId
-     *
-     * @throws \Exception
-     *
      * @return Response
+     * @throws \Exception
      */
-    private function reverseAuth(Payment $payment, $authTransactionId)
+    private function reverseAuth(Order $order, Payment $payment, $authTransactionId)
     {
-        $order = $payment->order;
         $amount = $order->amounts[0];
         $amount->invoiceTotal = 0.;
 

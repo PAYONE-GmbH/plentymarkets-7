@@ -116,8 +116,8 @@ class PaymentCreation
         $payment->amount = 0;
 
         if ($response instanceof AuthResponse) {
-            $payment->currency = $basketData['amounts'][0]['currency'];
-            $payment->amount = $basketData['amounts'][0]['grossTotal'];
+            $payment->currency = $basketData['currency'];
+            $payment->amount = $basketData['basketAmount'];
             $payment->receivedAt = date('Y-m-d H:i:s');
         }
 

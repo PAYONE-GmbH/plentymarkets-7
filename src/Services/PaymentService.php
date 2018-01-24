@@ -55,7 +55,7 @@ class PaymentService
         PreAuth $preAuthService,
         ApiResponseCache $responseCache,
         ConfigAdapter $config,
-    PaymentHelper $paymentHelper
+        PaymentHelper $paymentHelper
     ) {
         $this->authService = $authService;
         $this->preAuthService = $preAuthService;

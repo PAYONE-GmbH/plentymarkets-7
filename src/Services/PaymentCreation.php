@@ -107,7 +107,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
 
-        $payment->mopId = (int) $mopId;
+        $payment->mopId = (int)$mopId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_APPROVED;
 
@@ -160,6 +160,7 @@ class PaymentCreation
         try {
             $payment = $this->paymentRepository->createPayment($payment);
         } catch (\Exception $e) {
+            $this->logger->logException($e);
             $storedPayment = $this->paymentRepository->getPaymentById($payment->id);
             if ($storedPayment) {
                 return $storedPayment;
@@ -272,7 +273,7 @@ class PaymentCreation
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
         $payment->updateOrderPaymentStatus = true;
-        $payment->mopId = (int) $paymentId;
+        $payment->mopId = (int)$paymentId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
         $payment->status = Payment::STATUS_CAPTURED;
         $payment->currency = $currency;

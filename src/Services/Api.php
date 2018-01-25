@@ -4,6 +4,9 @@ namespace Payone\Services;
 
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
+use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\PreAuthResponse;
+use Payone\Models\Api\PreAuthResponseFactory;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\Api\ResponseFactory;
@@ -60,7 +63,14 @@ class Api
      */
     public function doAuth($requestParams): AuthResponse
     {
-        return $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
+        $responseObject = AuthResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+
+        return $responseObject;
     }
 
     /**
@@ -68,11 +78,18 @@ class Api
      *
      * @throws \Exception
      *
-     * @return AuthResponse
+     * @return PreAuthResponse
      */
-    public function doPreAuth($requestParams): AuthResponse
+    public function doPreAuth($requestParams): PreAuthResponse
     {
-        return $this->doLibCall((self::REQUEST_TYPE_PRE_AUTH), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_PRE_AUTH), $requestParams);
+        $responseObject = PreAuthResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_PRE_AUTH), $response);
+
+        return $responseObject;
     }
 
     /**
@@ -84,7 +101,15 @@ class Api
      */
     public function doReversal($requestParams): Response
     {
-        return $this->doLibCall((self::REQUEST_TYPE_REVERSAL), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_REVERSAL), $requestParams);
+
+        $responseObject = ResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_REVERSAL), $response);
+
+        return $responseObject;
     }
 
     /**
@@ -96,7 +121,15 @@ class Api
      */
     public function doCapture($requestParams): Response
     {
-        return $this->doLibCall((self::REQUEST_TYPE_CAPTURE), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_CAPTURE), $requestParams);
+
+        $responseObject = ResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_CAPTURE), $response);
+
+        return $responseObject;
     }
 
     /**
@@ -108,7 +141,16 @@ class Api
      */
     public function doRefund($requestParams): Response
     {
-        return $this->doLibCall((self::REQUEST_TYPE_REFUND), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_REFUND), $requestParams);
+
+        $responseObject = ResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+
+        return $responseObject;
+
     }
 
     /**
@@ -118,7 +160,15 @@ class Api
      */
     public function doReAuth($requestParams): Response
     {
-        return $this->doLibCall((self::REQUEST_TYPE_RE_AUTH), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_RE_AUTH), $requestParams);
+
+        $responseObject = ResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+
+        return $responseObject;
     }
 
     /**
@@ -128,14 +178,22 @@ class Api
      */
     public function doDebit($requestParams): Response
     {
-        return $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
+        $response = $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
+
+        $responseObject = ResponseFactory::create($response);
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+
+        return $responseObject;
     }
 
     /**
      * @param string $call request type
      * @param $requestParams
      *
-     * @return Response|ResponseAbstract|AuthResponse
+     * @return array
      */
     public function doLibCall($call, $requestParams): ResponseAbstract
     {
@@ -156,17 +214,12 @@ class Api
             $response = ['errorMessage' => json_encode($response)];
         }
 
-        $responseObject = ResponseFactory::create($call, $response);
-
-        $this->logger->setReferenceValue($responseObject->getTransactionID())
-            ->debug('Api.' . $this->getCallAction($call), $response);
-
         $success = $response['success'] ?? false;
         if (!$success) {// log all errors including successful but invalid requests
             $this->logger->error('Api.' . $this->getCallAction($call), $response);
         }
 
-        return $responseObject;
+        return $response;
     }
 
     /**

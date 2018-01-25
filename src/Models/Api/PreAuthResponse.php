@@ -5,9 +5,9 @@ namespace Payone\Models\Api;
 use Payone\Models\Api\Clearing\ClearingAbstract;
 
 /**
- * Class AuthResponse
+ * Class PreAuthResponse
  */
-class AuthResponse extends ResponseAbstract implements \JsonSerializable
+class PreAuthResponse extends ResponseAbstract implements \JsonSerializable
 {
     /**
      * @var ClearingAbstract

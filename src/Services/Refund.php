@@ -158,6 +158,18 @@ class Refund
             } else {
                 $refundPaymentResult = $this->refundOrder($payment, $order, $preAuth);
             }
+
+            $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
+            if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+                if (!$payment->amount) {// not captured yet?
+                    $payment->status = Payment::STATUS_CANCELED;
+                    $payment->updateOrderPaymentStatus = true;
+                    $this->paymentRepository->updatePayment($payment);
+
+                    return;
+                }
+            }
+
             $this->createRefundPayment($payment->mopId, $payment, $originalOrder, $refundPaymentResult);
 
             if (!$refundPaymentResult->getSuccess()) {
@@ -175,7 +187,7 @@ class Refund
             }
 
             $payment->status = $this->getNewPaymentStatus($order);
-            $payment->updateOrderPaymentStatus = false;
+            $payment->updateOrderPaymentStatus = true;
             $this->paymentRepository->updatePayment($payment);
         }
     }
@@ -232,7 +244,7 @@ class Refund
         );
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
-            if (!$payment->amount) {// already captured?
+            if (!$payment->amount) {// not captured yet?
                 return $this->reverseAuth($order, $payment, $preAuthUniqueId);
             }
         }

@@ -401,11 +401,13 @@ class Refund
     private function reverseAuth(Order $order, Payment $payment, $authTransactionId)
     {
         $amount = $order->amounts[0];
+        $originalAmount = $amount->invoiceTotal;
         $amount->invoiceTotal = 0.;
 
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
 
         $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId);
+        $amount->invoiceTotal = $originalAmount;
 
         return $this->api->doCapture($requestData);
     }

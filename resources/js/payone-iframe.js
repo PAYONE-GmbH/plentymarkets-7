@@ -59,7 +59,7 @@
                 success = false;
             }
             if (data.redirecturl) {
-                window.location.replace('data.redirecturl');
+                window.location.replace(data.redirecturl);
             }
             console.log('done');
             console.log(data);
@@ -178,7 +178,9 @@
     };
 
     $(function () {
-        $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
+        $(window).bind("load", function () {
+            $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
+        });
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
 
@@ -210,7 +212,7 @@ function checkCallback(response) {
         console.log('submitting orderPlaceForm');
         $.when($.payoneIframe.doAuth(form)).done(function (data) {
             if (data.redirecturl) {
-                window.location.replace('data.redirecturl');
+                window.location.replace(data.redirecturl);
                 return;
             }
             submitted = true;

@@ -58,7 +58,7 @@
                 }
                 success = false;
             }
-            if (data.redirecturl){
+            if (data.redirecturl) {
                 window.location.replace('data.redirecturl');
             }
             console.log('done');
@@ -208,7 +208,11 @@ function checkCallback(response) {
     console.log('storing cc check response');
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
         console.log('submitting orderPlaceForm');
-        $.when($.payoneIframe.doAuth(form)).done(function () {
+        $.when($.payoneIframe.doAuth(form)).done(function (data) {
+            if (data.redirecturl) {
+                window.location.replace('data.redirecturl');
+                return;
+            }
             submitted = true;
             console.log(form);
             form.unbind('submit');

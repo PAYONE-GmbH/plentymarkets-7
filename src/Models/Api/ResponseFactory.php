@@ -12,7 +12,7 @@ class ResponseFactory
      *
      * @return ResponseAbstract|Response
      */
-    public static function create( array $responseData)
+    public static function create(array $responseData)
     {
         /** @var Response $response */
         $response = pluginApp(Response::class);

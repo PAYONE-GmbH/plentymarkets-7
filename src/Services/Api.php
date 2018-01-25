@@ -8,7 +8,6 @@ use Payone\Models\Api\AuthResponseFactory;
 use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\Api\PreAuthResponseFactory;
 use Payone\Models\Api\Response;
-use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\Api\ResponseFactory;
 use Payone\PluginConstants;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
@@ -195,7 +194,7 @@ class Api
      *
      * @return array
      */
-    public function doLibCall($call, $requestParams): ResponseAbstract
+    public function doLibCall($call, $requestParams): array
     {
         $this->logger->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE);
         $this->logger->debug('Api.' . $this->getCallAction($call), $requestParams);

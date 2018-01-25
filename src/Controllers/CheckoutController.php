@@ -10,8 +10,10 @@ use Payone\Services\PaymentService;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\CheckoutErrorRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
+use Plenty\Plugin\Http\Response;
 
 /**
  * Class CheckoutController
@@ -114,6 +116,26 @@ class CheckoutController extends Controller
         }
 
         return $this->getJsonSuccess($response);
+    }
+
+
+    public function redirectWithNotice(FrontendSessionStorageFactoryContract $sessionStorage, Response $response)
+    {
+        $name = 'notifications';
+
+        $notifications = json_decode($sessionStorage->getPlugin()->getValue($name));
+
+        array_push($notifications, array(
+            'message' => 'Something went wrong',
+            'type' => 'notice',
+            'code' => 0
+        ));
+
+        $value = json_encode($notifications);
+
+        $sessionStorage->getPlugin()->setValue($name, $value);
+
+        $response->redirectTo('/checkout');
     }
 
     /**

@@ -114,7 +114,7 @@ class PaymentCreation
         $payment->currency = $paymentData['basket']['currency'];
 
         $payment->amount = 0;
-        $payment->unaccountable = 1;
+        $payment->unaccountable = 0;
 
         if ($response instanceof AuthResponse) {
             $payment->currency = $basketData['currency'];
@@ -283,7 +283,7 @@ class PaymentCreation
         $payment->type = 'debit';
         $payment->parentId = $parentPaymentId;
         $payment->regenerateHash = true;
-        $payment->unaccountable = 1;
+        $payment->unaccountable = 0;
         $paymentProperties = [];
 
         $paymentProperties[] = $this->createPaymentProperty(

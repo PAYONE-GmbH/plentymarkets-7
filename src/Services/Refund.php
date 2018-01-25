@@ -11,8 +11,6 @@ use Payone\Providers\Api\Request\CaptureDataProvider;
 use Payone\Providers\Api\Request\RefundDataProvider;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
-use Plenty\Modules\Order\Models\OrderAmount;
-use Plenty\Modules\Order\Models\OrderItem;
 use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
@@ -170,7 +168,8 @@ class Refund
                 }
             }
 
-            $this->createRefundPayment($payment->mopId, $payment, $originalOrder, $refundPaymentResult);
+            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $originalOrder,
+                $refundPaymentResult);
 
             if (!$refundPaymentResult->getSuccess()) {
                 $this->logger->error('Api.doRefund',
@@ -186,7 +185,7 @@ class Refund
                 continue;
             }
 
-            $payment->status = $this->getNewPaymentStatus($order);
+            $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
             $payment->updateOrderPaymentStatus = true;
             $this->paymentRepository->updatePayment($payment);
         }
@@ -197,6 +196,7 @@ class Refund
      * @param $payment
      * @param $order
      * @param Response $transaction
+     * @return Payment
      */
     private function createRefundPayment(
         $mopId,
@@ -221,6 +221,8 @@ class Refund
             'General.createRefundPayment',
             ['orderId' => $order->id, 'payment' => $debitPayment]
         );
+
+        return $debitPayment;
     }
 
     /**
@@ -292,47 +294,13 @@ class Refund
      *
      * @return int
      */
-    private function getNewPaymentStatus(Order $order)
+    private function getNewPaymentStatus(Payment $origPayment, Payment $refundPayment)
     {
-        //TODO: handle last partial refund for order
-        switch ($order->typeId) {
-            case OrderType::TYPE_SALES_ORDER:
-
-                return Payment::STATUS_REFUNDED;
-
-            case OrderType::TYPE_CREDIT_NOTE:
-            case OrderType::TYPE_RETURN:
-            default:
-
-                /* @var $orderAmount OrderAmount */
-                $orderAmount = $order->amounts[0];
-
-                /* @var $parentOrder Order */
-                $parentOrder = $this->getOriginalOrder($order);
-                /* @var $debitAmount OrderAmount */
-                $debitAmount = $parentOrder->amounts[0];
-
-                if ($orderAmount->invoiceTotal == $debitAmount->invoiceTotal) {
-                    return Payment::STATUS_REFUNDED;
-                }
-                $parentItems = [];
-
-                /* @var $parentOrderItem OrderItem */
-                foreach ($parentOrder->orderItems as $parentOrderItem) {
-                    $parentItems[] = $parentOrderItem->itemVariationId;
-                }
-
-                /* @var $orderItem OrderItem */
-                foreach ($order->orderItems as $orderItem) {
-                    $variationId = $orderItem->itemVariationId;
-                    if (!in_array($variationId, $parentItems)) {
-                        // good will refund
-                        return Payment::STATUS_PARTIALLY_REFUNDED;
-                    }
-                }
-
-                return Payment::STATUS_PARTIALLY_REFUNDED;
+        if ($origPayment->amount > $refundPayment->amount) {
+            return Payment::STATUS_PARTIALLY_REFUNDED;
         }
+
+        return Payment::STATUS_REFUNDED;
     }
 
     /**

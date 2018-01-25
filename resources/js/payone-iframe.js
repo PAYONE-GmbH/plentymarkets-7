@@ -58,6 +58,9 @@
                 }
                 success = false;
             }
+            if (data.redirecturl){
+                window.location.replace('data.redirecturl');
+            }
             console.log('done');
             console.log(data);
         });

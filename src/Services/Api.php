@@ -63,10 +63,10 @@ class Api
      */
     public function doAuth($requestParams): AuthResponse
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
         $responseObject = AuthResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
@@ -82,10 +82,10 @@ class Api
      */
     public function doPreAuth($requestParams): PreAuthResponse
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_PRE_AUTH), $requestParams);
         $responseObject = PreAuthResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_PRE_AUTH), $response);
 
@@ -101,11 +101,11 @@ class Api
      */
     public function doReversal($requestParams): Response
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_REVERSAL), $requestParams);
 
         $responseObject = ResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_REVERSAL), $response);
 
@@ -121,11 +121,11 @@ class Api
      */
     public function doCapture($requestParams): Response
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_CAPTURE), $requestParams);
 
         $responseObject = ResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_CAPTURE), $response);
 
@@ -141,11 +141,11 @@ class Api
      */
     public function doRefund($requestParams): Response
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_REFUND), $requestParams);
 
         $responseObject = ResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
@@ -160,11 +160,11 @@ class Api
      */
     public function doReAuth($requestParams): Response
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_RE_AUTH), $requestParams);
 
         $responseObject = ResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
@@ -178,11 +178,11 @@ class Api
      */
     public function doDebit($requestParams): Response
     {
+        $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_DEBIT), $requestParams);
 
         $responseObject = ResponseFactory::create($response);
 
-        $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
@@ -197,9 +197,8 @@ class Api
      */
     public function doLibCall($call, $requestParams): ResponseAbstract
     {
-        $this->logger->setIdentifier(__METHOD__)
-            ->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE)
-            ->debug('Api.' . $this->getCallAction($call), $requestParams);
+        $this->logger->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE);
+        $this->logger->debug('Api.' . $this->getCallAction($call), $requestParams);
 
         try {
             $response = $this->libCall->call(

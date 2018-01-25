@@ -106,10 +106,10 @@
     };
 
     $.payoneIframe.getPayoneConfig = function (allowedCCTypes, locale, defaultWidthInPx, defaultHeightInPx, defaultStyle) {
-        if (!defaultWidthInPx) {
+        if (!(defaultWidthInPx > 0)) {
             defaultWidthInPx = $('#firstname').outerWidth();
         }
-        if (!defaultHeightInPx) {
+        if (!(defaultHeightInPx > 0)) {
             defaultHeightInPx = $('#firstname').outerHeight();
         }
         var config = {
@@ -175,7 +175,7 @@
     };
 
     $(function () {
-        $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes,defaultWidthInPx, defaultHeightInPx, defaultStyle);
+        $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
 

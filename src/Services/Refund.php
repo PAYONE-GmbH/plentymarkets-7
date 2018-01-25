@@ -201,7 +201,7 @@ class Refund
     private function createRefundPayment(
         $mopId,
         $payment,
-        $order,
+        Order $order,
         $transaction
     ) {
         /* @var Payment $debitPayment */

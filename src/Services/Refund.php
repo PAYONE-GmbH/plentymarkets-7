@@ -163,7 +163,6 @@ class Refund
             if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
                 if (!$payment->amount) {// not captured yet?
                     $payment->status = Payment::STATUS_CANCELED;
-                    $payment->unaccountable = 0;
                     $payment->updateOrderPaymentStatus = true;
                     $this->paymentRepository->updatePayment($payment);
 
@@ -189,7 +188,6 @@ class Refund
 
             $payment->status = $this->getNewPaymentStatus($order);
             $payment->updateOrderPaymentStatus = true;
-            $payment->unaccountable = 0;
             $this->paymentRepository->updatePayment($payment);
         }
     }

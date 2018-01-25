@@ -4,7 +4,7 @@ namespace Payone\Services;
 
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
-use Payone\Models\Api\AuthResponse;
+use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PaymentCache;
@@ -71,7 +71,7 @@ class PreAuth
     /**
      * @param Basket $basket
      *
-     * @return AuthResponse
+     * @return PreAuthResponse
      */
     public function executePreAuth(Basket $basket)
     {
@@ -122,7 +122,7 @@ class PreAuth
      *
      * @throws \Exception
      *
-     * @return AuthResponse
+     * @return PreAuthResponse
      */
     private function doPreAuthFromBasket(Basket $basket)
     {
@@ -139,7 +139,7 @@ class PreAuth
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($preAuthResponse instanceof ResponseAbstract) || !$preAuthResponse->getSuccess()) {
+        if (!($preAuthResponse instanceof PreAuthResponse) || !$preAuthResponse->getSuccess()) {
             throw new \Exception('The payment could not be executed! PreAuth request failed.');
         }
 

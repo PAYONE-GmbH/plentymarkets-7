@@ -6,6 +6,7 @@ use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Clearing\Bank;
+use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\ApiResponseCache;
 use Payone\PluginConstants;
 use Plenty\Modules\Order\Models\Order;
@@ -53,7 +54,7 @@ class ConfirmationAdditinalPaymentData
                 continue;
             }
 
-            /** @var AuthResponse $auth */
+            /** @var AuthResponse|PreAuthResponse $auth */
             $auth = $paymentCache->loadAuth($payment->mopId);
             $clearing = $auth->getClearing();
             if (!$clearing || !($clearing instanceof Bank)) {

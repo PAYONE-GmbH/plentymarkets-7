@@ -456,7 +456,7 @@ abstract class DataProviderAbstract
     protected function getRedirectUrls()
     {
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/confirmation',
+            'success' => $this->shopHelper->getPlentyDomain() . '/place-order',
             'error' => $this->shopHelper->getPlentyDomain() . '/payone/error',
             'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
         ];

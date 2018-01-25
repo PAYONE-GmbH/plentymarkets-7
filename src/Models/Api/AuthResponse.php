@@ -40,6 +40,15 @@ class AuthResponse extends ResponseAbstract implements \JsonSerializable
     }
 
     /**
+     * Getter for Redirecturl
+     * @return string
+     */
+    public function getRedirecturl(): string
+    {
+        return $this->redirecturl;
+    }
+
+    /**
      * Getter for Clearing
      *
      * @return ClearingAbstract

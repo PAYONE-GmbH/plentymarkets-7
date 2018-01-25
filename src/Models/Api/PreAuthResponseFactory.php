@@ -26,7 +26,7 @@ class PreAuthResponseFactory
             $responseData['errorMessage'] ?? '',
             $responseData['transactionID'] ?? '',
             $clearing,
-            $responseData['redirecturl'] ?? ''
+            $responseData['redirecturl']['redirecturl'] ?? ''
         );
 
     }

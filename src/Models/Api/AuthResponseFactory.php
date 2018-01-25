@@ -25,7 +25,7 @@ class AuthResponseFactory
             $responseData['errorMessage'] ?? '',
             $responseData['transactionID'] ?? '',
             $clearing,
-            $responseData['redirecturl'] ?? ''
+            $responseData['redirecturl']['redirecturl'] ?? ''
         );
 
     }

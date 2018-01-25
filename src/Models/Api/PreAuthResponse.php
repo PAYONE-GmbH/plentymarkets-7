@@ -49,6 +49,15 @@ class PreAuthResponse extends ResponseAbstract implements \JsonSerializable
         return $this->clearing;
     }
 
+    /**
+     * Getter for Redirecturl
+     * @return string
+     */
+    public function getRedirecturl(): string
+    {
+        return $this->redirecturl;
+    }
+
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() +

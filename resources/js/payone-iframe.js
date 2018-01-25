@@ -178,9 +178,7 @@
     };
 
     $(function () {
-        $(window).bind("load", function () {
-            $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
-        });
+
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
 
@@ -194,7 +192,9 @@
 
     });
 }(window.jQuery, window, document));
-
+$(window).bind("load", function () {
+    $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
+});
 var submitted = false;
 
 function checkCallback(response) {

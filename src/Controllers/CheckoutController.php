@@ -122,6 +122,7 @@ class CheckoutController extends Controller
     /**
      * @param FrontendSessionStorageFactoryContract $sessionStorage
      * @param Response $response
+     * @return \Plenty\Plugin\Http\Response;
      */
     public function redirectWithNotice(FrontendSessionStorageFactoryContract $sessionStorage, Response $response)
     {
@@ -142,7 +143,7 @@ class CheckoutController extends Controller
 
         $sessionStorage->getPlugin()->setValue($name, $value);
 
-        $response->redirectTo('checkout');
+       return $response->redirectTo('checkout');
     }
 
     /**

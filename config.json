@@ -539,7 +539,7 @@
   {
     "tab": "Kreditkarte",
     "key": "PAYONE_PAYONE_CREDIT_CARD.defaultHeightInPx",
-    "default": "",
+    "default": "44",
     "label": "Kreditkartenfelder Höhe in px",
     "type": "text"
   },

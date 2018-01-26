@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
 use Payone\Helpers\SessionHelper;
 use Payone\Models\CreditCardCheckResponse;
@@ -10,7 +11,6 @@ use Payone\Services\PaymentService;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\CheckoutErrorRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
-use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
@@ -120,30 +120,19 @@ class CheckoutController extends Controller
 
 
     /**
-     * @param FrontendSessionStorageFactoryContract $sessionStorage
+     * @param NotificationService $notificationService
      * @param Response $response
      * @return \Plenty\Plugin\Http\Response;
      */
-    public function redirectWithNotice(FrontendSessionStorageFactoryContract $sessionStorage, Response $response)
+    public function redirectWithNotice(NotificationService $notificationService, Response $response)
     {
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('redirecting');
 
-        $name = 'notifications';
+        $notificationService->info('Something went wrong');
+        $notificationService->error('Something went wrong');
 
-        $notifications = json_decode($sessionStorage->getPlugin()->getValue($name));
-
-        array_push($notifications, array(
-            'message' => 'Something went wrong',
-            'type' => 'notice',
-            'code' => 0
-        ));
-
-        $value = json_encode($notifications);
-
-        $sessionStorage->getPlugin()->setValue($name, $value);
-
-       return $response->redirectTo('checkout');
+        return $response->redirectTo('checkout');
     }
 
     /**

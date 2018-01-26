@@ -119,8 +119,15 @@ class CheckoutController extends Controller
     }
 
 
+    /**
+     * @param FrontendSessionStorageFactoryContract $sessionStorage
+     * @param Response $response
+     */
     public function redirectWithNotice(FrontendSessionStorageFactoryContract $sessionStorage, Response $response)
     {
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->debug('redirecting');
+
         $name = 'notifications';
 
         $notifications = json_decode($sessionStorage->getPlugin()->getValue($name));
@@ -135,7 +142,7 @@ class CheckoutController extends Controller
 
         $sessionStorage->getPlugin()->setValue($name, $value);
 
-        $response->redirectTo('/checkout');
+        $response->redirectTo('checkout');
     }
 
     /**

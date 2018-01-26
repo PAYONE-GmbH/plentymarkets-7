@@ -29,6 +29,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
 
         $router->post('payone/checkout/doAuth', 'Payone\Controllers\CheckoutController@doAuth');
         $router->post('payone/checkout/storeCCCheckResponse', 'Payone\Controllers\CheckoutController@storeCCCheckResponse');
-        $router->get('payone/error', 'Payone\Controllers\ConfigController@redirectWithNotice');
+        $router->get('payone/error', 'Payone\Controllers\CheckoutController@redirectWithNotice');
     }
 }

@@ -546,7 +546,7 @@
   {
     "tab": "Kreditkarte",
     "key": "PAYONE_PAYONE_CREDIT_CARD.defaultWidthInPx",
-    "default": "",
+    "default": "644",
     "label": "Kreditkartenfelder Breite in px",
     "type": "text"
   },

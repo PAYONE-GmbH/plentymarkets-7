@@ -110,10 +110,10 @@
 
     $.payoneIframe.getPayoneConfig = function (allowedCCTypes, locale, defaultWidthInPx, defaultHeightInPx, defaultStyle) {
         if (!(defaultWidthInPx > 0)) {
-            defaultWidthInPx = $('#firstname').outerWidth();
+            defaultWidthInPx = $('#firstname').show().outerWidth();
         }
         if (!(defaultHeightInPx > 0)) {
-            defaultHeightInPx = $('#firstname').outerHeight();
+            defaultHeightInPx = $('#firstname').show().outerHeight();
         }
         var config = {
             fields: {

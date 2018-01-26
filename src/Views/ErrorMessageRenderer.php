@@ -3,7 +3,6 @@
 namespace Payone\Views;
 
 use Payone\Helpers\ShopHelper;
-use Payone\Methods\PaymentAbstract;
 use Payone\PluginConstants;
 use Plenty\Plugin\Templates\Twig;
 
@@ -34,10 +33,7 @@ class ErrorMessageRenderer
     }
 
     /**
-     * @param PaymentAbstract $payment
-     * @param $message
-     *
-     * @throws \Exception
+     * @param string $message
      *
      * @return string
      */

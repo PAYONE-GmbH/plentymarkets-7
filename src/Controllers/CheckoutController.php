@@ -10,6 +10,7 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Services\PaymentService;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\CheckoutErrorRenderer;
+use Payone\Views\ErrorMessageRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -124,13 +125,16 @@ class CheckoutController extends Controller
      * @param Response $response
      * @return \Plenty\Plugin\Http\Response;
      */
-    public function redirectWithNotice(NotificationService $notificationService, Response $response)
-    {
+    public function redirectWithNotice(
+        NotificationService $notificationService,
+        ErrorMessageRenderer $messageRenderer,
+        Response $response
+    ) {
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('redirecting');
 
-        $notificationService->info('Something went wrong');
-        $notificationService->error('Something went wrong');
+        //info would be enought but is not shown in frontend
+        $notificationService->error($messageRenderer->render('Payone::Template.orderErrorMessage'));
 
         return $response->redirectTo('checkout');
     }

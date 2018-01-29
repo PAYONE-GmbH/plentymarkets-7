@@ -33,6 +33,8 @@
                     success = false;
                 }
             });
+
+        return true;
     };
 
     $.payoneDirectDebit.showSepaMandate = function (form) {
@@ -64,31 +66,36 @@
 
     $(function () {
         $('#orderPlaceForm').on("submit", function (event) {
+            console.log('submit button clicked');
             event.preventDefault();
 
             $.payonePayment.setCheckoutDisabled(true);
+
+            var form = $('#orderPlaceForm');
+            console.log('storing account data');
+            var $accountDataStored = $.payoneDirectDebit.storeAccountData(form);
+            if (!$accountDataStored) {
+                $.payonePayment.setCheckoutDisabled(false);
+                return false;
+            }
+            console.log('submitting orderPlaceForm');
+            $.when($.payonePayment.doAuth(form)).done(function (data) {
+                $.payoneDirectDebit.showSepaMandate();
+                $.payoneDirectDebit.hideAccountForm();
+                submitted = true;
+                console.log(form);
+                form.unbind('submit');
+                form.submit();
+            }).fail(function (data, textStatus, jqXHR) {
+                $.payonePayment.showErrorMessage(jqXHR.responseText);
+                return false;
+            });
 
         });
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });
-        var form = $('#orderPlaceForm');
-        var $accountDataStored = $.payolution.storeAccountData(form);
-        if (!$accountDataStored) {
-            return false;
-        }
-        console.log('submitting orderPlaceForm');
-        $.when($.payonePayment.doAuth(form)).done(function (data) {
-            $.payoneDirectDebit.showSepaMandate();
-            $.payoneDirectDebit.hideAccountForm();
-            submitted = true;
-            console.log(form);
-            form.unbind('submit');
-            form.submit();
-        }).fail(function (data, textStatus, jqXHR) {
-            $.payonePayment.showErrorMessage(jqXHR.responseText);
-            form.unbind('submit');
-        });
+
     });
     
 }(window.jQuery, window, document));

@@ -1,9 +1,21 @@
 <?php
 
+namespace Payone\Methods;
+
+function pluginApp(
+    string $abstract,
+    array $parameters = []
+) {
+    return null;
+}
+
+
 namespace Payone\Tests\Unit\Migrations;
 
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PaymentAbstract;
+use Payone\Methods\PaymentMethodServiceFactory;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
@@ -13,6 +25,7 @@ use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Migrations\CreatePaymentMethods;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
+
 
 /**
  * Class PaymentHelperTest
@@ -108,5 +121,17 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
         }
 
         return $children;
+    }
+
+    public function testAllPaymenMethodsCreateable()
+    {
+        /** @var PaymentMethodServiceFactory|\PHPUnit_Framework_MockObject_MockObject $factory */
+        $factory = new PaymentMethodServiceFactory();
+        /**
+         * @var PaymentAbstract $class
+         */
+        foreach ($this->getAllPaymentMethodClasses() as $class) {
+            $factory->create($class::PAYMENT_CODE);
+        }
     }
 }

@@ -149,7 +149,6 @@ class Api
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
         return $responseObject;
-
     }
 
     /**

@@ -196,6 +196,7 @@ class Refund
      * @param $payment
      * @param $order
      * @param Response $transaction
+     *
      * @return Payment
      */
     private function createRefundPayment(
@@ -375,8 +376,10 @@ class Refund
      * @param Order $order
      * @param Payment $payment
      * @param $authTransactionId
-     * @return Response
+     *
      * @throws \Exception
+     *
+     * @return Response
      */
     private function reverseAuth(Order $order, Payment $payment, $authTransactionId)
     {

@@ -5,6 +5,8 @@ namespace Payone\Controllers;
 use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
 use Payone\Helpers\SessionHelper;
+use Payone\Models\BankAccount;
+use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Services\PaymentService;
@@ -119,10 +121,56 @@ class CheckoutController extends Controller
         return $this->getJsonSuccess($response);
     }
 
+    /**
+     * @param Request $request
+     * @param BasketRepositoryContract $basket
+     * @param BankAccount $bankAccount
+     *
+     * @return string
+     */
+    public function storeAccountData(BankAccount $bankAccount, BankAccountCache $accountCache)
+    {
+        $errors = [];
+
+        if (!$this->sessionHelper->isLoggedIn()) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    'Your session expired. Please login and start a new purchase.'
+                ),
+            ]);
+        }
+
+        $formData = [
+            'holder' => $this->request->get('holder'),
+            'iban' => $this->request->get('iban'),
+        ];
+        $this->logger->setIdentifier(__METHOD__)->debug('Router.routeCalled', ['formData' => $formData]);
+
+        foreach ($formData as $key => $value) {
+            if (empty($formData[$key])) {
+                $errors[$key] = true;
+            }
+        }
+
+        if ($errors) {
+            return $this->getJsonErrors($errors);
+        }
+
+        $accountCache->storeBankAccount(
+            $bankAccount->init(
+                $this->request->get('holder'),
+                $this->request->get('iban'),
+                $this->request->get('bic', '')
+            )
+        );
+
+        return $this->getJsonSuccess($bankAccount);
+    }
 
     /**
      * @param NotificationService $notificationService
      * @param Response $response
+     *
      * @return \Plenty\Plugin\Http\Response;
      */
     public function redirectWithNotice(

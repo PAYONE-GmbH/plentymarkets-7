@@ -42,30 +42,6 @@
 
     };
 
-    $.payoneIframe.doAuth = function () {
-        return $.ajax({
-            type: 'POST',
-            url: '/payone/checkout/doAuth',
-            data: '',
-            dataType: 'json',
-            async: true
-        }).done(function (data) {
-            if (!data.success) {
-                if (data.errors.message) {
-                    console.log('done with errors');
-                    console.log(data.errors.message);
-                    $.payoneIframe.showErrorMessage(data.errors.message);
-                }
-                success = false;
-            }
-            if (data.data.redirecturl) {
-                window.location.replace(data.data.redirecturl);
-            }
-            console.log('done');
-            console.log(data);
-        });
-    };
-
     $.payoneIframe.storeCCResponse = function (response) {
 
         return $.ajax({
@@ -79,32 +55,11 @@
                 if (data.errors.message) {
                     console.log('done with errors');
                     console.log(data.errors.message);
-                    $.payoneIframe.showErrorMessage(data.errors.message);
+                    $.payonePayment.showErrorMessage(data.errors.message);
                 }
             }
             console.log('done');
             console.log(data);
-        });
-    };
-
-    $.payoneIframe.showValidationErrors = function (form, errors, errorClasses) {
-        for (var key in errors) {
-            if (errors.hasOwnProperty(key)) {
-                form.find('[name="' + key + '"]').parent().addClass(errorClasses);
-            }
-        }
-    };
-
-    $.payoneIframe.showErrorMessage = function (message) {
-        $('#checkoutError').remove();
-        var content = $.payoneIframe.renderTemplate(Templates.errorMessage, {errorMessage: message});
-        $(content).insertBefore('#payonePaymentModal');
-    };
-
-    $.payoneIframe.renderTemplate = function (template, values) {
-        var re = new RegExp('\\{(' + Object.keys(values).join('|') + ')\\}', 'g');
-        return template.replace(re, function (a, b) {
-            return values[b];
         });
     };
 
@@ -181,7 +136,7 @@
         $('#orderPlaceForm').on("submit", function (event) {
             event.preventDefault();
 
-            $.payoneIframe.setCheckoutDisabled(true);
+            $.payonePayment.setCheckoutDisabled(true);
             $.payoneIframe.check();
 
         });
@@ -201,13 +156,13 @@ function checkCallback(response) {
         return false;
     }
     if (response.status !== "VALID") {
-        $.payoneIframe.setCheckoutDisabled(false);
+        $.payonePayment.setCheckoutDisabled(false);
         return false;
     }
     console.log('storing cc check response');
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
         console.log('submitting orderPlaceForm');
-        $.when($.payoneIframe.doAuth(form)).done(function (data) {
+        $.when($.payonePayment.doAuth(form)).done(function (data) {
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
                 return false;
@@ -217,11 +172,11 @@ function checkCallback(response) {
             form.unbind('submit');
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
-            $.payoneIframe.showErrorMessage(jqXHR.responseText);
+            $.payonePayment.showErrorMessage(jqXHR.responseText);
             form.unbind('submit');
         });
     }).fail(function (data, textStatus, jqXHR) {
-        $.payoneIframe.showErrorMessage(jqXHR.responseText);
+        $.payonePayment.showErrorMessage(jqXHR.responseText);
         form.unbind('submit');
     });
 }

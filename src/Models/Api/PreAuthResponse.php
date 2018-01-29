@@ -24,8 +24,8 @@ class PreAuthResponse extends ResponseAbstract implements \JsonSerializable
      * @param $errorMessage
      * @param $transactionID
      * @param ClearingAbstract $clearing
-     *
      * @param string $redirecturl
+     *
      * @return $this
      */
     public function init($success, $errorMessage, $transactionID, ClearingAbstract $clearing = null, $redirecturl = '')
@@ -51,6 +51,7 @@ class PreAuthResponse extends ResponseAbstract implements \JsonSerializable
 
     /**
      * Getter for Redirecturl
+     *
      * @return string
      */
     public function getRedirecturl(): string
@@ -63,7 +64,7 @@ class PreAuthResponse extends ResponseAbstract implements \JsonSerializable
         return parent::jsonSerialize() +
             [
                 'clearing' => $this->clearing->jsonSerialize(),
-                'redirecturl' => $this->redirecturl
+                'redirecturl' => $this->redirecturl,
             ];
     }
 }

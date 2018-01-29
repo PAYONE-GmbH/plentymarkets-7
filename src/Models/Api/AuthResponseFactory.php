@@ -27,6 +27,5 @@ class AuthResponseFactory
             $clearing,
             $responseData['responseData']['redirecturl'] ?? ''
         );
-
     }
 }

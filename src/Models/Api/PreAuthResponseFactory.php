@@ -16,7 +16,6 @@ class PreAuthResponseFactory
      */
     public static function create(array $responseData)
     {
-
         $clearing = ClearingFactory::create($responseData);
         /** @var PreAuthResponse $response */
         $response = pluginApp(PreAuthResponse::class);
@@ -28,6 +27,5 @@ class PreAuthResponseFactory
             $clearing,
             $responseData['responseData']['redirecturl'] ?? ''
         );
-
     }
 }

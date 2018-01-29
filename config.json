@@ -646,6 +646,63 @@
     "default": "PAYONE_PAYONE_CASH_ON_DELIVERY.allowedTrafficLights.green"
   },
   {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+      "0": "Nein",
+      "1": "Ja"
+    },
+    "default": "1"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.name",
+    "label": "Name",
+    "type": "text",
+    "default": "Lastschrift"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.description",
+    "label": "Beschreibung",
+    "type": "text"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.minCartAmount",
+    "default": "0",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.maxCartAmount",
+    "default": "2000",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DE,AT,CH"
+  },
+  {
+    "tab": "Lastschrift",
+    "key": "PAYONE_PAYONE_DIRECT_DEBIT.allowedTrafficLights",
+    "label": "Erlaubte Ampelfarben",
+    "type": "multi_select",
+    "possibleValues": {
+      "PAYONE_PAYONE_DIRECT_DEBIT.allowedTrafficLights.green": "Grün",
+      "PAYONE_PAYONE_DIRECT_DEBIT.allowedTrafficLights.yellow": "Gelb",
+      "PAYONE_PAYONE_DIRECT_DEBIT.allowedTrafficLights.red": "Rot"
+    },
+    "default": "PAYONE_PAYONE_DIRECT_DEBIT.allowedTrafficLights.green"
+  },
+  {
     "tab": "Debugging",
     "key": "debugging.active",
     "label": "Aktiv",

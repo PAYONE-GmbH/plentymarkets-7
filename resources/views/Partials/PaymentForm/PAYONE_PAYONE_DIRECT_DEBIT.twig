@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
+{{ errorMessage|raw }}
+<style type="text/css" media="screen, projection"></style>
+
+<div id="payonePaymentModal" class="method-presentation">
+    <div class="method-title">
+        <div class="method-option form-check-label">
+            <h3>{{ paymentMethod.name }}:</h3>
+            <div class="method-icon">
+                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon">
+            </div>
+            <div class="description">{{ paymentMethod.description }}</div>
+        </div>
+    </div>
+
+    <form id="orderPlaceForm" name="paymentform" action="place-order">
+            <div class="bank-details">
+                <div class="bank-details container">
+                    <legend>{{ trans("Payone::Template.yourBankAccount") }}:</legend>
+                    <fieldset>
+                        <div class="form-group row">
+                            <label for="holder" class="col-sm-3 col-form-label col-form-label-lg">
+                                {{ trans("Payone::Template.accountHolder") }}
+                            </label>
+                            <div class="col-sm-9">
+                                <input id="holder" name="holder" placeholder="Max Mustermann"
+                                       class="form-control form-control-lg" required="true" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label col-form-label-lg" for="iban">IBAN</label>
+                            <div class="col-sm-9">
+                                <input id="iban" name="iban" placeholder="DE37120300000047110815"
+                                       minlength="15" maxlength="32" class="form-control form-control-lg"
+                                       required="true" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label col-form-label-lg" for="iban">BIC</label>
+                            <div class="col-sm-9">
+                                <input id="bic" name="bic" placeholder="BYLADEM1001"
+                                       minlength="15" maxlength="32" class="form-control form-control-lg"
+                                       required="true" autocomplete="off">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
+                    @click="clearFields"
+                    aria-label="{{ trans('Payone::Template.orderCancel') }}">
+                <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
+            </button>
+            {% if errorMessage is empty %}
+                <button id="orderPlace" class="btn btn-primary btn-block">
+                    <i class="fa fa-arrow-right"
+                       aria-hidden="true"></i> {{ trans('Payone::Template.continue') }}
+                </button>
+            {% endif %}
+    </form>
+    <script type="text/javascript">
+
+        var Templates = {};
+        Templates.locale = '{{ locale }}';
+        Templates.errorMessage =
+            '<div id="checkoutError" class="row is-table-row error">' +
+            '     <div class="col-sm-12">' +
+            '        <p>' +
+            '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+            '        </p>' +
+            '        <p>' +
+            '                <span class="text-muted">' +
+            '                       {% if isDebugModeEnabled %}' +
+            '                           {errorMessage}' +
+            '                       {% else %}' +
+            '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+            '                       {% endif %}' +
+            '                </span>' +
+            '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+            '                <i class="fa fa-arrow-right"' +
+            '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+            '        </button></a>' +
+            '        </p>' +
+            '    </div>' +
+            '</div>';
+
+    </script>
+    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js" defer></script>
+    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-direct-debit.js" defer></script>
+</div>

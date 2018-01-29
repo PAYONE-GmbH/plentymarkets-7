@@ -42,43 +42,44 @@ class CreatePaymentMethodTest extends \PHPUnit_Framework_TestCase
 
     public function testNotRegisteredPaymentsArerRegistered()
     {
+        $registeredPayments = [
+            (object)
+            [
+                'paymentKey' => PayoneInvoicePaymentMethod::PAYMENT_CODE,
+                'id' => 'invoice_mop',
+            ],
+            (object)
+            [
+                'paymentKey' => PayonePaydirektPaymentMethod::PAYMENT_CODE,
+                'id' => 'direct_mop',
+            ],
+            (object)
+            [
+                'paymentKey' => PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
+                'id' => 'inst_mop',
+            ],
+            (object)
+            [
+                'paymentKey' => PayonePayPalPaymentMethod::PAYMENT_CODE,
+                'id' => 'invoice_mop',
+            ],
+            (object)
+            [
+                'paymentKey' => PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
+                'id' => 'ratepay_inst_mop',
+            ],
+            (object)
+            [
+                'paymentKey' => PayoneSofortPaymentMethod::PAYMENT_CODE,
+                'id' => 'sofort_mop',
+            ],
+        ];
         $this->paymentRepo->method('allForPlugin')
             ->willReturn(
-                [
-                    (object)
-                    [
-                        'paymentKey' => PayoneInvoicePaymentMethod::PAYMENT_CODE,
-                        'id' => 'invoice_mop',
-                    ],
-                    (object)
-                    [
-                        'paymentKey' => PayonePaydirektPaymentMethod::PAYMENT_CODE,
-                        'id' => 'direct_mop',
-                    ],
-                    (object)
-                    [
-                        'paymentKey' => PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
-                        'id' => 'inst_mop',
-                    ],
-                    (object)
-                    [
-                        'paymentKey' => PayonePayPalPaymentMethod::PAYMENT_CODE,
-                        'id' => 'invoice_mop',
-                    ],
-                    (object)
-                    [
-                        'paymentKey' => PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
-                        'id' => 'ratepay_inst_mop',
-                    ],
-                    (object)
-                    [
-                        'paymentKey' => PayoneSofortPaymentMethod::PAYMENT_CODE,
-                        'id' => 'sofort_mop',
-                    ],
-                ]
+                $registeredPayments
             );
 
-        $countOfUnregisteredPayments = 3;
+        $countOfUnregisteredPayments = count($this->getAllPaymentMethodClasses()) - count($registeredPayments);
         $this->paymentRepo->expects($this->exactly($countOfUnregisteredPayments))
             ->method('createPaymentMethod');
 

@@ -72,6 +72,7 @@
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });
+        var form = $('#orderPlaceForm');
         var $accountDataStored = $.payolution.storeAccountData(form);
         if (!$accountDataStored) {
             return false;

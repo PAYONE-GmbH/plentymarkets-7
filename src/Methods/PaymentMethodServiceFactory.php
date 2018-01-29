@@ -33,6 +33,8 @@ class PaymentMethodServiceFactory
                 return pluginApp(PayoneSofortPaymentMethod::class);
             case PayoneCCPaymentMethod::PAYMENT_CODE:
                 return pluginApp(PayoneCCPaymentMethod::class);
+            case PayoneDirectDebitPaymentMethod::PAYMENT_CODE:
+                return pluginApp(PayoneDirectDebitPaymentMethod::class);
         }
         throw new \InvalidArgumentException('Unknown payment method ' . $paymentCode);
     }

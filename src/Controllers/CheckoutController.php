@@ -10,6 +10,7 @@ use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Services\PaymentService;
+use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\CheckoutErrorRenderer;
 use Payone\Views\ErrorMessageRenderer;
@@ -122,14 +123,21 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param BasketRepositoryContract $basket
      * @param BankAccount $bankAccount
+     * @param BankAccountCache $accountCache
+     * @param SepaMandate $mandateService
+     * @param BasketRepositoryContract $basket
+     *
+     * @throws \Exception
      *
      * @return string
      */
-    public function storeAccountData(BankAccount $bankAccount, BankAccountCache $accountCache)
-    {
+    public function storeAccountData(
+        BankAccount $bankAccount,
+        BankAccountCache $accountCache,
+        SepaMandate $mandateService,
+        BasketRepositoryContract $basket
+    ) {
         $errors = [];
 
         if (!$this->sessionHelper->isLoggedIn()) {
@@ -163,8 +171,9 @@ class CheckoutController extends Controller
                 $this->request->get('bic', '')
             )
         );
+        $mandate = $mandateService->createMandate($basket->load());
 
-        return $this->getJsonSuccess($bankAccount);
+        return $this->getJsonSuccess($mandate->getMandate());
     }
 
     /**

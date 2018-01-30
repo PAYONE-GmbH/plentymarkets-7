@@ -5,6 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\ManagemandateResponseFactory;
 use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\Api\PreAuthResponseFactory;
 use Payone\Models\Api\Response;
@@ -28,6 +29,7 @@ class Api
     const REQUEST_TYPE_REFUND = 'Refund';
     const REQUEST_TYPE_CALCULATION = 'Calculation';
     const REQUEST_TYPE_DEBIT = 'Debit';
+    const REQUEST_TYPE_MANAGEMANDATE = 'Managemandate';
 
     /**
      * @var LibraryCallContract
@@ -183,6 +185,24 @@ class Api
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+
+        return $responseObject;
+    }
+
+    /**
+     * @param $requestParams
+     *
+     * @return Response
+     */
+    public function doManagemandate($requestParams): Response
+    {
+        $this->logger->setIdentifier(__METHOD__);
+        $response = $this->doLibCall((self::REQUEST_TYPE_MANAGEMANDATE), $requestParams);
+
+        $responseObject = ManagemandateResponseFactory::create($response);
+
+        $this->logger->setReferenceValue($responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_MANAGEMANDATE), $response);
 
         return $responseObject;
     }

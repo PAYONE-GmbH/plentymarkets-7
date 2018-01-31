@@ -20,13 +20,14 @@ try {
     $data['context'] = $sdkRestApi::getParam('context');
     $data['customer'] = $sdkRestApi::getParam('customer');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
-    $data['bankAccount'] = $sdkRestApi::getParam('pseudocardpan');
+    $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
     $previousRequestId = $sdkRestApi::getParam('referenceId');
 
     $request = ManageMandateRequestFactory::create($paymentMethod, $data, $previousRequestId);
-    $client = new PostApi(new Client(), new ArraySerializer());
+    $serializer = new ArraySerializer();
+    $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);
 } catch (Exception $e) {
     $errorResponse = new ClientErrorResponse(
@@ -43,8 +44,8 @@ if (!$response->getSuccess()) {
         'Request successful but response invalid. ' . PHP_EOL .
         'Lib version: ' . Version::getVersion() . PHP_EOL .
         'Message: ' . $response->getErrorMessage() . PHP_EOL .
-        'Request was : ' . json_encode($request, JSON_PRETTY_PRINT) . PHP_EOL .
-        'Response was: ' . json_encode($response, JSON_PRETTY_PRINT)
+        'Request was : ' . json_encode($serializer->serialize($request), JSON_PRETTY_PRINT) . PHP_EOL .
+        'Response was: ' . json_encode($serializer->serialize($response), JSON_PRETTY_PRINT)
     );
 
     return $errorResponse->jsonSerialize();

@@ -40,6 +40,13 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
         /** @var BankAccountCache $repo */
         $repo = pluginApp(BankAccountCache::class);
 
-        return $repo->loadBankAccount();
+        $account = $repo->loadBankAccount();
+
+        return [
+            'holder' => $account->getHolder(),
+            'country' => $account->getCountryCode(),
+            'bic' => $account->getBic(),
+            'iban' => $account->getIban(),
+        ];
     }
 }

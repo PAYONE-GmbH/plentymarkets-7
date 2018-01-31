@@ -34,7 +34,7 @@
                 }
             });
 
-        return true;
+        return success;
     };
 
     $.payoneDirectDebit.showSepaMandate = function (form) {

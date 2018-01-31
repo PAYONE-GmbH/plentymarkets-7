@@ -12,7 +12,7 @@ class ManagemandateResponseFactory
     /**
      * @param array $responseData
      *
-     * @return AuthResponse
+     * @return ManagemandateResponse
      */
     public static function create(array $responseData)
     {
@@ -26,13 +26,14 @@ class ManagemandateResponseFactory
             $responseData['iban'],
             $responseData['bic']
         );
-        /** @var AuthResponse $response */
+        /** @var ManagemandateResponse $response */
         $response = pluginApp(ManagemandateResponse::class);
 
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errorMessage'] ?? '',
-            $responseData['transactionID'] ?? ''
+            $responseData['transactionID'] ?? '',
+            $mandate
         );
     }
 }

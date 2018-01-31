@@ -38,7 +38,7 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
     private function getBankAccount()
     {
         /** @var BankAccountCache $repo */
-        $repo = \Payone\Methods\pluginApp(BankAccountCache::class);
+        $repo = pluginApp(BankAccountCache::class);
 
         return $repo->loadBankAccount();
     }

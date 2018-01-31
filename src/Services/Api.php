@@ -5,6 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\ManagemandateResponse;
 use Payone\Models\Api\ManagemandateResponseFactory;
 use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\Api\PreAuthResponseFactory;
@@ -194,7 +195,7 @@ class Api
      *
      * @return Response
      */
-    public function doManagemandate($requestParams): Response
+    public function doManagemandate($requestParams): ManagemandateResponse
     {
         $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_MANAGEMANDATE), $requestParams);

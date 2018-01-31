@@ -17,7 +17,7 @@ class ManagemandateResponseFactory
     public static function create(array $responseData)
     {
         /** @var SepaMandate $mandate */
-        $mandate = \Payone\Methods\pluginApp(SepaMandate::class);
+        $mandate = pluginApp(SepaMandate::class);
         $mandate->init(
             $responseData['mandate_identification'],
             $responseData['mandate_status'],

@@ -151,8 +151,9 @@ class CheckoutController extends Controller
         $formData = [
             'holder' => $this->request->get('holder'),
             'iban' => $this->request->get('iban'),
+            'bic' => $this->request->get('bic'),
         ];
-        $this->logger->setIdentifier(__METHOD__)->debug('Router.routeCalled', ['formData' => $formData]);
+        $this->logger->setIdentifier(__METHOD__)->debug('Router.routeCalled', $this->request->all());
 
         foreach ($formData as $key => $value) {
             if (empty($formData[$key])) {
@@ -168,7 +169,7 @@ class CheckoutController extends Controller
             $bankAccount->init(
                 $this->request->get('holder'),
                 $this->request->get('iban'),
-                $this->request->get('bic', '')
+                $this->request->get('bic')
             )
         );
         $mandate = $mandateService->createMandate($basket->load());

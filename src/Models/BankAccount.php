@@ -5,7 +5,7 @@ namespace Payone\Models;
 /**
  * Class BankAccount
  */
-class BankAccount
+class BankAccount implements \JsonSerializable
 {
     /**
      * @var string
@@ -74,5 +74,18 @@ class BankAccount
     public function getCountryCode(): string
     {
         return strtoupper(substr($this->getIban(), 0, 2));
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'holder' => $this->getHolder(),
+            'iban' => $iban,
+            'bic' => $this->getBic(),
+            'countryCode' => $this->getCountryCode()
+        ];
     }
 }

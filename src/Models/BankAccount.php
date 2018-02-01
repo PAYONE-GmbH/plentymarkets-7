@@ -71,7 +71,7 @@ class BankAccount implements \JsonSerializable
      *
      * @return string
      */
-    public function getCountryCode(): string
+    public function getCountry(): string
     {
         return strtoupper(substr($this->getIban(), 0, 2));
     }
@@ -85,7 +85,7 @@ class BankAccount implements \JsonSerializable
             'holder' => $this->getHolder(),
             'iban' => $this->getIban(),
             'bic' => $this->getBic(),
-            'countryCode' => $this->getCountryCode()
+            'country' => $this->getCountry()
         ];
     }
 }

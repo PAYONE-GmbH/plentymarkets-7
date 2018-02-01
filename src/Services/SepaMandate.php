@@ -5,7 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\ManagemandateResponse;
-use Payone\Models\Api\Response;
+use Payone\Models\Api\ResponseAbstract;
 use Payone\Providers\Api\Request\ManagemandateDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 
@@ -59,7 +59,7 @@ class SepaMandate
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($response instanceof Response) || !$response->getSuccess()) {
+        if (!($response instanceof ResponseAbstract) || !$response->getSuccess()) {
             throw new \Exception('Mandate could not be created. Request failed.');
         }
 

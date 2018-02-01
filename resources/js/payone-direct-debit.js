@@ -103,10 +103,10 @@
             var form = $('#orderPlaceForm');
             console.log('storing account data');
 
-            $.when($.payonePayment.storeAccountData(form)).done(function (data) {
+            $.when($.payoneDirectDebit.storeAccountData(form)).done(function (data) {
                 console.log('submitting orderPlaceForm');
 
-                $.payoneDirectDebit.showSepaMandate();
+                $.payoneDirectDebit.showSepaMandate(form);
                 $.payoneDirectDebit.hideAccountForm();
 
 

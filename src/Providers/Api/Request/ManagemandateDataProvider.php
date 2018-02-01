@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Plenty\Modules\Basket\Models\Basket;
 
@@ -40,13 +41,13 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
         /** @var BankAccountCache $repo */
         $repo = pluginApp(BankAccountCache::class);
 
+        /** @var BankAccount $account */
         $account = $repo->loadBankAccount();
 
-        return [
-            'holder' => $account->getHolder(),
-            'country' => $account->getCountryCode(),
-            'bic' => $account->getBic(),
-            'iban' => $account->getIban(),
-        ];
+        if(!$account){
+            $account = pluginApp(BankAccount::class);
+        }
+
+        return $account->jsonSerialize();
     }
 }

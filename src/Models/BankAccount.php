@@ -83,7 +83,7 @@ class BankAccount implements \JsonSerializable
     {
         return [
             'holder' => $this->getHolder(),
-            'iban' => $iban,
+            'iban' => $this->getIban(),
             'bic' => $this->getBic(),
             'countryCode' => $this->getCountryCode()
         ];

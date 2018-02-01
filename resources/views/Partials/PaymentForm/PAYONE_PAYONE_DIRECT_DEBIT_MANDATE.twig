@@ -1,0 +1,33 @@
+{# @var mandate \Payone\Models\SepaMandate #}
+<div id="sepaMandateConfirmation">
+    <div class="form-group row">
+        <div class="form-group">
+            <label for="mandateText">{{ trans('Payone::Template.mandateTitle') }}</label>
+            <textarea class="form-control" id="mandateText" rows="15" readonly="readonly">
+                {{ mandate.text }}
+            </textarea>
+        </div>
+    </div>
+    <div class="form-check">
+        <label class="form-check-label small" for="sepaMandate">
+            <input id="sepaMandate"
+                   class="sepa-mandate-accept-checkbox form-check-input Payone-tac"
+                   type="checkbox"
+                   name="terms"
+                   value="1"
+                   required>{{ trans("Payone::Template.sepaMandateConsent") }}</label>
+    </div>
+    <div class="">
+        <form id="mandateOrderPlaceForm" action="place-order">
+            <button id="installmentOrderPlace" class="btn btn-primary btn-block">
+                <i class="fa fa-arrow-right"
+                   aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}
+            </button>
+        </form>
+        <button id="mandateOrderCancel" class="btn btn-default btn-block payone-cancel" data-dismiss="modal"
+                @click="clearFields"
+                aria-label="{{ trans('Payone::Template.orderCancel') }}">
+            <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
+        </button>
+    </div>
+</div>

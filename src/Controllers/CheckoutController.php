@@ -5,10 +5,13 @@ namespace Payone\Controllers;
 use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
 use Payone\Helpers\SessionHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
+use Payone\Models\SepaMandateCache;
+use Payone\PluginConstants;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
@@ -18,6 +21,7 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
+use Plenty\Plugin\Templates\Twig;
 
 /**
  * Class CheckoutController
@@ -175,6 +179,46 @@ class CheckoutController extends Controller
         $mandate = $mandateService->createMandate($basket->load());
 
         return $this->getJsonSuccess($mandate->getMandate());
+    }
+
+    /**
+     * @param Twig $twig
+     * @param SepaMandateCache $sepaMandateCache
+     * @param ShopHelper $helper
+     *
+     * @return string
+     */
+    public function getSepaMandateStep(Twig $twig, SepaMandateCache $sepaMandateCache, ShopHelper $helper)
+    {
+        if (!$this->sessionHelper->isLoggedIn()) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    'Your session expired. Please login and start a new purchase.'
+                ),
+            ]);
+        }
+
+        try {
+            $mandate = $sepaMandateCache->load();
+            $html = $twig->render(PluginConstants::NAME . '::Partials.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE.twig', [
+                'mandate' => $mandate,
+                'locale' => $helper->getCurrentLocale(),
+            ]);
+        } catch (\Exception $e) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+                ),
+            ]);
+        }
+
+        return json_encode(
+            [
+                'success' => true,
+                'html' => $html,
+            ],
+            JSON_PRETTY_PRINT
+        );
     }
 
     /**

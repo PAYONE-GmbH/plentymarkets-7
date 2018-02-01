@@ -83,18 +83,6 @@ class ApiResponseCache
         );
     }
 
-    /**
-     * @param $paymentCode
-     */
-    public function deleteAuthResponse($paymentCode)
-    {
-        $requestHash = $this->getRequestHash($paymentCode, Api::REQUEST_TYPE_AUTH);
-        $this->sessionStorage->setSessionValue(
-            $requestHash,
-            null
-        );
-    }
-
     public function deleteAuthResponses()
     {
         foreach ($this->paymentHelper->getPaymentCodes() as $paymentCode) {

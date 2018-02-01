@@ -65,23 +65,24 @@
     };
 
     $(function () {
+
+        $('.payolutionIns-tac:input[type="checkbox"]').change(function (event) {
+            event.stopPropagation();
+            var isDisabled = ($('#sepaMandateConfirmation:input[type="checkbox"]').length !== $('#sepaMandateConfirmation:input[type="checkbox"]:checked').length);
+            $.payolution.setCheckoutDisabled(isDisabled);
+        });
+        var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
-            console.log('submit button clicked');
+            console.log('submitting orderPlaceForm for sepa');
             event.preventDefault();
 
-            $.payonePayment.setCheckoutDisabled(true);
+            var termsCheckboxes = $('#sepaMandateConfirmation:input[type="checkbox"]');
+            termsCheckboxes.prop('disabled', true);
 
-            var form = $('#orderPlaceForm');
-            console.log('storing account data');
-            var $accountDataStored = $.payoneDirectDebit.storeAccountData(form);
-            if (!$accountDataStored) {
-                $.payonePayment.setCheckoutDisabled(false);
-                return false;
-            }
-            console.log('submitting orderPlaceForm');
+
+            var form = $(this);
             $.when($.payonePayment.doAuth(form)).done(function (data) {
-                $.payoneDirectDebit.showSepaMandate();
-                $.payoneDirectDebit.hideAccountForm();
+
                 submitted = true;
                 console.log(form);
                 form.unbind('submit');
@@ -92,10 +93,33 @@
             });
 
         });
+
+        $('#createSepamandateForm').on("submit", function (event) {
+            console.log('submit button clicked');
+            event.preventDefault();
+
+            $.payonePayment.setCheckoutDisabled(true);
+
+            var form = $('#orderPlaceForm');
+            console.log('storing account data');
+
+            $.when($.payonePayment.storeAccountData(form)).done(function (data) {
+                console.log('submitting orderPlaceForm');
+
+                $.payoneDirectDebit.showSepaMandate();
+                $.payoneDirectDebit.hideAccountForm();
+
+
+            }).fail(function (data, textStatus, jqXHR) {
+                $.payonePayment.setCheckoutDisabled(false);
+                return false;
+            });
+
+        });
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });
 
     });
-    
+
 }(window.jQuery, window, document));

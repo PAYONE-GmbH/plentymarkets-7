@@ -37,12 +37,10 @@
         return success;
     };
 
-    $.payoneDirectDebit.showSepaMandate = function (form) {
+    $.payoneDirectDebit.showSepaMandate = function () {
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/payone/checkout/getSepaMandateStep',
-            data: form.serialize(),
-            dataType: 'json',
         })
             .done(function (data) {
                 if (!data.success) {
@@ -51,11 +49,10 @@
                     }
                     console.log(data);
                 }
-                $('#payonePaymentModal').append(data.html).show();
+                $('#payonePaymentModal').append(data.data.html).show();
             })
             .fail(function (data) {
                 console.log(data);
-                form.unbind('submit');
             });
 
     };

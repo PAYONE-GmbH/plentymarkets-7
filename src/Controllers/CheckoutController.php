@@ -200,7 +200,7 @@ class CheckoutController extends Controller
 
         try {
             $mandate = $sepaMandateCache->load();
-            $html = $twig->render(PluginConstants::NAME . '::Partials.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE.twig', [
+            $html = $twig->render(PluginConstants::NAME . '::Partials.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE', [
                 'mandate' => $mandate,
                 'locale' => $helper->getCurrentLocale(),
             ]);
@@ -212,12 +212,10 @@ class CheckoutController extends Controller
             ]);
         }
 
-        return json_encode(
+        return $this->getJsonSuccess(
             [
-                'success' => true,
                 'html' => $html,
-            ],
-            JSON_PRETTY_PRINT
+            ]
         );
     }
 

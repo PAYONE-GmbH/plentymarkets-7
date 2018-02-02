@@ -105,8 +105,8 @@
             $.when($.payoneDirectDebit.storeAccountData(form)).done(function (data) {
                 console.log('submitting orderPlaceForm');
 
-                $.payoneDirectDebit.showSepaMandate(form);
                 $.payoneDirectDebit.hideAccountForm();
+                $.payoneDirectDebit.showSepaMandate(form);
 
             }).fail(function (data, textStatus, jqXHR) {
                 $.payonePayment.setCheckoutDisabled(false);

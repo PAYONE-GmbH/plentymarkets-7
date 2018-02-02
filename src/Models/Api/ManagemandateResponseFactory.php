@@ -21,7 +21,7 @@ class ManagemandateResponseFactory
         $mandate->init(
             $responseData['responseData']['mandate_identification'],
             $responseData['responseData']['mandate_status'],
-            $responseData['responseData']['mandate_text'],
+            \urldecode($responseData['responseData']['mandate_text']),
             $responseData['responseData']['creditor_identifier'],
             $responseData['responseData']['iban'],
             $responseData['responseData']['bic']

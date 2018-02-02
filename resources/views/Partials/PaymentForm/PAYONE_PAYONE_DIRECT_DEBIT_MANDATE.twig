@@ -26,7 +26,8 @@
         </form>
         <button id="mandateOrderCancel" class="btn btn-default btn-block payone-cancel" data-dismiss="modal"
                 @click="clearFields"
-                aria-label="{{ trans('Payone::Template.orderCancel') }}">
+                aria-label="{{ trans('Payone::Template.orderCancel') }}"
+                disabled="disabled">
             <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
         </button>
     </div>

@@ -50,7 +50,7 @@
                     }
                     console.log(data);
                 }
-                $('#payonePaymentModal').append(data.data.html).show();
+                $('#payonePaymentModal').appendTo(data.data.html).show();
             })
             .fail(function (data) {
                 console.log(data);
@@ -68,6 +68,7 @@
             var isDisabled = ($('#sepaMandateConfirmation:input[type="checkbox"]').length !== $('#sepaMandateConfirmation:input[type="checkbox"]:checked').length);
             $.payonePayment.setCheckoutDisabled(isDisabled);
         });
+
         var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
             console.log('submitting orderPlaceForm for sepa');
@@ -75,6 +76,7 @@
 
             var termsCheckboxes = $('#sepaMandateConfirmation:input[type="checkbox"]');
             termsCheckboxes.prop('disabled', true);
+            $.payonePayment.setCheckoutDisabled(true);
 
 
             var form = $(this);
@@ -95,7 +97,7 @@
             console.log('submit button clicked');
             event.preventDefault();
 
-            $.payonePayment.setCheckoutDisabled(true);
+            $('#sepaContinue').prop('disabled', true);
 
             var form = $('#createSepamandateForm');
             console.log('storing account data');

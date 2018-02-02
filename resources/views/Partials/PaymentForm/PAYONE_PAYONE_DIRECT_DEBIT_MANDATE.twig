@@ -4,7 +4,7 @@
         <div class="form-group">
             <label for="mandateText">{{ trans('Payone::Template.mandateTitle') }}</label>
             <textarea class="form-control" id="mandateText" rows="15" readonly="readonly">
-                {{ mandate.text }}
+                {{ mandate.text|raw }}
             </textarea>
         </div>
     </div>

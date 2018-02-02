@@ -1,11 +1,13 @@
 {# @var mandate \Payone\Models\SepaMandate #}
-<div id="sepaMandateConfirmation">
+<div id="sepaMandateConfirmation" xmlns="http://www.w3.org/1999/html">
     <div class="form-group row">
         <div class="form-group">
-            <label for="mandateText">{{ trans('Payone::Template.mandateTitle') }}</label>
-            <textarea class="form-control" id="mandateText" rows="15" readonly="readonly">
-                {{ mandate.text|raw }}
-            </textarea>
+            <div class="col-sm-12">
+                <p>{{ trans('Payone::Template.mandateTitle') }}</p>
+                <blockquote>
+                    {{ mandate.text|raw }}
+                </blockquote>
+            </div>
         </div>
     </div>
     <div class="form-check">

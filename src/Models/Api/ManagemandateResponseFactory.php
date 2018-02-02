@@ -19,12 +19,12 @@ class ManagemandateResponseFactory
         /** @var SepaMandate $mandate */
         $mandate = pluginApp(SepaMandate::class);
         $mandate->init(
-            $responseData['mandate_identification'],
-            $responseData['mandate_status'],
-            $responseData['mandate_text'],
-            $responseData['creditor_identifier'],
-            $responseData['iban'],
-            $responseData['bic']
+            $responseData['responseData']['mandate_identification'],
+            $responseData['responseData']['mandate_status'],
+            $responseData['responseData']['mandate_text'],
+            $responseData['responseData']['creditor_identifier'],
+            $responseData['responseData']['iban'],
+            $responseData['responseData']['bic']
         );
         /** @var ManagemandateResponse $response */
         $response = pluginApp(ManagemandateResponse::class);

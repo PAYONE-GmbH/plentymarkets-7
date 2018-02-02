@@ -63,10 +63,10 @@
 
     $(function () {
 
-        $('.payolutionIns-tac:input[type="checkbox"]').change(function (event) {
+        $('#sepaMandateConfirmation:input[type="checkbox"]').change(function (event) {
             event.stopPropagation();
             var isDisabled = ($('#sepaMandateConfirmation:input[type="checkbox"]').length !== $('#sepaMandateConfirmation:input[type="checkbox"]:checked').length);
-            $.payolution.setCheckoutDisabled(isDisabled);
+            $.payonePayment.setCheckoutDisabled(isDisabled);
         });
         var submitted = false;
         $('#orderPlaceForm').on("submit", function (event) {
@@ -113,6 +113,7 @@
             });
 
         });
+
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });

@@ -140,6 +140,7 @@ class CheckoutController extends Controller
         BankAccount $bankAccount,
         BankAccountCache $accountCache,
         SepaMandate $mandateService,
+        SepaMandateCache $mandateCache,
         BasketRepositoryContract $basket
     ) {
         $errors = [];
@@ -178,7 +179,10 @@ class CheckoutController extends Controller
         );
         $mandate = $mandateService->createMandate($basket->load());
 
-        return $this->getJsonSuccess($mandate->getMandate());
+        $sepaMandate = $mandate->getMandate();
+        $mandateCache->store($sepaMandate);
+
+        return $this->getJsonSuccess($sepaMandate);
     }
 
     /**

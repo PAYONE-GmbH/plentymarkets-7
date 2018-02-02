@@ -6,7 +6,7 @@ use Payone\Adapter\SessionStorage;
 
 class SepaMandateCache
 {
-    const PAYONE_SEPA_MANDATE = 'PayoneSepaMandate';
+    const STORAGE_KEY = 'PayoneSepaMandate';
     /**
      * @var SessionStorage
      */
@@ -24,13 +24,13 @@ class SepaMandateCache
 
     /**
      * @param string $SepaMandateCode
-     * @param SepaMandate $SepaMandate
+     * @param SepaMandate $sepaMandate
      */
-    public function store(SepaMandate $SepaMandate)
+    public function store(SepaMandate $sepaMandate)
     {
         $this->sessionStorage->setSessionValue(
             $this->getStorageKey(),
-            $SepaMandate
+            $sepaMandate
         );
     }
 
@@ -53,11 +53,10 @@ class SepaMandateCache
     }
 
     /**
-     *
      * @return string
      */
     private function getStorageKey(): string
     {
-        return self::PAYONE_SEPA_MANDATE;
+        return self::STORAGE_KEY;
     }
 }

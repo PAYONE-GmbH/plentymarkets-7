@@ -40,6 +40,7 @@
     $.payoneDirectDebit.showSepaMandate = function () {
         $.ajax({
             type: 'GET',
+            dataType: 'json',
             url: '/payone/checkout/getSepaMandateStep',
         })
             .done(function (data) {
@@ -54,7 +55,6 @@
             .fail(function (data) {
                 console.log(data);
             });
-
     };
 
     $.payoneDirectDebit.hideAccountForm = function () {
@@ -97,7 +97,7 @@
 
             $.payonePayment.setCheckoutDisabled(true);
 
-            var form = $('#orderPlaceForm');
+            var form = $('#createSepamandateForm');
             console.log('storing account data');
 
             $.when($.payoneDirectDebit.storeAccountData(form)).done(function (data) {

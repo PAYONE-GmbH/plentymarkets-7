@@ -12,7 +12,7 @@
             console.log('submitting orderPlaceForm for sepa');
             event.preventDefault();
 
-            var termsCheckboxes = $('#sepaMandateConfirmation:input[type="checkbox"]');
+            var termsCheckboxes = $('#sepaMandateConfirmation input[type="checkbox"]');
             termsCheckboxes.prop('disabled', true);
             $.payonePayment.setCheckoutDisabled(true);
 

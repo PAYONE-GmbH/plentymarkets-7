@@ -50,7 +50,8 @@
                     }
                     console.log(data);
                 }
-                $('#createSepamandate').append(data.data.html).show();
+                $('#createSepamandate').append(data.data.html);
+                $('#sepaMandateConfirmation').show();
             })
             .fail(function (data) {
                 console.log(data);
@@ -58,7 +59,7 @@
     };
 
     $.payoneDirectDebit.hideAccountForm = function () {
-        $('#payonePaymentModal').hide();
+        $('#createSepamandate').hide();
     };
 
     $(function () {

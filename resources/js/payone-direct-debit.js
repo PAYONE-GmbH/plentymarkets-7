@@ -41,7 +41,7 @@
         $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: '/payone/checkout/getSepaMandateStep',
+            url: '/payone/checkout/getSepaMandateStep'
         })
             .done(function (data) {
                 if (!data.success) {
@@ -50,7 +50,7 @@
                     }
                     console.log(data);
                 }
-                $('#payonePaymentModal').append(data.data.html).show();
+                $('#createSepamandate').append(data.data.html).show();
             })
             .fail(function (data) {
                 console.log(data);
@@ -63,36 +63,6 @@
 
     $(function () {
 
-        $('#sepaMandateConfirmation:input[type="checkbox"]').change(function (event) {
-            event.stopPropagation();
-            var isDisabled = ($('#sepaMandateConfirmation:input[type="checkbox"]').length !== $('#sepaMandateConfirmation:input[type="checkbox"]:checked').length);
-            $.payonePayment.setCheckoutDisabled(isDisabled);
-        });
-
-        var submitted = false;
-        $('#orderPlaceForm').on("submit", function (event) {
-            console.log('submitting orderPlaceForm for sepa');
-            event.preventDefault();
-
-            var termsCheckboxes = $('#sepaMandateConfirmation:input[type="checkbox"]');
-            termsCheckboxes.prop('disabled', true);
-            $.payonePayment.setCheckoutDisabled(true);
-
-
-            var form = $(this);
-            $.when($.payonePayment.doAuth(form)).done(function (data) {
-
-                submitted = true;
-                console.log(form);
-                form.unbind('submit');
-                form.submit();
-            }).fail(function (data, textStatus, jqXHR) {
-                $.payonePayment.showErrorMessage(jqXHR.responseText);
-                return false;
-            });
-
-        });
-
         $('#createSepamandateForm').on("submit", function (event) {
             console.log('submit button clicked');
             event.preventDefault();
@@ -102,7 +72,7 @@
             var form = $('#createSepamandateForm');
             console.log('storing account data');
 
-            $.when($.payoneDirectDebit.storeAccountData(form)).done(function (data) {
+            $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
                 console.log('submitting orderPlaceForm');
 
                 $.payoneDirectDebit.hideAccountForm();
@@ -112,13 +82,10 @@
                 $.payonePayment.setCheckoutDisabled(false);
                 return false;
             });
-
         });
 
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-primary.btn-block').prop('disabled', false);
         });
-
     });
-
 }(window.jQuery, window, document));

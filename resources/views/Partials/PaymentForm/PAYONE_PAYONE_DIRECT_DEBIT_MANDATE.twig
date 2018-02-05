@@ -21,16 +21,17 @@
     </div>
     <div class="">
         <form id="orderPlaceForm" action="place-order">
-            <button id="installmentOrderPlace" class="btn btn-primary btn-block">
+            <button id="installmentOrderPlace" class="btn btn-primary btn-block" disabled="disabled">
                 <i class="fa fa-arrow-right"
                    aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}
             </button>
         </form>
         <button id="mandateOrderCancel" class="btn btn-default btn-block payone-cancel" data-dismiss="modal"
                 @click="clearFields"
-                aria-label="{{ trans('Payone::Template.orderCancel') }}"
-                disabled="disabled">
+                aria-label="{{ trans('Payone::Template.orderCancel') }}">
             <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
         </button>
     </div>
+    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js" defer></script>
+    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-sepa-mandate.js" defer></script>
 </div>

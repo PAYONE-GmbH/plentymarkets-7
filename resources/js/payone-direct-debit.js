@@ -50,7 +50,7 @@
                     }
                     console.log(data);
                 }
-                $('#createSepamandate').append(data.data.html);
+                $('#createSepamandate').insertAfter(data.data.html);
                 $('#sepaMandateConfirmation').show();
             })
             .fail(function (data) {

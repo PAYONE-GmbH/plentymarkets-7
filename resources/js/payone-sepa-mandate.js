@@ -1,8 +1,8 @@
 (function ($) {
     $(function () {
-        $('#sepaMandateConfirmation:input[type="checkbox"]').change(function (event) {
+        $('#sepaMandateConfirmation input[type="checkbox"]').change(function (event) {
             event.stopPropagation();
-            var isDisabled = ($('#sepaMandateConfirmation:input[type="checkbox"]').length !== $('#sepaMandateConfirmation input[type="checkbox"]:checked').length);
+            var isDisabled = ($('#sepaMandateConfirmation input[type="checkbox"]').length !== $('#sepaMandateConfirmation input[type="checkbox"]:checked').length);
             $.payonePayment.setCheckoutDisabled(isDisabled);
         });
 

@@ -24,6 +24,7 @@ try {
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
     $data['redirect'] = $sdkRestApi::getParam('redirect');
     $data['pseudocardpan'] = $sdkRestApi::getParam('pseudocardpan');
+    $data['sepaMandate'] = $sdkRestApi::getParam('sepaMandate');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

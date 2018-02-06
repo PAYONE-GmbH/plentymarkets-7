@@ -2,12 +2,13 @@
 
 namespace Payone\Providers\Api\Request;
 
-use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentConfig\ApiCredentials;
+use Payone\Models\SepaMandate;
+use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
 use Payone\Services\RequestDataValidator;
 use Plenty\Modules\Account\Address\Models\Address;
@@ -30,11 +31,7 @@ use Plenty\Modules\Payment\Models\PaymentProperty;
  */
 abstract class DataProviderAbstract
 {
-    const ACCOUNT_DATA_KEY = 'paymentAccount';
-    /**
-     * @var FrontendSessionStorageFactoryContract
-     */
-    protected $sessionStorageFactory;
+
     /**
      * @var ItemRepositoryContract
      */
@@ -56,10 +53,6 @@ abstract class DataProviderAbstract
      */
     protected $validator;
     /**
-     * @var SessionStorage
-     */
-    protected $sessionStorage;
-    /**
      * @var ParcelServicePresetRepositoryContract
      */
     private $parcelServicePresetRepository;
@@ -69,6 +62,10 @@ abstract class DataProviderAbstract
      * @var CreditCardCheckResponseRepository
      */
     private $creditCardCheckResponseRepository;
+    /**
+     * @var SepaMandateCache
+     */
+    private $sepaMandateCache;
 
     /**
      * DataProviderAbstract constructor.
@@ -79,10 +76,10 @@ abstract class DataProviderAbstract
      * @param AddressHelper $addressHelper
      * @param ApiCredentials $config
      * @param RequestDataValidator $validator
-     * @param SessionStorage $sessionStorage
      * @param ParcelServicePresetRepositoryContract $parcelServicePresetRepository
      * @param PaymentRepositoryContract $paymentRepository
      * @param CreditCardCheckResponseRepository $creditCardCheckResponseRepository
+     * @param SepaMandateCache $sepaMandateCache
      */
     public function __construct(
         ItemRepositoryContract $itemRepo,
@@ -91,21 +88,20 @@ abstract class DataProviderAbstract
         AddressHelper $addressHelper,
         ApiCredentials $config,
         RequestDataValidator $validator,
-        SessionStorage $sessionStorage,
         ParcelServicePresetRepositoryContract $parcelServicePresetRepository,
         PaymentRepositoryContract $paymentRepository,
-        CreditCardCheckResponseRepository $creditCardCheckResponseRepository
+        CreditCardCheckResponseRepository $creditCardCheckResponseRepository,
+        SepaMandateCache $sepaMandateCache
     ) {
         $this->itemRepo = $itemRepo;
-        $this->sessionStorageFactory = $sessionStorageFactory;
         $this->shopHelper = $shopHelper;
         $this->addressHelper = $addressHelper;
         $this->config = $config;
         $this->validator = $validator;
-        $this->sessionStorage = $sessionStorage;
         $this->parcelServicePresetRepository = $parcelServicePresetRepository;
         $this->paymentRepository = $paymentRepository;
         $this->creditCardCheckResponseRepository = $creditCardCheckResponseRepository;
+        $this->sepaMandateCache = $sepaMandateCache;
     }
 
     /**
@@ -139,30 +135,16 @@ abstract class DataProviderAbstract
     /**
      * @return array
      */
-    protected function getAccountData()
+    protected function getSepaMandateData()
     {
-        $account = $this->sessionStorage->getSessionValue(self::ACCOUNT_DATA_KEY);
+        /** @var SepaMandate $mandate */
+        $mandate = $this->sepaMandateCache->load();
 
-        if (!($account instanceof BankAccount)) {
+        if (!($mandate instanceof SepaMandate)) {
             return [];
         }
 
-        return [
-            'holder' => $account->getHolder(),
-            'country' => $account->getCountryCode(),
-            'bic' => $account->getBic(),
-            'iban' => $account->getIban(),
-        ];
-    }
-
-    /**
-     * @param string $paymentCode
-     *
-     * @return bool
-     */
-    protected function paymentHasAccount(string $paymentCode): bool
-    {
-        return in_array($paymentCode, []);
+        return $mandate->jsonSerialize() + ['dateofsignature' => date('Ymd')];
     }
 
     /**
@@ -214,9 +196,9 @@ abstract class DataProviderAbstract
             $amount = $orderItemData['amounts'][0];
             $priceGross = $amount->priceGross;
             $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int) round($tax * 100);
+            $orderItemData['tax'] = (int)round($tax * 100);
 
-            $orderItemData['price'] = (int) round($priceGross * 100);
+            $orderItemData['price'] = (int)round($priceGross * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;
@@ -238,17 +220,17 @@ abstract class DataProviderAbstract
             return ['customerId' => $customerId];
         }
         $customerData = [
-            'email' => (string) $addressObj->email,
-            'firstname' => (string) $addressObj->firstName,
-            'lastname' => (string) $addressObj->lastName,
+            'email' => (string)$addressObj->email,
+            'firstname' => (string)$addressObj->firstName,
+            'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
             'birthday' => $this->getBirthDay($addressObj),
-            'ip' => (string) $this->shopHelper->getIpAddress(),
-            'customerId' => (string) $customerId,
+            'ip' => (string)$this->shopHelper->getIpAddress(),
+            'customerId' => (string)$customerId,
             'registrationDate' => '1970-01-01',
             'group' => 'default',
-            'company' => (string) $addressObj->companyName,
-            'telephonenumber' => (string) $addressObj->phone,
+            'company' => (string)$addressObj->companyName,
+            'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
         //TODO: Check format
@@ -314,13 +296,13 @@ abstract class DataProviderAbstract
     protected function getBasketData(Basket $basket)
     {
         $requestParams = $basket->toArray();
-        $requestParams['currency'] = (bool) $basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
-        $requestParams['grandTotal'] = (int) round($basket->basketAmount * 100);
-        $requestParams['itemSumNet'] = (int) round($basket->itemSumNet * 100);
-        $requestParams['basketAmount'] = (int) round($basket->basketAmount * 100);
-        $requestParams['basketAmountNet'] = (int) round($basket->basketAmountNet * 100);
-        $requestParams['shippingAmount'] = (int) round($basket->shippingAmount * 100);
-        $requestParams['shippingAmountNet'] = (int) round($basket->shippingAmountNet * 100);
+        $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
+        $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
+        $requestParams['itemSumNet'] = (int)round($basket->itemSumNet * 100);
+        $requestParams['basketAmount'] = (int)round($basket->basketAmount * 100);
+        $requestParams['basketAmountNet'] = (int)round($basket->basketAmountNet * 100);
+        $requestParams['shippingAmount'] = (int)round($basket->shippingAmount * 100);
+        $requestParams['shippingAmountNet'] = (int)round($basket->shippingAmountNet * 100);
 
         $uniqueBasketId = $this->getUniqueBasketId($basket->id);
 
@@ -337,12 +319,12 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int) round($requestParams['amounts'][0]['grossTotal'] * 100);
-        $requestParams['itemSumNet'] = (int) round($requestParams['amounts'][0]['itemSumNet'] * 100);
-        $requestParams['basketAmount'] = (int) round($requestParams['amounts'][0]['basketAmount'] * 100);
-        $requestParams['basketAmountNet'] = (int) round($requestParams['amounts'][0]['basketAmountNet'] * 100);
-        $requestParams['shippingAmount'] = (int) round($requestParams['amounts'][0]['shippingAmount'] * 100);
-        $requestParams['shippingAmountNet'] = (int) round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
+        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['itemSumNet'] = (int)round($requestParams['amounts'][0]['itemSumNet'] * 100);
+        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['basketAmount'] * 100);
+        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
+        $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
+        $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
         return $requestParams;
@@ -398,7 +380,7 @@ abstract class DataProviderAbstract
                     continue;
                 }
                 if ($property->typeId === PaymentProperty::TYPE_TRANSACTION_CODE) {
-                    return 1 + (int) $property->value;
+                    return 1 + (int)$property->value;
                 }
             }
         }
@@ -407,7 +389,7 @@ abstract class DataProviderAbstract
     }
 
     /**
-     * @param $orderId
+     * @param Order $order
      *
      * @return array
      */
@@ -417,7 +399,7 @@ abstract class DataProviderAbstract
 
         return [
             'orderId' => $order->id,
-            'amount' => (int) round($amount->invoiceTotal * 100),
+            'amount' => (int)round($amount->invoiceTotal * 100),
             'currency' => $amount->currency,
         ];
     }

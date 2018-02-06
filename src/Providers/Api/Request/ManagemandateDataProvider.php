@@ -27,9 +27,6 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $basket->customerId);
 
-        if ($this->paymentHasAccount($paymentCode)) {
-            $requestParams['account'] = $this->getAccountData();
-        }
         $requestParams['bankAccount'] = $this->getBankAccount();
         $this->validator->validate($requestParams);
 

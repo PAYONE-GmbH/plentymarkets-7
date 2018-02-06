@@ -3,6 +3,7 @@
 namespace Payone\Providers\Api\Request;
 
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
 
@@ -30,9 +31,6 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
 
-        if ($this->paymentHasAccount($paymentCode)) {
-            $requestParams['account'] = $this->getAccountData();
-        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
@@ -40,8 +38,11 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
             $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['sepaMandate'] = $this->getSepaMandateData();
+        }
         $requestParams['referenceId'] = $requestReference;
-
+        $requestParams['shippingProvider'] = $this->getShippingProvider($basket->shippingProfileId);
         $this->validator->validate($requestParams);
 
         return $requestParams;
@@ -66,9 +67,6 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $basket->customerId);
 
-        if ($this->paymentHasAccount($paymentCode)) {
-            $requestParams['account'] = $this->getAccountData();
-        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
@@ -76,6 +74,10 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
             $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
         }
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['sepaMandate'] = $this->getSepaMandateData();
+        }
+
         $requestParams['referenceId'] = $requestReference;
 
         $this->validator->validate($requestParams);

@@ -119,7 +119,17 @@ class SepaMandate implements \JsonSerializable
     }
 
     /**
-     * @return array|mixed
+     * Getter account country
+     *
+     * @return string
+     */
+    public function getCountry(): string
+    {
+        return strtoupper(substr($this->getIban(), 0, 2));
+    }
+
+    /**
+     * @return array
      */
     public function jsonSerialize()
     {
@@ -130,6 +140,7 @@ class SepaMandate implements \JsonSerializable
             'creditorIdentifier' => $this->getCreditorIdentifier(),
             'iban' => $this->getIban(),
             'bic' => $this->getBic(),
+            'country' => $this->getCountry(),
         ];
     }
 }

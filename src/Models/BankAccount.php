@@ -85,7 +85,7 @@ class BankAccount implements \JsonSerializable
             'holder' => $this->getHolder(),
             'iban' => $this->getIban(),
             'bic' => $this->getBic(),
-            'country' => $this->getCountry()
+            'country' => $this->getCountry(),
         ];
     }
 }

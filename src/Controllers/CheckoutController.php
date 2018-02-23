@@ -249,19 +249,19 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param array|null $data
-     * @return string
+     * @param null $data
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function getJsonSuccess($data = null): string
+    private function getJsonSuccess($data = null)
     {
         return $this->response->json(['success' => true, 'message' => null, 'data' => $data]);
     }
 
     /**
      * @param $errors
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function getJsonErrors($errors): string
+    private function getJsonErrors($errors)
     {
         $data = [];
         $data['success'] = false;

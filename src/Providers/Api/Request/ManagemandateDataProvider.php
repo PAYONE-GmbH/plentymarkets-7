@@ -2,8 +2,6 @@
 
 namespace Payone\Providers\Api\Request;
 
-use Payone\Models\BankAccount;
-use Payone\Models\BankAccountCache;
 use Plenty\Modules\Basket\Models\Basket;
 
 class ManagemandateDataProvider extends DataProviderAbstract implements DataProviderBasket
@@ -33,18 +31,4 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
         return $requestParams;
     }
 
-    private function getBankAccount()
-    {
-        /** @var BankAccountCache $repo */
-        $repo = pluginApp(BankAccountCache::class);
-
-        /** @var BankAccount $account */
-        $account = $repo->loadBankAccount();
-
-        if(!$account){
-            $account = pluginApp(BankAccount::class);
-        }
-
-        return $account->jsonSerialize();
-    }
 }

@@ -31,6 +31,9 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
 
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
+        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
@@ -67,6 +70,9 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $basket->customerId);
 
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
+        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }

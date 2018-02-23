@@ -5,6 +5,7 @@ namespace Payone\Providers\Api\Request;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentConfig\ApiCredentials;
 use Payone\Models\SepaMandate;
@@ -458,5 +459,20 @@ abstract class DataProviderAbstract
         }
 
         return $check;
+    }
+
+    protected function getBankAccount()
+    {
+        /** @var BankAccountCache $repo */
+        $repo = pluginApp(BankAccountCache::class);
+
+        /** @var BankAccount $account */
+        $account = $repo->loadBankAccount();
+
+        if (!$account) {
+            $account = pluginApp(BankAccount::class);
+        }
+
+        return $account->jsonSerialize();
     }
 }

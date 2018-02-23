@@ -31,6 +31,9 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $basket->customerId);
 
+        if ($this->paymentHasAccount($paymentCode)) {
+            $requestParams['account'] = $this->getAccountData();
+        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
@@ -67,6 +70,9 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         );
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
 
+        if ($this->paymentHasAccount($paymentCode)) {
+            $requestParams['account'] = $this->getAccountData();
+        }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }

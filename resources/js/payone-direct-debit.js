@@ -23,8 +23,7 @@
                 var errorClasses = 'has-error error has-feedback';
                 form.find('input, select').parent().removeClass(errorClasses);
             }).fail(function (data) {
-                $.payonePayment.showValidationErrors(form, data.errors, errorClasses);
-                if (data.errors.message) {
+                if (data.errors && data.errors.message) {
                     $.payonePayment.showErrorMessage(data.errors.message);
                 }
                 form.unbind('submit');
@@ -45,7 +44,7 @@
                 $('#sepaMandateConfirmation').show();
 
             }).fail(function (data) {
-            if (data.errors.message) {
+            if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
             console.log(data);

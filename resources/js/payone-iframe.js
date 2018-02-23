@@ -54,7 +54,7 @@
             console.log('done');
             console.log(data);
         }).fail(function (data) {
-            if (data.errors.message) {
+            if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
             console.log(data);

@@ -473,6 +473,15 @@ abstract class DataProviderAbstract
             $account = pluginApp(BankAccount::class);
         }
 
-        return $account->jsonSerialize();
+        if (!($account instanceof BankAccount)) {
+            return [];
+        }
+
+        return [
+            'holder' => $account->getHolder(),
+            'country' => $account->getCountryCode(),
+            'bic' => $account->getBic(),
+            'iban' => $account->getIban(),
+        ];
     }
 }

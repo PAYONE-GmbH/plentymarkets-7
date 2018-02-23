@@ -249,8 +249,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param null $data
-     *
+     * @param array|null $data
      * @return string
      */
     private function getJsonSuccess($data = null): string
@@ -260,7 +259,6 @@ class CheckoutController extends Controller
 
     /**
      * @param $errors
-     *
      * @return string
      */
     private function getJsonErrors($errors): string

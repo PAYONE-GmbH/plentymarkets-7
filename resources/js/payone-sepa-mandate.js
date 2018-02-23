@@ -24,7 +24,6 @@
                 form.unbind('submit');
                 form.submit();
             }).fail(function (data, textStatus, jqXHR) {
-                $.payonePayment.showErrorMessage(jqXHR.responseText);
                 return false;
             });
 

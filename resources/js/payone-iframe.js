@@ -51,14 +51,12 @@
             dataType: 'json',
             async: true
         }).done(function (data) {
-            if (!data.success) {
-                if (data.errors.message) {
-                    console.log('done with errors');
-                    console.log(data.errors.message);
-                    $.payonePayment.showErrorMessage(data.errors.message);
-                }
-            }
             console.log('done');
+            console.log(data);
+        }).fail(function (data) {
+            if (data.errors.message) {
+                $.payonePayment.showErrorMessage(data.errors.message);
+            }
             console.log(data);
         });
     };
@@ -172,11 +170,9 @@ function checkCallback(response) {
             form.unbind('submit');
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
-            $.payonePayment.showErrorMessage(jqXHR.responseText);
             form.unbind('submit');
         });
     }).fail(function (data, textStatus, jqXHR) {
-        $.payonePayment.showErrorMessage(jqXHR.responseText);
         form.unbind('submit');
     });
 }

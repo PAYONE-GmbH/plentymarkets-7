@@ -17,24 +17,21 @@
             url: '/payone/checkout/storeAccountData',
             data: form.serialize(),
             dataType: 'json',
-            async: false
+            async: true
         })
             .done(function (data) {
                 var errorClasses = 'has-error error has-feedback';
                 form.find('input, select').parent().removeClass(errorClasses);
-                success = true;
-                if (!data.success) {
-                    $.payonePayment.showValidationErrors(form, data.errors, errorClasses);
-                    if (data.errors.message) {
-                        $.payonePayment.showErrorMessage(data.errors.message);
-                    }
-                    form.unbind('submit');
-                    console.log(data);
-                    success = false;
+            }).fail(function (data) {
+                $.payonePayment.showValidationErrors(form, data.errors, errorClasses);
+                if (data.errors.message) {
+                    $.payonePayment.showErrorMessage(data.errors.message);
                 }
-            });
+                form.unbind('submit');
+                console.log(data);
+            }
+        );
 
-        return success;
     };
 
     $.payoneDirectDebit.showSepaMandate = function () {
@@ -44,18 +41,15 @@
             url: '/payone/checkout/getSepaMandateStep'
         })
             .done(function (data) {
-                if (!data.success) {
-                    if (data.errors.message) {
-                        $.payonePayment.showErrorMessage(data.errors.message);
-                    }
-                    console.log(data);
-                }
                 $(data.data.html).insertAfter('#createSepamandate');
                 $('#sepaMandateConfirmation').show();
-            })
-            .fail(function (data) {
-                console.log(data);
-            });
+
+            }).fail(function (data) {
+            if (data.errors.message) {
+                $.payonePayment.showErrorMessage(data.errors.message);
+            }
+            console.log(data);
+        });
     };
 
     $.payoneDirectDebit.hideAccountForm = function () {

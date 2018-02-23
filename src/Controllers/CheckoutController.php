@@ -42,6 +42,10 @@ class CheckoutController extends Controller
      * @var Logger
      */
     private $logger;
+    /**
+     * @var Response
+     */
+    private $response;
 
     /**
      * CheckoutController constructor.
@@ -50,17 +54,20 @@ class CheckoutController extends Controller
      * @param CheckoutErrorRenderer $renderer
      * @param Request $request
      * @param Logger $logger
+     * @param Response $response
      */
     public function __construct(
         SessionHelper $sessionHelper,
         CheckoutErrorRenderer $renderer,
         Request $request,
-        Logger $logger
+        Logger $logger,
+        Response $response
     ) {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
         $this->request = $request;
         $this->logger = $logger;
+        $this->response = $response;
     }
 
     /**
@@ -225,14 +232,12 @@ class CheckoutController extends Controller
 
     /**
      * @param NotificationService $notificationService
-     * @param Response $response
-     *
-     * @return \Plenty\Plugin\Http\Response;
+     * @param ErrorMessageRenderer $messageRenderer
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function redirectWithNotice(
         NotificationService $notificationService,
-        ErrorMessageRenderer $messageRenderer,
-        Response $response
+        ErrorMessageRenderer $messageRenderer
     ) {
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('redirecting');
@@ -240,7 +245,7 @@ class CheckoutController extends Controller
         //info would be enought but is not shown in frontend
         $notificationService->error($messageRenderer->render('Payone::Template.orderErrorMessage'));
 
-        return $response->redirectTo('checkout');
+        return $this->response->redirectTo('checkout');
     }
 
     /**
@@ -250,7 +255,7 @@ class CheckoutController extends Controller
      */
     private function getJsonSuccess($data = null): string
     {
-        return json_encode(['success' => true, 'message' => null, 'data' => $data]);
+        return $this->response->json(['success' => true, 'message' => null, 'data' => $data]);
     }
 
     /**
@@ -264,6 +269,6 @@ class CheckoutController extends Controller
         $data['success'] = false;
         $data['errors'] = $errors;
 
-        return json_encode($data);
+        return $this->response->json($data, Response::HTTP_BAD_REQUEST);
     }
 }

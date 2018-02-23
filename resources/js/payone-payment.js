@@ -14,18 +14,15 @@
             dataType: 'json',
             async: true
         }).done(function (data) {
-            if (!data.success) {
-                if (data.errors.message) {
-                    console.log('done with errors');
-                    console.log(data.errors.message);
-                    $.payonePayment.showErrorMessage(data.errors.message);
-                }
-                success = false;
-            }
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
             }
             console.log('done');
+            console.log(data);
+        }).fail(function (data) {
+            if (data.errors.message) {
+                $.payonePayment.showErrorMessage(data.errors.message);
+            }
             console.log(data);
         });
     };

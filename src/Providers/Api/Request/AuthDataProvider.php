@@ -85,6 +85,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         }
 
         $requestParams['referenceId'] = $requestReference;
+        $requestParams['shippingProvider'] = $this->getShippingProvider($order->shippingProfileId);
 
         $this->validator->validate($requestParams);
 

@@ -5,6 +5,7 @@ namespace Payone\Providers\Api\Request;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentConfig\ApiCredentials;
@@ -469,19 +470,10 @@ abstract class DataProviderAbstract
         /** @var BankAccount $account */
         $account = $repo->loadBankAccount();
 
-        if (!$account) {
-            $account = pluginApp(BankAccount::class);
-        }
-
         if (!($account instanceof BankAccount)) {
             return [];
         }
 
-        return [
-            'holder' => $account->getHolder(),
-            'country' => $account->getCountryCode(),
-            'bic' => $account->getBic(),
-            'iban' => $account->getIban(),
-        ];
+        return $account->jsonSerialize();
     }
 }

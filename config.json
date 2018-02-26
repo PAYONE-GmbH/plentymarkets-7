@@ -397,7 +397,7 @@
     "tab": "Kreditkarte",
     "key": "PAYONE_PAYONE_CREDIT_CARD.minExpireTime",
     "default": "30",
-    "label": "Minmiale Kartengültigkeit in Tagen Bestellwert",
+    "label": "Minmiale Kartengültigkeit in Tagen",
     "type": "text"
   },
   {

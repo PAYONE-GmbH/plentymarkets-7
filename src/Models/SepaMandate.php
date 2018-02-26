@@ -140,7 +140,7 @@ class SepaMandate implements \JsonSerializable
             'creditorIdentifier' => $this->getCreditorIdentifier(),
             'iban' => $this->getIban(),
             'bic' => $this->getBic(),
-            'country' => $this->getCountry(),
+            'bankcountry' => $this->getCountry(),
         ];
     }
 }

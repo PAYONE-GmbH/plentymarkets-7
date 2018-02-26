@@ -139,7 +139,8 @@
 
         });
         $(document).on('click', 'button.payone-cancel', function () {
-            $('button.btn.btn-primary.btn-block').prop('disabled', false);
+            $('button.btn.btn-success.btn-block').prop('disabled', false);
+            $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
         });
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
 

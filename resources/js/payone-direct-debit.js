@@ -71,13 +71,18 @@
                 $.payoneDirectDebit.showSepaMandate(form);
 
             }).fail(function (data, textStatus, jqXHR) {
-                $.payonePayment.setCheckoutDisabled(false);
+
+                $('#sepaContinue').prop('disabled', false);
+
                 return false;
             });
+            return false;
         });
 
         $(document).on('click', 'button.payone-cancel', function () {
-            $('button.btn.btn-primary.btn-block').prop('disabled', false);
+            $('button.btn.btn-success.btn-block').prop('disabled', false);
+            $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
+
         });
     });
 }(window.jQuery, window, document));

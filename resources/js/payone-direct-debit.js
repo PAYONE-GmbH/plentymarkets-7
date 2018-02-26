@@ -10,9 +10,7 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountData = function (form) {
-        var success = false;
-
-        $.ajax({
+       return $.ajax({
             type: 'POST',
             url: '/payone/checkout/storeAccountData',
             data: form.serialize(),
@@ -34,7 +32,7 @@
     };
 
     $.payoneDirectDebit.showSepaMandate = function () {
-        $.ajax({
+       return $.ajax({
             type: 'GET',
             dataType: 'json',
             url: '/payone/checkout/getSepaMandateStep'

@@ -20,9 +20,11 @@
             console.log('done');
             console.log(data);
         }).fail(function (data) {
+            var data = data.responseJSON;
             if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
+            console.log(data);
             console.log(data);
         });
     };

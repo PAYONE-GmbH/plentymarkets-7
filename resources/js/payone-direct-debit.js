@@ -10,7 +10,7 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountData = function (form) {
-       return $.ajax({
+        return $.ajax({
             type: 'POST',
             url: '/payone/checkout/storeAccountData',
             data: form.serialize(),
@@ -21,17 +21,18 @@
                 var errorClasses = 'has-error error has-feedback';
                 form.find('input, select').parent().removeClass(errorClasses);
             }).fail(function (data) {
+                var data = data.responseJSON;
                 if (data.errors && data.errors.message) {
                     $.payonePayment.showErrorMessage(data.errors.message);
                 }
                 console.log(data);
-            }
-        );
+                }
+            );
 
     };
 
     $.payoneDirectDebit.showSepaMandate = function () {
-       return $.ajax({
+        return $.ajax({
             type: 'GET',
             dataType: 'json',
             url: '/payone/checkout/getSepaMandateStep'
@@ -41,11 +42,13 @@
                 $('#sepaMandateConfirmation').show();
 
             }).fail(function (data) {
-            if (data.errors && data.errors.message) {
-                $.payonePayment.showErrorMessage(data.errors.message);
-            }
-            console.log(data);
-        });
+                    var data = data.responseJSON;
+                    if (data.errors && data.errors.message) {
+                        $.payonePayment.showErrorMessage(data.errors.message);
+                    }
+                    console.log(data);
+                }
+            );
     };
 
     $.payoneDirectDebit.hideAccountForm = function () {

@@ -184,9 +184,18 @@ class CheckoutController extends Controller
                 $this->request->get('bic')
             )
         );
-        $mandate = $mandateService->createMandate($basket->load());
 
+        try {
+            $mandate = $mandateService->createMandate($basket->load());
+        } catch (\Exception $e) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->renderErrorMessage(
+                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+                ),
+            ]);
+        }
         $sepaMandate = $mandate->getMandate();
+
         $mandateCache->store($sepaMandate);
 
         return $this->getJsonSuccess($sepaMandate);

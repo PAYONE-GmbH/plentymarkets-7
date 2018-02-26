@@ -60,7 +60,7 @@ class SepaMandate
             throw $e;
         }
         if (!($response instanceof ResponseAbstract) || !$response->getSuccess()) {
-            throw new \Exception('Mandate could not be created. Request failed.');
+            throw new \Exception($response->getErrorMessage() ?? 'Mandate could not be created. Request failed.');
         }
 
         return $response;

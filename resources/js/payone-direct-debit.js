@@ -24,7 +24,6 @@
                 if (data.errors && data.errors.message) {
                     $.payonePayment.showErrorMessage(data.errors.message);
                 }
-                form.unbind('submit');
                 console.log(data);
             }
         );

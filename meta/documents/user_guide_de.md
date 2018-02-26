@@ -1,4 +1,4 @@
-![plentymarkets Logo](/Users/simon/workspace/plugin-payment-payone/meta/images/icon_plugin_md.png)
+![plentymarkets Logo](./icon_plugin_md.png)
 
 # Payone plugin für plentymarkets 7.x
 

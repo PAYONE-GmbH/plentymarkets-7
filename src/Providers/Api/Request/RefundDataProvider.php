@@ -39,7 +39,6 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
         $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
 
         $requestParams['order'] = $this->getOrderData($refund);
-        $requestParams['context']['transactionId'] = 'order-' . $order->id;
 
         $this->validator->validate($requestParams);
 

@@ -86,6 +86,7 @@ class PaymentRenderer
                 'defaultWidthInPx' => $this->style->getDefaultWidthInPx(),
                 'defaultHeightInPx' => $this->style->getDefaultHeightInPx(),
                 'defaultStyle' => $this->style->getDefaultStyle(),
+                'isDebugModeEnabled' => $this->shopHelper->isDebugModeActive(),
             ]
         );
     }

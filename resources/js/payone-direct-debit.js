@@ -73,9 +73,6 @@
                 $.payoneDirectDebit.showSepaMandate(form);
 
             }).fail(function (data, textStatus, jqXHR) {
-
-                $('#sepaContinue').prop('disabled', false);
-
                 return false;
             });
             return false;

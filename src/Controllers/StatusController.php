@@ -81,6 +81,6 @@ class StatusController extends Controller
 
         $this->paymentCreation->updatePaymentStatus($txid, $txaction, $sequenceNumber);
 
-        echo 'TSOK';
+        return 'TSOK';
     }
 }

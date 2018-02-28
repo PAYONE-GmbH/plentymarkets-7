@@ -87,8 +87,8 @@
                 cardcvc2: {
                     selector: "cardcvc2",
                     type: "password",
-                    size: "3",
-                    maxlength: "3",
+                    size: "4",
+                    maxlength: "4",
                     iframe: {
                         width: defaultWidthInPx + "px"
                     }

@@ -123,7 +123,7 @@
             },
             error: "errorOutput"
         };
-        config.fields.language = $.payoneIframe.getPayoneLocaleConfig(locale);
+        config.language = $.payoneIframe.getPayoneLocaleConfig(locale);
         config.autoCardtypeDetection.callback = function (detectedCardtype) {
             $.payoneIframe.iframe.setCardType(detectedCardtype);
         };

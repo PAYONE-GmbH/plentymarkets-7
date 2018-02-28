@@ -18,7 +18,7 @@ class PayonePaymentStatus
     /**
      * Status after this comment have to be activated by Payone or are not implemented yet
      */
-    const  REMINDER = 'reminder';
+    const REMINDER = 'reminder';
     const VAUTHORIZATION = 'vauthorization';
     const VSETTLEMENT = 'vsettlement';
     const INVOICE = 'invoice';

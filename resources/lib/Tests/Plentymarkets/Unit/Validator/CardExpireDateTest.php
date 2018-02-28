@@ -2,13 +2,16 @@
 
 namespace Payone\Tests\Unit\Validator;
 
-use Payone\Adapter\Logger;
-use Payone\Mocks\Config;
+use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\PaymentConfig\CreditCardExpiration;
 use Payone\Validator\CardExpireDate;
 
 class CardExpireDateTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var CreditCardExpiration
+     */
+    private $expireDateRepo;
     /**
      * @var CardExpireDate
      */
@@ -19,17 +22,10 @@ class CardExpireDateTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $logger = self::createMock(Logger::class);
-        $logger->expects($this->any())
-            ->method('setIdentifier')
-            ->will($this->returnSelf());
+        $this->expireDateRepo = self::createMock(CreditCardExpiration::class);
+        $this->expireDateRepo->method('getMinExpireTimeInDays')->willReturn(30);
         $this->validator = new CardExpireDate(
-            new CreditCardExpiration(
-                new \Payone\Adapter\Config(
-                    new Config(),
-                    $logger
-                )
-            )
+            $this->expireDateRepo
         );
     }
 
@@ -90,5 +86,21 @@ class CardExpireDateTest extends \PHPUnit_Framework_TestCase
     {
         self::expectException(\Exception::class);
         $this->validator->validate(\DateTime::createFromFormat('Y-m-d', '2000-01-30'));
+    }
+
+    public function testLastDayOfMonthAndZeroDays()
+    {
+        $response = new CreditCardCheckResponse();
+        $response->init('', '', '', '', '1802');
+        $this->expireDateRepo = $this->expireDateRepo = self::createMock(CreditCardExpiration::class);
+        $this->expireDateRepo->method('getMinExpireTimeInDays')->willReturn(0);
+        $this->validator = new CardExpireDate(
+            $this->expireDateRepo
+        );
+        self::assertTrue($this->validator->validate(
+            \DateTime::createFromFormat('Y-m-d', $response->getCardexpiredate()),
+            \DateTime::createFromFormat('Y-m-d', '2018-02-28')
+
+        ));
     }
 }

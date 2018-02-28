@@ -74,7 +74,7 @@ class CreditCardCheckResponse implements \JsonSerializable
      * @param string $pseudocardpan
      * @param string $truncatedcardpan
      * @param string $cardtype
-     * @param string $cardexpiredate 4 digit Payone date
+     * @param string $cardexpiredate 4 digit Payone date e.g. 1802 for 28-02-2018
      */
     public function init(
         $status,

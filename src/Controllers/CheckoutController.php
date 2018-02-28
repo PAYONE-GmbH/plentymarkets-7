@@ -90,7 +90,7 @@ class CheckoutController extends Controller
         try {
             $auth = $paymentService->openTransaction($basket->load());
         } catch (\Exception $e) {
-            return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
+            return $this->getJsonErrors(['message' => $e->getMessage()]);
         }
 
         return $this->getJsonSuccess($auth);
@@ -127,7 +127,7 @@ class CheckoutController extends Controller
             $validator->validate(\DateTime::createFromFormat('Y-m-d', $response->getCardexpiredate()));
             $repository->storeLastResponse($response);
         } catch (\Exception $e) {
-            return $this->getJsonErrors(['message' => $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()]);
+            return $this->getJsonErrors(['message' => $e->getMessage()]);
         }
 
         return $this->getJsonSuccess($response);
@@ -190,7 +190,7 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             return $this->getJsonErrors([
                 'message' => $this->renderer->renderErrorMessage(
-                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+                    $e->getMessage()
                 ),
             ]);
         }
@@ -227,7 +227,7 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             return $this->getJsonErrors([
                 'message' => $this->renderer->renderErrorMessage(
-                    $e->getCode() . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString()
+                    $e->getMessage()
                 ),
             ]);
         }

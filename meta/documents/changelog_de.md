@@ -1,6 +1,10 @@
-# Changelog
+# Changelog Plentymarkets Payone Plugin
 
-## Plentymarkets Payone Plugin 1.0.0
+## v1.0.1 (2018-03-01)
+
+* update plugin documentation
+
+## v1.0.1 (2018-03-01)
 
 Plentymarkets Payone Plugin erstes Release. Folgende Zahlarten werden aktuell unterstützt:
 

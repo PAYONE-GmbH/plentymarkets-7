@@ -15,21 +15,14 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
      */
     public function map(Router $router)
     {
-        $router->get('payone/printConfig/', 'Payone\Controllers\ConfigController@printConfig');
-        $router->get('payone/migrate/', 'Payone\Controllers\ConfigController@migrate');
-        $router->get('payone/printAllPaymentMethods/', 'Payone\Controllers\ConfigController@printAllPaymentMethods');
-        $router->get('payone/testRequestData/', 'Payone\Controllers\ConfigController@testRequestData');
-        $router->get('payone/doPreCheck', 'Payone\Controllers\ConfigController@doPreCheck');
-        $router->get('payone/printShippingProfiles', 'Payone\Controllers\ConfigController@printShippingProfiles');
-        $router->get('payone/printItemShippingProfiles', 'Payone\Controllers\ConfigController@printItemShippingProfiles');
-        $router->get('payone/printParcelServicePreset', 'Payone\Controllers\ConfigController@printParcelServicePreset');
 
-        $router->post('payone/status/', 'Payone\Controllers\StatusController@index');
 
-        $router->post('payone/checkout/doAuth', 'Payone\Controllers\CheckoutController@doAuth');
-        $router->post('payone/checkout/storeCCCheckResponse', 'Payone\Controllers\CheckoutController@storeCCCheckResponse');
-        $router->post('payone/checkout/storeAccountData', 'Payone\Controllers\CheckoutController@storeAccountData');
-        $router->get('payone/error', 'Payone\Controllers\CheckoutController@redirectWithNotice');
-        $router->get('payone/checkout/getSepaMandateStep', 'Payone\Controllers\CheckoutController@getSepaMandateStep');
+        $router->post('payment/payone/status/', 'Payone\Controllers\StatusController@index');
+
+        $router->post('payment/payone/checkout/doAuth', 'Payone\Controllers\CheckoutController@doAuth');
+        $router->post('payment/payone/checkout/storeCCCheckResponse', 'Payone\Controllers\CheckoutController@storeCCCheckResponse');
+        $router->post('payment/payone/checkout/storeAccountData', 'Payone\Controllers\CheckoutController@storeAccountData');
+        $router->get('payment/payone/error', 'Payone\Controllers\CheckoutController@redirectWithNotice');
+        $router->get('payment/payone/checkout/getSepaMandateStep', 'Payone\Controllers\CheckoutController@getSepaMandateStep');
     }
 }

@@ -46,7 +46,7 @@
 
         return $.ajax({
             type: 'POST',
-            url: '/payone/checkout/storeCCCheckResponse',
+            url: '/payment/payone/checkout/storeCCCheckResponse',
             data: response,
             dataType: 'json',
             async: true

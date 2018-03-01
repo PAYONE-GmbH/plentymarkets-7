@@ -6,21 +6,17 @@
 
 Detaillierte Informationen zur Plugin-Provisionierung finden sich unter [plentymarkets developers](https://developers.plentymarkets.com/dev-doc/basics#plugin-provisioning).
 
-Bitte beachteen Sie, dass unter "Client" die Mandanten ausgewählt sind. Unter "Actions" sollte die Prioorität der Plugins gesetzt werden. Dies ist unter anderem wichtig, damit die durch das Plugin definierten Frontend URLs erreichbar sind. Es empfiehlt sich, die Priotität des IO-Plugins auf 999 zu setzen.
+Bei der Installation des Plugins beachtee Sie bitte, dass unter "Client" die gewünschten Mandanten ausgewählt sind. Unter "Actions" sollte die Prioorität der Plugins gesetzt werden. Dies ist unter anderem wichtig, damit die durch das Plugin definierten Frontend URLs erreichbar sind. Es empfiehlt sich, die Priotität des IO-Plugins auf einen hohen Wert, z.B.  999, zu setzen.
 
 ## Konfiguration
 
 Im Folgenden wird beschrieben, wo Sie die Konfiguration der Zahlarten finden und diese anpassen können.
 
-* Um die Plugin-Konfiguration einsehen zu können, muss der Login bereits mit "Terra"-Theme erfolgen: 
+* Melden Sie sich im Plentymarkets-Backend an
 
-![Login](./login.png)
+* Navigieren Sie im Menü zu "Plugins"
 
-* Navigieren Sie zum Plugin Menü:
-
-![Selecting plugin menu](./selecting_plugin_section.png)
-
-* Wählen Sie das Payone-Plugin durch Doppelklick:
+* Wählen Sie das Payone-Plugin durch Doppelklick aus:
 
 ![Plugin list](./plugin_list.png)
 

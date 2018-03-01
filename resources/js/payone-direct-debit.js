@@ -12,7 +12,7 @@
     $.payoneDirectDebit.storeAccountData = function (form) {
         return $.ajax({
             type: 'POST',
-            url: '/payone/checkout/storeAccountData',
+            url: '/payment/payone/checkout/storeAccountData',
             data: form.serialize(),
             dataType: 'json',
             async: true
@@ -35,7 +35,7 @@
         return $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: '/payone/checkout/getSepaMandateStep'
+            url: '/payment/payone/checkout/getSepaMandateStep'
         })
             .done(function (data) {
                 $(data.data.html).insertAfter('#createSepamandate');

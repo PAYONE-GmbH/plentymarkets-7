@@ -441,7 +441,7 @@ abstract class DataProviderAbstract
     {
         return [
             'success' => $this->shopHelper->getPlentyDomain() . '/place-order',
-            'error' => $this->shopHelper->getPlentyDomain() . '/payone/error',
+            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
             'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
         ];
     }

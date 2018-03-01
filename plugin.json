@@ -26,8 +26,7 @@
     "arvatis/payone-php-api":"1.0.0-beta"
   },
   "runOnBuild": [
-    "Payone\\Migrations\\CreatePaymentMethods",
-    "Payone\\Migrations\\CreateSettingsTable"
+    "Payone\\Migrations\\CreatePaymentMethods"
   ],
   "dataProviders": [
   {"key":"Payone\\Providers\\DataProviders\\ConfirmationAdditinalPaymentData",

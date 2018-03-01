@@ -9,7 +9,7 @@
     $.payonePayment.doAuth = function () {
         return $.ajax({
             type: 'POST',
-            url: '/payone/checkout/doAuth',
+            url: '/payment/payone/checkout/doAuth',
             data: '',
             dataType: 'json',
             async: true

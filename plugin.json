@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "1.0.0",
   "license":"MIT",
   "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
@@ -7,7 +7,7 @@
   "name": "Payone",
   "marketplaceName" : {"de":"Payone","en":"Payone"},
   "shortDescription": {
-    "de": "Das offizielle Payone plugin für plentymarkets",
+    "de": "Das offizielle Payone plugin für Plentymarkets 7. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
     "en": "The official Payone plugin for plentymarkets"
   },
   "description": "The official Payone plugin for plentymarkets",
@@ -23,7 +23,7 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "arvatis/payone-php-api":"dev-master"
+    "arvatis/payone-php-api":"1.0.0-beta"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",

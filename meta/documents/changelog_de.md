@@ -8,5 +8,5 @@ Plentymarkets Payone Plugin erstes Release. Folgende Zahlarten werden aktuell un
 * Vorkasse
 * Nachnahme
 * Lastschrift
-* Kredikarte
-* Krediktarte 3DS
+* Kreditkarte
+* Kreditkarte 3DS

@@ -32,10 +32,6 @@ reference for the field names).
 
 Run ```phpunit```
 
-## API Documentation
-
-See the documents in the [documents](./documents/) folder.
-
 ## Changelog
 
 See the [changelog](./meta/documents/changelog_de.md).

@@ -2,6 +2,11 @@
 
 # Payone plugin für plentymarkets 7.x
 
+<div class="alert alert-warning" role="alert">
+   <strong><i>Bitte beachten:</strong></i> Das Plugin wurde für das Ceres Template entwickelt. Die Plugins und Ceres 
+   müssen daher zwingend instaliert und aktiv sein.
+</div>
+
 ## Installation
 
 Detaillierte Informationen zur Plugin-Provisionierung finden sich unter [plentymarkets developers](https://developers.plentymarkets.com/dev-doc/basics#plugin-provisioning).

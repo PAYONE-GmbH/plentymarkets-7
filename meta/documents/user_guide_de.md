@@ -90,7 +90,13 @@ die vollständige Bestellung erstattet werden.
 #Clearing-Daten auf der Bestellbestätigungsseite anzeigen
 
 Damit zusätzliche Zahlungsdaten, wie z.B. die Payone Kontodaten bei Zahlart Rechnung, auf der Bestellbestätigungsseite 
-angezeigt werden können, müss der Payone Template Container "Payone Order Confirmation Page Payment Data" mit einem 
+angezeigt werden können, muss der Payone Template Container "Payone Order Confirmation Page Payment Data" mit einem 
  Container des Checkouts verknüpft werden. Am besten eignet sich dazu der Container 
  "Order confirmation: Additional payment information". Sie finden die Template Container unter "Plugins ›› Content" im 
  Admin-Bereich.
+ 
+ #Zahlarten in Checkout integrieren
+ 
+ Damit die Payone Zahlarten korrekt funktionieren, muss der Template Container "Payone Checkout JS" geladen werden. 
+  Sie finden die Template Container unter "Plugins ›› Content" im  Admin-Bereich. Der Container muss für das Event 
+  "Script loader: After scripts loaded" registriert werden.

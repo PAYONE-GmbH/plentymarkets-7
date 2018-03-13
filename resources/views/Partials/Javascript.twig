@@ -1,9 +1,3 @@
-<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
-<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
-<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
-<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
-<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-sepa-mandate.js"></script>
-
 <script type="text/javascript">
     //All Payments
     alert('here');
@@ -33,7 +27,7 @@
 
     var request = {{ creditcardcheck|json_encode|raw }};
 
-   //Credit Card
+    //Credit Card
     var allowedCCTypes = {{ allowedCCTypes|json_encode|raw }};
     var defaultWidthInPx = {{ defaultWidthInPx }};
     var defaultHeightInPx = {{ defaultHeightInPx }};
@@ -42,3 +36,9 @@
     var requestUrl = "{{ request.getRequestUri() }}";
     var payment = "{{ payment }}";
 </script>
+
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-sepa-mandate.js"></script>

@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
+<script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-sepa-mandate.js"></script>
+
+<script type="text/javascript">
+    //All Payments
+    alert('here');
+    var Templates = {};
+    Templates.locale = '{{ locale }}';
+    Templates.errorMessage =
+        '<div id="checkoutError" class="row is-table-row error">' +
+        '     <div class="col-sm-12">' +
+        '        <p>' +
+        '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
+        '        </p>' +
+        '        <p>' +
+        '                <span class="text-muted">' +
+        '                       {% if isDebugModeEnabled %}' +
+        '                           {errorMessage}' +
+        '                       {% else %}' +
+        '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
+        '                       {% endif %}' +
+        '                </span>' +
+        '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
+        '                <i class="fa fa-arrow-right"' +
+        '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
+        '        </button></a>' +
+        '        </p>' +
+        '    </div>' +
+        '</div>';
+
+    var request = {{ creditcardcheck|json_encode|raw }};
+
+   //Credit Card
+    var allowedCCTypes = {{ allowedCCTypes|json_encode|raw }};
+    var defaultWidthInPx = {{ defaultWidthInPx }};
+    var defaultHeightInPx = {{ defaultHeightInPx }};
+    var defaultStyle = "{{ defaultStyle }}";
+    var request = {{ creditcardcheck|json_encode|raw }};
+    var requestUrl = {{ request.getRequestUri() }};
+    var payment = {{ payment }};
+</script>

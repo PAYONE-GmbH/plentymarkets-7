@@ -39,6 +39,6 @@
     var defaultHeightInPx = {{ defaultHeightInPx }};
     var defaultStyle = "{{ defaultStyle }}";
     var request = {{ creditcardcheck|json_encode|raw }};
-    var requestUrl = {{ request.getRequestUri() }};
-    var payment = {{ payment }};
+    var requestUrl = "{{ request.getRequestUri() }}";
+    var payment = "{{ payment }}";
 </script>

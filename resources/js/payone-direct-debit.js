@@ -55,13 +55,13 @@
         $('#createSepamandate').hide();
     };
 
-    function cancelPayone() {
+    window.cancelPayone = function() {
         console.log('test1');
         $('button.btn.btn-success.btn-block').prop('disabled', false);
         $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
     }
 
-    function sepaForm(event) {
+    window.sepaForm = function(event) {
         console.log('test');
         console.log('submit button clicked');
         event.preventDefault();

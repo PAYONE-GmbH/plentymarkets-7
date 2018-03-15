@@ -31,6 +31,7 @@
     };
 
     $.payoneIframe.createIframe = function (locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle) {
+        console.log(locale);
 
         var n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
@@ -132,12 +133,7 @@
     };
 
     $(function () {
-        $(document).on('click', 'button.payone-cancel', function () {
-            $('button.btn.btn-success.btn-block').prop('disabled', false);
-            $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
-        });
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
-
     });
     window.orderPlaceForm = function(event) {
         event.preventDefault();

@@ -6,7 +6,7 @@
         <div class="method-option form-check-label">
             <h3>{{ paymentMethod.name }}:</h3>
             <div class="method-icon">
-                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon">
+                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon" onload="createIframeStart()">
             </div>
             <div class="description">{{ paymentMethod.description }}</div>
         </div>
@@ -68,8 +68,7 @@
             <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
                     @click="clearFields"
                     aria-label="{{ trans('Payone::Template.orderCancel') }}"
-                    onclick="cancelPayone()"
-                    onload="createIframeStart()">
+                    onclick="cancelPayone()">
                 <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
             </button>
             {% if errorMessage is empty %}

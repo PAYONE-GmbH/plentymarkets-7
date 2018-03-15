@@ -55,34 +55,31 @@
         $('#createSepamandate').hide();
     };
 
-    $(function () {
-        $('.modal').on('shown.bs.modal', function () {
-            console.log('modal da');
-            $('#createSepamandateForm').on("submit", function (event) {
-                console.log('submit button clicked');
-                event.preventDefault();
+    function cancelPayone() {
+        console.log('test1');
+        $('button.btn.btn-success.btn-block').prop('disabled', false);
+        $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
+    }
 
-                $('#sepaContinue').prop('disabled', true);
+    function sepaForm(event) {
+        console.log('test');
+        console.log('submit button clicked');
+        event.preventDefault();
 
-                var form = $('#createSepamandateForm');
-                console.log('storing account data');
+        $('#sepaContinue').prop('disabled', true);
 
-                $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
-                    console.log('submitting orderPlaceForm');
+        var form = $('#createSepamandateForm');
+        console.log('storing account data');
 
-                    $.payoneDirectDebit.hideAccountForm();
-                    $.payoneDirectDebit.showSepaMandate(form);
+        $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
+            console.log('submitting orderPlaceForm');
 
-                }).fail(function (data, textStatus, jqXHR) {
-                    return false;
-                });
-                return false;
-            });
+            $.payoneDirectDebit.hideAccountForm();
+            $.payoneDirectDebit.showSepaMandate(form);
 
-            $(document).on('click', 'button.payone-cancel', function () {
-                $('button.btn.btn-success.btn-block').prop('disabled', false);
-                $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
-            });
+        }).fail(function (data, textStatus, jqXHR) {
+            return false;
         });
-    });
+        return false;
+    }
 }(window.jQuery, window, document));

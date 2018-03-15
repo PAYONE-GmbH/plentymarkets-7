@@ -132,10 +132,11 @@
         return config;
     };
 
-    $(function () {
+    window.createIframeStart = function() {
+        console.log('test');
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
-        console.log('createiframe');
-    });
+    };
+
     window.orderPlaceForm = function(event) {
         event.preventDefault();
 

@@ -56,32 +56,33 @@
     };
 
     $(function () {
+        $('.modal').on('shown.bs.modal', function () {
+            console.log('modal da');
+            $('#createSepamandateForm').on("submit", function (event) {
+                console.log('submit button clicked');
+                event.preventDefault();
 
-        $('#createSepamandateForm').on("submit", function (event) {
-            console.log('submit button clicked');
-            event.preventDefault();
+                $('#sepaContinue').prop('disabled', true);
 
-            $('#sepaContinue').prop('disabled', true);
+                var form = $('#createSepamandateForm');
+                console.log('storing account data');
 
-            var form = $('#createSepamandateForm');
-            console.log('storing account data');
+                $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
+                    console.log('submitting orderPlaceForm');
 
-            $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
-                console.log('submitting orderPlaceForm');
+                    $.payoneDirectDebit.hideAccountForm();
+                    $.payoneDirectDebit.showSepaMandate(form);
 
-                $.payoneDirectDebit.hideAccountForm();
-                $.payoneDirectDebit.showSepaMandate(form);
-
-            }).fail(function (data, textStatus, jqXHR) {
+                }).fail(function (data, textStatus, jqXHR) {
+                    return false;
+                });
                 return false;
             });
-            return false;
-        });
 
-        $(document).on('click', 'button.payone-cancel', function () {
-            $('button.btn.btn-success.btn-block').prop('disabled', false);
-            $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
-
+            $(document).on('click', 'button.payone-cancel', function () {
+                $('button.btn.btn-success.btn-block').prop('disabled', false);
+                $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
+            });
         });
     });
 }(window.jQuery, window, document));

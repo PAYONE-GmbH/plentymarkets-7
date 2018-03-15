@@ -31,7 +31,6 @@
     };
 
     $.payoneIframe.createIframe = function (locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle) {
-        console.log(locale);
 
         var n = document.createElement("script");
         n.setAttribute("type", "text/javascript");
@@ -133,7 +132,6 @@
     };
 
     window.createIframeStart = function() {
-        console.log('test');
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
     };
 

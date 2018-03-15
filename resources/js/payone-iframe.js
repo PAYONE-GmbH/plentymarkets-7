@@ -134,6 +134,7 @@
 
     $(function () {
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
+        console.log('createiframe');
     });
     window.orderPlaceForm = function(event) {
         event.preventDefault();

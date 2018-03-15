@@ -1,5 +1,4 @@
 {# @var creditcardcheck \Payone\Models\CreditCardCheckRequestData #}
-<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">
 {{ errorMessage|raw }}
 
 <div id="payonePaymentModal" class="method-presentation">
@@ -13,7 +12,7 @@
         </div>
     </div>
 
-    <form id="orderPlaceForm" name="paymentform" action="place-order">
+    <form id="orderPlaceForm" name="paymentform" action="place-order" onsubmit="orderPlaceForm(event)">
         <fieldset>
             <div class="form-group row">
                 <label for="cardpan"
@@ -68,7 +67,8 @@
 
             <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
                     @click="clearFields"
-                    aria-label="{{ trans('Payone::Template.orderCancel') }}">
+                    aria-label="{{ trans('Payone::Template.orderCancel') }}"
+                    onclick="cancelPayone()">
                 <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
             </button>
             {% if errorMessage is empty %}
@@ -79,38 +79,4 @@
             {% endif %}
         </fieldset>
     </form>
-    <script type="text/javascript">
-        var allowedCCTypes = {{ ccTypes|json_encode|raw }};
-        var defaultWidthInPx = {{ defaultWidthInPx }};
-        var defaultHeightInPx = {{ defaultHeightInPx }};
-        var defaultStyle = "{{ defaultStyle }}";
-
-        var Templates = {};
-        Templates.locale = '{{ locale }}';
-        Templates.errorMessage =
-            '<div id="checkoutError" class="row is-table-row error">' +
-            '     <div class="col-sm-12">' +
-            '        <p>' +
-            '            <h4>{{ trans("Payone::Template.orderErrorTitle") }}</h4>' +
-            '        </p>' +
-            '        <p>' +
-            '                <span class="text-muted">' +
-            '                       {% if isDebugModeEnabled %}' +
-            '                           {errorMessage}' +
-            '                       {% else %}' +
-            '                           {{ trans("Payone::Template.orderErrorMessage") }}' +
-            '                       {% endif %}' +
-            '                </span>' +
-            '        <a href="checkout"> <button class="btn btn-primary btn-block Payone-cancel">' +
-            '                <i class="fa fa-arrow-right"' +
-            '                  aria-hidden="true"></i> {{ trans("Payone::Template.orderCancel") }}' +
-            '        </button></a>' +
-            '        </p>' +
-            '    </div>' +
-            '</div>';
-
-        var request = {{ creditcardcheck|json_encode|raw }};
-    </script>
-    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js" defer></script>
-    <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-iframe.js" defer></script>
 </div>

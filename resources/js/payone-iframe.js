@@ -132,13 +132,6 @@
     };
 
     $(function () {
-        $('#orderPlaceForm').on("submit", function (event) {
-            event.preventDefault();
-
-            $.payonePayment.setCheckoutDisabled(true);
-            $.payoneIframe.check();
-
-        });
         $(document).on('click', 'button.payone-cancel', function () {
             $('button.btn.btn-success.btn-block').prop('disabled', false);
             $('button.btn.btn-success.btn-block i').addClass('fa-arrow-right').removeClass('fa-circle-o-notch fa-spin');
@@ -146,6 +139,12 @@
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
 
     });
+    window.orderPlaceForm = function(event) {
+        event.preventDefault();
+
+        $.payonePayment.setCheckoutDisabled(true);
+        $.payoneIframe.check();
+    }
 }(window.jQuery, window, document));
 var submitted = false;
 

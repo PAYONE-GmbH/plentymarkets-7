@@ -1,14 +1,14 @@
 (function ($) {
     $(function () {
-        $('#sepaMandateConfirmation input[type="checkbox"]').change(function (event) {
+        var submitted = false;
+
+        window.setCheckout = function(event) {
             event.stopPropagation();
             var isDisabled = ($('#sepaMandateConfirmation input[type="checkbox"]').length !== $('#sepaMandateConfirmation input[type="checkbox"]:checked').length);
             $.payonePayment.setCheckoutDisabled(isDisabled);
-        });
+        }
 
-
-        var submitted = false;
-        $('#orderPlaceForm').on("submit", function (event) {
+        window.sepaOrder = function(event) {
             console.log('submitting orderPlaceForm for sepa');
             event.preventDefault();
 
@@ -26,8 +26,6 @@
             }).fail(function (data, textStatus, jqXHR) {
                 return false;
             });
-
-        });
-
+        }
     });
 }(window.jQuery, window, document));

@@ -17,10 +17,11 @@
                    type="checkbox"
                    name="terms"
                    value="1"
+                   onchange="setCheckout(event)"
                    required>{{ trans("Payone::Template.sepaMandateConsent") }}</label>
     </div>
     <div class="">
-        <form id="orderPlaceForm" action="place-order">
+        <form id="orderPlaceForm" action="place-order" onsubmit="sepaOrder(event)">
             <button id="orderPlace" class="btn btn-primary btn-block" disabled="disabled">
                 <i class="fa fa-arrow-right"
                    aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}

@@ -166,9 +166,9 @@ function checkCallback(response) {
             form.removeAttr('onsubmit');
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
-            form.unbind('submit');
+            form.removeAttr('onsubmit');
         });
     }).fail(function (data, textStatus, jqXHR) {
-        form.unbind('submit');
+        form.removeAttr('onsubmit');
     });
 }

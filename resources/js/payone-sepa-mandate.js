@@ -8,7 +8,7 @@
             $.payonePayment.setCheckoutDisabled(isDisabled);
         }
 
-        window.sepaOrder = function(event) {
+        window.sepaOrder = function(event, form) {
             console.log('submitting orderPlaceForm for sepa');
             event.preventDefault();
 
@@ -16,7 +16,7 @@
             termsCheckboxes.prop('disabled', true);
             $.payonePayment.setCheckoutDisabled(true);
 
-            var form = $(this);
+            var form = $(form);
             $.when($.payonePayment.doAuth(form)).done(function () {
 
                 submitted = true;

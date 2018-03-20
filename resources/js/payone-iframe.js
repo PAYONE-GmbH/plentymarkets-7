@@ -163,8 +163,7 @@ function checkCallback(response) {
                 return false;
             }
             submitted = true;
-            console.log(form);
-            form.unbind('submit');
+            form.removeAttr('onsubmit');
             form.submit();
         }).fail(function (data, textStatus, jqXHR) {
             form.unbind('submit');

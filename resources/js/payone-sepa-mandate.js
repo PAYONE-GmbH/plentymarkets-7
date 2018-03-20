@@ -20,8 +20,7 @@
             $.when($.payonePayment.doAuth(form)).done(function () {
 
                 submitted = true;
-                console.log(form);
-                form.unbind('submit');
+                form.removeAttr('onsubmit');
                 form.submit();
             }).fail(function (data, textStatus, jqXHR) {
                 return false;

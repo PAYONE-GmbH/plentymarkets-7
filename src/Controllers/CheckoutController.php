@@ -4,6 +4,7 @@ namespace Payone\Controllers;
 
 use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
+use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\SessionHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Models\BankAccount;
@@ -237,6 +238,24 @@ class CheckoutController extends Controller
                 'html' => $html,
             ]
         );
+    }
+
+    /**
+     * @param BasketRepositoryContract $basketReopo
+     * @param PaymentHelper $helper
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper)
+    {
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->debug('Controller.Success', $this->request->all());
+        $basket = $basketReopo->load();
+        if (!$helper->isPayonePayment($basket->methodOfPaymentId)) {
+            return $this->response->redirectTo('payone/error');
+        }
+
+        return $this->response->redirectTo('place-order');
     }
 
     /**

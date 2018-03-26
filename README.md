@@ -13,7 +13,7 @@ A github account es required to be able to install the plugin. In your plentymar
 
 A popup will prompt you to enter your github credentials:
 
-![plentymarkets Logo](./meta/images/git_credentials.png)
+![credential form](./meta/images/git_credentials.png)
  
 It is recommended to use an account which has only been created 
 for the plugin installation. After adding the plugin it will show up in the pugin overview. The provisioning process is 
@@ -34,4 +34,4 @@ Run ```phpunit```
 
 ## Changelog
 
-See the [changelog](./meta/documents/changelog_de.md).
+See the [changelog](./CHANGELOG.md).

@@ -1,0 +1,1 @@
+The changelog will be maintained at [github](https://github.com/PAYONE-GmbH/plentymarkets-7/blob/master/CHANGELOG.md).

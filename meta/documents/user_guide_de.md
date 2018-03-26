@@ -3,15 +3,19 @@
 # Payone plugin für plentymarkets 7.x
 
 <div class="alert alert-warning" role="alert">
-   <strong><i>Bitte beachten:</strong></i> Das Plugin wurde für das Ceres Template entwickelt. Die Plugins und Ceres 
+   <strong><i>Bitte beachten:</strong></i> Das Plugin wurde für das Ceres Template entwickelt. Die Plugins IO und Ceres 
    müssen daher zwingend instaliert und aktiv sein.
 </div>
 
 ## Installation
 
-Detaillierte Informationen zur Plugin-Provisionierung finden sich unter [plentymarkets developers](https://developers.plentymarkets.com/dev-doc/basics#plugin-provisioning).
+Detaillierte Informationen zur Plugin-Provisionierung finden sich unter 
+[plentymarkets developers](https://developers.plentymarkets.com/dev-doc/basics#plugin-provisioning).
 
-Bei der Installation des Plugins beachtee Sie bitte, dass unter "Client" die gewünschten Mandanten ausgewählt sind. Unter "Actions" sollte die Prioorität der Plugins gesetzt werden. Dies ist unter anderem wichtig, damit die durch das Plugin definierten Frontend URLs erreichbar sind. Es empfiehlt sich, die Priotität des IO-Plugins auf einen hohen Wert, z.B.  999, zu setzen.
+Bei der Installation des Plugins beachten Sie bitte, dass unter "Client" die gewünschten Mandanten ausgewählt sind. 
+Unter "Actions" sollte die Prioorität der Plugins gesetzt werden. Dies ist unter anderem wichtig, damit die durch das 
+Plugin definierten Frontend URLs erreichbar sind. Es empfiehlt sich, die Priotität des IO-Plugins auf einen hohen Wert, 
+z.B.  999, zu setzen.
 
 ## Konfiguration
 
@@ -33,7 +37,9 @@ Im Folgenden wird beschrieben, wo Sie die Konfiguration der Zahlarten finden und
 
 ## Ereignisaktionen einrichten
 
-Ereignisaktionen müssen eingerichtet werden. Nur über sie kann das erfassen und die Gutschrift von Bestellungen erfolgen. Ereignisaktionen stellen eine flexible Möglichkeit dar, notwendige Request an die Payone Schnittstelle in Ihren Bestellablauf zu integrieren.
+Ereignisaktionen müssen eingerichtet werden. Nur über sie kann das erfassen und die Gutschrift von Bestellungen 
+erfolgen. Ereignisaktionen stellen eine flexible Möglichkeit dar, notwendige Request an die Payone Schnittstelle in 
+Ihren Bestellablauf zu integrieren.
 
 ###Ereignisaktion für die Buchung des Warenausgangs erstellen:
 
@@ -47,7 +53,8 @@ Ereignisaktionen müssen eingerichtet werden. Nur über sie kann das erfassen un
 7. Fügen Sie mit dem grünen Plus einen Filter des Filtertyps "Auftrag ›› Auftragstyp" hinzu.
 8. Markieren Sie im Filter den Auftragstyp "Auftrag".
 9. Fügen Sie mit dem grünen Plus eine Aktion des Aktionstyps "Plugin ›› Payone | Bestellung erfassen" hinzu.
-10. Wählen Sie bei der Aktion den neuen Status, z.B. 7.1 (der Status, den Sie nutzen wenn die Bestellung verschickt wurde).
+10. Wählen Sie bei der Aktion den neuen Status, z.B. 7.1 (der Status, den Sie nutzen wenn die Bestellung verschickt 
+wurde).
 11. Setzen Sie ein Häkchen bei Aktiv.
 12. Klicken Sie auf Speichern, um die Einstellungen zu sichern.
 

@@ -1,4 +1,4 @@
-#  BS Payone plugin for plentymkarkets 7
+#  BS Payone plugin for plentymarkets 7
 
 ## Plugin description and requirements
 

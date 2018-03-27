@@ -26,7 +26,6 @@ class BankAccountCache
     }
 
     /**
-     * @param string $BankAccountCode
      * @param BankAccount $bankAccount
      */
     public function storeBankAccount(BankAccount $bankAccount)

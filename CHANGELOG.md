@@ -3,6 +3,10 @@
 ## Unreleased
 
 
+## v1.0.4 (2018-03-27)
+
+* update documentation
+
 ## v1.0.3 (2018-03-26)
 
 * add english documentation

@@ -1,40 +1,29 @@
-![plentymarkets Logo](./icon_plugin_md.png)
+# BS PAYONE Payment für plentymarkets 7
 
-# Payone plugin for plentymarkets 7
+Payment with BS PAYONE convinces
 
-<div class="alert alert-warning" role="alert">
-   <strong><i>Requirements:</strong></i> The plugin has been developed for the Ceres template. The plugins IO and Ceres 
-are required and have to be active.
-</div>
+One solution, one partner, one contract: simple & efficient. Technical handling and financial services from a single 
+source.
 
-## Configuration
+* International payment processing: access to international and local payment methods on demand.
 
-Set up the payone account and configure the payments method in the plentymarkets backend:
+* Integrated risk management: minimizing defaults and fraud. For more profitability.
 
-* Navigate to "Plugins"
+* Automatic Debtor Management: Effectively relieving the bookkeeping through transaction assignment and account reconciliation.
 
-* Double click on the payone pluging:
+* Multi-payment refunds: Fast returns management. With automated refunds.
 
-![Plugin list](./plugin_list.png)
+* Best references, many years of experience: proven experts. Personal customer service. For every e-commerce project.
 
-* Enter settings in each configuration tab:
+## Currently supported payment methods
 
-![config](./config.png)
+* invoice
+* pre payment
+* cash on delivery
+* debit payment
+* credit card
+* credit card 3DS
 
-* Save changes
+## Installatiion guide
 
-## Ereignisaktionen einrichten
-
-To fully integrate the plugin event actions have to be set up for capture, refund and returns. The event actions 
-"Payone | Capture order" and "Payone | Refund order" have to be set up according to your workflow.
-
-#Show clearing data on order success page
-
-To add a text to the order success page on how to fullfill the paymen set up the payone payment containers.
-The "Payone Order Confirmation Page Payment Data" container needs to be added to the 
- "Order confirmation: Additional payment information" block.
- 
- #Zahlarten in Checkout integrieren
- 
-To fully integrate the plugin the template container "Payone Checkout JS" has to be added to 
-"Script loader: After scripts loaded".
+[Information for installation and setup](https://github.com/PAYONE-GmbH/plentymarkets-7/blob/master/README.md)

@@ -1,4 +1,4 @@
-# BS PAYONE Payment für plentymarkets 7
+# BS PAYONE Payment for plentymarkets 7
 
 Payment with BS PAYONE convinces
 

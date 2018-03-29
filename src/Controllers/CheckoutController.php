@@ -32,7 +32,7 @@ class CheckoutController extends Controller
     /** @var SessionHelper */
     private $sessionHelper;
 
-    /** @var CheckoutErrorRenderer */
+    /** @var ErrorMessageRenderer */
     private $renderer;
     /**
      * @var Request
@@ -52,14 +52,14 @@ class CheckoutController extends Controller
      * CheckoutController constructor.
      *
      * @param SessionHelper $sessionHelper
-     * @param CheckoutErrorRenderer $renderer
+     * @param ErrorMessageRenderer $renderer
      * @param Request $request
      * @param Logger $logger
      * @param Response $response
      */
     public function __construct(
         SessionHelper $sessionHelper,
-        CheckoutErrorRenderer $renderer,
+        ErrorMessageRenderer $renderer,
         Request $request,
         Logger $logger,
         Response $response

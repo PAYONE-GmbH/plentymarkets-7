@@ -184,9 +184,10 @@
     "label": "Aktiv",
     "type": "dropdown",
     "possibleValues": {
-      "0": "Nein"
+      "0": "Nein",
+      "1": "Ja"
     },
-    "default": "0"
+    "default": "1"
   },
   {
     "tab": "PayPal",
@@ -229,9 +230,8 @@
     "type": "dropdown",
     "possibleValues": {
       "0": "Nein",
-      "1": "Ja"
     },
-    "default": "1"
+    "default": "0"
   },
   {
     "tab": "RatePay Ratenzahlung",

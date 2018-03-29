@@ -16,6 +16,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
     public function map(Router $router)
     {
 
+        $router->get('payment/payone/migrate/', 'Payone\Controllers\ConfigController@migrate');
 
         $router->post('payment/payone/status/', 'Payone\Controllers\StatusController@index');
 

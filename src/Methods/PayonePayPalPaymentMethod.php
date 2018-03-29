@@ -9,5 +9,5 @@ namespace Payone\Methods;
  */
 class PayonePayPalPaymentMethod extends PaymentAbstract
 {
-    const PAYMENT_CODE = 'PAYONE_PAYONE_PAYPAL';
+    const PAYMENT_CODE = 'PAYONE_PAYONE_PAY_PAL';
 }

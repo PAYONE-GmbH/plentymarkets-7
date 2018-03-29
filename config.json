@@ -179,8 +179,8 @@
     "default": "DE,AT,CH"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.active",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.active",
     "label": "Aktiv",
     "type": "dropdown",
     "possibleValues": {
@@ -190,35 +190,35 @@
     "default": "1"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.name",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.name",
     "label": "Name",
     "type": "text",
-    "default": "Payone PayPal"
+    "default": "Payone PAY_PAL"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.description",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.description",
     "label": "Beschreibung",
     "type": "text"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.minCartAmount",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.minCartAmount",
     "default": "0",
     "label": "Minimaler Bestellwert",
     "type": "text"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.maxCartAmount",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.maxCartAmount",
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
   },
   {
-    "tab": "PayPal",
-    "key": "PAYONE_PAYONE_PAYPAL.allowedCountries",
+    "tab": "PAY_PAL",
+    "key": "PAYONE_PAYONE_PAY_PAL.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",
     "default": "DE,AT,CH"

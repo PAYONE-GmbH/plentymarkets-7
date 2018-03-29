@@ -229,7 +229,7 @@
     "label": "Aktiv",
     "type": "dropdown",
     "possibleValues": {
-      "0": "Nein",
+      "0": "Nein"
     },
     "default": "0"
   },

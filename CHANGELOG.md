@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* enable PayPal display in frontend
+* improve rendering of payment error popup 
 
 ## v1.0.4 (2018-03-27)
 

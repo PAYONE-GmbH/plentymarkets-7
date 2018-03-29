@@ -5,6 +5,8 @@ namespace Payone\Providers\Api\Request;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Methods\PayonePaydirektPaymentMethod;
+use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponseRepository;
@@ -427,7 +429,16 @@ abstract class DataProviderAbstract
     protected function paymentHasRedirect($paymentCode)
     {
         // URLs might be necessary since some cards require REDIRECT for 3d secure
-        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+        if (
+        in_array(
+            $paymentCode,
+            [
+                PayoneCCPaymentMethod::PAYMENT_CODE,
+                PayonePayPalPaymentMethod::PAYMENT_CODE,
+                PayonePaydirektPaymentMethod::PAYMENT_CODE,
+            ]
+        )
+        ) {
             return true;
         }
 

@@ -16,7 +16,6 @@ use Payone\PluginConstants;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
-use Payone\Views\CheckoutErrorRenderer;
 use Payone\Views\ErrorMessageRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -100,6 +99,7 @@ class CheckoutController extends Controller
     /**
      * @param CreditCardCheckResponseRepository $repository
      * @param CreditCardCheckResponse $response
+     * @param CardExpireDate $validator
      *
      * @return string
      */
@@ -138,9 +138,8 @@ class CheckoutController extends Controller
      * @param BankAccount $bankAccount
      * @param BankAccountCache $accountCache
      * @param SepaMandate $mandateService
+     * @param SepaMandateCache $mandateCache
      * @param BasketRepositoryContract $basket
-     *
-     * @throws \Exception
      *
      * @return string
      */
@@ -155,7 +154,7 @@ class CheckoutController extends Controller
 
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
+                'message' => $this->renderer->render(
                     'Your session expired. Please login and start a new purchase.'
                 ),
             ]);
@@ -190,7 +189,7 @@ class CheckoutController extends Controller
             $mandate = $mandateService->createMandate($basket->load());
         } catch (\Exception $e) {
             return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
+                'message' => $this->renderer->render(
                     $e->getMessage()
                 ),
             ]);
@@ -213,7 +212,7 @@ class CheckoutController extends Controller
     {
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
+                'message' => $this->renderer->render(
                     'Your session expired. Please login and start a new purchase.'
                 ),
             ]);
@@ -227,7 +226,7 @@ class CheckoutController extends Controller
             ]);
         } catch (\Exception $e) {
             return $this->getJsonErrors([
-                'message' => $this->renderer->renderErrorMessage(
+                'message' => $this->renderer->render(
                     $e->getMessage()
                 ),
             ]);
@@ -243,7 +242,8 @@ class CheckoutController extends Controller
     /**
      * @param BasketRepositoryContract $basketReopo
      * @param PaymentHelper $helper
-     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @return string
      */
     public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper)
     {
@@ -261,7 +261,8 @@ class CheckoutController extends Controller
     /**
      * @param NotificationService $notificationService
      * @param ErrorMessageRenderer $messageRenderer
-     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @return string
      */
     public function redirectWithNotice(
         NotificationService $notificationService,
@@ -278,7 +279,8 @@ class CheckoutController extends Controller
 
     /**
      * @param null $data
-     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @return string
      */
     private function getJsonSuccess($data = null)
     {
@@ -287,7 +289,8 @@ class CheckoutController extends Controller
 
     /**
      * @param $errors
-     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @return string
      */
     private function getJsonErrors($errors)
     {

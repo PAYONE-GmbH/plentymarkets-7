@@ -6,6 +6,8 @@ namespace Payone\Services;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\Api\AuthResponse;
+use Payone\Models\Api\PreAuthResponse;
 use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\ApiResponseCache;
 use Payone\Services\Auth as AuthService;
@@ -69,7 +71,7 @@ class PaymentService
      *
      * @throws \Exception
      *
-     * @return ResponseAbstract
+     * @return AuthResponse|PreAuthResponse
      */
     public function openTransaction(Basket $basket): ResponseAbstract
     {

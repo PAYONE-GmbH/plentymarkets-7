@@ -223,20 +223,24 @@ class PayoneServiceProvider extends ServiceProvider
 
                 $renderingType = $content->getPaymentContentType($paymentCode);
                 try {
-                    if ($renderingType == GetPaymentMethodContent::RETURN_TYPE_CONTINUE) {
-                        $paymentService->openTransaction($basketRepository->load());
+                    $event->setType($renderingType);
+                    switch ($renderingType) {
+                        case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
+                            $auth = $paymentService->openTransaction($basketRepository->load());
+                            $event->setValue($auth->getRedirecturl());
+                            break;
+                        case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
+                            $paymentService->openTransaction($basketRepository->load());
+                            break;
+                        case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+                            $event->setValue($paymentRenderer->render($payment, ''));
+                            break;
                     }
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $logger->logException($e);
                     $event->setValue($errorMessageRenderer->render($errorMessage));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
-
-                    return;
-                }
-                $event->setType($renderingType);
-                if ($renderingType == GetPaymentMethodContent::RETURN_TYPE_HTML) {
-                    $event->setValue($paymentRenderer->render($payment, ''));
                 }
             }
         );

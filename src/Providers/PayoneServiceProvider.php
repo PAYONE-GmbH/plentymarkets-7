@@ -10,6 +10,7 @@ use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
+use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -178,6 +179,12 @@ class PayoneServiceProvider extends ServiceProvider
         $payContainer->register(
             'Payone::' . PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
             PayoneDirectDebitPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
+            PayoneInvoiceSecurePaymentMethod::class,
             $events
         );
     }

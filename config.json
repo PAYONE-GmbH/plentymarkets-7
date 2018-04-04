@@ -91,6 +91,51 @@
     "default": "DE,AT,CH"
   },
   {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.active",
+    "label": "Aktiv",
+    "type": "dropdown",
+    "possibleValues": {
+      "0": "Nein",
+      "1": "Ja"
+    },
+    "default": "1"
+  },
+  {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.name",
+    "label": "Name",
+    "type": "text",
+    "default": "Rechnung"
+  },
+  {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.description",
+    "label": "Beschreibung",
+    "type": "text"
+  },
+  {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.minCartAmount",
+    "default": "0",
+    "label": "Minimaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.maxCartAmount",
+    "default": "2000",
+    "label": "Maximaler Bestellwert",
+    "type": "text"
+  },
+  {
+    "tab": "Gesicherte Rechnung",
+    "key": "PAYONE_PAYONE_INVOICE_SECURE.allowedCountries",
+    "label": "Erlaubte Länder",
+    "type": "text",
+    "default": "DE,AT,CH"
+  },
+  {
     "tab": "Paydirekt",
     "key": "PAYONE_PAYONE_PAYDIREKT.active",
     "label": "Aktiv",

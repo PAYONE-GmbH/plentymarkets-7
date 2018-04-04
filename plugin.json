@@ -30,7 +30,7 @@
   ],
   "dataProviders": [
   {
-    "key":"Payone\\Providers\\DataProviders\\ConfirmationAdditinalPaymentData",
+    "key":"Payone\\Providers\\DataProviders\\ConfirmationAdditionalPaymentData",
     "name":"Payone Order Confirmation Page Payment Data",
     "description": "Block to display additional payment data on order success page."
   },

@@ -14,7 +14,7 @@ use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Templates\Twig;
 
-class ConfirmationAdditinalPaymentData
+class ConfirmationAdditionalPaymentData
 {
     /**
      * @param Twig $twig
@@ -36,9 +36,9 @@ class ConfirmationAdditinalPaymentData
     ) {
         $order = $arg[0];
 
-        $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData', $arg);
+        $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditionalPaymentData', $arg);
         if (!($order instanceof Order)) {
-            $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditinalPaymentData', 'Not an order.');
+            $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditionalPaymentData', 'Not an order.');
 
             return '';
         }
@@ -47,7 +47,7 @@ class ConfirmationAdditinalPaymentData
             /** @var Payment $payment */
             if (!$paymentHelper->isPayonePayment($payment->mopId)) {
                 $logger->setIdentifier(__METHOD__)->debug(
-                    'Dataprovider.ConfirmationAdditinalPaymentData',
+                    'Dataprovider.ConfirmationAdditionalPaymentData',
                     ['Not a Payone payment.', 'payment' => $payment]
                 );
 

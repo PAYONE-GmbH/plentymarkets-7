@@ -180,7 +180,7 @@
     "default": "DE,AT,CH"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.active",
     "label": "Aktiv",
     "type": "dropdown",
@@ -191,34 +191,34 @@
     "default": "1"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.name",
     "label": "Name",
     "type": "text",
     "default": "Payone PAY_PAL"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.description",
     "label": "Beschreibung",
     "type": "text"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.minCartAmount",
     "default": "0",
     "label": "Minimaler Bestellwert",
     "type": "text"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.maxCartAmount",
     "default": "2000",
     "label": "Maximaler Bestellwert",
     "type": "text"
   },
   {
-    "tab": "PAY_PAL",
+    "tab": "PayPal",
     "key": "PAYONE_PAYONE_PAY_PAL.allowedCountries",
     "label": "Erlaubte Länder",
     "type": "text",

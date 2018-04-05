@@ -1,7 +1,13 @@
-# Changelog Plentymarkets Payone Plugin
+# Changelog Plentymarkets BS Payone Plugin
 
 ## Unreleased
 
+* enable PayPal display in frontend
+* improve rendering of payment error popup 
+
+## v1.0.5 (2018-04-06)
+
+* update Logos an plugin name
 
 ## v1.0.4 (2018-03-27)
 

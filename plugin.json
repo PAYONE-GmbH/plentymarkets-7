@@ -23,7 +23,7 @@
   "require": [],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "arvatis/payone-php-api":"dev-master"
+    "arvatis/payone-php-api":"1.0.*"
   },
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods"

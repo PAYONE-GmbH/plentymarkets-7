@@ -8,6 +8,7 @@ use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
+use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -128,6 +129,7 @@ class PaymentHelper
             PayonePrePaymentPaymentMethod::PAYMENT_CODE,
             PayoneCCPaymentMethod::PAYMENT_CODE,
             PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
         ];
     }
 

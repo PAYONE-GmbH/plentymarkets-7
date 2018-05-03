@@ -484,7 +484,7 @@ abstract class DataProviderAbstract
         $account = $repo->loadBankAccount();
 
         if (!($account instanceof BankAccount)) {
-            return [];
+            $account= pluginApp(BankAccount::class);
         }
 
         return $account->jsonSerialize();

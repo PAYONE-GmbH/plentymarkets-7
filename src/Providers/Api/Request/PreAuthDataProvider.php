@@ -4,6 +4,7 @@ namespace Payone\Providers\Api\Request;
 
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
+use Payone\Methods\PayoneSofortPaymentMethod;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
 

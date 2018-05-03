@@ -23,6 +23,10 @@ source.
 * debit payment
 * credit card
 * credit card 3DS
+* invoice secure
+* PayPal
+* Paydirekt
+* Sofortüberweisung
 
 ## Installatiion guide
 

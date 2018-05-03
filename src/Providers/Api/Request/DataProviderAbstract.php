@@ -7,6 +7,7 @@ use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
+use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponseRepository;
@@ -436,6 +437,7 @@ abstract class DataProviderAbstract
                 PayoneCCPaymentMethod::PAYMENT_CODE,
                 PayonePayPalPaymentMethod::PAYMENT_CODE,
                 PayonePaydirektPaymentMethod::PAYMENT_CODE,
+                PayoneSofortPaymentMethod::PAYMENT_CODE,
             ]
         )
         ) {

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* enable Sofort display in frontend
+* enable Paydirekt display in frontend
+* enable invoice secure display in frontend
 * enable PayPal display in frontend
 * improve rendering of payment error popup 
 

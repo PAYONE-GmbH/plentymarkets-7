@@ -22,6 +22,10 @@ Eine Lösung, ein Partner, ein Vertrag: Einfach & effizient. Technische Abwicklu
 * Lastschrift
 * Kreditkarte
 * Kreditkarte 3DS
+* Gesicherte Rechnung
+* PayPal
+* Paydirekt
+* Sofortüberweisung
 
 ## Installationsanleitung
 

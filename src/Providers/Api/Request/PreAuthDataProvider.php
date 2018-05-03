@@ -33,6 +33,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $basket->customerId);
 
         if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
@@ -76,6 +77,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
 
         if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {

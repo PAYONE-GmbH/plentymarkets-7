@@ -37,6 +37,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         }
 
         if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
 
@@ -80,6 +81,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['bankAccount'] = $this->getBankAccount();
         }
         if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($this->paymentHasRedirect($paymentCode)) {

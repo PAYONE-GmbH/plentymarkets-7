@@ -4,6 +4,7 @@ namespace Payone\Providers\Api\Request;
 
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
+use Payone\Methods\PayoneSofortPaymentMethod;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
 
@@ -34,6 +35,11 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
             $requestParams['bankAccount'] = $this->getBankAccount();
         }
+
+        if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
+        }
+
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();
         }
@@ -72,6 +78,9 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
 
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
             $requestParams['bankAccount'] = $this->getBankAccount();
+        }
+        if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($this->paymentHasRedirect($paymentCode)) {
             $requestParams['redirect'] = $this->getRedirectUrls();

@@ -61,7 +61,7 @@ class OrderPdf
 
         $adviceData = [
             $this->getPaymentReferenceText($referenceNumber, $lang),
-            (string)$this->getPayoneBankAccount($payment->currency, $lang),
+            (string)$this->getPayoneBankAccount($payment),
         ];
 
         $orderPdfGenerationModel->advice = implode(self::PDF_LINEBREAK . self::PDF_LINEBREAK, $adviceData);

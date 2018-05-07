@@ -42,6 +42,7 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
+use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 
 class PayoneServiceProvider extends ServiceProvider
 {

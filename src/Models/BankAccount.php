@@ -10,15 +10,16 @@ class BankAccount implements \JsonSerializable
     /**
      * @var string
      */
-    private $holder;
+    private $holder = '';
     /**
      * @var string
      */
-    private $iban;
+    private $iban = '';
+
     /**
      * @var string
      */
-    private $bic;
+    private $bic = '';
 
     /**
      * @param $holder
@@ -73,6 +74,10 @@ class BankAccount implements \JsonSerializable
      */
     public function getCountry(): string
     {
+        if(!$this->getIban()){
+            return '';
+        }
+
         return strtoupper(substr($this->getIban(), 0, 2));
     }
 

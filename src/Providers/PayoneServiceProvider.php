@@ -3,6 +3,7 @@
 namespace Payone\Providers;
 
 use Payone\Adapter\Logger;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PaymentMethodServiceFactory;
@@ -21,6 +22,7 @@ use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
 use Payone\Services\Capture;
+use Payone\Services\OrderPdf;
 use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentService;
 use Payone\Views\ErrorMessageRenderer;
@@ -62,6 +64,11 @@ class PayoneServiceProvider extends ServiceProvider
      * @param Logger $logger
      * @param EventProceduresService $eventProceduresService
      * @param ErrorMessageRenderer $errorMessageRenderer
+     * @param PaymentCreation $paymentCreationService
+     * @param PaymentCache $paymentCache
+     * @param ReferenceContainer $referenceContainer
+     * @param OrderPdf $orderPdf
+     * @param OrderHelper $orderHelper
      */
     public function boot(
         Dispatcher $eventDispatcher,
@@ -76,7 +83,9 @@ class PayoneServiceProvider extends ServiceProvider
         ErrorMessageRenderer $errorMessageRenderer,
         PaymentCreation $paymentCreationService,
         PaymentCache $paymentCache,
-        ReferenceContainer $referenceContainer
+        ReferenceContainer $referenceContainer,
+        OrderPdf $orderPdf,
+        OrderHelper $orderHelper
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -122,6 +131,8 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $this->registerReferenceTypesForLogging($referenceContainer);
+        $this->registerInvoicePdfGeneration($eventDispatcher, $paymentHelper, $logger, $orderPdf, $orderHelper);
+
     }
 
     /**
@@ -306,5 +317,66 @@ class PayoneServiceProvider extends ServiceProvider
         } catch (ReferenceTypeException $ex) {
             // already registered
         }
+    }
+
+    /**
+     * @param Dispatcher $eventDispatcher
+     * @param PaymentHelper $paymentHelper
+     * @param Logger $logger
+     * @param OrderPdf $orderPdf
+     * @param OrderHelper $orderHelper
+     */
+    private function registerInvoicePdfGeneration(
+        Dispatcher $eventDispatcher,
+        PaymentHelper $paymentHelper,
+        Logger $logger,
+        OrderPdf $orderPdf,
+        OrderHelper $orderHelper
+    ) {
+        // Listen for the document generation event
+        $eventDispatcher->listen(OrderPdfGenerationEvent::class,
+            function (OrderPdfGenerationEvent $event) use ($paymentHelper, $logger, $orderPdf, $orderHelper) {
+                /** @var Order $order */
+                $order = $event->getOrder();
+
+                $logger->setIdentifier(__METHOD__)->info(
+                    'Event.orderPdfGeneration',
+                    ['order' => $order->id, 'documentType' => $event->getDocType()]
+                );
+                if ($event->getDocType() != Document::INVOICE) {
+                    return;
+                }
+                /** @var PaymentRepositoryContract $paymentRepository */
+                $paymentRepository = pluginApp(PaymentRepositoryContract::class);
+
+                try {
+                    $payments = $paymentRepository->getPaymentsByOrderId($order->id);
+                } catch (\Exception $e) {
+                    $logger->error('Error loading payment', $e->getMessage());
+
+                    return;
+                }
+                if (!($payments)) {
+                    return;
+                }
+                $lang = $orderHelper->getLang($order);
+                try {
+                    $orderPdfGenerationModel = $orderPdf->createPdfNote($payments[0], $lang);
+                } catch (\Exception $e) {
+                    $logger->error('Adding PDF comment failed for order '
+                        . $order->id, $e->getMessage());
+
+                    return;
+                }
+                if(!$orderPdfGenerationModel){
+                    return;
+                }
+                $logger->setIdentifier(__METHOD__)->info(
+                    'Event.orderPdfGeneration',
+                    ['order' => $order->id, 'pdfData' => $orderPdfGenerationModel]
+                );
+                $event->addOrderPdfGeneration($orderPdfGenerationModel);
+            }
+        );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Payone\Services;
 
+use ArvPayoneApi\Response\Clearing;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
@@ -87,7 +88,7 @@ class PaymentCreation
      *
      * @return Payment
      */
-    public function createPayment($mopId, ResponseAbstract $response, Basket $basket, BankAccount $account = null)
+    public function createPayment($mopId, ResponseAbstract $response, Basket $basket, Clearing $account = null)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.createPayment',
@@ -142,9 +143,26 @@ class PaymentCreation
         ];
 
         if ($account) {
+            $paymentProperties[] = $this->createPaymentProperty(
+                PaymentProperty::TYPE_NAME_OF_RECEIVER,
+                json_encode($account->getHolder())
+            );
+            $paymentProperties[] = $this->createPaymentProperty(
+                PaymentProperty::TYPE_IBAN_OF_RECEIVER,
+                json_encode($account->getIban())
+            );
+            $paymentProperties[] = $this->createPaymentProperty(
+                PaymentProperty::TYPE_BIC_OF_RECEIVER,
+                json_encode($account->getIban())
+            );
+            $paymentProperties[] = $this->createPaymentProperty(
+                PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
+                json_encode($account->getBankaccount())
+            );
+
             $paymentText['accountHolder'] = $account->getHolder();
             $paymentText['iban'] = $account->getIban();
-            $paymentText['bic'] = $account->getIban();
+            $paymentText['bic'] = $account->getBic();
             $paymentText['referenceNumber'] = $response->getTransactionID();
         }
 

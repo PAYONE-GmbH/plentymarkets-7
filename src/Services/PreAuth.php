@@ -91,7 +91,7 @@ class PreAuth
 
     /**
      * @param $selectedPaymentId
-     * @param Response $preAuthResponse
+     * @param PreAuthResponse $preAuthResponse
      * @param $orderId
      *
      * @throws \Exception
@@ -104,7 +104,8 @@ class PreAuth
             $plentyPayment = $this->paymentCreationService->createPayment(
                 $selectedPaymentId,
                 $preAuthResponse,
-                $basket
+                $basket,
+                $preAuthResponse->getClearing()
             );
             if (!$plentyPayment instanceof Payment) {
                 throw new \Exception('Not an instance of Payment');

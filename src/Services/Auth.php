@@ -98,7 +98,7 @@ class Auth
 
     /**
      * @param $selectedPaymentId
-     * @param Response $authResponse
+     * @param AuthResponse $authResponse
      * @param $orderId
      *
      * @throws \Exception
@@ -111,7 +111,8 @@ class Auth
             $plentyPayment = $this->paymentCreationService->createPayment(
                 $selectedPaymentId,
                 $authResponse,
-                $basket
+                $basket,
+                $authResponse->getClearing()
             );
             if (!$plentyPayment instanceof Payment) {
                 throw new \Exception('Not an instance of Payment');

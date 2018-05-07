@@ -54,14 +54,10 @@ class OrderPdf
         if (!$this->paymentHelper->isPayonePayment($payment->mopId)) {
             return;
         }
-        $referenceNumber = $this->paymentHelper->getPaymentPropertyValue(
-            $payment,
-            PaymentProperty::TYPE_BOOKING_TEXT
-        );
 
         $adviceData = [
-            $this->getPaymentReferenceText($referenceNumber, $lang),
             (string)$this->getPayoneBankAccount($payment),
+            $this->getPaymentReferenceText($payment),
         ];
 
         $orderPdfGenerationModel->advice = implode(self::PDF_LINEBREAK . self::PDF_LINEBREAK, $adviceData);
@@ -94,13 +90,16 @@ class OrderPdf
 
 
     /**
-     * @param $referenceNumber
-     * @param $lang
+     * @param $payment
      *
      * @return string
      */
-    private function getPaymentReferenceText($referenceNumber, $lang): string
+    private function getPaymentReferenceText($payment): string
     {
+        $referenceNumber = $this->paymentHelper->getPaymentPropertyValue(
+            $payment,
+            PaymentProperty::TYPE_TRANSACTION_ID
+        );
         return $this->translator->trans('Invoice.paymentReference') . $referenceNumber;
     }
 }

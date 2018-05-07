@@ -142,6 +142,10 @@ class PaymentCreation
             'TransactionID' => $transactionID,
         ];
 
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_BOOKING_TEXT,
+            'TransactionID ' . $transactionID
+        );
         if ($account instanceof Bank) {
             $paymentProperties[] = $this->createPaymentProperty(
                 PaymentProperty::TYPE_NAME_OF_RECEIVER,
@@ -169,10 +173,6 @@ class PaymentCreation
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_PAYMENT_TEXT,
             json_encode($paymentText)
-        );
-        $paymentProperties[] = $this->createPaymentProperty(
-            PaymentProperty::TYPE_BOOKING_TEXT,
-            'TransactionID ' . $transactionID
         );
         $payment->properties = $paymentProperties;
 

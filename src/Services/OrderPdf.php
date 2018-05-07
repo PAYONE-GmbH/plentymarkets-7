@@ -83,7 +83,7 @@ class OrderPdf
             return '';
         }
 
-        return $this->translator->trans('Invoice.holder').': ' . $accountHolder . self::PDF_LINEBREAK .
+        return $this->translator->trans('Invoice.holder') . ': ' . $accountHolder . self::PDF_LINEBREAK .
             'IBAN: ' . $iban . self::PDF_LINEBREAK .
             'BIC: ' . $bic;
     }
@@ -100,6 +100,6 @@ class OrderPdf
             $payment,
             PaymentProperty::TYPE_TRANSACTION_ID
         );
-        return $this->translator->trans('Invoice.paymentReference') . $referenceNumber;
+        return $this->translator->trans('Invoice.paymentReference') . ': ' . $referenceNumber;
     }
 }

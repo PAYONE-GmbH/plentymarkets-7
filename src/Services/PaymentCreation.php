@@ -2,13 +2,13 @@
 
 namespace Payone\Services;
 
-use ArvPayoneApi\Response\Clearing;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
+use Payone\Models\Api\Clearing\Bank;
+use Payone\Models\Api\Clearing\ClearingAbstract;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseAbstract;
-use Payone\Models\BankAccount;
 use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
@@ -82,13 +82,13 @@ class PaymentCreation
      * @param $mopId
      * @param $response
      * @param Basket $basket
-     * @param BankAccount|null $account
+     * @param ClearingAbstract|null $account
      *
      * @throws \Exception
      *
      * @return Payment
      */
-    public function createPayment($mopId, ResponseAbstract $response, Basket $basket, Clearing $account = null)
+    public function createPayment($mopId, ResponseAbstract $response, Basket $basket, ClearingAbstract $account = null)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'PaymentCreation.createPayment',
@@ -142,10 +142,10 @@ class PaymentCreation
             'TransactionID' => $transactionID,
         ];
 
-        if ($account) {
+        if ($account instanceof Bank) {
             $paymentProperties[] = $this->createPaymentProperty(
                 PaymentProperty::TYPE_NAME_OF_RECEIVER,
-                json_encode($account->getHolder())
+                json_encode($account->getAccountholder())
             );
             $paymentProperties[] = $this->createPaymentProperty(
                 PaymentProperty::TYPE_IBAN_OF_RECEIVER,
@@ -157,10 +157,10 @@ class PaymentCreation
             );
             $paymentProperties[] = $this->createPaymentProperty(
                 PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
-                json_encode($account->getBankaccount())
+                json_encode($account->getAccount())
             );
 
-            $paymentText['accountHolder'] = $account->getHolder();
+            $paymentText['accountHolder'] = $account->getAccountholder();
             $paymentText['iban'] = $account->getIban();
             $paymentText['bic'] = $account->getBic();
             $paymentText['referenceNumber'] = $response->getTransactionID();

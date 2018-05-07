@@ -98,7 +98,7 @@ class PreAuth
      *
      * @return Payment
      */
-    private function createPayment($selectedPaymentId, ResponseAbstract $preAuthResponse, $basket): Payment
+    private function createPayment($selectedPaymentId, $preAuthResponse, $basket): Payment
     {
         try {
             $plentyPayment = $this->paymentCreationService->createPayment(

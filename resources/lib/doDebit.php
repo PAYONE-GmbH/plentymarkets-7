@@ -18,6 +18,7 @@ try {
     $data['context'] = $sdkRestApi::getParam('context');
     $data['order'] = $sdkRestApi::getParam('order');
     $data['basket'] = $sdkRestApi::getParam('basket');
+    $data['basketItems'] = $sdkRestApi::getParam('basketItems');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');

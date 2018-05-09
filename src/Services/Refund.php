@@ -8,7 +8,7 @@ use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\Api\Response;
 use Payone\Providers\Api\Request\CaptureDataProvider;
-use Payone\Providers\Api\Request\RefundDataProvider;
+use Payone\Providers\Api\Request\DebitDataProvider;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderType;
@@ -45,7 +45,7 @@ class Refund
     private $orderRepo;
 
     /**
-     * @var RefundDataProvider
+     * @var DebitDataProvider
      */
     private $refundDataProvider;
     /**
@@ -66,7 +66,7 @@ class Refund
      * @param PaymentCreation $paymentCreation
      * @param PaymentHistory $paymentHistory
      * @param OrderRepositoryContract $orderRepo
-     * @param RefundDataProvider $refundDataProvider
+     * @param DebitDataProvider $refundDataProvider
      * @param Api $api
      * @param CaptureDataProvider $captureDataProvider
      */
@@ -77,7 +77,7 @@ class Refund
         PaymentCreation $paymentCreation,
         PaymentHistory $paymentHistory,
         OrderRepositoryContract $orderRepo,
-        RefundDataProvider $refundDataProvider,
+        DebitDataProvider $refundDataProvider,
         Api $api,
         CaptureDataProvider $captureDataProvider
     ) {

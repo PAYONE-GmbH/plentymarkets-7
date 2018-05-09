@@ -73,7 +73,7 @@ class StatusController extends Controller
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE);
         $this->logger->setReferenceValue($txid);
-        $this->logger->debug('Controller.Status', $this->request->all());
+        $this->logger->critical('Controller.Status', $this->request->all());
 
         if ($this->request->get('key') != md5($this->config->get('key'))) {
             return;

@@ -173,9 +173,7 @@ abstract class DataProviderAbstract
             $itemText = $item->texts;
 
             $basketItem = $basketItem->toArray();
-            $basketItem['tax'] = sprintf(
-                '%01.2f',
-                $basketItem['price'] - $basketItem['price'] * 100 / ($basketItem['vat'] + 100.));
+            $basketItem['tax'] = $basketItem['vat'];
             $basketItem['name'] = $itemText->first()->name1;
 
             $items[] = $basketItem;
@@ -203,11 +201,9 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $priceGross = $amount->priceGross;
-            $tax = $priceGross - $priceGross * 100 / ($orderItem->vatRate + 100.);
-            $orderItemData['tax'] = (int)round($tax * 100);
-
-            $orderItemData['price'] = (int)round($priceGross * 100);
+            $orderItemData['tax'] = $orderItemData['vatRate'];
+            $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
+            $orderItemData['priceNet'] = (int)round($amount['priceGrossNet'] * 100);
             $orderItemData['name'] = $orderItem->orderItemName;
 
             $items[] = $orderItemData;

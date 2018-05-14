@@ -25,6 +25,7 @@ use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
+use Plenty\Modules\Order\Models\OrderItemType;
 use Plenty\Modules\Order\Shipping\Contracts\ParcelServicePresetRepositoryContract;
 use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -166,6 +167,9 @@ abstract class DataProviderAbstract
         }
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
+            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
+                continue;
+            }
             /** @var Item $item */
             $item = $this->itemRepo->show($basketItem->itemId);
             /** @var ItemText $itemText */
@@ -197,6 +201,9 @@ abstract class DataProviderAbstract
         }
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
+            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
+                continue;
+            }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
             $priceGross = $amount->priceGross;
@@ -324,12 +331,10 @@ abstract class DataProviderAbstract
     protected function getBasketDataFromOrder(Order $order)
     {
         $requestParams = $order->toArray();
-        $requestParams['grandTotal'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
-        $requestParams['itemSumNet'] = (int)round($requestParams['amounts'][0]['itemSumNet'] * 100);
-        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['basketAmount'] * 100);
-        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['basketAmountNet'] * 100);
-        $requestParams['shippingAmount'] = (int)round($requestParams['amounts'][0]['shippingAmount'] * 100);
-        $requestParams['shippingAmountNet'] = (int)round($requestParams['amounts'][0]['shippingAmountNet'] * 100);
+        $requestParams['basketAmount'] = (int)round($requestParams['amounts'][0]['grossTotal'] * 100);
+        $requestParams['basketAmountNet'] = (int)round($requestParams['amounts'][0]['netTotal'] * 100);
+        $requestParams['shippingAmount'] = (int)round($this->getShippingAmountFromOrder($order) * 100);
+        $requestParams['shippingAmountNet'] = (int)round($this->getShippingAmountNetFromOrder($order) * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
         return $requestParams;
@@ -484,9 +489,50 @@ abstract class DataProviderAbstract
         $account = $repo->loadBankAccount();
 
         if (!($account instanceof BankAccount)) {
-            $account= pluginApp(BankAccount::class);
+            $account = pluginApp(BankAccount::class);
         }
 
         return $account->jsonSerialize();
+    }
+
+    /**
+     * @param Order $order
+     * @return float
+     */
+    private function getShippingAmountFromOrder(Order $order)
+    {
+        /** @var OrderItem $orderItem */
+        foreach ($order->orderItems as $orderItem) {
+            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
+                continue;
+            }
+            $orderItemData = $orderItem->toArray();
+            $amount = $orderItemData['amounts'][0];
+
+            return $amount->priceGross;
+        }
+
+        return 0.;
+    }
+
+    /**
+     * @param Order $order
+     * @return float
+     */
+    private function getShippingAmountNetFromOrder(Order $order)
+    {
+        /** @var OrderItem $orderItem */
+        foreach ($order->orderItems as $orderItem) {
+            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
+                continue;
+            }
+            $orderItemData = $orderItem->toArray();
+            $amount = $orderItemData['amounts'][0];
+            $priceGross = $amount->priceGross;
+
+            return $priceGross * 100 / ($orderItem->vatRate + 100.);
+        }
+
+        return 0.;
     }
 }

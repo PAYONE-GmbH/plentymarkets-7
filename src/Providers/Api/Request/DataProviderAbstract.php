@@ -204,7 +204,8 @@ abstract class DataProviderAbstract
             $orderItemData['tax'] = $orderItemData['vatRate'];
             $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
             $orderItemData['priceNet'] = (int)round($amount['priceGrossNet'] * 100);
-            $orderItemData['name'] = $orderItem->orderItemName;
+            $orderItemData['name'] = $orderItemData['orderItemName'];
+            $orderItemData['itemId'] = $orderItemData['id'];
 
             $items[] = $orderItemData;
         }

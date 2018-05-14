@@ -111,7 +111,7 @@ class Refund
             return;
         }
         if (!$originalOrder) {
-            $this->logger->error('Refunding Payolution payment failed! The given order is invalid!');
+            $this->logger->error('Refunding payment failed! The given order is invalid!');
 
             return;
         }

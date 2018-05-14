@@ -2,6 +2,10 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Methods\PayoneInvoicePaymentMethod;
+use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
+use Payone\Methods\PayonePrePaymentPaymentMethod;
+use Payone\Methods\PayoneSofortPaymentMethod;
 use Plenty\Modules\Order\Models\Order;
 
 /**
@@ -30,7 +34,8 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         $requestParams['invoice'] = $this->getInvoiceData();
         $requestParams['order'] = $this->getOrderData($order);
         $requestParams['tracking'] = $this->getTrackingData($order->id);
-        $requestParams['context']['capturemode'] = $this->getCaptureMode($order);
+        $requestParams['context']['capturemode'] = $this->getCaptureMode($paymentCode);
+        $requestParams['context']['settleaccount'] = $this->getSettleaccount($paymentCode);
         $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
 
         $this->validator->validate($requestParams);
@@ -49,8 +54,27 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         return [];
     }
 
-    private function getCaptureMode(Order $order)
+    private function getCaptureMode(string $paymentCode)
     {
         return 'completed'; //TODO: do partial captures
+    }
+
+    private function getSettleaccount(string $paymentCode)
+    {
+        if (
+        in_array(
+            $paymentCode,
+            [
+                PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
+                PayoneInvoicePaymentMethod::PAYMENT_CODE,
+                PayonePrePaymentPaymentMethod::PAYMENT_CODE,
+                PayoneSofortPaymentMethod::PAYMENT_CODE,
+
+            ]
+        )
+        ) {
+            return 'yes';
+        }
+        return 'auto';
     }
 }

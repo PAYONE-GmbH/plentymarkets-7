@@ -496,13 +496,13 @@ abstract class DataProviderAbstract
     {
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
-            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
+            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
                 continue;
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
 
-            return $amount->priceGross;
+            return $amount['priceGross'];
         }
 
         return 0.;
@@ -516,14 +516,14 @@ abstract class DataProviderAbstract
     {
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
-            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
+            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
                 continue;
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $priceGross = $amount->priceGross;
+            $priceGross = $amount['priceGross'];
 
-            return $priceGross * 100 / ($orderItem->vatRate + 100.);
+            return $priceGross * 100 / ($orderItem['vatRate'] + 100.);
         }
 
         return 0.;

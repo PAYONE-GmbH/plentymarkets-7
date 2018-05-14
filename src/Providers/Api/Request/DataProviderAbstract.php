@@ -167,9 +167,6 @@ abstract class DataProviderAbstract
         }
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
-            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
-                continue;
-            }
             /** @var Item $item */
             $item = $this->itemRepo->show($basketItem->itemId);
             /** @var ItemText $itemText */

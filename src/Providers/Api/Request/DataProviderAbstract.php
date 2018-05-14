@@ -496,7 +496,7 @@ abstract class DataProviderAbstract
     {
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
-            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
+            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
                 continue;
             }
             $orderItemData = $orderItem->toArray();
@@ -516,7 +516,7 @@ abstract class DataProviderAbstract
     {
         /** @var OrderItem $orderItem */
         foreach ($order->orderItems as $orderItem) {
-            if ($orderItem->typeId != OrderItemType::TYPE_SHIPPING_COSTS) {
+            if ($orderItem->typeId == OrderItemType::TYPE_SHIPPING_COSTS) {
                 continue;
             }
             $orderItemData = $orderItem->toArray();

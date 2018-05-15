@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Methods\PayonePrePaymentPaymentMethod;
@@ -69,6 +70,7 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
                 PayoneInvoicePaymentMethod::PAYMENT_CODE,
                 PayonePrePaymentPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,
+                PayoneCODPaymentMethod::PAYMENT_CODE,
 
             ]
         )

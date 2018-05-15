@@ -1,6 +1,6 @@
 # Changelog Plentymarkets BS Payone Plugin
 
-## Unreleased
+## v1.0.6 (2018-05-15)
 
 * enable Sofort display in frontend
 * enable Paydirekt display in frontend

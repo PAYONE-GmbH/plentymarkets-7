@@ -1,6 +1,6 @@
 # Changelog Plentymarkets BS Payone Plugin
 
-## v1.0.7
+## v1.0.7 (2018-27-09)
 
 * Changed Support Tab information
 * Updated config.json / new Pluginformat

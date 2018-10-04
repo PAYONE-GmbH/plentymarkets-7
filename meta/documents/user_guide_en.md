@@ -1,6 +1,6 @@
 # BS PAYONE Payment for plentymarkets 7
 
-!! Note: The use of this plug-in requires a release code, which can be obtained from PSG Projektmanagement GmbH. Under certain conditions, you can take part of an attractive promotion program through PSG Projektmanagement GmbH in conjunction with this payment method paydirekt. [Click here for the registration form](https://www.psg-projektmanagement.de/bs-payone/)
+**Hinweis: The Distribution in Plentymarkets system is controlled by PSG Projektmanagement GmbH. [Click here for Registration](https://www.psg-projektmanagement.de/bs-payone/)**
 
 Payment with BS PAYONE convinces
 
@@ -30,6 +30,6 @@ source.
 * Paydirekt
 * Sofortüberweisung
 
-## Installatiion guide
+## Installation guide
 
 [Information for installation and setup](https://github.com/PAYONE-GmbH/plentymarkets-7/blob/master/README.md)

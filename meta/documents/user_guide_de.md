@@ -1,6 +1,6 @@
 # BS PAYONE Payment für plentymarkets 7
 
-!! Hinweis: Die Nutzung dieses Plug-Ins erfordert einen Freischaltcode, den Sie über die PSG Projektmanagement GmbH erhalten können. Unter bestimmten Voraussetzungen können Sie in Verbindung mit dieser Zahlart über die PSG Projektmanagement GmbH in den Genuss eines attraktiven Förderprogrammes kommen. [Hier geht’s zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/)
+**Hinweis: Für den Alleinvertrieb, innerhalb Plentymarkets System, ist die PSG Projektmanagement GmbH zuständig. [Hier geht’s zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/)**
 
 Payment mit BS PAYONE überzeugt
 

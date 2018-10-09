@@ -1,5 +1,19 @@
 # Changelog Plentymarkets BS Payone Plugin
 
+## v1.0.9 (2018-04-10)
+* Changed user_guide alert Text
+
+## v1.0.8 (2018-25-09)
+* Changed Support Tab information
+* Updated Changelog
+
+## v1.0.7 (2018-20-09)
+
+* Updated config.json / new Pluginformat
+* Added Translations
+* Changed Userguide
+* Changed guzzle/httpguzzle Version in dependency for PayPal compatibility
+
 ## v1.0.6 (2018-05-15)
 
 * enable Sofort display in frontend

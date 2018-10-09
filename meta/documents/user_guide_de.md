@@ -1,5 +1,7 @@
 # BS PAYONE Payment für plentymarkets 7
 
+**Hinweis: Für den Alleinvertrieb, innerhalb Plentymarkets System, ist die PSG Projektmanagement GmbH zuständig. [Hier geht’s zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/)**
+
 Payment mit BS PAYONE überzeugt
 
 Eine Lösung, ein Partner, ein Vertrag: Einfach & effizient. Technische Abwicklung und Finanzdienstleistungen aus einer Hand.

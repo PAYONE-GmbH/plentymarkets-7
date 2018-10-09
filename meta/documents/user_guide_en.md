@@ -1,5 +1,7 @@
 # BS PAYONE Payment for plentymarkets 7
 
+**Hinweis: The Distribution in Plentymarkets system is controlled by PSG Projektmanagement GmbH. [Click here for Registration](https://www.psg-projektmanagement.de/bs-payone/)**
+
 Payment with BS PAYONE convinces
 
 One solution, one partner, one contract: simple & efficient. Technical handling and financial services from a single 
@@ -28,6 +30,6 @@ source.
 * Paydirekt
 * Sofortüberweisung
 
-## Installatiion guide
+## Installation guide
 
 [Information for installation and setup](https://github.com/PAYONE-GmbH/plentymarkets-7/blob/master/README.md)

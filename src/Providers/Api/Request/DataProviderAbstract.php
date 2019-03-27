@@ -356,7 +356,7 @@ abstract class DataProviderAbstract
     protected function getSystemInfo()
     {
         return [
-            'vendor' => 'arvatis media GmbH',
+            'vendor' => 'plentysystems AG',
             'version' => 7,
             'type' => 'Webshop',
             'url' => $this->shopHelper->getPlentyDomain(),

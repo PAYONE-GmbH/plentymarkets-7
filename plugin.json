@@ -7,14 +7,12 @@
   "name": "Payone",
   "marketplaceName" : {"de":"BS Payone","en":"BS Payone"},
   "shortDescription": {
-    "de": "Das offizielle Payone plugin für Plentymarkets 7. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
+    "de": "Das offizielle Payone plugin für Plentymarkets. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
     "en": "The official Payone plugin for plentymarkets"
   },
   "description": "The official Payone plugin for plentymarkets",
-  "author": "arvatis media GmbH",
+  "author": "plentysystems AG",
   "keywords": ["Payone", "plentymarkets", "payment"],
-  "email": "info@arvatis.com",
-  "phone": "+49 (0)211 - 63 55 31 60",
   "categories": [3519],
   "type": "payment",
   "namespace": "Payone",

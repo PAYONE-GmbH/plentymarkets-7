@@ -70,7 +70,6 @@
 - Plugin-Dokumentation aktualisiert
 
 ## 1.0.1 (2018-03-01)
-
 Veröffentlichung des Plugins inklusive Unterstützung der folgenden Zahlungsarten:
 
 - Rechnung

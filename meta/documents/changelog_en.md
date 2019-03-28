@@ -70,7 +70,6 @@
 - Update plugin documentation
 
 ## 1.0.1 (2018-03-01)
-
 Plugin release supporting the following payment methods:
 
 - Invoice

@@ -112,8 +112,8 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $captureProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Bestellung erfassen',
-            'en' => PluginConstants::NAME . ' | Capture order',
+            'de' => PluginConstants::NAME . ' | Zahlungseingang buchen',
+            'en' => PluginConstants::NAME . ' | Book incoming payment',
         ];
         $eventProceduresService->registerProcedure(
             PluginConstants::NAME,
@@ -123,7 +123,7 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $refundProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Gutschrift erstellen',
+            'de' => PluginConstants::NAME . ' | Rückerstattung senden',
             'en' => PluginConstants::NAME . ' | Refund order',
         ];
         $eventProceduresService->registerProcedure(

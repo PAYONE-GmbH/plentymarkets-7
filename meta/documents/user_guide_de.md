@@ -42,7 +42,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
 5. **Speichern** Sie die Einstellungen.
 
 <table>
-<caption>Tab. 1: Payone Plugin: Grundeinstellungen vornehmen</caption>
+<caption>Tab. 1: Grundeinstellungen vornehmen</caption>
    <thead>
       <th>
          Einstellung
@@ -54,7 +54,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
    <tbody>
       <tr>
          <td>
-            <b>Merchant-Id</b>
+            <b>Merchant ID</b>
          </td>
          <td>
             Geben Sie hier die Kundennummer ein, die Sie bei der Registrierung bei Payone erhalten haben.
@@ -62,7 +62,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
       </tr>
       <tr>
          <td>
-            <b>Portal-Id</b>
+            <b>Portal ID</b>
          </td>
          <td>
             Geben Sie hier die ID des Zahlungsportals ein, die Sie bei der Registrierung bei Payone erhalten haben.
@@ -70,7 +70,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
       </tr>
       <tr>
          <td>
-            <b>Account-Id</b>
+            <b>Account ID</b>
          </td>
          <td>
             Geben Sie hier die Account-ID ein, die Sie bei der Registrierung bei Payone erhalten haben.
@@ -78,7 +78,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
       </tr>
       <tr>
          <td>
-            <b>Key</b>
+            <b>Schlüssel</b>
          </td>
          <td>
             Geben Sie hier den Schlüssel ein, den Sie bei der Registrierung bei Payone erhalten haben.
@@ -113,7 +113,7 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
 5. **Speichern** Sie die Einstellungen.
 
 <table>
-<caption>Tab. 2: Payone Plugin: Zahlungsarten einrichten</caption>
+<caption>Tab. 2: Zahlungsarten einrichten</caption>
    <thead>
       <th>
          Einstellung
@@ -128,7 +128,7 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
             <b>Aktiv</b>
          </td>
          <td>
-            Erklärung ...
+            Wählen Sie die Option <strong>Ja</strong>, um die Zahlungsart zu aktivieren und somit im Webshop anzubieten.<br /> Wählen Sie die Option <strong>Nein</strong>, wenn die Zahlungsart deaktiviert werden und damit nicht zur Verfügung stehen soll.
          </td>
       </tr>
       <tr>
@@ -136,7 +136,7 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
             <b>Name</b>
          </td>
          <td>
-            Erklärung ...
+            Geben Sie einen Namen für die Zahlungsart ein. Dieser Name ist für Ihre Kunden im Webshop sichtbar.
          </td>
       </tr>
       <tr>
@@ -144,7 +144,7 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
             <b>Beschreibung</b>
          </td>
          <td>
-            Erklärung ...
+            Geben Sie einen Beschreibungstext für die Zahlungsart ein. Dieser Text ist für Ihre Kunden im Webshop sichtbar.
          </td>
       </tr>
       <tr>
@@ -152,7 +152,7 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
             <b>Minimaler Bestellwert</b>
          </td>
          <td>
-            Erklärung...
+            Geben Sie einen minimalen Bestellwert ein, ab dem die Zahlungsart im Webshop verfügbar sein soll.
          </td>
       </tr>
       <tr>
@@ -160,16 +160,18 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
             <b>Maximaler Bestellwert</b>
          </td>
          <td>
-            Erklärung ...
+            Geben Sie einen maximalen Bestellwert ein, bis zu dem die Zahlungsart im Webshop verfügbar sein soll. Wird dieser Wert überschritten, ist die Zahlungsart nicht mehr verfügbar.
          </td>
       </tr>
       <tr>
           <td>
-              <b>Erlaubte Länder</b>
+              <b>Erlaubte Lieferländer</b>
           </td>
           <td>
-            Erklärung ...
+            Geben Sie kommasepariert die Lieferländer aus, für die die Zahlungsart verfügbar sein soll.
          </td>
       </tr>
    </tbody>
 </table>
+
+Für die Zahlungsart **Kreditkarte** können Sie zusätzliche Einstellungen vornehmen. Diese Einstellungen werden in Tabelle 3 beschrieben.

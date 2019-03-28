@@ -1,12 +1,12 @@
 <div class="alert alert-warning" role="alert">
-   Das BS Payone Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des BS Payone Plugins müssen die plugins IO und Ceres aktiviert sein.
+   Das Payone Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des Payone Plugins müssen die Plugins IO und Ceres aktiviert sein.
 </div>
 
-# BS PAYONE Payment für plentymarkets 7
+# PAYONE Payment für plentymarkets 7
 
-Das plentymarkets BS Payone Plugin bietet Ihnen Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig haben Sie Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
+Das plentymarkets Payone Plugin bietet Ihnen Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig haben Sie Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
 
-Aktuell beinhaltet das plentymarkets BS Payone Plugin die folgenden Zahlungsarten:
+Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
 * Rechnung
 * Gesicherte Rechnung
@@ -24,15 +24,15 @@ Aktuell beinhaltet das plentymarkets BS Payone Plugin die folgenden Zahlungsarte
 
 **Hinweis: Bevor Sie das Plugin nutzen, müssen Sie ein PAYONE Konto beantragen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
 
-Zuerst aktivieren Sie die Zahlungsart einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
+Aktivieren Sie die gewünschten Payone-Zahlungsarten einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
 
 Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.
 
 ## Einrichtung des Plugins
 
-Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolgen direkt in der Plugin-Übersicht. Gehen Sie dazu wie im Folgenden beschrieben vor.
+Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolgen direkt in der Plugin-Übersicht Ihres plentymarkets Systems. Gehen Sie dazu wie im Folgenden beschrieben vor.
 
-### Grundeinstellungen vornehmen
+##### Grundeinstellungen vornehmen
 
 1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**.
 2. Klicken Sie in der Liste der Plugins auf den Namen des Plugins **BS Payone**.
@@ -94,11 +94,11 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
       </tr>
       <tr>
           <td>
-              <b>Autorisierungsmethode</b>
+              <b>Art des Zahlungseinzugs</b>
           </td>
           <td>
-            <strong>Preautorisierung:</strong>: Wählen Sie diese Option, wenn Sie für Payone-Zahlungen manuell oder per Ereignisaktion den Zahlungseingang buchen wollen.<br />
-            <strong>Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseingang direkt nach dem Kaufabschluss im Webshop und der Überprüfung durch Payone in Ihrem plentymarkets System gebucht werden soll.
+            Wählen Sie, wann und auf welche Weise Aufträge mit der Zahlungsart Payone in Ihrem plentymarkets System als bezahlt markiert werden sollen.<br /> <strong>Manuell/Ereignisaktion</strong>: Wählen Sie diese Option, wenn Sie für Payone-Zahlungen manuell oder per Ereignisaktion den Zahlungseingang buchen wollen.<br />
+            <strong>Direkt nach der Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseingang direkt nach dem Kaufabschluss im Webshop und der anschließenden Autorisierung durch Payone in Ihrem plentymarkets System gebucht werden soll.
          </td>
       </tr>
    </tbody>
@@ -107,6 +107,9 @@ Die folgenden Einrichtungsschritte für das plentymarkets Payone Plugins erfolge
 ### Zahlungsarten einrichten
 
 Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop zur Verfügung stehen sollen. Außerdem nehmen Sie für die festgelegten Zahlungsarten genauere Einstellungen vor. Gehen Sie dazu wie im Folgenden beschrieben vor.
+
+
+##### Zahlungsarten einrichten:
 
 1. Öffnen Sie den Menüpunkt **Konfiguration** in der Detailansicht des Plugins.
 2. Klicken Sie auf den Menüpunkt der Zahlungsart. Nehmen Sie die Einstellungen anhand der Informationen in Tabelle 2 vor.
@@ -174,4 +177,154 @@ Im Folgenden legen Sie fest, welche Payone-Zahlungsarten Ihren Kunden im Webshop
    </tbody>
 </table>
 
-Für die Zahlungsart **Kreditkarte** können Sie zusätzliche Einstellungen vornehmen. Diese Einstellungen werden in Tabelle 3 beschrieben.
+**Hinweis**: Die Zahlungsart **Kreditkarte** stellt einen Sonderfall dar. Für diese Zahlungsart sind zusätzliche Einstellungen notwendig. Diese Einstellungen werden in Tabelle 3 beschrieben.
+
+<table>
+<caption>Tab. 3: Zahlungsart Kreditkarte einrichten</caption>
+   <thead>
+      <th>
+         Einstellung
+      </th>
+      <th>
+         Erläuterung
+      </th>
+   </thead>
+   <tbody>
+      <tr>
+         <td>
+            <b>Minimale Kartengültigkeit in Tagen</b>
+         </td>
+         <td>
+            Geben Sie die erforderliche minimale Kartengültigkeit an, über die eine Kreditkarte verfügen muss, um für die Zahlungsart akzeptiert zu werden.
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <b>Kreditkartenfelder Default Style</b>
+         </td>
+         <td>
+            Standardmäßig ist hier voreingestellt, in welcher Farbe, Schriftgröße und Schriftart die Eingabefelder für die Kreditkartendaten für Kunden im Webshop angezeigt werden. Die Werte sind editierbar.
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <b>Kreditkartenfelder Höhe in px</b>
+         </td>
+         <td>
+            Standardmäßig ist hier die Höhe der Eingabefelder in px voreingestellt. Der Wert ist editierbar.
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <b>Kreditkartenfelder Breite in px</b>
+         </td>
+         <td>
+            Standardmäßig ist hier die Breite der Eingabefelder in px voreingestellt. Der Wert ist editierbar.
+         </td>
+      </tr>
+      <tr>
+         <td>
+              <b>Erlaubte Kartentypen</b>
+          </td>
+          <td>
+            Aktivieren Sie die Kartentypen, die für die Zahlungsart akzeptiert werden sollen.
+         </td>
+      </tr>
+   </tbody>
+</table>
+
+## Template-Container verknüpfen
+
+Für die Zahlungsart Payone stehen Ihnen verschiedene Möglichkeiten zur Verfügung, um sie in Ihrem Webshop einzubinden.
+Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container hinterlegt, mit denen zur Individualisierung Contents verknüpft werden.
+
+##### Container verknüpfen:
+
+1. Öffnen Sie das Menü **CMS » Container-Verknüpfungen**.
+2. Wählen Sie den gewünschten Content, der verknüpft werden soll.
+3. Wählen Sie einen oder mehrere Container, in denen der zuvor gewählte Content dargestellt werden soll. Beachten Sie dazu die Erläuterungen in Tabelle 4.
+4. **Speichern** Sie die Einstellungen.<br /> → Die Contents sind mit den Containern verknüpft.
+
+<table>
+<caption>Tab. 4: Container verknüpfen</caption>
+   <thead>
+      <th>
+         Content
+      </th>
+      <th>
+         Erläuterung
+      </th>
+   </thead>
+   <tbody>
+      <tr>
+         <td>
+            <b>Payone Order Confirmation Page Payment Data</b>
+         </td>
+         <td>
+            Verknüpfen Sie diesen Content mit dem Container **Script loader: After script loaded**, um
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <b>Payone Checkout JS</b>
+         </td>
+         <td>
+            Verknüpfen Sie diesen Content mit dem Container **Script loader: After script loaded**, um
+         </td>
+      </tr>
+   </tbody>
+</table>
+
+## Payone-Zahlung automatisch zurückzahlen
+
+Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über Payone zu automatisieren.
+
+##### Ereignisaktion einrichten:
+
+1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
+2. Klicken Sie auf **Ereignisaktion hinzufügen**.<br />
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+3. Geben Sie einen Namen ein.
+4. Wählen Sie das Ereignis gemäß Tabelle 5.
+5. **Speichern** Sie die Einstellungen.<br />
+→ Die Ereignisaktion wird angelegt.
+6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
+7. Setzen Sie ein Häkchen bei **Aktiv**.
+8. **Speichern** Sie die Einstellungen.<br />
+→ Die Ereignisaktion wird gespeichert.
+
+<table>
+<caption>
+   Tab. 5: Ereignisaktion zur automatischen Rückzahlung der Payone-Zahlung
+</caption>
+   <thead>
+    </tr>
+      <th>
+         Einstellung
+      </th>
+      <th>
+         Option
+      </th>
+      <th>
+         Auswahl
+      </th>
+    </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><strong>Ereignis</strong></td>
+         <td>Das Ereignis wählen, nach dem eine Rückzahlung erfolgen soll.</td>
+         <td></td>
+      </tr>
+      <tr>
+         <td><strong>Filter 1</strong></td>
+         <td><strong>Auftrag > Zahlungsart</strong></td>
+         <td><strong>Plugin: PAYONE</strong>
+      </tr>
+      <tr>
+        <td><strong>Aktion</strong></td>
+        <td><strong>Plugin > Payone | Rückerstattung senden</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+</table>

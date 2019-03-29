@@ -261,7 +261,7 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Order Confirmation Page Payment Data</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container **Script loader: After script loaded**, um
+            Verknüpfen Sie diesen Content mit dem Container Order confirmation: Additional payment information, um die BS PAYONE-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
          </td>
       </tr>
       <tr>
@@ -269,7 +269,7 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Checkout JS</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container **Script loader: After script loaded**, um
+            Verknüpfen Sie diesen Content mit dem Container Script loader: After script loaded, um die BS PAYONE-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
          </td>
       </tr>
    </tbody>

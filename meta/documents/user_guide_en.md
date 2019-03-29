@@ -260,7 +260,7 @@ You have multiple options to integrate the payment method BS PAYONE into your on
             <b>Payone Order Confirmation Page Payment Data</b>
          </td>
          <td>
-            Link this content to the container Script loader: After script loaded to
+            Link this content to the container Order confirmation: Additional payment information to display the BS PAYONE payment methods on the order confirmation page in the online store.
          </td>
       </tr>
       <tr>
@@ -268,7 +268,7 @@ You have multiple options to integrate the payment method BS PAYONE into your on
             <b>Payone Checkout JS</b>
          </td>
          <td>
-            Linkt his content to the container Script loader: After script loaded to
+            Link this content to the container Script loader: After script loaded to display the BS PAYONE payment methods during the checkout process in the online store.
          </td>
       </tr>
    </tbody>

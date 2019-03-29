@@ -24,6 +24,8 @@ Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
 **Hinweis: Bevor Sie das Plugin nutzen, müssen Sie ein BS PAYONE Konto beantragen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
 
+Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Händlerportal ein und nehmen die folgenden Einstellungen vor:
+
 Aktivieren Sie die gewünschten BS PAYONE-Zahlungsarten einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
 
 Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.

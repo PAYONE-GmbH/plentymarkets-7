@@ -1,10 +1,10 @@
 <div class="alert alert-warning" role="alert">
-   The Payone plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
+   The BS PAYONE plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
 </div>
 
 # PAYONE Payment for plentymarkets 7
 
-The plentymarkets Payone plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
+The plentymarkets BS PAYONE plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
 
 The plugin currently offers the following payment methods:
 
@@ -22,7 +22,7 @@ The plugin currently offers the following payment methods:
 
 ## First steps
 
-**Note: Before using the plugin, you have to register for a PAYONE account. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
+**Note: Before using the plugin, you have to register for a BS PAYONE account. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
 
 First of all, activate the payment method once in the **System » System Settings » Orders » Payment » Methods** menu. More information on carrying out this setting is available on the <strong><a href="https://knowledge.plentymarkets.com/en/payment/managing-payment-methods#20" target="_blank">Managing payment methods</a></strong> page of the manual.
 
@@ -30,12 +30,12 @@ In addition, make sure that the payment method is included among the Permitted p
 
 ## Setting up the plugin
 
-The following steps for setting up the plentymarkets Payone plugin are carried out in the plugin overview of your plentymarkets system. Proceed as described below to set up the plugin.
+The following steps for setting up the plentymarkets BS PAYONE plugin are carried out in the plugin overview of your plentymarkets system. Proceed as described below to set up the plugin.
 
 ##### Carrying out the basic settings
 
 1. Go to **Plugin » Plugin overview**.
-2. In the plugin list, click on the name of the plugin **BS Payone**.
+2. In the plugin list, click on the name of the plugin **BS BS PAYONE**.
 → The detail view of the plugin  opens.
 3. Open the menu entry **Configuration**.
 4. Click on **Basic settings**. Carry out the settings according to the information provided in table 1.
@@ -57,7 +57,7 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
             <b>Merchant ID</b>
          </td>
          <td>
-            Enter the customer number as received after the registration process with Payone.
+            Enter the customer number as received after the registration process with BS PAYONE.
          </td>
       </tr>
       <tr>
@@ -65,7 +65,7 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
             <b>Portal ID</b>
          </td>
          <td>
-         Enter the payment portal ID as received after the registration process with Payone.
+         Enter the payment portal ID as received after the registration process with BS PAYONE.
          </td>
       </tr>
       <tr>
@@ -73,7 +73,7 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
             <b>Account ID</b>
          </td>
          <td>
-         Enter the account ID as received after the registration process with Payone.
+         Enter the account ID as received after the registration process with BS PAYONE.
          </td>
       </tr>
       <tr>
@@ -81,7 +81,7 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
             <b>Key</b>
          </td>
          <td>
-            Enter the key as received after the registration process with Payone.
+            Enter the key as received after the registration process with BS PAYONE.
          </td>
       </tr>
       <tr>
@@ -97,8 +97,8 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
               <b>Method for payment registration</b>
           </td>
           <td>
-            Select when and how orders with the payment method Payone are marked as paid in your plentymarkets system.<br /> <strong>Manually/Event procedure</strong>: Select this option if you wish to manually book incoming payment or to set up an event procedure booking incoming payment. <br />
-            <strong>Directly after authorisation:</strong>: Select this option if incoming payment should be booked directly after completion of the checkout process in the online store and successful authorisation by Payone.
+            Select when and how orders with the payment method BS PAYONE are marked as paid in your plentymarkets system.<br /> <strong>Manually/Event procedure</strong>: Select this option if you wish to manually book incoming payment or to set up an event procedure booking incoming payment. <br />
+            <strong>Directly after authorisation:</strong>: Select this option if incoming payment should be booked directly after completion of the checkout process in the online store and successful authorisation by BS PAYONE.
          </td>
       </tr>
    </tbody>
@@ -106,7 +106,7 @@ The following steps for setting up the plentymarkets Payone plugin are carried o
 
 ### Setting up payment methods
 
-In the following, you select the Payone payment methods that should be available for your customers in the online store. In addition, you carry out more detailed settings for the selected payment methods. Proceed as described below.
+In the following, you select the BS PAYONE payment methods that should be available for your customers in the online store. In addition, you carry out more detailed settings for the selected payment methods. Proceed as described below.
 
 
 ##### Setting up payment methods:
@@ -235,7 +235,7 @@ In the following, you select the Payone payment methods that should be available
 
 ## Linking template containers
 
-You have multiple options to integrate the payment method Payone into your online store. For this purpose, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
+You have multiple options to integrate the payment method BS PAYONE into your online store. For this purpose, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
 
 ##### Linking template containers:
 
@@ -274,9 +274,9 @@ You have multiple options to integrate the payment method Payone into your onlin
    </tbody>
 </table>
 
-## Automatically refunding Payone payments
+## Automatically refunding BS PAYONE payments
 
-Set up an event procedure to automatically refund a Payone payment.
+Set up an event procedure to automatically refund a BS PAYONE payment.
 
 ##### Setting up an event procedure:
 
@@ -294,7 +294,7 @@ Set up an event procedure to automatically refund a Payone payment.
 
 <table>
 <caption>
-   Tab. 5: Event procedure for automatically refunding Payone payments
+   Tab. 5: Event procedure for automatically refunding BS PAYONE payments
 </caption>
    <thead>
     </tr>

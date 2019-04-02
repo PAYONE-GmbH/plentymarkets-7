@@ -24,9 +24,17 @@ Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
 **Hinweis: Bevor Sie das Plugin nutzen, müssen Sie ein BS PAYONE Konto beantragen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
 
-Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Händlerportal ein und nehmen die folgenden Einstellungen vor:
+Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
 
-Aktivieren Sie die gewünschten BS PAYONE-Zahlungsarten einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
+##### Einstellungen im PAYONE Merchant Interface vornehmen:
+
+1. Öffnen Sie das Menü **Konfiguration » Zahlungsportale**.
+2. Öffnen Sie das Tab **Erweitert** des Zahlungsportals Ihres Shops.
+3. Tragen Sie im Feld **TransactionStatusURL** eine URL nach dem Schema **DOMAIN/payment/payone/status** ein. Den Platzhalter **DOMAIN** durch die URL zu Ihrem Webshop ersetzen.
+4. Wählen Sie als **Verfahren Hashwert-Prüfung** die Option **md5 oder sha2-384 (für Migration)**.
+5. **Speichern** Sie die Einstellungen.
+
+Aktivieren Sie die gewünschten BS PAYONE-Zahlungsarten in Ihrem plentymarkets Backend einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
 
 Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.
 
@@ -34,7 +42,7 @@ Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlun
 
 Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfolgen direkt in der Plugin-Übersicht Ihres plentymarkets Systems. Gehen Sie dazu wie im Folgenden beschrieben vor.
 
-##### Grundeinstellungen vornehmen
+##### Grundeinstellungen vornehmen:
 
 1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**.
 2. Klicken Sie in der Liste der Plugins auf den Namen des Plugins **BS BS PAYONE**.

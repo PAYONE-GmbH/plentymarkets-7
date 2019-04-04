@@ -68,7 +68,7 @@
             <button id="orderCancel" class="btn btn-secondary btn-block payone-cancel" data-dismiss="modal"
                     @click="clearFields"
                     aria-label="{{ trans('Payone::Template.orderCancel') }}"
-                    onclick="cancelPayone()">
+                    onclick="window.location.reload()">
                 <i class="fa fa-arrow-left"></i> {{ trans('Payone::Template.orderCancel') }}
             </button>
             {% if errorMessage is empty %}

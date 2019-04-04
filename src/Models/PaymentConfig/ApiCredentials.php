@@ -24,7 +24,7 @@ class ApiCredentials
     /**
      * @return string
      */
-    public function getKey(): string
+    public function getKey()
     {
         return $this->configRepo->get('key');
     }
@@ -32,7 +32,7 @@ class ApiCredentials
     /**
      * @return string
      */
-    public function getAid(): string
+    public function getAid()
     {
         return $this->configRepo->get('aid');
     }
@@ -40,7 +40,7 @@ class ApiCredentials
     /**
      * @return string
      */
-    public function getMid(): string
+    public function getMid()
     {
         return $this->configRepo->get('mid');
     }
@@ -48,7 +48,7 @@ class ApiCredentials
     /**
      * @return string
      */
-    public function getPortalid(): string
+    public function getPortalid()
     {
         return $this->configRepo->get('portalid');
     }
@@ -56,7 +56,7 @@ class ApiCredentials
     /**
      * @return string
      */
-    public function getMode(): string
+    public function getMode()
     {
         $mode = $this->configRepo->get('mode');
 

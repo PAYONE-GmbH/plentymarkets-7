@@ -24,9 +24,17 @@ The plugin currently offers the following payment methods:
 
 **Note: Before using the plugin, you have to register for a BS PAYONE account. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
 
-Upon receipt of your access data, log in to the BS PAYONE merchant portal and carry out the following settings:
+Upon receipt of your access data, log in to the BS PAYONE merchant interface and carry out the following settings.
 
-First of all, activate the payment method once in the **System » System Settings » Orders » Payment » Methods** menu. More information on carrying out this setting is available on the <strong><a href="https://knowledge.plentymarkets.com/en/payment/managing-payment-methods#20" target="_blank">Managing payment methods</a></strong> page of the manual.
+##### Carrying out settings in the BS PAYONE merchant interface
+
+1. Go to **Configuration » Payment portals**.
+2. Open the **Extended Tab** of the payment portal belonging to your online store.
+3. In the field **TransactionStatusURL**, enter a URL following the pattern **DOMAIN/payment/payone/status**. Replace **DOMAIN** with the URL of your online store.
+4. For the option **Method hash calculation**, select the option **md5 or sha2-384 (during migration)**.
+5. **Save** the settings.
+
+In your plentymarkets back end, activate the payment method once in the **System » System Settings » Orders » Payment » Methods** menu. More information on carrying out this setting is available on the <strong><a href="https://knowledge.plentymarkets.com/en/payment/managing-payment-methods#20" target="_blank">Managing payment methods</a></strong> page of the manual.
 
 In addition, make sure that the payment method is included among the Permitted payment methods in the <strong><a href="https://knowledge.plentymarkets.com/en/crm/managing-contacts#15" target="_blank">customer classes</a></strong> and that it is not listed among the Blocked payment methods in the <strong><a href="https://knowledge.plentymarkets.com/en/order-processing/fulfilment/preparing-the-shipment#1000" target="_blank">shipping profiles</a></strong>.
 

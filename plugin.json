@@ -7,11 +7,13 @@
   "name": "Payone",
   "marketplaceName" : {"de":"BS Payone","en":"BS Payone"},
   "shortDescription": {
-    "de": "Das offizielle Payone plugin für Plentymarkets. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
-    "en": "The official Payone plugin for plentymarkets"
+    "de": "Das offizielle Payone plugin für plentymarkets Webshops. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
+    "en": "The official Payone plugin for plentymarkets online stores"
   },
   "description": "The official Payone plugin for plentymarkets",
   "author": "plentysystems AG",
+  "email": "sales@plentymarkets.com",
+  "phone": "+49 561 98 681 100",
   "keywords": ["Payone", "plentymarkets", "payment"],
   "categories": [3519],
   "type": "payment",

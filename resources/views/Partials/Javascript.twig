@@ -1,3 +1,4 @@
+{% if (services.template.isCurrentTemplate('tpl.checkout') or services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation')) %}
 <script type="text/javascript">
     //All Payments
     var Templates = {};
@@ -45,3 +46,5 @@
 <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-payment.js"></script>
 <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-sepa-mandate.js"></script>
 <script type="text/javascript" src="{{ plugin_path('Payone') }}/js/payone-direct-debit.js" defer></script>
+
+{% endif %}

@@ -22,7 +22,7 @@ The plugin currently offers the following payment methods:
 
 ## First steps
 
-**Note: Before using the plugin, you have to register for a BS PAYONE account. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
+**Note: The use of this plugin requires an access code which can be obtained from PSG Projektmanagement GmbH. Under certain conditions, you can take part in an attractive promotion program through PSG Projektmanagement GmbH in connnection with this payment method. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
 
 Upon receipt of your access data, log in to the BS PAYONE merchant interface and carry out the following settings.
 

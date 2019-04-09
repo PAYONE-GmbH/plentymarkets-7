@@ -22,7 +22,7 @@ Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
 ## Erste Schritte
 
-**Hinweis: Bevor Sie das Plugin nutzen, müssen Sie ein BS PAYONE Konto beantragen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
+**Hinweis: Die Nutzung dieses Plugins erfordert einen Freischaltcode, den Sie über die PSG Projektmanagement GmbH erhalten können. Unter bestimmten Voraussetzungen können Sie in Verbindung mit dieser Zahlart über die PSG Projektmanagement GmbH in den Genuss eines attraktiven Förderprogramms kommen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
 
 Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
 

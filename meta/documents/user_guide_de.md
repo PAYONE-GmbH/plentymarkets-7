@@ -107,7 +107,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
               <b>Art der Autorisierung</b>
           </td>
           <td>
-             <strong>Vorautorisierung</strong>: Wählen Sie diese Option, wenn die Zahlung beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5). <br />
+             <strong>Vorautorisierung</strong>: Wählen Sie diese Option, wenn der Zahlungseinzug beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5). <br />
             <strong>Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseinzug beim Käufer sofort stattfinden soll. Der Zahlungseingang wird somit direkt nach dem Kaufabschluss im Webshop in Ihrem plentymarkets System gebucht.
          </td>
       </tr>

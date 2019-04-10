@@ -104,12 +104,11 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
       </tr>
       <tr>
           <td>
-              <b>Method for payment registration</b>
+              <b>Authorisation method</b>
           </td>
           <td>
-            Select when and how orders with the payment method BS PAYONE are marked as paid in your plentymarkets system.<br /> <strong>Manually/Event procedure</strong>: Select this option if you wish to manually book incoming payment or to set up an event procedure booking incoming payment. <br />
-            <strong>Directly after authorisation:</strong>: Select this option if incoming payment should be booked directly after completion of the checkout process in the online store and successful authorisation by BS PAYONE.
-         </td>
+             <strong>Preauthorisation:</strong> Select this option if payment collection should only be prepared for the customer. The definite collection of payment has to be effected by an event procedure that should be triggered by booking outgoing items (see table 5). <br />
+            <strong>Authorisation</strong>: Select this option if the payment should be collected from the customer immediately. Incoming payment is then booked directly after the customer has completed the checkout process in the online store.
       </tr>
    </tbody>
 </table>
@@ -187,7 +186,7 @@ In the following, you select the BS PAYONE payment methods that should be availa
    </tbody>
 </table>
 
-**Note:** The payment method Die Zahlungsart **Credit card** requires particular attention. Additional settings are necessary for this payment method. The settings are described in table 3.
+**Note:** The payment method **Credit card** requires particular attention. Additional settings are necessary for this payment method. The settings are described in table 3.
 
 <table>
 <caption>Tab. 3: Setting up the payment method Credit card</caption>
@@ -284,9 +283,11 @@ You have multiple options to integrate the payment method BS PAYONE into your on
    </tbody>
 </table>
 
-## Automatically refunding BS PAYONE payments
+## Sending an automatic shipping confirmation to BS PAYONE
 
-Set up an event procedure to automatically refund a BS PAYONE payment.
+Set up an event procedure to send an automatic shipping confirmation to BS PAYONE as soon as you have shipped the order.
+
+**Note:** Sending up the following event procedure is mandatory if you have selected the option **Preauthorisation** as **Authorisation method** (see table 1). This event procedure is not necessary and cannot be used if you have selected the option **Authorisation**.
 
 ##### Setting up an event procedure:
 
@@ -304,7 +305,61 @@ Set up an event procedure to automatically refund a BS PAYONE payment.
 
 <table>
 <caption>
-   Tab. 5: Event procedure for automatically refunding BS PAYONE payments
+   Tab. 5: Event procedure for sending an automatic shipping confirmation to BS PAYONE
+</caption>
+   <thead>
+    </tr>
+      <th>
+         Setting
+      </th>
+      <th>
+         Option
+      </th>
+      <th>
+         Selection
+      </th>
+    </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><strong>Event</strong></td>
+         <td>Select the event after which an automatic shipping confirmation should be sent, e.g. <strong>Order change > Outgoing items booked</strong></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td><strong>Filter 1</strong></td>
+         <td><strong>Order > Payment method</strong></td>
+         <td><strong>Plugin: PAYONE</strong>
+      </tr>
+      <tr>
+        <td><strong>Procedure</strong></td>
+        <td><strong>Plugins > Payone | Refund order</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+</table>
+
+## Automatically refunding BS PAYONE payments
+
+Set up an event procedure to automatically refund a BS PAYONE payment.
+
+##### Setting up an event procedure:
+
+1. Go to **System » Orders » Events**.
+2. Click on **Add event procedure**.
+→ The **Create new event procedure** window opens.
+3. Enter a name.
+4. Select the event according to table 6.
+5. **Save** the settings.
+→ The event procedure is created.
+6. Carry out the further settings according to table 6.
+7. Place a check mark next to the option **Active**.
+8. **Save** the settings.
+→ The event procedure is saved.
+
+<table>
+<caption>
+   Tab. 6: Event procedure for automatically refunding BS PAYONE payments
 </caption>
    <thead>
     </tr>

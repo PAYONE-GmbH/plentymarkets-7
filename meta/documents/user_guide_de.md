@@ -104,11 +104,11 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
       </tr>
       <tr>
           <td>
-              <b>Art des Zahlungseinzugs</b>
+              <b>Art der Autorisierung</b>
           </td>
           <td>
-            Wählen Sie, wann und auf welche Weise Aufträge mit der Zahlungsart BS PAYONE in Ihrem plentymarkets System als bezahlt markiert werden sollen.<br /> <strong>Manuell/Ereignisaktion</strong>: Wählen Sie diese Option, wenn Sie für BS PAYONE-Zahlungen manuell oder per Ereignisaktion den Zahlungseingang buchen wollen.<br />
-            <strong>Direkt nach der Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseingang direkt nach dem Kaufabschluss im Webshop und der anschließenden Autorisierung durch BS PAYONE in Ihrem plentymarkets System gebucht werden soll.
+             <strong>Vorautorisierung</strong>: Wählen Sie diese Option, wenn die Zahlung beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5). <br />
+            <strong>Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseinzug beim Käufer sofort stattfinden soll. Der Zahlungseingang wird somit direkt nach dem Kaufabschluss im Webshop in Ihrem plentymarkets System gebucht.
          </td>
       </tr>
    </tbody>
@@ -285,6 +285,62 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
    </tbody>
 </table>
 
+## Automatische Versandbestätigung an BS PAYONE senden
+
+Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an BS PAYONE zu senden, sobald Sie den Auftrag versendet haben.
+
+**Hinweis:** Die Einrichtung dieser Ereignisaktion ist zwingend notwendig, wenn als **Art der Autorisierung** die Option **Vorautorisierung** gewählt wurde (siehe Tabelle 1). Haben Sie die Option **Autorisierung** gewählt, ist diese Ereignisaktion nicht nutzbar und nicht notwendig.
+
+##### Ereignisaktion einrichten:
+
+1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
+2. Klicken Sie auf **Ereignisaktion hinzufügen**.
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+3. Geben Sie einen Namen ein.
+4. Wählen Sie das Ereignis gemäß Tabelle 5.
+5. **Speichern** Sie die Einstellungen.
+→ Die Ereignisaktion wird angelegt.
+6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
+7. Setzen Sie ein Häkchen bei **Aktiv**.
+8. **Speichern** Sie die Einstellungen.
+→ Die Ereignisaktion wird gespeichert.
+
+<table>
+<caption>
+   Tab. 5: Ereignisaktion zum Senden einer automatischen Versandbestätigung an BS PAYONE
+</caption>
+   <thead>
+    </tr>
+      <th>
+         Einstellung
+      </th>
+      <th>
+         Option
+      </th>
+      <th>
+         Auswahl
+      </th>
+    </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><strong>Ereignis</strong></td>
+         <td>Das Ereignis wählen, nach dem die Versandbestätigung automatisch versendet werden soll, beispielsweise <strong>Auftragsänderung > Warenausgang gebucht</strong> </td>
+         <td></td>
+      </tr>
+      <tr>
+         <td><strong>Filter 1</strong></td>
+         <td><strong>Auftrag > Zahlungsart</strong></td>
+         <td><strong>Plugin: PAYONE</strong>
+      </tr>
+      <tr>
+        <td><strong>Aktion</strong></td>
+        <td><strong>Plugin > BS PAYONE | Versandbestätigung senden</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+</table>
+
 ## BS PAYONE-Zahlung automatisch zurückzahlen
 
 Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS PAYONE zu automatisieren.
@@ -292,20 +348,20 @@ Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS 
 ##### Ereignisaktion einrichten:
 
 1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
-2. Klicken Sie auf **Ereignisaktion hinzufügen**.<br />
+2. Klicken Sie auf **Ereignisaktion hinzufügen**.
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 3. Geben Sie einen Namen ein.
-4. Wählen Sie das Ereignis gemäß Tabelle 5.
-5. **Speichern** Sie die Einstellungen.<br />
+4. Wählen Sie das Ereignis gemäß Tabelle 6.
+5. **Speichern** Sie die Einstellungen.
 → Die Ereignisaktion wird angelegt.
-6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
+6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 6 vor.
 7. Setzen Sie ein Häkchen bei **Aktiv**.
-8. **Speichern** Sie die Einstellungen.<br />
+8. **Speichern** Sie die Einstellungen.
 → Die Ereignisaktion wird gespeichert.
 
 <table>
 <caption>
-   Tab. 5: Ereignisaktion zur automatischen Rückzahlung der BS PAYONE-Zahlung
+   Tab. 6: Ereignisaktion zur automatischen Rückzahlung der BS PAYONE-Zahlung
 </caption>
    <thead>
     </tr>

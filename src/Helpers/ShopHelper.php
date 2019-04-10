@@ -80,17 +80,6 @@ class ShopHelper
     }
 
     /**
-     * @return bool
-     */
-    public function isDebugModeActive()
-    {
-        /** @var ConfigRepository $config */
-        $config = pluginApp(ConfigRepository::class);
-
-        return (bool) $config->get(PluginConstants::NAME . '.debugging.active');
-    }
-
-    /**
      * @return string
      */
     public function getIpAddress()

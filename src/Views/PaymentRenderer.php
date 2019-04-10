@@ -85,8 +85,7 @@ class PaymentRenderer
                 'ccTypes' => $this->creditcardTypes->getAllowedTypes(),
                 'defaultWidthInPx' => $this->style->getDefaultWidthInPx(),
                 'defaultHeightInPx' => $this->style->getDefaultHeightInPx(),
-                'defaultStyle' => $this->style->getDefaultStyle(),
-                'isDebugModeEnabled' => $this->shopHelper->isDebugModeActive(),
+                'defaultStyle' => $this->style->getDefaultStyle()
             ]
         );
     }

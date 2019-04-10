@@ -70,7 +70,7 @@ class Api
         $responseObject = AuthResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
         return $responseObject;
     }
@@ -89,7 +89,7 @@ class Api
         $responseObject = PreAuthResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_PRE_AUTH), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_PRE_AUTH), $response);
 
         return $responseObject;
     }
@@ -109,7 +109,7 @@ class Api
         $responseObject = ResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_REVERSAL), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_REVERSAL), $response);
 
         return $responseObject;
     }
@@ -129,7 +129,7 @@ class Api
         $responseObject = ResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_CAPTURE), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_CAPTURE), $response);
 
         return $responseObject;
     }
@@ -149,7 +149,7 @@ class Api
         $responseObject = ResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
         return $responseObject;
     }
@@ -167,7 +167,7 @@ class Api
         $responseObject = ResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
         return $responseObject;
     }
@@ -185,7 +185,7 @@ class Api
         $responseObject = ResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
 
         return $responseObject;
     }
@@ -203,7 +203,7 @@ class Api
         $responseObject = ManagemandateResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());
-        $this->logger->critical('Api.' . $this->getCallAction(self::REQUEST_TYPE_MANAGEMANDATE), $response);
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_MANAGEMANDATE), $response);
 
         return $responseObject;
     }
@@ -217,7 +217,7 @@ class Api
     public function doLibCall($call, $requestParams): array
     {
         $this->logger->setReferenceType(Logger::PAYONE_REQUEST_REFERENCE);
-        $this->logger->critical('Api.' . $this->getCallAction($call), $requestParams);
+        $this->logger->debug('Api.' . $this->getCallAction($call), $requestParams);
 
         try {
             $response = $this->libCall->call(

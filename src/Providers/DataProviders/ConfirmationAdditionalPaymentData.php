@@ -7,6 +7,7 @@ use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\Clearing\Bank;
 use Payone\Models\Api\PreAuthResponse;
+use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\ApiResponseCache;
 use Payone\PluginConstants;
 use Plenty\Modules\Order\Models\Order;
@@ -37,12 +38,12 @@ class ConfirmationAdditionalPaymentData
         $order = $arg[0];
 
         $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditionalPaymentData', $arg);
-        if (!($order instanceof Order)) {
+        if ( !is_array($order) || $order['id'] <= 0 ) {
             $logger->setIdentifier(__METHOD__)->debug('Dataprovider.ConfirmationAdditionalPaymentData', 'Not an order.');
 
             return '';
         }
-        $payments = $paymentRepositoryContract->getPaymentsByOrderId($order->id);
+        $payments = $paymentRepositoryContract->getPaymentsByOrderId($order['id']);
         foreach ($payments as $payment) {
             /** @var Payment $payment */
             if (!$paymentHelper->isPayonePayment($payment->mopId)) {
@@ -56,6 +57,10 @@ class ConfirmationAdditionalPaymentData
 
             /** @var AuthResponse|PreAuthResponse $auth */
             $auth = $paymentCache->loadAuth($payment->mopId);
+            if(!$auth instanceof ResponseAbstract) {
+                return '';
+            }
+
             $clearing = $auth->getClearing();
             if (!$clearing || !($clearing instanceof Bank)) {
                 continue;

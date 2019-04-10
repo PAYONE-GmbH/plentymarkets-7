@@ -112,8 +112,8 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $captureProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Zahlungseingang buchen',
-            'en' => PluginConstants::NAME . ' | Book incoming payment',
+            'de' => 'Versandbestätigung an ' . PluginConstants::NAME,
+            'en' => 'Send shipping confirmation to ' . PluginConstants::NAME,
         ];
         $eventProceduresService->registerProcedure(
             PluginConstants::NAME,

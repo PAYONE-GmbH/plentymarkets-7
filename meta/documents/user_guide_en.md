@@ -22,7 +22,17 @@ The plugin currently offers the following payment methods:
 
 ## First steps
 
-**Note: The use of this plugin requires an access code which can be obtained from PSG Projektmanagement GmbH. Under certain conditions, you can take part in an attractive promotion program through PSG Projektmanagement GmbH in connnection with this payment method. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).**
+<div class="alert alert-warning" role="alert">
+  Note: The use of this plugin requires an access code which can be obtained from PSG Projektmanagement GmbH. Under certain conditions, you can take part in an attractive promotion program through PSG Projektmanagement GmbH in connnection with this payment method. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).
+</div>
+
+Contact us: <br
+PSG Projektmanagement GmbH <br>
+Meergässle 4 <br>
+89180 Berghülen <br>
+Phone: 07344-9592588 <br>
+E-mail: plenty@psg-projektmanagement.de <br>
+Website: http://www.psg-projektmanagement.de
 
 Upon receipt of your access data, log in to the BS PAYONE merchant interface and carry out the following settings.
 

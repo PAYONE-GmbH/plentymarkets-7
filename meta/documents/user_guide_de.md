@@ -22,7 +22,17 @@ Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
 ## Erste Schritte
 
-**Hinweis: Die Nutzung dieses Plugins erfordert einen Freischaltcode, den Sie über die PSG Projektmanagement GmbH erhalten können. Unter bestimmten Voraussetzungen können Sie in Verbindung mit dieser Zahlart über die PSG Projektmanagement GmbH in den Genuss eines attraktiven Förderprogramms kommen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).**
+<div class="alert alert-warning" role="alert">
+  Hinweis: Die Nutzung dieses Plugins erfordert einen Freischaltcode, den Sie über die PSG Projektmanagement GmbH erhalten können. Unter bestimmten Voraussetzungen können Sie in Verbindung mit dieser Zahlart über die PSG Projektmanagement GmbH in den Genuss eines attraktiven Förderprogramms kommen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).
+</div>
+
+Kontaktieren Sie uns: <br>
+PSG Projektmanagement GmbH <br>
+Meergässle 4 <br>
+89180 Berghülen <br>
+Telefon: 07344-9592588 <br>
+E-Mail: plenty@psg-projektmanagement.de <br>
+Internet: http://www.psg-projektmanagement.de
 
 Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
 

@@ -20,7 +20,7 @@
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": [],
+  "require": ["IO"],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
     "arvatis/payone-php-api":"2.2.*"

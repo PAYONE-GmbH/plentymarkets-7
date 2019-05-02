@@ -56,6 +56,24 @@ class PaymentCache
         );
     }
 
+    public function setActiveBasketId($transactionBasketId){
+        $this->sessionStorage->setSessionValue(
+            $this->getStorageKey('activeTransactionBasketId'),
+            $transactionBasketId
+        );
+    }
+
+    public function getActiveBasketId(){
+        return $this->sessionStorage->getSessionValue($this->getStorageKey('activeTransactionBasketId'));
+    }
+
+    public function resetActiveBasketId(){
+        $this->sessionStorage->setSessionValue(
+            $this->getStorageKey('activeTransactionBasketId'),
+            null
+        );
+    }
+
     /**
      * @param string $paymentCode
      *

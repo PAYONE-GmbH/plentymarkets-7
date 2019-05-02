@@ -1,5 +1,10 @@
 # Release Notes for Payone
 
+## 1.1.1 (2019-04-02)
+
+### Fixed
+- Fixed an issue that caused duplicate orders.
+
 ## 1.1.0 (2019-03-27)
 
 ### Changed

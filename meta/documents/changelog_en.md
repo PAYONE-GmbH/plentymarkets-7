@@ -3,7 +3,8 @@
 ## 1.1.1 (2019-04-02)
 
 ### Fixed
-- An error causing the creation of duplicate orders during payment processing has been fixed.
+- An error causing the creation of duplicate orders during payment processing has been fixed
+- An error with the credit card type selection was fixed
 
 ## 1.1.0 (2019-03-27)
 

@@ -3,7 +3,7 @@
 ## 1.1.1 (2019-04-02)
 
 ### Fixed
-- Fixed an issue that caused duplicate orders.
+- An error causing the creation of duplicate orders during payment processing has been fixed.
 
 ## 1.1.0 (2019-03-27)
 

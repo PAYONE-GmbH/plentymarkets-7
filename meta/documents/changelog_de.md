@@ -3,7 +3,7 @@
 ## 1.1.1 (2019-04-02)
 
 ### Behoben
-- Es wurde ein Problem behoben, was für Auftragsduplikate geführt hatte. 
+- Ein Fehler, der während der Zahlungsabwicklung zur Anlage von Auftragsduplikaten geführt hatte, wurde behoben.
 
 ## 1.1.0 (2019-03-27)
 

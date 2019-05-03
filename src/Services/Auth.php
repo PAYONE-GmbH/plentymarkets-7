@@ -92,6 +92,7 @@ class Auth
 
         $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->setActiveBasketId($basket->id);
 
         return $authResponse;
     }

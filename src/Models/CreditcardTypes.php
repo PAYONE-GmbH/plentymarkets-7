@@ -51,7 +51,10 @@ class CreditcardTypes
 
         $allowedTypesFromConfig = explode(', ', $allowedTypesFromConfigString);
 
-        return array_intersect($this->getCreditCardTypes(), $allowedTypesFromConfig);
+        return $allowedTypesFromConfig;
+
+        //do not intersect this, it will break the cardtype selection (visa, maestro)
+        //return array_intersect($this->getCreditCardTypes(), $allowedTypesFromConfig);
     }
 
     /**

@@ -1,5 +1,11 @@
 # Release Notes für Payone
 
+## 1.1.1 (2019-04-02)
+
+### Behoben
+- Ein Fehler, der während der Zahlungsabwicklung zur Anlage von Auftragsduplikaten geführt hatte, wurde behoben
+- Ein Fehler bei der Kreditkartentypauswahl wurde behoben
+
 ## 1.1.0 (2019-03-27)
 
 ### Geändert

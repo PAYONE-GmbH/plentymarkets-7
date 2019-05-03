@@ -91,7 +91,7 @@ class PaymentCreation
     public function createPayment($mopId, ResponseAbstract $response, Basket $basket, ClearingAbstract $account = null)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.createPayment',
+            'Payment.createPayment',
             [
                 'paymentId' => $mopId,
                 'response' => $response,
@@ -199,7 +199,7 @@ class PaymentCreation
     public function capturePayment(Payment $payment, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatePayment',
+            'Payment.updatePayment',
             [
                 'payment' => $payment,
                 'order' => $order,
@@ -227,7 +227,7 @@ class PaymentCreation
     public function reAuthorizePayment(Payment $payment, Response $response, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatePayment',
+            'Payment.updatePayment',
             [
                 'payment' => $payment,
                 'response' => $response,
@@ -277,7 +277,7 @@ class PaymentCreation
     public function createRefundPayment($paymentId, $response, $currency, $grandTotal, $parentPaymentId)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.createRefundPayment',
+            'Payment.createRefundPayment',
             [
                 'paymentId' => $paymentId,
                 'response' => $response,
@@ -344,7 +344,7 @@ class PaymentCreation
     public function assignPaymentToOrder(Payment $payment, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.assignPaymentToOrder',
+            'Payment.assignPaymentToOrder',
             [
                 'payment' => $payment,
                 'orderId' => $order->id,
@@ -395,7 +395,7 @@ class PaymentCreation
     public function updatePaymentStatus($txid, $txaction, $sequenceNumber)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatingPayment',
+            'Payment.updatingPayment',
             [
                 'txid' => $txid,
                 'txaction' => $txaction,
@@ -411,7 +411,7 @@ class PaymentCreation
         $this->logger->debug('PaymentCreation.updatingPayment', ['payments' => $payments]);
         if (!count($payments)) {
             $this->logger->debug(
-                'PaymentCreation.updatingPayment',
+                'Payment.updatingPayment',
                 'No payments found for txid'
             );
 
@@ -421,7 +421,7 @@ class PaymentCreation
         foreach ($payments as $payment) {
             $newStatus = PayonePaymentStatus::getPlentyStatus($txaction);
             $this->logger->debug(
-                'PaymentCreation.updatingPayment',
+                'Payment.updatingPayment',
                 [
                     'payment' => $payment,
                     'oldStatus' => $payment->status,
@@ -474,7 +474,7 @@ class PaymentCreation
             }
             if ($property->typeId === $pamentPropertyTypeId) {
                 $this->logger->debug(
-                    'PaymentCreation.updatingPayment',
+                    'Payment.updatingPayment',
                     [
                         'property' => $pamentPropertyTypeId,
                         'oldValue' => $property->value,
@@ -487,7 +487,7 @@ class PaymentCreation
         }
 
         $this->logger->debug(
-            'PaymentCreation.updatingPayment',
+            'Payment.updatingPayment',
             [
                 'property' => $pamentPropertyTypeId,
                 'newValue' => $value,

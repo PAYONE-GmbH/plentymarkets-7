@@ -447,10 +447,14 @@ abstract class DataProviderAbstract
     /**
      * @return array
      */
-    protected function getRedirectUrls()
+    protected function getRedirectUrls($transactionBasketId = "")
     {
+        $successParam = '';
+        if(strlen($transactionBasketId)){
+            $successParam = '?transactionBasketId='.$transactionBasketId;
+        }
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess',
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess'.$successParam,
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
             'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
         ];

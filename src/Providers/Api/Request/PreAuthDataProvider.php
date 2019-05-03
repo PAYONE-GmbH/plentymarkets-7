@@ -40,7 +40,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
             $requestParams['bankAccount'] = $this->getBankAccount();
         }
         if ($this->paymentHasRedirect($paymentCode)) {
-            $requestParams['redirect'] = $this->getRedirectUrls();
+            $requestParams['redirect'] = $this->getRedirectUrls($basket->id);
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();

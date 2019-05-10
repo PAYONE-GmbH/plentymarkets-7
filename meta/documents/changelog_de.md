@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.2 (2019-05-10)
+
+### Hinzugefügt
+- Netto Bestellungen können nun durchgeführt werden.
+
 ## 1.1.1 (2019-04-02)
 
 ### Behoben

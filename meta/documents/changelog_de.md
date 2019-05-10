@@ -2,6 +2,9 @@
 
 ## 1.1.2 (2019-05-10)
 
+### Geändert
+- Die Eingabe des Geburtsdatums ist nun im Bestellprozess ein Pflichtfeld. Dieses Feld muss in den Einstellungen von Ceres für den Bestellprozess aktiviert werden. 
+
 ### Hinzugefügt
 - Netto Bestellungen können nun durchgeführt werden.
 

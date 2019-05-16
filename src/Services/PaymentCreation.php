@@ -144,8 +144,8 @@ class PaymentCreation
 
         $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
         $paymentProperties[] = $this->createPaymentProperty(
-            PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
-            $basket->customerId);
+            PaymentProperty::TYPE_INVOICE_ADDRESS_ID,
+            $basket->customerInvoiceAddressId);
 
         $paymentText = [
             'Request type' => 'PreAuth',
@@ -157,22 +157,30 @@ class PaymentCreation
             'TransactionID ' . $transactionID
         );
         if ($account instanceof Bank) {
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_NAME_OF_RECEIVER,
-                json_encode($account->getAccountholder())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_IBAN_OF_RECEIVER,
-                json_encode($account->getIban())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_BIC_OF_RECEIVER,
-                json_encode($account->getIban())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
-                json_encode($account->getAccount())
-            );
+            if(strlen(json_encode($account->getAccountholder()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_NAME_OF_RECEIVER,
+                    json_encode($account->getAccountholder())
+                );
+            }
+            if(strlen(json_encode($account->getIban()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_IBAN_OF_RECEIVER,
+                    json_encode($account->getIban())
+                );
+            }
+            if(strlen(json_encode($account->getBic()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_BIC_OF_RECEIVER,
+                    json_encode($account->getBic())
+                );
+            }
+            if(strlen(json_encode($account->getAccount()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
+                    json_encode($account->getAccount())
+                );
+            }
 
             $paymentText['accountHolder'] = $account->getAccountholder();
             $paymentText['iban'] = $account->getIban();

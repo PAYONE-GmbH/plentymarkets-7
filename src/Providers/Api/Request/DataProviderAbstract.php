@@ -276,7 +276,7 @@ abstract class DataProviderAbstract
             return '1970-01-01';
         }
 
-        return date('Y-m-d', $addressObj->birthday);
+        return date_format($addressObj->birthday,'Y-m-d');
     }
 
     /**

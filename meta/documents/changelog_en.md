@@ -3,7 +3,7 @@
 ## 1.1.2 (2019-05-10)
 
 ### Changed
-- - The entry of the date of birth is now a mandatory field in the checkout process. This field must be activated in the Ceres settings for the checkout process.
+- The entry of the date of birth is now a mandatory field in the checkout process. This field must be activated in the Ceres settings for the checkout process.
 
 ### Added
 - Net orders can now be executed.

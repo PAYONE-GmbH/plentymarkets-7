@@ -253,6 +253,24 @@ Im Folgenden legen Sie fest, welche BS PAYONE-Zahlungsarten Ihren Kunden im Webs
    </tbody>
 </table>
 
+## Ceres-Checkout anpassen
+
+Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit Ihre Kunden bei Bezahlvorgängen mit PAYONE ihr Geburtsdatum korrekt eingeben können.
+
+<div class="alert alert-warning" role="alert">
+  Hinweis: Nehmen Sie die im Folgenden beschriebene Einstellung unbedingt sorgfältig vor, da Ihre Kunden andernfalls den Bezahlvorgang mit PAYONE nicht abschließen können!
+</div>
+
+##### Ceres-Checkout anpassen:
+
+1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**. <br > → Die Plugin-Übersicht wird geöffnet.
+2. Klicken Sie auf **Ceres**. <br > → Das Plugin wird geöffnet.
+3. Klicken Sie im Verzeichnisbaum auf **Konfiguration**.
+4. Wechseln Sie in das Tab **Kaufabwicklung und Mein Konto.**
+5. Klappen Sie den Bereich **Rechnungsadressfelder im Adressformular anzeigen (DE)** auf.
+6. Aktivieren Sie über die Checkbox die Option **Geburtsdatum**.
+7. **Speichern** Sie die Einstellungen. <br /> Im Checkout wird Ihren Kunden nun ein Feld zur Eingabe des Geburtsdatums angezeigt.
+
 ## Template-Container verknüpfen
 
 Für die Zahlungsart BS PAYONE stehen Ihnen verschiedene Möglichkeiten zur Verfügung, um sie in Ihrem Webshop einzubinden.
@@ -304,16 +322,13 @@ Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an
 ##### Ereignisaktion einrichten:
 
 1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
-2. Klicken Sie auf **Ereignisaktion hinzufügen**.
-→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+2. Klicken Sie auf **Ereignisaktion hinzufügen**. <br > → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 3. Geben Sie einen Namen ein.
 4. Wählen Sie das Ereignis gemäß Tabelle 5.
-5. **Speichern** Sie die Einstellungen.
-→ Die Ereignisaktion wird angelegt.
+5. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird angelegt.
 6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
 7. Setzen Sie ein Häkchen bei **Aktiv**.
-8. **Speichern** Sie die Einstellungen.
-→ Die Ereignisaktion wird gespeichert.
+8. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird gespeichert.
 
 <table>
 <caption>
@@ -358,16 +373,13 @@ Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS 
 ##### Ereignisaktion einrichten:
 
 1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
-2. Klicken Sie auf **Ereignisaktion hinzufügen**.
-→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+2. Klicken Sie auf **Ereignisaktion hinzufügen**. <br > → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 3. Geben Sie einen Namen ein.
 4. Wählen Sie das Ereignis gemäß Tabelle 6.
-5. **Speichern** Sie die Einstellungen.
-→ Die Ereignisaktion wird angelegt.
+5. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird angelegt.
 6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 6 vor.
 7. Setzen Sie ein Häkchen bei **Aktiv**.
-8. **Speichern** Sie die Einstellungen.
-→ Die Ereignisaktion wird gespeichert.
+8. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird gespeichert.
 
 <table>
 <caption>

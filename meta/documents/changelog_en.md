@@ -1,5 +1,13 @@
 # Release Notes for Payone
 
+## 1.1.2 (2019-05-10)
+
+### Changed
+- Entering the date of birth is now mandatory in the checkout process. The field for the date of birth must be activated in the Ceres settings for the checkout process.
+
+### Added
+- Net orders can now be executed.
+
 ## 1.1.1 (2019-04-02)
 
 ### Fixed

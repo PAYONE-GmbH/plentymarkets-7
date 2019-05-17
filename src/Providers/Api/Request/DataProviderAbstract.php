@@ -276,7 +276,8 @@ abstract class DataProviderAbstract
             return '1970-01-01';
         }
 
-        return date('Y-m-d', $addressObj->birthday);
+        $dateOfBirth = strtotime($addressObj->birthday);
+        return date('Y-m-d', $dateOfBirth);
     }
 
     /**
@@ -299,6 +300,16 @@ abstract class DataProviderAbstract
      */
     protected function getBasketData(Basket $basket)
     {
+        /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
+        $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
+
+        //we have to manipulate the basket because its stupid and doesnt know if its netto or gross
+        if(!count($vatService->getCurrentTotalVats())) {
+            $basket->itemSum = $basket->itemSumNet;
+            $basket->shippingAmount = $basket->shippingAmountNet;
+            $basket->basketAmount = $basket->basketAmountNet;
+        }
+
         $requestParams = $basket->toArray();
         $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
         $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
@@ -328,6 +339,11 @@ abstract class DataProviderAbstract
         $requestParams['shippingAmount'] = (int)round($this->getShippingAmountFromOrder($order) * 100);
         $requestParams['shippingAmountNet'] = (int)round($this->getShippingAmountNetFromOrder($order) * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
+
+        if($order->amount->isNet){
+            $requestParams['basketAmount'] = $requestParams['basketAmountNet'];
+            $requestParams['shippingAmount'] = $requestParams['shippingAmountNet'];
+        }
 
         return $requestParams;
     }

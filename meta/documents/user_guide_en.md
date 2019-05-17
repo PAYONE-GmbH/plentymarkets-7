@@ -55,8 +55,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
 ##### Carrying out the basic settings
 
 1. Go to **Plugin » Plugin overview**.
-2. In the plugin list, click on the name of the plugin **BS BS PAYONE**.
-→ The detail view of the plugin  opens.
+2. In the plugin list, click on the name of the plugin **BS BS PAYONE**. <br > → The detail view of the plugin  opens.
 3. Open the menu entry **Configuration**.
 4. Click on **Basic settings**. Carry out the settings according to the information provided in table 1.
 5. **Save** the settings.
@@ -252,6 +251,24 @@ In the following, you select the BS PAYONE payment methods that should be availa
    </tbody>
 </table>
 
+## Adjusting the Ceres checkout
+
+In the next step, an adjustment to your Ceres checkout settings is necessary. These adjustments need to be made so that customers using PAYONE for payment processes can enter their date of birth correctly.
+
+<div class="alert alert-warning" role="alert">
+  Note: Make sure to carefully carry out the settings described below. Otherwise, your customers will not be able to complete the payment process using PAYONE in your online store!
+</div>
+
+##### Adjusting the Ceres checkout:
+
+1. Go to **Plugins » Plugin overview**. <br > → The plugin overview opens.
+2. Click on **Ceres**. <br > → The plugin opens.
+3. Click on **Configuration** in the directory tree.
+4. Click on the **Checkout and My account** tab.
+5. Open the **Show invoice address fields in the address form (DE)** area.
+6. Use the check box to activate the option **Date of birth**.
+7. **Save** the settings. <br /> A field for entering the date of birth is now displayed for your customers in the checkout area.
+
 ## Linking template containers
 
 You have multiple options to integrate the payment method BS PAYONE into your online store. For this purpose, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
@@ -302,16 +319,13 @@ Set up an event procedure to send an automatic shipping confirmation to BS PAYON
 ##### Setting up an event procedure:
 
 1. Go to **System » Orders » Events**.
-2. Click on **Add event procedure**.
-→ The **Create new event procedure** window opens.
+2. Click on **Add event procedure**. <br > → The **Create new event procedure** window opens.
 3. Enter a name.
 4. Select the event according to table 5.
-5. **Save** the settings.
-→ The event procedure is created.
+5. **Save** the settings. <br > → The event procedure is created.
 6. Carry out the further settings according to table 5.
 7. Place a check mark next to the option **Active**.
-8. **Save** the settings.
-→ The event procedure is saved.
+8. **Save** the settings. <br > → The event procedure is saved.
 
 <table>
 <caption>
@@ -356,16 +370,13 @@ Set up an event procedure to automatically refund a BS PAYONE payment.
 ##### Setting up an event procedure:
 
 1. Go to **System » Orders » Events**.
-2. Click on **Add event procedure**.
-→ The **Create new event procedure** window opens.
+2. Click on **Add event procedure**. <br > → The **Create new event procedure** window opens.
 3. Enter a name.
 4. Select the event according to table 6.
-5. **Save** the settings.
-→ The event procedure is created.
+5. **Save** the settings. <br > → The event procedure is created.
 6. Carry out the further settings according to table 6.
 7. Place a check mark next to the option **Active**.
-8. **Save** the settings.
-→ The event procedure is saved.
+8. **Save** the settings. <br > → The event procedure is saved.
 
 <table>
 <caption>

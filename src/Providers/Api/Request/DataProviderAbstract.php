@@ -228,17 +228,25 @@ abstract class DataProviderAbstract
             'firstname' => (string)$addressObj->firstName,
             'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
-            'birthday' => $this->getBirthDay($addressObj),
             'ip' => (string)$this->shopHelper->getIpAddress(),
             'customerId' => (string)$customerId,
-            'registrationDate' => '1970-01-01',
+            //'registrationDate' => '1970-01-01', // what the ... is this?
             'group' => 'default',
             'company' => (string)$addressObj->companyName,
             'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
-        //TODO: Check format
+
+        $dateOfBirth = $this->getBirthDay($addressObj);
+        $customerData['birthday'] = '';
+        if(isset($dateOfBirth)) {
+            $customerData['birthday'] = $dateOfBirth;
+        }
+
         $customerData['gender'] = 'm';
+        if($addressObj->gender == 'female') {
+            $customerData['gender'] = 'f';
+        }
 
         return $customerData;
     }
@@ -267,15 +275,13 @@ abstract class DataProviderAbstract
 
     /**
      * @param Address $addressObj
-     *
-     * @return string
+     * @return false|string|null
      */
-    protected function getBirthDay(Address $addressObj): string
+    protected function getBirthDay(Address $addressObj)
     {
-        if (!$addressObj->birthday) {
-            return '1970-01-01';
+        if(!isset($addressObj->birthday) || !strlen($addressObj->birthday)) {
+            return null;
         }
-
         $dateOfBirth = strtotime($addressObj->birthday);
         return date('Y-m-d', $dateOfBirth);
     }

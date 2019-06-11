@@ -254,7 +254,8 @@ class PayoneServiceProvider extends ServiceProvider
 
                 $basket = $basketRepository->load();
                 $billingAddress = $addressHelper->getBasketBillingAddress($basket);
-                if(!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)){
+                if( $paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
+                    (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)) ) {
 
                     /** @var \Plenty\Plugin\Translation\Translator $translator */
                     $translator = pluginApp(\Plenty\Plugin\Translation\Translator::class);

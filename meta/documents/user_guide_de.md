@@ -255,13 +255,13 @@ Im Folgenden legen Sie fest, welche BS PAYONE-Zahlungsarten Ihren Kunden im Webs
 
 ## Ceres-Checkout anpassen
 
-Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit Ihre Kunden bei Bezahlvorgängen mit PAYONE ihr Geburtsdatum korrekt eingeben können.
+Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit Ihre Kunden bei Bezahlvorgängen mit PAYONE ihr Geburtsdatum (nur für den gesicherten Rechnungskauf) korrekt eingeben können.
 
 <div class="alert alert-warning" role="alert">
   Hinweis: Nehmen Sie die im Folgenden beschriebene Einstellung unbedingt sorgfältig vor, da Ihre Kunden andernfalls den Bezahlvorgang mit PAYONE nicht abschließen können!
 </div>
 
-##### Ceres-Checkout anpassen:
+##### Ceres-Checkout anpassen für den gesicherten Rechnungskauf:
 
 1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**. <br > → Die Plugin-Übersicht wird geöffnet.
 2. Klicken Sie auf **Ceres**. <br > → Das Plugin wird geöffnet.

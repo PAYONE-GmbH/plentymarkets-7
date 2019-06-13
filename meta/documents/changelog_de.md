@@ -1,5 +1,11 @@
 # Release Notes für Payone
 
+## 1.1.3 (2019-06-13)
+
+### Geändert
+- Optimierungen für die Eingabe des Geburtsdatums im Bestellprozess.
+- User Guide aktualisiert.
+
 ## 1.1.2 (2019-05-10)
 
 ### Geändert

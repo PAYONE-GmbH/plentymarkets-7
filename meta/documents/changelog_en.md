@@ -1,5 +1,11 @@
 # Release Notes for Payone
 
+## 1.1.3 (2019-06-13)
+
+### Changed
+- Optimisation for Entering the date of birth in the checkout process.
+- Updated user guide
+
 ## 1.1.2 (2019-05-10)
 
 ### Changed

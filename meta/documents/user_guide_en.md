@@ -253,13 +253,13 @@ In the following, you select the BS PAYONE payment methods that should be availa
 
 ## Adjusting the Ceres checkout
 
-In the next step, an adjustment to your Ceres checkout settings is necessary. These adjustments need to be made so that customers using PAYONE for payment processes can enter their date of birth correctly.
+In the next step, an adjustment to your Ceres checkout settings is necessary. These adjustments need to be made so that customers using PAYONE for payment processes can enter their date of birth (for secure invoice only) correctly.
 
 <div class="alert alert-warning" role="alert">
   Note: Make sure to carefully carry out the settings described below. Otherwise, your customers will not be able to complete the payment process using PAYONE in your online store!
 </div>
 
-##### Adjusting the Ceres checkout:
+##### Adjusting the Ceres checkout for secure invoice:
 
 1. Go to **Plugins » Plugin overview**. <br > → The plugin overview opens.
 2. Click on **Ceres**. <br > → The plugin opens.

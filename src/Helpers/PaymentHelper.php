@@ -4,6 +4,7 @@
 
 namespace Payone\Helpers;
 
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
@@ -130,6 +131,7 @@ class PaymentHelper
             PayoneCCPaymentMethod::PAYMENT_CODE,
             PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
             PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE
         ];
     }
 

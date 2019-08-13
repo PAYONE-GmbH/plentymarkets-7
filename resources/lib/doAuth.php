@@ -1,11 +1,22 @@
 <?php
 
-use ArvPayoneApi\Api\Client;
-use ArvPayoneApi\Api\PostApi;
-use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\ArraySerializer;
-use ArvPayoneApi\Request\Authorization\RequestFactory;
-use ArvPayoneApi\Response\ClientErrorResponse;
+function AutoLoader($className)
+{
+    $file = str_replace('\\',DIRECTORY_SEPARATOR,$className);
+
+    if (class_exists('Payone\\'.$className)) {
+        require_once $file.'.php';
+    }
+}
+
+spl_autoload_register('AutoLoader');
+
+use Payone\ArvPayoneApi\Api\Client;
+use Payone\ArvPayoneApi\Api\PostApi;
+use Payone\ArvPayoneApi\Lib\Version;
+use Payone\ArvPayoneApi\Request\ArraySerializer;
+use Payone\ArvPayoneApi\Request\Authorization\RequestFactory;
+use Payone\ArvPayoneApi\Response\ClientErrorResponse;
 
 try {
     if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {
@@ -29,7 +40,8 @@ try {
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
-    $request = RequestFactory::create($paymentMethod, $data);
+    $request = RequestFactory::create($paymentMethod, $data, false);
+
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);

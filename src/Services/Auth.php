@@ -143,6 +143,10 @@ class Auth
         );
 
         $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'Api.doAuth',
+            ['requestData' => $requestData]
+        );
         try {
             $authResponse = $this->api->doAuth($requestData);
         } catch (\Exception $e) {

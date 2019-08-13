@@ -16,8 +16,5 @@
       "type": "git",
       "url": "https://github.com/plentymarkets/plugin-interface.git"
     }
-  ],
-  "require": {
-    "arvatis/payone-php-api":"2.2.*"
-  }
+  ]
 }

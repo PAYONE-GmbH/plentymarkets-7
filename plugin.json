@@ -26,7 +26,8 @@
     "arvatis/payone-php-api":"2.2.*"
   },
   "runOnBuild": [
-    "Payone\\Migrations\\CreatePaymentMethods"
+    "Payone\\Migrations\\CreatePaymentMethods",
+    "Payone\\Migrations\\CreateAmazonPayPaymentMethod"
   ],
   "dataProviders": [
   {

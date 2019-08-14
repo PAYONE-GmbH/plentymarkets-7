@@ -228,17 +228,25 @@ abstract class DataProviderAbstract
             'firstname' => (string)$addressObj->firstName,
             'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
-            'birthday' => $this->getBirthDay($addressObj),
             'ip' => (string)$this->shopHelper->getIpAddress(),
             'customerId' => (string)$customerId,
-            'registrationDate' => '1970-01-01',
+            //'registrationDate' => '1970-01-01', // what the ... is this?
             'group' => 'default',
             'company' => (string)$addressObj->companyName,
             'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
-        //TODO: Check format
+
+        $dateOfBirth = $this->getBirthDay($addressObj);
+        $customerData['birthday'] = '';
+        if(isset($dateOfBirth)) {
+            $customerData['birthday'] = $dateOfBirth;
+        }
+
         $customerData['gender'] = 'm';
+        if($addressObj->gender == 'female') {
+            $customerData['gender'] = 'f';
+        }
 
         return $customerData;
     }
@@ -267,16 +275,15 @@ abstract class DataProviderAbstract
 
     /**
      * @param Address $addressObj
-     *
-     * @return string
+     * @return false|string|null
      */
-    protected function getBirthDay(Address $addressObj): string
+    protected function getBirthDay(Address $addressObj)
     {
-        if (!$addressObj->birthday) {
-            return '1970-01-01';
+        if(!isset($addressObj->birthday) || !strlen($addressObj->birthday)) {
+            return null;
         }
-
-        return date('Y-m-d', $addressObj->birthday);
+        $dateOfBirth = strtotime($addressObj->birthday);
+        return date('Y-m-d', $dateOfBirth);
     }
 
     /**
@@ -299,6 +306,16 @@ abstract class DataProviderAbstract
      */
     protected function getBasketData(Basket $basket)
     {
+        /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
+        $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
+
+        //we have to manipulate the basket because its stupid and doesnt know if its netto or gross
+        if(!count($vatService->getCurrentTotalVats())) {
+            $basket->itemSum = $basket->itemSumNet;
+            $basket->shippingAmount = $basket->shippingAmountNet;
+            $basket->basketAmount = $basket->basketAmountNet;
+        }
+
         $requestParams = $basket->toArray();
         $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
         $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
@@ -329,6 +346,11 @@ abstract class DataProviderAbstract
         $requestParams['shippingAmountNet'] = (int)round($this->getShippingAmountNetFromOrder($order) * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
+        if($order->amount->isNet){
+            $requestParams['basketAmount'] = $requestParams['basketAmountNet'];
+            $requestParams['shippingAmount'] = $requestParams['shippingAmountNet'];
+        }
+
         return $requestParams;
     }
 
@@ -356,7 +378,7 @@ abstract class DataProviderAbstract
     protected function getSystemInfo()
     {
         return [
-            'vendor' => 'arvatis media GmbH',
+            'vendor' => 'plentysystems AG',
             'version' => 7,
             'type' => 'Webshop',
             'url' => $this->shopHelper->getPlentyDomain(),
@@ -447,10 +469,14 @@ abstract class DataProviderAbstract
     /**
      * @return array
      */
-    protected function getRedirectUrls()
+    protected function getRedirectUrls($transactionBasketId = "")
     {
+        $successParam = '';
+        if(strlen($transactionBasketId)){
+            $successParam = '?transactionBasketId='.$transactionBasketId;
+        }
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess',
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess'.$successParam,
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
             'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
         ];

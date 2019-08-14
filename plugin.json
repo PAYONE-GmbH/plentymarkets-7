@@ -1,5 +1,5 @@
 {
-  "version": "1.0.9",
+  "version": "1.1.3",
   "license":"MIT",
   "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
@@ -7,20 +7,20 @@
   "name": "Payone",
   "marketplaceName" : {"de":"BS Payone","en":"BS Payone"},
   "shortDescription": {
-    "de": "Das offizielle Payone plugin für Plentymarkets 7. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
-    "en": "The official Payone plugin for plentymarkets"
+    "de": "Das offizielle Payone plugin für plentymarkets Webshops. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
+    "en": "The official Payone plugin for plentymarkets online stores"
   },
   "description": "The official Payone plugin for plentymarkets",
-  "author": "arvatis media GmbH",
+  "author": "plentysystems AG",
+  "email": "sales@plentymarkets.com",
+  "phone": "+49 561 98 681 100",
   "keywords": ["Payone", "plentymarkets", "payment"],
-  "email": "info@arvatis.com",
-  "phone": "+49 (0)211 - 63 55 31 60",
   "categories": [3519],
   "type": "payment",
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": [],
+  "require": ["IO"],
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
     "arvatis/payone-php-api":"2.2.*"

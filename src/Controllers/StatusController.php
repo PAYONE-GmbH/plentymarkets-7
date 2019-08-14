@@ -10,7 +10,7 @@ use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
 /**
- * Class ConfigController
+ * Class StatusController
  */
 class StatusController extends Controller
 {

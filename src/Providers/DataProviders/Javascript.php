@@ -38,7 +38,6 @@ class Javascript
             PluginConstants::NAME . '::Partials.Javascript',
             [
                 'locale' => $helper->getCurrentLanguage(),
-                'isDebugModeEnabled' => $helper->isDebugModeActive(),
                 'creditcardcheck' => $creditCardCheck,
                 'allowedCCTypes' => $creditcardTypes->getAllowedTypes(),
                 'defaultWidthInPx' => $style->getDefaultWidthInPx(),

@@ -69,12 +69,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -88,12 +83,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -107,12 +97,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -126,12 +111,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -146,7 +126,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -161,7 +140,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -176,7 +154,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -191,7 +168,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -205,7 +181,6 @@ class Logger //implements LoggerContract
         \Exception $exception
     ) {
         $this->getPlentyLogger()->logException($exception);
-
         return $this;
     }
 
@@ -219,7 +194,6 @@ class Logger //implements LoggerContract
     ) {
         $this->referenceType = $referenceType;
         $this->logger->setReferenceType($referenceType);
-
         return $this;
     }
 
@@ -233,7 +207,6 @@ class Logger //implements LoggerContract
     ) {
         $this->referenceValue = $referenceValue;
         $this->logger->setReferenceValue($referenceValue);
-
         return $this;
     }
 

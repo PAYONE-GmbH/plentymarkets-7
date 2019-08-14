@@ -11,6 +11,7 @@ use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponse;
 use Payone\Models\CreditCardCheckResponseRepository;
+use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
 use Payone\Services\PaymentService;
@@ -81,7 +82,7 @@ class CheckoutController extends Controller
         BasketRepositoryContract $basket
     ) {
         $this->logger->setIdentifier(__METHOD__)
-            ->debug('CheckoutController', $this->request->all());
+            ->debug('Controller.Checkout', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors([
                 'message' => 'Your session expired. Please login and start a new purchase.',
@@ -109,7 +110,7 @@ class CheckoutController extends Controller
         CardExpireDate $validator
     ) {
         $this->logger->setIdentifier(__METHOD__)
-            ->debug('CheckoutController', $this->request->all());
+            ->debug('Controller.Checkout', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
             return $this->getJsonErrors(['message' => 'Your session expired. Please login and start a new purchase.']);
         }
@@ -165,7 +166,7 @@ class CheckoutController extends Controller
             'iban' => $this->request->get('iban'),
             'bic' => $this->request->get('bic'),
         ];
-        $this->logger->setIdentifier(__METHOD__)->debug('Router.routeCalled', $this->request->all());
+        $this->logger->setIdentifier(__METHOD__)->debug('Controller.routeCalled', $this->request->all());
 
         foreach ($formData as $key => $value) {
             if (empty($formData[$key])) {
@@ -245,16 +246,30 @@ class CheckoutController extends Controller
      *
      * @return string
      */
-    public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper)
+    public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
     {
 
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
+        $transactionBasketId = $this->request->get('transactionBasketId');
+        if(strlen($transactionBasketId)){
+            $storedBasketId = $paymentCache->getActiveBasketId();
+            if($storedBasketId === null){
+                return $this->response->redirectTo('confirmation');
+            }
+            if($storedBasketId != $transactionBasketId){
+                return $this->response->redirectTo('payone/error');
+            }
+        }
+        else{
+            return $this->response->redirectTo('payone/error');
+        }
         $basket = $basketReopo->load();
         if (!$helper->isPayonePayment($basket->methodOfPaymentId)) {
             return $this->response->redirectTo('payone/error');
         }
 
+        $paymentCache->resetActiveBasketId();
         return $this->response->redirectTo('place-order');
     }
 
@@ -269,7 +284,7 @@ class CheckoutController extends Controller
         ErrorMessageRenderer $messageRenderer
     ) {
         $this->logger->setIdentifier(__METHOD__);
-        $this->logger->debug('redirecting');
+        $this->logger->debug('Controller.redirecting');
 
         //info would be enought but is not shown in frontend
         $notificationService->error($messageRenderer->render('Payone::Template.orderErrorMessage'));

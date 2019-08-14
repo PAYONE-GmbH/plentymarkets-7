@@ -810,29 +810,6 @@
           }
         }
       }
-    },
-    "Config.DebuggingTab": {
-      "label": "Config.DebuggingTab",
-      "formFields": {
-        "debugging.active": {
-          "type": "selectBox",
-          "required": false,
-          "label": "Config.debuggingActiveLabel",
-          "options": {
-            "defaultValue": "0",
-            "selectBoxValues": [
-              {
-                "value": "0",
-                "caption": "Config.debuggingActivePossibleValue0"
-              },
-              {
-                "value": "1",
-                "caption": "Config.debuggingActivePossibleValue1"
-              }
-            ]
-          }
-        }
-      }
     }
   }
 }

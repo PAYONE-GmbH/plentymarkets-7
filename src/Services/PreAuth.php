@@ -85,6 +85,7 @@ class PreAuth
 
         $payment = $this->createPayment($selectedPaymentId, $preAuthResponse, $basket);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->setActiveBasketId($basket->id);
 
         return $preAuthResponse;
     }

@@ -3,8 +3,10 @@
 namespace Payone\Providers;
 
 use Payone\Adapter\Logger;
+use Payone\Helpers\AddressHelper;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PaymentMethodServiceFactory;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
@@ -89,7 +91,9 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentCache $paymentCache,
         ReferenceContainer $referenceContainer,
         OrderPdf $orderPdf,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
+        AddressHelper $addressHelper,
+        ShopHelper $shopHelper
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -101,7 +105,9 @@ class PayoneServiceProvider extends ServiceProvider
             $content,
             $logger,
             $basket,
-            $errorMessageRenderer
+            $errorMessageRenderer,
+            $addressHelper,
+            $shopHelper
         );
 
         $this->registerOrderCreationEvents(
@@ -113,8 +119,8 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $captureProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Bestellung erfassen',
-            'en' => PluginConstants::NAME . ' | Capture order',
+            'de' => 'Versandbestätigung an ' . PluginConstants::NAME,
+            'en' => 'Send shipping confirmation to ' . PluginConstants::NAME,
         ];
         $eventProceduresService->registerProcedure(
             PluginConstants::NAME,
@@ -124,7 +130,7 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $refundProcedureTitle = [
-            'de' => PluginConstants::NAME . ' | Gutschrift erstellen',
+            'de' => PluginConstants::NAME . ' | Rückerstattung senden',
             'en' => PluginConstants::NAME . ' | Refund order',
         ];
         $eventProceduresService->registerProcedure(
@@ -226,7 +232,9 @@ class PayoneServiceProvider extends ServiceProvider
         PaymentMethodContent $content,
         Logger $logger,
         BasketRepositoryContract $basketRepository,
-        ErrorMessageRenderer $errorMessageRenderer
+        ErrorMessageRenderer $errorMessageRenderer,
+        AddressHelper $addressHelper,
+        ShopHelper $shopHelper
     ) {
         $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
@@ -238,7 +246,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $content,
                 $logger,
                 $basketRepository,
-                $errorMessageRenderer
+                $errorMessageRenderer,
+                $addressHelper,
+                $shopHelper
             ) {
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
@@ -249,16 +259,33 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
+                $basket = $basketRepository->load();
+                $billingAddress = $addressHelper->getBasketBillingAddress($basket);
+                if( $paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
+                    (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)) ) {
+
+                    /** @var \Plenty\Plugin\Translation\Translator $translator */
+                    $translator = pluginApp(\Plenty\Plugin\Translation\Translator::class);
+
+                    $lang = $shopHelper->getCurrentLanguage();
+
+                    $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
+
+                    $event->setValue($dateOfBirthMissingMessage);
+                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+                    return;
+                }
+
                 $renderingType = $content->getPaymentContentType($paymentCode);
                 try {
                     $event->setType($renderingType);
                     switch ($renderingType) {
                         case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
-                            $auth = $paymentService->openTransaction($basketRepository->load());
+                            $auth = $paymentService->openTransaction($basket);
                             $event->setValue($auth->getRedirecturl());
                             break;
                         case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
-                            $paymentService->openTransaction($basketRepository->load());
+                            $paymentService->openTransaction($basket);
                             break;
                         case  GetPaymentMethodContent::RETURN_TYPE_HTML:
                             $event->setValue($paymentRenderer->render($payment, ''));

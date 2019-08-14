@@ -1,22 +1,12 @@
 <?php
+require_once ('vendor/autoload.php');
 
-function AutoLoader($className)
-{
-    $file = str_replace('\\',DIRECTORY_SEPARATOR,$className);
-
-    if (class_exists('Payone\\'.$className)) {
-        require_once $file.'.php';
-    }
-}
-
-spl_autoload_register('AutoLoader');
-
-use Payone\ArvPayoneApi\Api\Client;
-use Payone\ArvPayoneApi\Api\PostApi;
-use Payone\ArvPayoneApi\Lib\Version;
-use Payone\ArvPayoneApi\Request\ArraySerializer;
-use Payone\ArvPayoneApi\Request\PreAuthorization\RequestFactory;
-use Payone\ArvPayoneApi\Response\ClientErrorResponse;
+use PayoneApi\Api\Client;
+use PayoneApi\Api\PostApi;
+use PayoneApi\Lib\Version;
+use PayoneApi\Request\ArraySerializer;
+use PayoneApi\Request\PreAuthorization\RequestFactory;
+use PayoneApi\Response\ClientErrorResponse;
 
 try {
     if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {

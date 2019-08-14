@@ -9,6 +9,7 @@ use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PaymentMethodServiceFactory;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
@@ -205,6 +206,12 @@ class PayoneServiceProvider extends ServiceProvider
         $payContainer->register(
             'Payone::' . PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
             PayoneInvoiceSecurePaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+            PayoneAmazonPayPaymentMethod::class,
             $events
         );
     }

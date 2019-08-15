@@ -1,5 +1,16 @@
 # Release Notes for Payone
 
+## 1.1.4 (2019-08-15)
+
+### Changed
+- The Payone SDK was relocated
+
+### Added
+- The payment method Amazon Pay was added for the backend.
+
+### Fixed
+- Some log messages
+
 ## 1.1.3 (2019-06-13)
 
 ### Changed

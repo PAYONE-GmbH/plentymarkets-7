@@ -68,8 +68,6 @@ class Api
         $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
 
-        $this->logger->error('Api.' . $this->getCallAction(self::REQUEST_TYPE_AUTH), $response);
-
         $responseObject = AuthResponseFactory::create($response);
 
         $this->logger->setReferenceValue($responseObject->getTransactionID());

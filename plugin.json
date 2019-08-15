@@ -21,10 +21,13 @@
   "javaScriptFiles": [],
   "containers": [],
   "require": ["IO"],
-  "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "dependencies":{
-    "arvatis/payone-php-api":"2.2.*"
+    "guzzlehttp/guzzle": "6.*",
+    "symfony/serializer": "3.2.7",
+    "symfony/property-access": "3.2.7",
+    "doctrine/common": "2.7.2"
   },
+  "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "runOnBuild": [
     "Payone\\Migrations\\CreatePaymentMethods",
     "Payone\\Migrations\\CreateAmazonPayPaymentMethod"

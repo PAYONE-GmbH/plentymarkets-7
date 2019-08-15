@@ -1,11 +1,12 @@
 <?php
+require_once ('vendor/autoload.php');
 
-use ArvPayoneApi\Api\Client;
-use ArvPayoneApi\Api\PostApi;
-use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\ArraySerializer;
-use ArvPayoneApi\Request\PreAuthorization\RequestFactory;
-use ArvPayoneApi\Response\ClientErrorResponse;
+use PayoneApi\Api\Client;
+use PayoneApi\Api\PostApi;
+use PayoneApi\Lib\Version;
+use PayoneApi\Request\ArraySerializer;
+use PayoneApi\Request\PreAuthorization\RequestFactory;
+use PayoneApi\Response\ClientErrorResponse;
 
 try {
     if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {

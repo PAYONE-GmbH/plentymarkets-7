@@ -30,7 +30,7 @@ try {
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
-    $request = RequestFactory::create($paymentMethod, $data, false);
+    $request = RequestFactory::create($paymentMethod, $data);
 
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);

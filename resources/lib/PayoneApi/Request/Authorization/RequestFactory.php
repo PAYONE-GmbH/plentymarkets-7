@@ -2,6 +2,7 @@
 
 namespace PayoneApi\Request\Authorization;
 
+use Faker\Provider\Payment;
 use PayoneApi\Request\AuthorizationRequestAbstract;
 use PayoneApi\Request\GenericAuthRequestFactory;
 use PayoneApi\Request\Parts\BankAccount;
@@ -113,6 +114,11 @@ class RequestFactory implements RequestFactoryContract
                     $genericAuthRequest,
                     self::createUrls($data['redirect']),
                     $shippingAddress
+                );
+            case PaymentTypes::PAYONE_AMAZON_PAY:
+                return new AmazonPay(
+                    $genericAuthRequest,
+                    self::createUrls($data['redirect'])
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

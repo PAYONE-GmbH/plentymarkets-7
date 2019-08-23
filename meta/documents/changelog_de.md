@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.5 (2019-08-23)
+
+### Behoben
+- Aufträge die von externe Importiert werden und eine Zahlungsart von Payone nutzen werden nun korrekt angelegt und nicht durch das Plugin abgefangen.
+
 ## 1.1.4 (2019-08-15)
 
 ### Geändert

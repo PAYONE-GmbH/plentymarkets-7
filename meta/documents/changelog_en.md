@@ -1,5 +1,10 @@
 # Release Notes for Payone
 
+## 1.1.5 (2019-08-23)
+
+### Behoben
+- External orders will be created correct without skipping by the plugin. 
+
 ## 1.1.4 (2019-08-15)
 
 ### Changed

@@ -325,7 +325,11 @@ class PayoneServiceProvider extends ServiceProvider
             ) {
                 $order = $event->getOrder();
                 $logger->info('Event.orderCreated', [$order, $order->id]);
-                if ($order->typeId != OrderType::TYPE_SALES_ORDER) {
+                if ($order->typeId != OrderType::TYPE_SALES_ORDER && !in_array($order->referrerId, [
+                        0,  // Manuell
+                        1,  // Mandant
+
+                    ]) ) {
                     return;
                 }
                 $selectedPaymentId = $order->methodOfPaymentId;

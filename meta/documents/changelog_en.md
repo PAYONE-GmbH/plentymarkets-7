@@ -1,5 +1,10 @@
 # Release Notes for Payone
 
+## 1.1.6 (2019-08-23)
+
+### Behoben
+- Fix wrong order creation
+
 ## 1.1.5 (2019-08-23)
 
 ### Behoben

@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.6 (2019-08-23)
+
+### Behoben
+- Fehlerhafte Auftragsanlage behoben
+
 ## 1.1.5 (2019-08-23)
 
 ### Behoben

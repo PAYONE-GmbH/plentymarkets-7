@@ -328,7 +328,6 @@ class PayoneServiceProvider extends ServiceProvider
                 if ($order->typeId != OrderType::TYPE_SALES_ORDER && !in_array($order->referrerId, [
                         0,  // Manuell
                         1,  // Mandant
-
                     ]) ) {
                     return;
                 }
@@ -340,7 +339,7 @@ class PayoneServiceProvider extends ServiceProvider
                 if (!($payment instanceof Payment)) {
                     $message = 'Payment could not be assigned to order.';
                     $logger->error($message, $payment);
-                    throw new \Exception($message);
+                    return;
                 }
                 $paymentCreationService->assignPaymentToOrder($payment, $order);
                 $paymentCache->deletePayment($selectedPaymentId);

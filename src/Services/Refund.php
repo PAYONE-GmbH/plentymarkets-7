@@ -4,6 +4,7 @@ namespace Payone\Services;
 
 use Payone\Adapter\Logger;
 use Payone\Adapter\PaymentHistory;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\Api\Response;
@@ -58,6 +59,11 @@ class Refund
     private $captureDataProvider;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * Refund constructor.
      *
      * @param PaymentRepositoryContract $paymentRepository
@@ -69,6 +75,7 @@ class Refund
      * @param DebitDataProvider $refundDataProvider
      * @param Api $api
      * @param CaptureDataProvider $captureDataProvider
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         PaymentRepositoryContract $paymentRepository,
@@ -79,7 +86,8 @@ class Refund
         OrderRepositoryContract $orderRepo,
         DebitDataProvider $refundDataProvider,
         Api $api,
-        CaptureDataProvider $captureDataProvider
+        CaptureDataProvider $captureDataProvider,
+        OrderHelper $orderHelper
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
@@ -90,6 +98,7 @@ class Refund
         $this->refundDataProvider = $refundDataProvider;
         $this->api = $api;
         $this->captureDataProvider = $captureDataProvider;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -97,6 +106,8 @@ class Refund
      */
     public function executeRefund(Order $order)
     {
+        $orderNote = '';
+
         $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $order->id]);
         if (!in_array($order->typeId, $this->getAllowedOrderTypes())) {
             $this->logger->error('Invalid order type ' . $order->typeId . ' for order ' . $order->id);
@@ -112,14 +123,14 @@ class Refund
         }
         if (!$originalOrder) {
             $this->logger->error('Refunding payment failed! The given order is invalid!');
-
+            $orderNote = 'Refunding payment failed! The given order is invalid!';
             return;
         }
         try {
             $payments = $this->paymentRepository->getPaymentsByOrderId($originalOrder->id);
         } catch (\Exception $e) {
             $this->logger->error('Error loading payment', $e->getMessage());
-
+            $orderNote = 'Error loading payment';
             return;
         }
         $this->logger->debug(
@@ -142,6 +153,7 @@ class Refund
                         'errorMessage' => $text,
                     ]
                 );
+                $orderNote = $text . ' Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
@@ -181,13 +193,17 @@ class Refund
                     ]
                 );
                 $text = 'Refund von event procedure fehlgeschlagen. Meldung: ' . $refundPaymentResult->getErrorMessage();
+                $orderNote = $text . ' Meldung: ' . $refundPaymentResult->getErrorMessage() . ' Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
 
             $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
             $payment->updateOrderPaymentStatus = true;
+            $orderNote ='Refund Successful Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
             $this->paymentRepository->updatePayment($payment);
+
+            $this->orderHelper->addOrderComment($order->id, $orderNote);
         }
     }
 

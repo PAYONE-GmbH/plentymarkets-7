@@ -63,6 +63,12 @@
               }
             ]
           }
+        },
+        "userId": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.userId",
+          "options": {}
         }
       }
     },

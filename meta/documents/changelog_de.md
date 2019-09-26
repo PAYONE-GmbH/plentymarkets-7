@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.7 (2019-09-26)
+
+### Hinzugefügt
+- Rückzahlungen werden nun per Notiz am Auftrag hinterlegt. Dazu muss in der Konfiguration eine UserID hinterlegt werden.
+
 ## 1.1.6 (2019-08-23)
 
 ### Behoben

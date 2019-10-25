@@ -327,6 +327,15 @@ class PaymentCreation
             $transactionID
         );
 
+        /*
+         * Sequence Number
+         * First number have to be 0
+         */
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_CODE,
+            0
+        );
+
         $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
 
         $paymentText = [

@@ -39,9 +39,11 @@ use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
 use Plenty\Modules\Document\Models\Document;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Events\OrderCreated;
 use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
+use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Modules\Payment\Models\Payment;
@@ -61,62 +63,24 @@ class PayoneServiceProvider extends ServiceProvider
 
     /**
      * @param Dispatcher $eventDispatcher
-     * @param PaymentHelper $paymentHelper
-     * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
      * @param PaymentMethodContainer $payContainer
-     * @param PaymentRenderer $paymentRenderer
-     * @param PaymentMethodContent $content
-     * @param Logger $logger
      * @param EventProceduresService $eventProceduresService
-     * @param ErrorMessageRenderer $errorMessageRenderer
-     * @param PaymentCreation $paymentCreationService
-     * @param PaymentCache $paymentCache
-     * @param ReferenceContainer $referenceContainer
-     * @param OrderPdf $orderPdf
-     * @param OrderHelper $orderHelper
      */
     public function boot(
         Dispatcher $eventDispatcher,
-        PaymentHelper $paymentHelper,
-        PaymentService $paymentService,
         BasketRepositoryContract $basket,
         PaymentMethodContainer $payContainer,
-        PaymentRenderer $paymentRenderer,
-        PaymentMethodContent $content,
-        Logger $logger,
-        EventProceduresService $eventProceduresService,
-        ErrorMessageRenderer $errorMessageRenderer,
-        PaymentCreation $paymentCreationService,
-        PaymentCache $paymentCache,
-        ReferenceContainer $referenceContainer,
-        OrderPdf $orderPdf,
-        OrderHelper $orderHelper,
-        AddressHelper $addressHelper,
-        ShopHelper $shopHelper
+        EventProceduresService $eventProceduresService
     ) {
         $this->registerPaymentMethods($payContainer);
 
         $this->registerPaymentRendering(
             $eventDispatcher,
-            $paymentHelper,
-            $paymentService,
-            $paymentRenderer,
-            $content,
-            $logger,
-            $basket,
-            $errorMessageRenderer,
-            $addressHelper,
-            $shopHelper
+            $basket
         );
 
-        $this->registerOrderCreationEvents(
-            $eventDispatcher,
-            $paymentHelper,
-            $logger,
-            $paymentCreationService,
-            $paymentCache
-        );
+        $this->registerPaymentExecute($eventDispatcher);
 
         $captureProcedureTitle = [
             'de' => 'Versandbestätigung an ' . PluginConstants::NAME,
@@ -140,9 +104,7 @@ class PayoneServiceProvider extends ServiceProvider
             '\Payone\Procedures\RefundEventProcedure@run'
         );
 
-        $this->registerReferenceTypesForLogging($referenceContainer);
-        $this->registerInvoicePdfGeneration($eventDispatcher, $paymentHelper, $logger, $orderPdf, $orderHelper);
-
+        $this->registerInvoicePdfGeneration($eventDispatcher);
     }
 
     /**
@@ -224,32 +186,20 @@ class PayoneServiceProvider extends ServiceProvider
      * @param PaymentMethodContent $content
      * @param Logger $logger
      */
-    private function registerPaymentRendering(
+    protected function registerPaymentRendering(
         Dispatcher $eventDispatcher,
-        PaymentHelper $paymentHelper,
-        PaymentService $paymentService,
-        PaymentRenderer $paymentRenderer,
-        PaymentMethodContent $content,
-        Logger $logger,
-        BasketRepositoryContract $basketRepository,
-        ErrorMessageRenderer $errorMessageRenderer,
-        AddressHelper $addressHelper,
-        ShopHelper $shopHelper
+        BasketRepositoryContract $basketRepository
     ) {
-        $logger = $logger->setIdentifier(__METHOD__);
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,
-            function (GetPaymentMethodContent $event) use (
-                $paymentService,
-                $paymentHelper,
-                $paymentRenderer,
-                $content,
-                $logger,
-                $basketRepository,
-                $errorMessageRenderer,
-                $addressHelper,
-                $shopHelper
-            ) {
+            function (GetPaymentMethodContent $event) use ($basketRepository) {
+                /** @var PaymentService $paymentService */
+                $paymentService = pluginApp(PaymentService::class);
+                /** @var Logger $logger */
+                $logger = pluginApp(Logger::class);
+                /** @var PaymentHelper $paymentHelper */
+                $paymentHelper = pluginApp(PaymentHelper::class);
+
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
                 if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
@@ -260,13 +210,16 @@ class PayoneServiceProvider extends ServiceProvider
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
                 $basket = $basketRepository->load();
+                /** @var AddressHelper $addressHelper */
+                $addressHelper = pluginApp(AddressHelper::class);
                 $billingAddress = $addressHelper->getBasketBillingAddress($basket);
                 if( $paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
                     (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)) ) {
 
                     /** @var \Plenty\Plugin\Translation\Translator $translator */
                     $translator = pluginApp(\Plenty\Plugin\Translation\Translator::class);
-
+                    /** @var ShopHelper $shopHelper */
+                    $shopHelper = pluginApp(ShopHelper::class);
                     $lang = $shopHelper->getCurrentLanguage();
 
                     $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
@@ -276,8 +229,14 @@ class PayoneServiceProvider extends ServiceProvider
                     return;
                 }
 
-                $renderingType = $content->getPaymentContentType($paymentCode);
                 try {
+                    /** @var PaymentMethodContent $content */
+                    $content = pluginApp(PaymentMethodContent::class);
+                    $renderingType = $content->getPaymentContentType($paymentCode);
+
+                    /** @var PaymentRenderer $paymentRenderer */
+                    $paymentRenderer = pluginApp(PaymentRenderer::class);
+
                     $event->setType($renderingType);
                     switch ($renderingType) {
                         case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
@@ -294,6 +253,9 @@ class PayoneServiceProvider extends ServiceProvider
                 } catch (\Exception $e) {
                     $errorMessage = $e->getMessage();
                     $logger->logException($e);
+
+                    /** @var ErrorMessageRenderer $errorMessageRenderer */
+                    $errorMessageRenderer = pluginApp(ErrorMessageRenderer::class);
                     $event->setValue($errorMessageRenderer->render($errorMessage));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
                 }
@@ -301,84 +263,57 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * @param Dispatcher $eventDispatcher
-     * @param PaymentHelper $paymentHelper
-     * @param Logger $logger
-     * @param Capture $captureService
-     * @param PaymentCreation $paymentCreationService
-     */
-    private function registerOrderCreationEvents(
-        Dispatcher $eventDispatcher,
-        PaymentHelper $paymentHelper,
-        Logger $logger,
-        PaymentCreation $paymentCreationService,
-        PaymentCache $paymentCache
-    ) {
-        $logger = $logger->setIdentifier(__METHOD__);
-        $eventDispatcher->listen(OrderCreated::class,
-            function (OrderCreated $event) use (
-                $paymentHelper,
-                $logger,
-                $paymentCreationService,
-                $paymentCache
-            ) {
-                $order = $event->getOrder();
-                $logger->info('Event.orderCreated', [$order, $order->id]);
-                if ($order->typeId != OrderType::TYPE_SALES_ORDER && !in_array($order->referrerId, [
-                        0,  // Manuell
-                        1,  // Mandant
-                    ]) ) {
-                    return;
-                }
-                $selectedPaymentId = $order->methodOfPaymentId;
-                if (!$selectedPaymentId || !$paymentHelper->isPayonePayment($selectedPaymentId)) {
-                    return;
-                }
-                $payment = $paymentCache->loadPayment($selectedPaymentId);
+    protected function registerPaymentExecute(Dispatcher $dispatcher)
+    {
+        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) {
+            /** @var PaymentHelper $paymentHelper */
+            $paymentHelper = pluginApp(PaymentHelper::class);
+            if($paymentHelper->isPayonePayment($event->getMop())) {
+                /** @var OrderRepositoryContract $orderRepository */
+                $orderRepository = pluginApp(OrderRepositoryContract::class);
+                /** @var PaymentCache $paymentCache */
+                $paymentCache = pluginApp(PaymentCache::class);
+
+                $order = $orderRepository->findOrderById($event->getOrderId());
+                $payment = $paymentCache->loadPayment($event->getMop());
                 if (!($payment instanceof Payment)) {
                     $message = 'Payment could not be assigned to order.';
+
+                    /** @var Logger $logger */
+                    $logger = pluginApp(Logger::class);
                     $logger->error($message, $payment);
                     return;
                 }
-                $paymentCreationService->assignPaymentToOrder($payment, $order);
-                $paymentCache->deletePayment($selectedPaymentId);
-            }
-        );
-    }
 
-    /**
-     * @param ReferenceContainer $referenceContainer
-     */
-    private function registerReferenceTypesForLogging(ReferenceContainer $referenceContainer)
-    {
-        try {
-            $referenceContainer->add([Logger::PAYONE_REQUEST_REFERENCE => Logger::PAYONE_REQUEST_REFERENCE]);
-        } catch (ReferenceTypeException $ex) {
-            // already registered
-        }
+                /** @var PaymentCreation $paymentCreationService */
+                $paymentCreationService = pluginApp(PaymentCreation::class);
+                $paymentCreationService->assignPaymentToOrder($payment, $order);
+                $paymentCache->deletePayment($event->getMop());
+            }
+        });
+
     }
 
     /**
      * @param Dispatcher $eventDispatcher
-     * @param PaymentHelper $paymentHelper
-     * @param Logger $logger
-     * @param OrderPdf $orderPdf
-     * @param OrderHelper $orderHelper
      */
-    private function registerInvoicePdfGeneration(
-        Dispatcher $eventDispatcher,
-        PaymentHelper $paymentHelper,
-        Logger $logger,
-        OrderPdf $orderPdf,
-        OrderHelper $orderHelper
-    ) {
+    protected function registerInvoicePdfGeneration(Dispatcher $eventDispatcher)
+    {
         // Listen for the document generation event
         $eventDispatcher->listen(OrderPdfGenerationEvent::class,
-            function (OrderPdfGenerationEvent $event) use ($paymentHelper, $logger, $orderPdf, $orderHelper) {
-                /** @var Order $order */
+            function (OrderPdfGenerationEvent $event) {
+
+                /** @var PaymentHelper $paymentHelper */
+                $paymentHelper = pluginApp(PaymentHelper::class);
+
+                /** @var OrderHelper $orderHelper */
+                $orderHelper = pluginApp(OrderHelper::class);
+
+                /** @var \Order $order */
                 $order = $event->getOrder();
 
+                /** @var Logger $logger */
+                $logger = pluginApp(Logger::class);
                 $logger->setIdentifier(__METHOD__)->info(
                     'Event.orderPdfGeneration',
                     ['order' => $order->id, 'documentType' => $event->getDocType()]
@@ -401,6 +336,8 @@ class PayoneServiceProvider extends ServiceProvider
                 }
                 $lang = $orderHelper->getLang($order);
                 try {
+                    /** @var OrderPdf $orderPdf */
+                    $orderPdf = pluginApp(OrderPdf::class);
                     $orderPdfGenerationModel = $orderPdf->createPdfNote($payments[0], $lang);
                 } catch (\Exception $e) {
                     $logger->error('Adding PDF comment failed for order '

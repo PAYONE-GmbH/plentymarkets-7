@@ -38,8 +38,8 @@ class Logger //implements LoggerContract
      *
      * @param ShopHelper $shopHelper
      */
-    public function __construct(ShopHelper $shopHelper
-    ) {
+    public function __construct(ShopHelper $shopHelper)
+    {
         $this->shopHelper = $shopHelper;
         $this->identifier = __CLASS__;
         $this->logger = $this->getLogger($this->identifier);

@@ -182,9 +182,6 @@ class Refund
                 }
             }
 
-            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $refund,
-                $refundPaymentResult);
-
             if (!$refundPaymentResult->getSuccess()) {
                 $this->logger->error('Api.doRefund',
                     [
@@ -199,6 +196,9 @@ class Refund
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
+
+            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $refund,
+                $refundPaymentResult);
 
             $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
             $payment->updateOrderPaymentStatus = true;

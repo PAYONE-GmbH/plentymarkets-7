@@ -102,28 +102,29 @@ class Refund
     }
 
     /**
-     * @param Order $order
+     * @param Order $refund
      */
-    public function executeRefund(Order $order)
+    public function executeRefund(Order $refund)
     {
         $orderNote = '';
 
-        $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $order->id]);
-        if (!in_array($order->typeId, $this->getAllowedOrderTypes())) {
-            $this->logger->error('Invalid order type ' . $order->typeId . ' for order ' . $order->id);
+        $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $refund->id]);
+        if (!in_array($refund->typeId, $this->getAllowedOrderTypes())) {
+            $this->logger->error('Invalid order type ' . $refund->typeId . ' for order ' . $refund->id);
 
             return;
         }
         try {
-            $originalOrder = $this->getOriginalOrder($order);
+            $originalOrder = $this->getOriginalOrder($refund);
         } catch (\Exception $e) {
-            $this->logger->error('Error loading original order for order ' . $order->id, $e->getMessage());
+            $this->logger->error('Error loading original order for order ' . $refund->id, $e->getMessage());
 
             return;
         }
         if (!$originalOrder) {
             $this->logger->error('Refunding payment failed! The given order is invalid!');
             $orderNote = 'Refunding payment failed! The given order is invalid!';
+            $this->orderHelper->addOrderComment($refund->id, $orderNote);
             return;
         }
         try {
@@ -131,6 +132,7 @@ class Refund
         } catch (\Exception $e) {
             $this->logger->error('Error loading payment', $e->getMessage());
             $orderNote = 'Error loading payment';
+            $this->orderHelper->addOrderComment($refund->id, $orderNote);
             return;
         }
         $this->logger->debug(
@@ -148,25 +150,25 @@ class Refund
                 $text = 'No Auth reference found in payment.';
                 $this->logger->error('Api.doRefund',
                     [
-                        'order' => $order->id,
+                        'order' => $refund->id,
                         'payment' => $payment,
                         'errorMessage' => $text,
                     ]
                 );
-                $orderNote = $text . ' Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
+                $orderNote = $text . ' Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
 
-            if ($order->typeId != OrderType::TYPE_SALES_ORDER) {
+            if ($refund->typeId != OrderType::TYPE_SALES_ORDER) {
                 $refundPaymentResult = $this->refundCreditMemo(
                     $payment,
                     $originalOrder,
-                    $order,
+                    $refund,
                     $preAuth
                 );
             } else {
-                $refundPaymentResult = $this->refundOrder($payment, $order, $preAuth);
+                $refundPaymentResult = $this->refundOrder($payment, $refund, $preAuth);
             }
 
             $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
@@ -180,37 +182,37 @@ class Refund
                 }
             }
 
-            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $originalOrder,
+            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $refund,
                 $refundPaymentResult);
 
             if (!$refundPaymentResult->getSuccess()) {
                 $this->logger->error('Api.doRefund',
                     [
-                        'order' => $order->id,
+                        'order' => $refund->id,
                         'payment' => $payment,
                         'authReference' => $preAuth,
                         'errorMessage' => $refundPaymentResult->getErrorMessage(),
                     ]
                 );
                 $text = 'Refund von event procedure fehlgeschlagen. Meldung: ' . $refundPaymentResult->getErrorMessage();
-                $orderNote = $text . ' Meldung: ' . $refundPaymentResult->getErrorMessage() . ' Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
+                $orderNote = $text . ' Meldung: ' . $refundPaymentResult->getErrorMessage() . ' Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
 
             $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
             $payment->updateOrderPaymentStatus = true;
-            $orderNote ='Refund Successful Order-ID: ' . $order->id .' Payment-ID: '.$payment->id;
+            $orderNote ='Refund Successful Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
             $this->paymentRepository->updatePayment($payment);
-
-            $this->orderHelper->addOrderComment($order->id, $orderNote);
         }
+
+        $this->orderHelper->addOrderComment($refund->id, $orderNote);
     }
 
     /**
      * @param $mopId
      * @param $payment
-     * @param $order
+     * @param $refund
      * @param Response $transaction
      *
      * @return Payment
@@ -218,7 +220,7 @@ class Refund
     private function createRefundPayment(
         $mopId,
         $payment,
-        Order $order,
+        Order $refund,
         $transaction
     ) {
         /* @var Payment $debitPayment */
@@ -226,17 +228,17 @@ class Refund
             $mopId,
             $transaction,
             $payment->currency,
-            $this->getOrderAmount($order, $payment),
+            $this->getOrderAmount($refund, $payment),
             $payment->id
         );
 
         if (isset($debitPayment) && $debitPayment instanceof Payment) {
-            $this->paymentCreation->assignPaymentToOrder($debitPayment, $order);
+            $this->paymentCreation->assignPaymentToOrder($debitPayment, $refund);
         }
 
         $this->logger->debug(
             'General.createRefundPayment',
-            ['orderId' => $order->id, 'payment' => $debitPayment]
+            ['orderId' => $refund->id, 'payment' => $debitPayment]
         );
 
         return $debitPayment;
@@ -244,12 +246,12 @@ class Refund
 
     /**
      * @param Payment $payment
-     * @param Order $order
+     * @param Order $refund
      * @param $preAuthUniqueId
      *
      * @return Response
      */
-    private function refundOrder($payment, Order $order, $preAuthUniqueId)
+    private function refundOrder($payment, Order $refund, $preAuthUniqueId)
     {
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
 
@@ -257,18 +259,18 @@ class Refund
             'Api.doRefund',
             [
                 'paymentCode' => $paymentCode,
-                'order' => $order->toArray(),
+                'order' => $refund->toArray(),
                 'authUniqueId' => $preAuthUniqueId,
             ]
         );
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// not captured yet?
-                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
+                return $this->reverseAuth($refund, $payment, $preAuthUniqueId);
             }
         }
 
-        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
+        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $refund, $preAuthUniqueId);
 
         return $this->api->doDebit($requestData);
     }

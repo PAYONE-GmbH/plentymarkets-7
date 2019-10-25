@@ -9,21 +9,10 @@ use Plenty\Modules\Order\Models\Order;
  */
 class DebitDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
-        $requestParams['basket'] = $this->getBasketDataFromOrder($order);
-        $requestParams['basketItems'] = $this->getOrderItemData($order);
-        $requestParams['order'] = $this->getOrderData($order);
-        $requestParams['referenceId'] = $requestReference;
-
-        $this->validator->validate($requestParams);
-
-        return $requestParams;
+        // TODO: Implement getDataFromOrder() method.
+        return [];
     }
 
     /**
@@ -36,9 +25,12 @@ class DebitDataProvider extends DataProviderAbstract implements DataProviderOrde
      */
     public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId)
     {
-        $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
-
+        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
+        $requestParams['basket'] = $this->getBasketDataFromOrder($refund);
+        $requestParams['basketItems'] = $this->getOrderItemData($order);
         $requestParams['order'] = $this->getOrderData($refund);
+        $requestParams['referenceId'] = $preAuthUniqueId;
 
         $this->validator->validate($requestParams);
 

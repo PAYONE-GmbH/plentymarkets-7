@@ -1,5 +1,14 @@
 # Release Notes for Payone
 
+## 1.1.8 (2019-10-25)
+
+### Fixed
+- Partial refunds will use the correct amount from the credit note or return.
+
+### Changed
+- Refund payments will added to the credit note or return from where they were executed.
+- The loading times of the plugin have been improved.
+
 ## 1.1.7 (2019-09-26)
 
 ### Added

@@ -1,5 +1,14 @@
 # Release Notes für Payone
 
+## 1.1.8 (2019-10-25)
+
+### Behoben
+- Teilrückerstattungen werden nun über den korrekten Betrag ausgeführt.
+
+### Geändert
+- Rückerstattungen werden nun dem Auftrag zugeordnet von dem diese ausgeführt wurden.
+- Ladezeiten des Plugins wurden verbessert.
+
 ## 1.1.7 (2019-09-26)
 
 ### Hinzugefügt

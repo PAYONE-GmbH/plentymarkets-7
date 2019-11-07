@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.9 (2019-11-07)
+
+### Behoben
+- Teilrückerstattungen können nun auch mehrfach ausgeführt werden, dies führte unter bestimmten Konstelationen zu einem Fehler.
+
 ## 1.1.8 (2019-10-25)
 
 ### Behoben

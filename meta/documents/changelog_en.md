@@ -1,5 +1,10 @@
 # Release Notes for Payone
 
+## 1.1.9 (2019-11-07)
+
+### Fixed
+- Partial refunds can now be executed more than once. Under certain constellations an error came up. 
+
 ## 1.1.8 (2019-10-25)
 
 ### Fixed

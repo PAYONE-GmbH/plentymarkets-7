@@ -354,9 +354,7 @@ class PaymentCreation
 
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_BOOKING_TEXT,
-            sprintf('Refund (%s) Transaction: (%s)', [
-                $refundId, $transactionID
-            ])
+            'Refund ('.$refundId.') Transaction: ('.$transactionID.')'
         );
 
         $payment->properties = $paymentProperties;

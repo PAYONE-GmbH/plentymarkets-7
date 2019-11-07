@@ -310,7 +310,7 @@ class PaymentCreation
             ]
         );
 
-        $transactionID = $response->getTransactionID();
+        $transactionID = $response->getTransactionID() . '_' . $refundId;
 
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
@@ -323,7 +323,6 @@ class PaymentCreation
         $payment->receivedAt = date('Y-m-d H:i:s');
         $payment->type = 'debit';
         $payment->parentId = $parentPaymentId;
-        $payment->regenerateHash = true;
         $payment->unaccountable = 0;
         $paymentProperties = [];
 
@@ -355,7 +354,7 @@ class PaymentCreation
 
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_BOOKING_TEXT,
-            sprintf('Refund (%s) OrderId: (%s)', [
+            sprintf('Refund (%s) Transaction: (%s)', [
                 $refundId, $transactionID
             ])
         );
@@ -365,6 +364,7 @@ class PaymentCreation
         try {
             $payment = $this->paymentRepository->createPayment($payment);
         } catch (\Exception $e) {
+            $this->logger->logException($e);
             $storedPayment = $this->paymentRepository->getPaymentById($payment->id);
             if ($storedPayment) {
                 return $storedPayment;

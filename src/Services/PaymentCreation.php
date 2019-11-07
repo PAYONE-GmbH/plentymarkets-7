@@ -297,7 +297,7 @@ class PaymentCreation
      *
      * @return Payment
      */
-    public function createRefundPayment($paymentId, $response, $currency, $grandTotal, $parentPaymentId)
+    public function createRefundPayment($paymentId, $response, $currency, $grandTotal, $parentPaymentId, $refundId=0)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Payment.createRefundPayment',
@@ -351,6 +351,13 @@ class PaymentCreation
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_PAYMENT_TEXT,
             json_encode($paymentText)
+        );
+
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_BOOKING_TEXT,
+            sprintf('Refund (%s) OrderId: (%s)', [
+                $refundId, $transactionID
+            ])
         );
 
         $payment->properties = $paymentProperties;

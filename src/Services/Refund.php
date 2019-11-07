@@ -229,7 +229,8 @@ class Refund
             $transaction,
             $payment->currency,
             $this->getOrderAmount($refund, $payment),
-            $payment->id
+            $payment->id,
+            $refund->id
         );
 
         if (isset($debitPayment) && $debitPayment instanceof Payment) {

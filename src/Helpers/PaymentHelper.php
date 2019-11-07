@@ -179,4 +179,59 @@ class PaymentHelper
 
         return '';
     }
+
+    public function raiseSequenceNumber(Payment $payment)
+    {
+        foreach ($payment->properties as $property) {
+            if($property->typeId == PaymentProperty::TYPE_TRANSACTION_CODE) {
+                $property->value++;
+                return $payment;
+            }
+        }
+    }
+
+
+    /**
+     * @param Payment $payment
+     * @param int $pamentPropertyTypeId
+     * @param string $value
+     *
+     * @return Payment
+     */
+    public function createOrUpdatePaymentProperty($payment, $pamentPropertyTypeId, $value)
+    {
+        foreach ($payment->properties as $property) {
+            if (!($property instanceof PaymentProperty)) {
+                continue;
+            }
+            if ($property->typeId === $pamentPropertyTypeId) {
+                $property->value = $value;
+                return $payment;
+            }
+        }
+
+        $paymentProperties = $payment->properties;
+        $paymentProperties[] = $this->createPaymentProperty($pamentPropertyTypeId, $value);
+
+        return $payment;
+    }
+
+    /**
+     * Returns a PaymentProperty with the given params
+     *
+     * @param int $typeId
+     * @param string $value
+     *
+     * @return PaymentProperty
+     */
+    protected function createPaymentProperty($typeId, $value)
+    {
+        /** @var PaymentProperty $paymentProperty */
+        $paymentProperty = pluginApp(PaymentProperty::class);
+
+        $paymentProperty->typeId = $typeId;
+        $paymentProperty->value = $value . '';
+
+        return $paymentProperty;
+    }
 }

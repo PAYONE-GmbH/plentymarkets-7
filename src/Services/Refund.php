@@ -193,7 +193,6 @@ class Refund
                 );
                 $text = 'Refund von event procedure fehlgeschlagen. Meldung: ' . $refundPaymentResult->getErrorMessage();
                 $orderNote = $text . ' Meldung: ' . $refundPaymentResult->getErrorMessage() . ' Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
-                $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
 
@@ -201,9 +200,10 @@ class Refund
                 $refundPaymentResult);
 
             $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
-            $payment->updateOrderPaymentStatus = true;
+            $payment = $this->paymentHelper->raiseSequenceNumber($payment);
             $orderNote ='Refund Successful Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
             $this->paymentRepository->updatePayment($payment);
+            $this->paymentHistory->addPaymentHistoryEntry($payment, $orderNote);
         }
 
         $this->orderHelper->addOrderComment($refund->id, $orderNote);

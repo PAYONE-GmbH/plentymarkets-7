@@ -142,6 +142,11 @@ class PaymentCreation
             $transactionID
         );
 
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_CODE,
+            0
+        );
+
         $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_INVOICE_ADDRESS_ID,

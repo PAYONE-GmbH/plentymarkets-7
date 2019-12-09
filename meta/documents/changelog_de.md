@@ -1,5 +1,10 @@
 # Release Notes für Payone
 
+## 1.1.10 (2019-12-09)
+
+### Behoben
+- Auftragsnotizen bei Rückerstattungen werden nun wieder korrekt geschrieben.
+
 ## 1.1.9 (2019-11-07)
 
 ### Behoben

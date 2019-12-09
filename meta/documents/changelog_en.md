@@ -1,5 +1,10 @@
 # Release Notes for Payone
 
+## 1.1.10 (2019-12-09)
+
+### Fixed
+- Writing Order notes during a refund works properly again.
+
 ## 1.1.9 (2019-11-07)
 
 ### Fixed

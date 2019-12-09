@@ -188,6 +188,12 @@ class PaymentHelper
                 return $payment;
             }
         }
+
+        $properties = $payment->properties;
+        $properties[] = $this->createPaymentProperty(PaymentProperty::TYPE_TRANSACTION_CODE, 1);
+        $payment->properties = $properties;
+
+        return $payment;
     }
 
 

@@ -1,5 +1,9 @@
 # Release Notes für Payone
 
+## X.X.X (2019-12-12)
+### Geändert
+- Funktionalitäten hinzugefügt für Backend-Sichtbarkeiten
+
 ## 1.1.10 (2019-12-09)
 
 ### Behoben

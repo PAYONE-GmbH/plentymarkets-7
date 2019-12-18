@@ -1,8 +1,8 @@
 # Release Notes for Payone
 
-## X.X.X (2019-12-12)
+## X.X.X (2019-12-18)
 ### Changed
-- Added methods for the backend visibility
+- Added methods for the backend visibility and backend name
 
 ## 1.1.10 (2019-12-09)
 

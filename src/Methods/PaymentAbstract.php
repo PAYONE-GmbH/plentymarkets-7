@@ -151,4 +151,15 @@ abstract class PaymentAbstract extends PaymentMethodService
     {
         return false;
     }
+
+    /**
+     * Get name for the backend
+     *
+     * @param  string  $lang
+     * @return string
+     */
+    public function getBackendName($lang): string
+    {
+        return $this->getName();
+    }
 }

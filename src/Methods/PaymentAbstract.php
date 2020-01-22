@@ -162,4 +162,14 @@ abstract class PaymentAbstract extends PaymentMethodService
     {
         return $this->getName();
     }
+
+    /**
+     * Check if this payment method can handle subscriptions
+     *
+     * @return bool
+     */
+    public function canHandleSubscriptions():bool
+    {
+        return false;
+    }
 }

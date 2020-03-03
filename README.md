@@ -1,4 +1,4 @@
-#  BS Payone plugin for plentymarkets 7
+#  PAYONE plugin for plentymarkets 7
 
 ## Plugin description and requirements
 
@@ -9,7 +9,7 @@ See the [plugin description](./meta/documents/user_guide_de.md) for the plentyma
 The plugin has been developed for the Ceres template. The plugins IO and Ceres 
 are required and have to be active.
 
-Also, please configure your payment portal in your BS PAYONE PMI for sha2-384 hashes. The TransactionStatus URL follows this template: 
+Also, please configure your payment portal in your PAYONE PMI for sha2-384 hashes. The TransactionStatus URL follows this template: 
 
 https://www.example.com/payone/status/
 

@@ -1,10 +1,10 @@
 <div class="alert alert-warning" role="alert">
-   The BS PAYONE plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
+   The PAYONE plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
 </div>
 
 # PAYONE Payment for plentymarkets 7
 
-The plentymarkets BS PAYONE plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
+The plentymarkets PAYONE plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
 
 The plugin currently offers the following payment methods:
 
@@ -34,9 +34,9 @@ Phone: 07344-9592588 <br>
 E-mail: plenty@psg-projektmanagement.de <br>
 Website: http://www.psg-projektmanagement.de
 
-Upon receipt of your access data, log in to the BS PAYONE merchant interface and carry out the following settings.
+Upon receipt of your access data, log in to the PAYONE merchant interface and carry out the following settings.
 
-##### Carrying out settings in the BS PAYONE merchant interface
+##### Carrying out settings in the PAYONE merchant interface
 
 1. Go to **Configuration » Payment portals**.
 2. Open the **Extended Tab** of the payment portal belonging to your online store.
@@ -50,12 +50,12 @@ In addition, make sure that the payment method is included among the Permitted p
 
 ## Setting up the plugin
 
-The following steps for setting up the plentymarkets BS PAYONE plugin are carried out in the plugin overview of your plentymarkets system. Proceed as described below to set up the plugin.
+The following steps for setting up the plentymarkets PAYONE plugin are carried out in the plugin overview of your plentymarkets system. Proceed as described below to set up the plugin.
 
 ##### Carrying out the basic settings
 
 1. Go to **Plugin » Plugin overview**.
-2. In the plugin list, click on the name of the plugin **BS BS PAYONE**. <br > → The detail view of the plugin  opens.
+2. In the plugin list, click on the name of the plugin **PAYONE**. <br > → The detail view of the plugin  opens.
 3. Open the menu entry **Configuration**.
 4. Click on **Basic settings**. Carry out the settings according to the information provided in table 1.
 5. **Save** the settings.
@@ -76,7 +76,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
             <b>Merchant ID</b>
          </td>
          <td>
-            Enter the customer number as received after the registration process with BS PAYONE.
+            Enter the customer number as received after the registration process with PAYONE.
          </td>
       </tr>
       <tr>
@@ -84,7 +84,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
             <b>Portal ID</b>
          </td>
          <td>
-         Enter the payment portal ID as received after the registration process with BS PAYONE.
+         Enter the payment portal ID as received after the registration process with PAYONE.
          </td>
       </tr>
       <tr>
@@ -92,7 +92,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
             <b>Account ID</b>
          </td>
          <td>
-         Enter the account ID as received after the registration process with BS PAYONE.
+         Enter the account ID as received after the registration process with PAYONE.
          </td>
       </tr>
       <tr>
@@ -100,7 +100,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
             <b>Key</b>
          </td>
          <td>
-            Enter the key as received after the registration process with BS PAYONE.
+            Enter the key as received after the registration process with PAYONE.
          </td>
       </tr>
       <tr>
@@ -124,7 +124,7 @@ The following steps for setting up the plentymarkets BS PAYONE plugin are carrie
 
 ### Setting up payment methods
 
-In the following, you select the BS PAYONE payment methods that should be available for your customers in the online store. In addition, you carry out more detailed settings for the selected payment methods. Proceed as described below.
+In the following, you select the PAYONE payment methods that should be available for your customers in the online store. In addition, you carry out more detailed settings for the selected payment methods. Proceed as described below.
 
 
 ##### Setting up payment methods:
@@ -271,7 +271,7 @@ In the next step, an adjustment to your Ceres checkout settings is necessary. Th
 
 ## Linking template containers
 
-You have multiple options to integrate the payment method BS PAYONE into your online store. For this purpose, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
+You have multiple options to integrate the payment method PAYONE into your online store. For this purpose, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
 
 ##### Linking template containers:
 
@@ -296,7 +296,7 @@ You have multiple options to integrate the payment method BS PAYONE into your on
             <b>Payone Order Confirmation Page Payment Data</b>
          </td>
          <td>
-            Link this content to the container Order confirmation: Additional payment information to display the BS PAYONE payment methods on the order confirmation page in the online store.
+            Link this content to the container Order confirmation: Additional payment information to display the PAYONE payment methods on the order confirmation page in the online store.
          </td>
       </tr>
       <tr>
@@ -304,15 +304,15 @@ You have multiple options to integrate the payment method BS PAYONE into your on
             <b>Payone Checkout JS</b>
          </td>
          <td>
-            Link this content to the container Script loader: After script loaded to display the BS PAYONE payment methods during the checkout process in the online store.
+            Link this content to the container Script loader: After script loaded to display the PAYONE payment methods during the checkout process in the online store.
          </td>
       </tr>
    </tbody>
 </table>
 
-## Sending an automatic shipping confirmation to BS PAYONE
+## Sending an automatic shipping confirmation to PAYONE
 
-Set up an event procedure to send an automatic shipping confirmation to BS PAYONE as soon as you have shipped the order.
+Set up an event procedure to send an automatic shipping confirmation to PAYONE as soon as you have shipped the order.
 
 **Note:** Sending up the following event procedure is mandatory if you have selected the option **Preauthorisation** as **Authorisation method** (see table 1). This event procedure is not necessary and cannot be used if you have selected the option **Authorisation**.
 
@@ -329,7 +329,7 @@ Set up an event procedure to send an automatic shipping confirmation to BS PAYON
 
 <table>
 <caption>
-   Tab. 5: Event procedure for sending an automatic shipping confirmation to BS PAYONE
+   Tab. 5: Event procedure for sending an automatic shipping confirmation to PAYONE
 </caption>
    <thead>
     </tr>
@@ -363,9 +363,9 @@ Set up an event procedure to send an automatic shipping confirmation to BS PAYON
     </tbody>
 </table>
 
-## Automatically refunding BS PAYONE payments
+## Automatically refunding PAYONE payments
 
-Set up an event procedure to automatically refund a BS PAYONE payment.
+Set up an event procedure to automatically refund a PAYONE payment.
 
 ##### Setting up an event procedure:
 
@@ -380,7 +380,7 @@ Set up an event procedure to automatically refund a BS PAYONE payment.
 
 <table>
 <caption>
-   Tab. 6: Event procedure for automatically refunding BS PAYONE payments
+   Tab. 6: Event procedure for automatically refunding PAYONE payments
 </caption>
    <thead>
     </tr>

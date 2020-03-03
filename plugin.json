@@ -1,11 +1,11 @@
 {
-  "version": "1.1.10",
+  "version": "1.1.11",
   "license":"MIT",
   "pluginIcon":"icon_plugin_xs.png",
   "price":0.0,
   "authorIcon":"icon_author_xs.png",
   "name": "Payone",
-  "marketplaceName" : {"de":"BS Payone","en":"BS Payone"},
+  "marketplaceName" : {"de":"PAYONE","en":"PAYONE"},
   "shortDescription": {
     "de": "Das offizielle Payone plugin für plentymarkets Webshops. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
     "en": "The official Payone plugin for plentymarkets online stores"

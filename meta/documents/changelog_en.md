@@ -1,4 +1,9 @@
-# Release Notes for Payone
+# Release Notes for PAYONE
+
+## 1.1.11 (2020-03-03)
+
+### Changed
+- New logos and images
 
 ## 1.1.10 (2019-12-09)
 

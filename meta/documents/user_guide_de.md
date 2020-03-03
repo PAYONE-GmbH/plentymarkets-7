@@ -1,10 +1,10 @@
 <div class="alert alert-warning" role="alert">
-   Das BS PAYONE Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des BS PAYONE Plugins müssen die Plugins IO und Ceres aktiviert sein.
+   Das PAYONE Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des PAYONE Plugins müssen die Plugins IO und Ceres aktiviert sein.
 </div>
 
-# BS PAYONE Payment für plentymarkets 7
+# PAYONE Payment für plentymarkets 7
 
-Das plentymarkets BS PAYONE Plugin bietet Ihnen Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig haben Sie Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
+Das plentymarkets PAYONE Plugin bietet Ihnen Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig haben Sie Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
 
 Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
@@ -34,7 +34,7 @@ Telefon: 07344-9592588 <br>
 E-Mail: plenty@psg-projektmanagement.de <br>
 Internet: http://www.psg-projektmanagement.de
 
-Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
+Nach Erhalt der Zugangsdaten loggen Sie sich im PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
 
 ##### Einstellungen im PAYONE Merchant Interface vornehmen:
 
@@ -44,18 +44,18 @@ Nach Erhalt der Zugangsdaten loggen Sie sich im BS PAYONE Merchant Interface ein
 4. Wählen Sie als **Verfahren Hashwert-Prüfung** die Option **md5 oder sha2-384 (für Migration)**.
 5. **Speichern** Sie die Einstellungen.
 
-Aktivieren Sie die gewünschten BS PAYONE-Zahlungsarten in Ihrem plentymarkets Backend einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
+Aktivieren Sie die gewünschten PAYONE-Zahlungsarten in Ihrem plentymarkets Backend einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
 
 Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.
 
 ## Einrichtung des Plugins
 
-Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfolgen direkt in der Plugin-Übersicht Ihres plentymarkets Systems. Gehen Sie dazu wie im Folgenden beschrieben vor.
+Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolgen direkt in der Plugin-Übersicht Ihres plentymarkets Systems. Gehen Sie dazu wie im Folgenden beschrieben vor.
 
 ##### Grundeinstellungen vornehmen:
 
 1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**.
-2. Klicken Sie in der Liste der Plugins auf den Namen des Plugins **BS BS PAYONE**.
+2. Klicken Sie in der Liste der Plugins auf den Namen des Plugins **PAYONE**.
 → Die Detailansicht des Plugins öffnet sich.
 3. Öffnen Sie den Menüpunkt **Konfiguration**.
 4. Klicken Sie auf **Grundeinstellungen**. Nehmen Sie die Einstellungen anhand der Informationen in Tabelle 1 vor.
@@ -77,7 +77,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
             <b>Merchant ID</b>
          </td>
          <td>
-            Geben Sie hier die Kundennummer ein, die Sie bei der Registrierung bei BS PAYONE erhalten haben.
+            Geben Sie hier die Kundennummer ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
          </td>
       </tr>
       <tr>
@@ -85,7 +85,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
             <b>Portal ID</b>
          </td>
          <td>
-            Geben Sie hier die ID des Zahlungsportals ein, die Sie bei der Registrierung bei BS PAYONE erhalten haben.
+            Geben Sie hier die ID des Zahlungsportals ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
          </td>
       </tr>
       <tr>
@@ -93,7 +93,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
             <b>Account ID</b>
          </td>
          <td>
-            Geben Sie hier die Account-ID ein, die Sie bei der Registrierung bei BS PAYONE erhalten haben.
+            Geben Sie hier die Account-ID ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
          </td>
       </tr>
       <tr>
@@ -101,7 +101,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
             <b>Schlüssel</b>
          </td>
          <td>
-            Geben Sie hier den Schlüssel ein, den Sie bei der Registrierung bei BS PAYONE erhalten haben.
+            Geben Sie hier den Schlüssel ein, den Sie bei der Registrierung bei PAYONE erhalten haben.
          </td>
       </tr>
       <tr>
@@ -126,7 +126,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets BS PAYONE Plugins erfo
 
 ### Zahlungsarten einrichten
 
-Im Folgenden legen Sie fest, welche BS PAYONE-Zahlungsarten Ihren Kunden im Webshop zur Verfügung stehen sollen. Außerdem nehmen Sie für die festgelegten Zahlungsarten genauere Einstellungen vor. Gehen Sie dazu wie im Folgenden beschrieben vor.
+Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop zur Verfügung stehen sollen. Außerdem nehmen Sie für die festgelegten Zahlungsarten genauere Einstellungen vor. Gehen Sie dazu wie im Folgenden beschrieben vor.
 
 
 ##### Zahlungsarten einrichten:
@@ -273,7 +273,7 @@ Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit Ihre Kunden 
 
 ## Template-Container verknüpfen
 
-Für die Zahlungsart BS PAYONE stehen Ihnen verschiedene Möglichkeiten zur Verfügung, um sie in Ihrem Webshop einzubinden.
+Für die Zahlungsart PAYONE stehen Ihnen verschiedene Möglichkeiten zur Verfügung, um sie in Ihrem Webshop einzubinden.
 Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container hinterlegt, mit denen zur Individualisierung Contents verknüpft werden.
 
 ##### Container verknüpfen:
@@ -299,7 +299,7 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Order Confirmation Page Payment Data</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container Order confirmation: Additional payment information, um die BS PAYONE-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
+            Verknüpfen Sie diesen Content mit dem Container Order confirmation: Additional payment information, um die PAYONE-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
          </td>
       </tr>
       <tr>
@@ -307,15 +307,15 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Checkout JS</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container Script loader: After script loaded, um die BS PAYONE-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
+            Verknüpfen Sie diesen Content mit dem Container Script loader: After script loaded, um die PAYONE-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
          </td>
       </tr>
    </tbody>
 </table>
 
-## Automatische Versandbestätigung an BS PAYONE senden
+## Automatische Versandbestätigung an PAYONE senden
 
-Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an BS PAYONE zu senden, sobald Sie den Auftrag versendet haben.
+Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an PAYONE zu senden, sobald Sie den Auftrag versendet haben.
 
 **Hinweis:** Die Einrichtung dieser Ereignisaktion ist zwingend notwendig, wenn als **Art der Autorisierung** die Option **Vorautorisierung** gewählt wurde (siehe Tabelle 1). Haben Sie die Option **Autorisierung** gewählt, ist diese Ereignisaktion nicht nutzbar und nicht notwendig.
 
@@ -332,7 +332,7 @@ Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an
 
 <table>
 <caption>
-   Tab. 5: Ereignisaktion zum Senden einer automatischen Versandbestätigung an BS PAYONE
+   Tab. 5: Ereignisaktion zum Senden einer automatischen Versandbestätigung an PAYONE
 </caption>
    <thead>
     </tr>
@@ -360,15 +360,15 @@ Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an
       </tr>
       <tr>
         <td><strong>Aktion</strong></td>
-        <td><strong>Plugin > BS PAYONE | Versandbestätigung senden</strong></td>
+        <td><strong>Plugin > PAYONE | Versandbestätigung senden</strong></td>
         <td></td>
       </tr>
     </tbody>
 </table>
 
-## BS PAYONE-Zahlung automatisch zurückzahlen
+## PAYONE-Zahlung automatisch zurückzahlen
 
-Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS PAYONE zu automatisieren.
+Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über PAYONE zu automatisieren.
 
 ##### Ereignisaktion einrichten:
 
@@ -383,10 +383,10 @@ Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS 
 
 <table>
 <caption>
-   Tab. 6: Ereignisaktion zur automatischen Rückzahlung der BS PAYONE-Zahlung
+   Tab. 6: Ereignisaktion zur automatischen Rückzahlung der PAYONE-Zahlung
 </caption>
    <thead>
-    </tr>
+    <tr>
       <th>
          Einstellung
       </th>
@@ -411,7 +411,7 @@ Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über BS 
       </tr>
       <tr>
         <td><strong>Aktion</strong></td>
-        <td><strong>Plugin > BS PAYONE | Rückerstattung senden</strong></td>
+        <td><strong>Plugin > PAYONE | Rückerstattung senden</strong></td>
         <td></td>
       </tr>
     </tbody>

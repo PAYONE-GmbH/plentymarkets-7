@@ -5,6 +5,10 @@
 ### Changed
 - New logos and images
 
+## X.X.X (2019-12-18)
+### Changed
+- Added methods for the backend visibility and backend name
+
 ## 1.1.10 (2019-12-09)
 
 ### Fixed

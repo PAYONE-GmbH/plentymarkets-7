@@ -5,6 +5,10 @@
 ### Geändert
 - Logos und Bilder getauscht
 
+## X.X.X (2019-12-18)
+### Geändert
+- Funktionalitäten hinzugefügt für Backend-Sichtbarkeiten und Backend-Name
+
 ## 1.1.10 (2019-12-09)
 
 ### Behoben

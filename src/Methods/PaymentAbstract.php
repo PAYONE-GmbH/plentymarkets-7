@@ -131,4 +131,45 @@ abstract class PaymentAbstract extends PaymentMethodService
 
         return $countries;
     }
+
+    /**
+     * Check if this payment method should be searchable in the backend
+     *
+     * @return bool
+     */
+    public function isBackendSearchable():bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if this payment method should be active in the backend
+     *
+     * @return bool
+     */
+    public function isBackendActive():bool
+    {
+        return false;
+    }
+
+    /**
+     * Get name for the backend
+     *
+     * @param  string  $lang
+     * @return string
+     */
+    public function getBackendName(string $lang):string
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Check if this payment method can handle subscriptions
+     *
+     * @return bool
+     */
+    public function canHandleSubscriptions():bool
+    {
+        return false;
+    }
 }

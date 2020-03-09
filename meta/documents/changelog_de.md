@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 1.1.12 (2020-03-09)
+
+### Geändert
+- Logging des Datenaustausches zur Payone Schnittstelle optimiert.
+
 ## 1.1.11 (2020-03-03)
 
 ### Geändert

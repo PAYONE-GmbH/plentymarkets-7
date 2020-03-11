@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 1.1.12 (2020-03-09)
+
+### Geändert
+- Optimized logging of the data transfer with the Payone Api.
+
 ## 1.1.11 (2020-03-03)
 
 ### Changed

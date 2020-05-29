@@ -4,10 +4,10 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
+use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 
-abstract class PaymentAbstract extends PaymentMethodService
+abstract class PaymentAbstract extends PaymentMethodBaseService
 {
     const PAYMENT_CODE = 'Payone';
 
@@ -45,7 +45,7 @@ abstract class PaymentAbstract extends PaymentMethodService
     /**
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
             && $this->paymentValidator->validate($this);
@@ -171,5 +171,17 @@ abstract class PaymentAbstract extends PaymentMethodService
     public function canHandleSubscriptions():bool
     {
         return false;
+    }
+
+    /**
+     * Get the url for the backend icon
+     *
+     * @return string
+     */
+    public function getBackendIcon(): string
+    {
+        $app = pluginApp(Application::class);
+        $icon = $app->getUrlPath(PluginConstants::NAME).'/images/logos/'.strtolower($this::PAYMENT_CODE).'_backend_icon.svg';
+        return $icon;
     }
 }

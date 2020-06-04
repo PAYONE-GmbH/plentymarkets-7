@@ -54,9 +54,10 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     /**
      * Get shown name
      *
+     * @param string $lang
      * @return string
      */
-    public function getName(): string
+    public function getName(string $lang = 'de'): string
     {
         $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
 
@@ -72,9 +73,10 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getIcon(): string
+    public function getIcon(string $lang = 'de'): string
     {
         $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
 
@@ -82,9 +84,10 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(string $lang = 'de'): string
     {
         $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
 
@@ -158,7 +161,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      * @param  string  $lang
      * @return string
      */
-    public function getBackendName(string $lang):string
+    public function getBackendName(string $lang = 'de'):string
     {
         return $this->getName();
     }

@@ -4,10 +4,10 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
+use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 
-abstract class PaymentAbstract extends PaymentMethodService
+abstract class PaymentAbstract extends PaymentMethodBaseService
 {
     const PAYMENT_CODE = 'Payone';
 
@@ -45,7 +45,7 @@ abstract class PaymentAbstract extends PaymentMethodService
     /**
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
             && $this->paymentValidator->validate($this);
@@ -54,9 +54,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     /**
      * Get shown name
      *
+     * @param string $lang
      * @return string
      */
-    public function getName(): string
+    public function getName(string $lang = 'de'): string
     {
         $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
 
@@ -72,9 +73,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getIcon(): string
+    public function getIcon(string $lang = 'de'): string
     {
         $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
 
@@ -82,9 +84,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(string $lang = 'de'): string
     {
         $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
 
@@ -158,7 +161,7 @@ abstract class PaymentAbstract extends PaymentMethodService
      * @param  string  $lang
      * @return string
      */
-    public function getBackendName(string $lang):string
+    public function getBackendName(string $lang = 'de'):string
     {
         return $this->getName();
     }
@@ -171,5 +174,17 @@ abstract class PaymentAbstract extends PaymentMethodService
     public function canHandleSubscriptions():bool
     {
         return false;
+    }
+
+    /**
+     * Get the url for the backend icon
+     *
+     * @return string
+     */
+    public function getBackendIcon(): string
+    {
+        $app = pluginApp(Application::class);
+        $icon = $app->getUrlPath(PluginConstants::NAME).'/images/logos/'.strtolower($this::PAYMENT_CODE).'_backend_icon.svg';
+        return $icon;
     }
 }

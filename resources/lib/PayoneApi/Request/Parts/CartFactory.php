@@ -38,10 +38,7 @@ class CartFactory
         $taxRate = 0;
         $basket = $requestData['basket'];
         if ($basket['shippingAmountNet'] > 0) {
-            $taxRate = (int )round(
-                ($basket['shippingAmount'] / $basket['shippingAmountNet'] - 1)
-                * 10000
-            );
+            $taxRate = 19;
         }
         $shippingCost = new CartItem(
             (count($cart->getCartItems())+1),

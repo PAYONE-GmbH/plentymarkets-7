@@ -201,7 +201,7 @@ abstract class DataProviderAbstract
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
             $orderItemData['vat'] = $orderItemData['vatRate'];
-            $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
+            $orderItemData['price'] = $amount['priceGross'];
             $orderItemData['name'] = $orderItemData['orderItemName'];
             $orderItemData['itemId'] = $orderItemData['id'];
 
@@ -546,11 +546,10 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $priceGross = $amount['priceGross'];
 
-            return $priceGross * 100 / ($orderItem['vatRate'] + 100.);
+            return $amount['priceNet'];
         }
 
-        return 0.;
+        return 0;
     }
 }

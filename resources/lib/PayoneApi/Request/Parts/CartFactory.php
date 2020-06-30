@@ -18,7 +18,7 @@ class CartFactory
                 $cartItemData['itemId'],
                 CartItem::TYPE_GOODS,
                 $cartItemData['quantity'] ?? '',
-                $cartItemData['price'],
+                (int)round($cartItemData['price'] * 100),
                 $cartItemData['vat'],
                 $cartItemData['name'] ?? ''
             );
@@ -45,7 +45,7 @@ class CartFactory
             'shipping',
             CartItem::TYPE_SHIPMENt,
             1,
-            $basket['shippingAmount'],
+            (int)round($basket['shippingAmount'] * 100),
             $taxRate,
             'shipping'
         );

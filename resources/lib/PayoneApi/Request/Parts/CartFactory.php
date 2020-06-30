@@ -18,7 +18,7 @@ class CartFactory
                 $cartItemData['itemId'],
                 CartItem::TYPE_GOODS,
                 $cartItemData['quantity'] ?? '',
-                (int)round($cartItemData['price'] * 100),
+                $cartItemData['price'],
                 $cartItemData['vat'],
                 $cartItemData['name'] ?? ''
             );
@@ -38,14 +38,14 @@ class CartFactory
         $taxRate = 0;
         $basket = $requestData['basket'];
         if ($basket['shippingAmountNet'] > 0) {
-            $taxRate = 19;
+            $taxRate = (int)round((($basket['shippingAmount'] / $basket['shippingAmountNet']) - 1) * 100);
         }
         $shippingCost = new CartItem(
             (count($cart->getCartItems())+1),
             'shipping',
             CartItem::TYPE_SHIPMENt,
             1,
-            (int)round($basket['shippingAmount'] * 100),
+            $basket['shippingAmount'],
             $taxRate,
             'shipping'
         );

@@ -172,10 +172,12 @@ abstract class DataProviderAbstract
             /** @var ItemText $itemText */
             $itemText = $item->texts;
 
-            $basketItem = $basketItem->toArray();
-            $basketItem['name'] = $itemText->first()->name1;
+            $basketItemArr = $basketItem->toArray();
+            $basketItemArr['name'] = $itemText->first()->name1;
+            $basketItemArr['price'] = (int)round($basketItem->price * 100);
+            $basketItemArr['vat'] = (int)$basketItem->vat;
 
-            $items[] = $basketItem;
+            $items[] = $basketItemArr;
         }
 
         return $items;
@@ -200,8 +202,8 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $orderItemData['vat'] = $orderItemData['vatRate'];
-            $orderItemData['price'] = $amount['priceGross'];
+            $orderItemData['vat'] = (int)$orderItemData['vatRate'];
+            $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
             $orderItemData['name'] = $orderItemData['orderItemName'];
             $orderItemData['itemId'] = $orderItemData['id'];
 

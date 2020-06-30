@@ -187,4 +187,14 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
         $icon = $app->getUrlPath(PluginConstants::NAME).'/images/logos/'.strtolower($this::PAYMENT_CODE).'_backend_icon.svg';
         return $icon;
     }
+
+    /**
+     * Can the delivery address be different from the invoice address?
+     * 
+     * @return bool
+     */
+    public function canHandleDifferingDeliveryAddress(): bool
+    {
+        return true;
+    }
 }

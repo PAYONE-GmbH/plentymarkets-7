@@ -58,15 +58,19 @@ class PaymentValidator
         }
 
         $billingAddress = $this->addressHelper->getBasketBillingAddress($this->basket);
-        $shippingAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
+        $deliveryAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
         if (!$billingAddress) {
-            return true;
+            return false;
         }
 
         $country = $billingAddress->country->isoCode2;
         if (!in_array($country, $payment->getAllowedCountries())) {
             $this->log($payment->getName(), 'Payment.countryNotAllowed', $country);
 
+            return false;
+        }
+        
+        if (!$payment->canHandleDifferingDeliveryAddress() && $deliveryAddress && $billingAddress->id != $deliveryAddress->id) {
             return false;
         }
 

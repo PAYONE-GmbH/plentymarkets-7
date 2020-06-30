@@ -14,7 +14,7 @@ class CartFactory
         $cart = new Cart();
         foreach ($requestData['basketItems'] as $i => $cartItemData) {
             $cartItem = new CartItem(
-                $i,
+                ($i+1),
                 $cartItemData['itemId'],
                 CartItem::TYPE_GOODS,
                 $cartItemData['quantity'] ?? '',
@@ -44,7 +44,7 @@ class CartFactory
             );
         }
         $shippingCost = new CartItem(
-            count($cart->getCartItems()),
+            (count($cart->getCartItems())+1),
             'shipping',
             CartItem::TYPE_SHIPMENt,
             1,

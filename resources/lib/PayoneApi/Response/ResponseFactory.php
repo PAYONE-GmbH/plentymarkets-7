@@ -11,6 +11,9 @@ class ResponseFactory
      */
     public static function create($response)
     {
+        if (strpos($response, 'PDF-1.') !== false) {
+            return new GenericResponse(['document' => base64_encode($response)]);
+        }
         $responseData = self::parseResponse($response);
         if (strpos($response, 'clearing') !== false) {
             $authResponse = new ResponseWithClearing($responseData);

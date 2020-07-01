@@ -10,6 +10,7 @@ class Types
     const REFUND = 'refund';
     const DEBIT = 'debit';
     const MANAGEMANDATE = 'managemandate';
+    const INVOICE = 'getinvoice';
 
     /**
      * @return mixed

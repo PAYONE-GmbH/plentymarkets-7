@@ -14,7 +14,7 @@ class GetInvoiceDataProvider extends DataProviderAbstract
                                    string $documentNumber = null)
     {
         $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['context']['documentNumber']   = $documentNumber     ;
+        $requestParams['context']['documentNumber']   = $documentNumber;
         $this->validator->validate($requestParams);
         return $requestParams;
     }

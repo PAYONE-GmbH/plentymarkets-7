@@ -20,7 +20,7 @@ class GetInvoiceResponseFactory
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
-            $responseData['responseData'] ?? ''
+            $responseData['responseData']['document'] ?? ''
         );
     }
 }

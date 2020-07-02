@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
+use Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Document\Models\Document;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Payone\Providers\Api\Request\GetInvoiceDataProvider;
 use Plenty\Modules\Document\Contracts\DocumentRepositoryContract;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Otto\Order\Exceptions\InvalidDocumentTypeException;
@@ -33,9 +34,6 @@ class PaymentDocuments
      */
     private $paymentHelper;
 
-    /** @var OrderRepositoryContract */
-    private $orderRepositoryContract;
-
     /**
      * @var Api
      */
@@ -55,7 +53,6 @@ class PaymentDocuments
      *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
-     * @param OrderRepositoryContract $orderRepositoryContract
      * @param GetInvoiceDataProvider $getInvoiceDataProvider
      * @param Api $api
      * @param Logger $logger
@@ -63,7 +60,6 @@ class PaymentDocuments
     public function __construct(
         PaymentRepositoryContract $paymentRepository,
         PaymentHelper $paymentHelper,
-        OrderRepositoryContract $orderRepositoryContract,
         GetInvoiceDataProvider $getInvoiceDataProvider,
         Api $api,
         Logger $logger
@@ -71,13 +67,12 @@ class PaymentDocuments
     {
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
-        $this->orderRepositoryContract = $orderRepositoryContract;
         $this->api = $api;
         $this->getInvoiceDataProvider = $getInvoiceDataProvider;
         $this->logger = $logger;
     }
 
-    public function uploadDocument($txid, $sequenceNumber)
+    public function uploadDocument($txid, $sequenceNumber, $invoiceId, $invoiceDate)
     {
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
             PaymentProperty::TYPE_TRANSACTION_ID,
@@ -106,7 +101,13 @@ class PaymentDocuments
             }
 
             try {
-                $order = $this->orderRepositoryContract->findOrderById($orderId);
+                $authHelper = pluginApp(AuthHelper::class);
+                $order      = $authHelper->processUnguarded(
+                    function () use ($orderId) {
+                        $orderRepository = pluginApp(OrderRepositoryContract::class);
+                        return $orderRepository->findOrderById($orderId);
+                    }
+                );
             } catch (\Exception $ex) {
                 $this->logger->error('Api.doGetInvoice',
                     [
@@ -119,13 +120,13 @@ class PaymentDocuments
                 continue;
             }
 
-            $documentType = 'RG';
-            if ($order->typeId == OrderType::TYPE_CREDIT_NOTE) {
-                $documentType = 'GT';
+            if(strlen($invoiceId) === 0)
+            {
+                $invoiceId =  (($order->typeId == OrderType::TYPE_CREDIT_NOTE)?'GT':'RG').'-'.$txid.'-'.$sequenceNumber;
             }
 
             $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
-            $requestData = $this->getInvoiceDataProvider->getRequestData($paymentCode, $txid, $sequenceNumber, $documentType);
+            $requestData = $this->getInvoiceDataProvider->getRequestData($paymentCode, $txid, $sequenceNumber, $invoiceId);
             $getInvoiceResult = $this->api->doGetInvoice($requestData);
 
             if (!$getInvoiceResult->getSuccess()) {
@@ -140,7 +141,7 @@ class PaymentDocuments
                 continue;
             }
 
-            $this->importInvoice($order, $requestData['context']['documentNumber'], $getInvoiceResult->getBase64());
+            $this->importInvoice($order, $requestData['context']['documentNumber'], $getInvoiceResult->getBase64(), $invoiceDate);
         }
     }
 
@@ -152,7 +153,7 @@ class PaymentDocuments
      * @throws InvalidDocumentTypeException
      * @throws \Plenty\Exceptions\ValidationException
      */
-    private function importInvoice(Order $order, string $invoiceNumber, string $content)
+    private function importInvoice(Order $order, string $invoiceNumber, string $content, string $invoiceDate)
     {
         /** @var DocumentRepositoryContract $documentRepository */
         $documentRepository = pluginApp(DocumentRepositoryContract::class);
@@ -173,15 +174,27 @@ class PaymentDocuments
         if ($order->typeId == OrderType::TYPE_CREDIT_NOTE) {
             $documentType = Document::CREDIT_NOTE_EXTERNAL;
         }
+
+        $date = Carbon::now()->toW3cString();
+        if( strlen($invoiceDate) == 8 )
+        {
+            $date = Carbon::createFromFormat('Ymd', $invoiceDate)->format(\DateTime::W3C);
+        }
+
         $data = [
             'documents' => [
                 [
                     'content' => $content,
                     'numberWithPrefix' => $invoiceNumber,
-                    'displayDate' => Carbon::now()->toW3cString()
+                    'displayDate' => $date
                 ]
             ]
         ];
-        $documentRepository->uploadOrderDocuments($order->id, $documentType, $data);
+        $authHelper = pluginApp(AuthHelper::class);
+        $documents  = $authHelper->processUnguarded(
+            function () use ($documentRepository, $order, $documentType, $data) {
+                $documentRepository->uploadOrderDocuments($order->id, $documentType, $data);
+            }
+        );
     }
 }

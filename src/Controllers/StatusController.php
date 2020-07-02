@@ -6,6 +6,7 @@ use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
 use Payone\Migrations\CreatePaymentMethods;
 use Payone\Services\PaymentCreation;
+use Payone\Services\PaymentDocuments;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -32,6 +33,12 @@ class StatusController extends Controller
      * @var CreatePaymentMethods
      */
     private $paymentMigration;
+
+    /**
+     * @var PaymentDocuments
+     */
+    private $paymentDocument;
+
     /**
      * @var Logger
      */
@@ -43,6 +50,7 @@ class StatusController extends Controller
      * @param Request $request
      * @param ConfigAdapter $config
      * @param PaymentCreation $paymentCreation
+     * @param PaymentDocuments $paymentDocument
      * @param CreatePaymentMethods $paymentMigration
      * @param Logger $logger
      */
@@ -50,12 +58,15 @@ class StatusController extends Controller
         Request $request,
         ConfigAdapter $config,
         PaymentCreation $paymentCreation,
+        PaymentDocuments $paymentDocument,
         CreatePaymentMethods $paymentMigration,
         Logger $logger
-    ) {
+    )
+    {
         $this->request = $request;
         $this->config = $config;
         $this->paymentCreation = $paymentCreation;
+        $this->paymentDocument = $paymentDocument;
         $this->paymentMigration = $paymentMigration;
         $this->logger = $logger;
     }
@@ -71,14 +82,18 @@ class StatusController extends Controller
         }
 
         $this->logger->setIdentifier(__METHOD__);
-        $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE,$txid);
+        $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $txid);
         $this->logger->debug('Controller.Status', $this->request->all());
 
         if ($this->request->get('key') != md5($this->config->get('key'))) {
             return;
         }
 
-        $this->paymentCreation->updatePaymentStatus($txid, $txaction, $sequenceNumber);
+        if ($txaction === 'invoice') {
+            $this->paymentDocument->uploadDocument($txid, $sequenceNumber);
+        } else {
+            $this->paymentCreation->updatePaymentStatus($txid, $txaction, $sequenceNumber);
+        }
 
         return 'TSOK';
     }

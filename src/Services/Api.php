@@ -5,6 +5,8 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\GetInvoiceResponse;
+use Payone\Models\Api\GetInvoiceResponseFactory;
 use Payone\Models\Api\ManagemandateResponse;
 use Payone\Models\Api\ManagemandateResponseFactory;
 use Payone\Models\Api\PreAuthResponse;
@@ -31,6 +33,7 @@ class Api
     const REQUEST_TYPE_CALCULATION = 'Calculation';
     const REQUEST_TYPE_DEBIT = 'Debit';
     const REQUEST_TYPE_MANAGEMANDATE = 'Managemandate';
+    const REQUEST_TYPE_INVOICE = 'GetDocument';
 
     /**
      * @var LibraryCallContract
@@ -202,6 +205,24 @@ class Api
         $response = $this->doLibCall((self::REQUEST_TYPE_MANAGEMANDATE), $requestParams);
 
         $responseObject = ManagemandateResponseFactory::create($response);
+
+        $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
+        $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_MANAGEMANDATE), $response);
+
+        return $responseObject;
+    }
+
+    /**
+     * @param $requestParams
+     *
+     * @return Response
+     */
+    public function doGetInvoice($requestParams): GetInvoiceResponse
+    {
+        $this->logger->setIdentifier(__METHOD__);
+        $response = $this->doLibCall((self::REQUEST_TYPE_INVOICE), $requestParams);
+
+        $responseObject = GetInvoiceResponseFactory::create($response);
 
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_MANAGEMANDATE), $response);

@@ -263,16 +263,17 @@ abstract class DataProviderAbstract
         return [
             'paymentMethod' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
-            'context' => $this->getApiContextParams(),
+            'context' => $this->getApiContextParams($paymentCode),
         ];
     }
 
     /**
+     * @param int $paymentCode
      * @return array
      */
-    protected function getApiContextParams()
+    protected function getApiContextParams($paymentCode)
     {
-        return $this->config->getApiCredentials();
+        return $this->config->getApiCredentials($paymentCode);
     }
 
     /**

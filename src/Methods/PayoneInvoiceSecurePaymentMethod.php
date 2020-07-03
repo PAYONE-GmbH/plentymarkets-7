@@ -37,4 +37,15 @@ class PayoneInvoiceSecurePaymentMethod extends PaymentAbstract
         // A separate portal ID and key must be set for this payment method
         return (!empty($portalId) && !empty($key));
     }
+
+    /**
+     * Is the payment method active for the given currency?
+     *
+     * @param $currency
+     * @return bool
+     */
+    public function isActiveForCurrency($currency): bool
+    {
+        return $currency == 'EUR';
+    }
 }

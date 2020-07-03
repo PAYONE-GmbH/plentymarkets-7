@@ -79,6 +79,10 @@ class PaymentValidator
         if (!$payment->validateSettings($configRepo)) {
             return false;
         }
+        
+        if (!$payment->isActiveForCurrency($this->basket->currency)) {
+            return false;
+        }
 
         return true;
     }

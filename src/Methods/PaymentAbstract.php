@@ -208,4 +208,15 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     {
         return true;
     }
+
+    /**
+     * Is the payment method active for the given currency?
+     * 
+     * @param $currency
+     * @return bool
+     */
+    public function isActiveForCurrency($currency): bool
+    {
+        return true;
+    }
 }

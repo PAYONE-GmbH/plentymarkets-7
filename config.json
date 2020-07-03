@@ -168,6 +168,18 @@
           "label": "Config.PAYONEPAYONEINVOICESECUREDescriptionLabel",
           "options": {}
         },
+        "PAYONE_PAYONE_INVOICE_SECURE.portalid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.portalidLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.key": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.keyLabel",
+          "options": {}
+        },
         "PAYONE_PAYONE_INVOICE_SECURE.minCartAmount": {
           "type": "inputText",
           "required": false,
@@ -191,18 +203,6 @@
           "options": {
             "defaultValue": "DE,AT,CH"
           }
-        },
-        "PAYONE_PAYONE_INVOICE_SECURE.portalid": {
-          "type": "inputText",
-          "required": false,
-          "label": "Config.portalidLabel",
-          "options": {}
-        },
-        "PAYONE_PAYONE_INVOICE_SECURE.key": {
-          "type": "inputText",
-          "required": false,
-          "label": "Config.keyLabel",
-          "options": {}
         }
       }
     },

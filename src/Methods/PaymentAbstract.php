@@ -48,7 +48,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     public function isActive(): bool
     {
         return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
-            && $this->paymentValidator->validate($this);
+            && $this->paymentValidator->validate($this, $this->configRepo);
     }
 
     /**
@@ -194,6 +194,17 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      * @return bool
      */
     public function canHandleDifferingDeliveryAddress(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if all settings for the payment method are set.
+     * 
+     * @param ConfigAdapter $configRepo
+     * @return bool
+     */
+    public function validateSettings(ConfigAdapter $configRepo): bool
     {
         return true;
     }

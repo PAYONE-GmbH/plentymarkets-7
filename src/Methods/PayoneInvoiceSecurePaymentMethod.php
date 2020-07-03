@@ -4,6 +4,8 @@
 
 namespace Payone\Methods;
 
+use Payone\Adapter\Config as ConfigAdapter;
+
 /**
  * Class PayoneInvoiceSecurePaymentMethod
  */
@@ -19,5 +21,20 @@ class PayoneInvoiceSecurePaymentMethod extends PaymentAbstract
     public function canHandleDifferingDeliveryAddress(): bool
     {
         return false;
+    }
+
+    /**
+     * Check if all settings for the payment method are set.
+     *
+     * @param ConfigAdapter $configRepo
+     * @return bool
+     */
+    public function validateSettings(ConfigAdapter $configRepo): bool
+    {
+        $portalId = $configRepo->get(self::PAYMENT_CODE . '.portalid');
+        $key = $configRepo->get(self::PAYMENT_CODE . '.key');
+        
+        // A separate portal ID and key must be set for this payment method
+        return (!empty($portalId) && !empty($key));
     }
 }

@@ -47,7 +47,7 @@ class CartFactory
             1,
             $basket['shippingAmount'],
             $taxRate,
-            'shipping'
+            'Porto & Versand'
         );
         return $shippingCost;
     }

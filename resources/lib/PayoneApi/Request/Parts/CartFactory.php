@@ -42,7 +42,7 @@ class CartFactory
         }
         $shippingCost = new CartItem(
             (count($cart->getCartItems())+1),
-            'shipping',
+            'Shipping',
             CartItem::TYPE_SHIPMENt,
             1,
             $basket['shippingAmount'],

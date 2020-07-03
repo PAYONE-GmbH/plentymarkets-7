@@ -250,6 +250,13 @@ abstract class DataProviderAbstract
             $customerData['gender'] = 'f';
         }
 
+        $taxIdNumber = $addressObj->taxIdNumber;
+        if (!empty($taxIdNumber)) {
+            $customerData['businessrelation'] = 'b2b';
+        } else {
+            $customerData['businessrelation'] = 'b2c';
+        }
+
         return $customerData;
     }
 

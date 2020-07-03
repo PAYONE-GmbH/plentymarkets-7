@@ -49,7 +49,8 @@ class ManageMandateRequestFactory implements RequestFactoryContract
             $customerData['birthday'],
             $customerData['language'],
             $customerData['gender'],
-            $customerData['ip']
+            $customerData['ip'],
+            $customerData['businessrelation'] ?? 'b2c'
         );
         $basket = $data['basket'];
 

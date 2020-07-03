@@ -34,7 +34,8 @@ class GenericAuthRequestFactory
             $customerData['birthday'],
             $customerData['language'],
             $customerData['gender'],
-            $customerData['ip']
+            $customerData['ip'],
+            $customerData['businessrelation'] ?? 'b2c'
         );
         $reference = isset($data['order']['orderId']) && $data['order']['orderId'] ?
             'order-' . $data['order']['orderId'] : 'basket-' . $data['basket']['id'];

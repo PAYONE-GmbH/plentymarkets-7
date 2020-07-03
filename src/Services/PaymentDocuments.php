@@ -122,7 +122,7 @@ class PaymentDocuments
                     $order = $orderRepository->findOrderById($orderId);
                     foreach ($order->childOrders as $childOrder) {
                         if ($childOrder->typeId == OrderType::TYPE_CREDIT_NOTE &&
-                            $childOrder->amount->invoiceTotal == abs($invoiceTotal)) {
+                            $childOrder->amount->invoiceTotal == (-$invoiceTotal)) {
                             return $childOrder->id;
                         }
                     }

@@ -73,6 +73,8 @@ class PaymentDocuments
 
     public function uploadDocument($txid, $invoiceId, $invoiceDate, $invoiceTotal)
     {
+        $this->logger->setIdentifier(__METHOD__);
+
         $payments = $this->paymentRepository->getPaymentsByPropertyTypeAndValue(
             PaymentProperty::TYPE_TRANSACTION_ID,
             $txid,
@@ -89,7 +91,7 @@ class PaymentDocuments
         }
 
         /* @var $payment Payment */
-        $payments = array_shift($payments);
+        $payment = array_shift($payments);
 
         $this->logger->debug('Api.doGetInvoice',
             [

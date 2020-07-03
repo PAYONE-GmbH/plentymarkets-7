@@ -91,7 +91,7 @@ class PaymentDocuments
         }
 
         /* @var $payment Payment */
-        $payment = array_shift($payments);
+        $payment = $payments->shift();
 
         $this->logger->debug('Api.doGetInvoice',
             [

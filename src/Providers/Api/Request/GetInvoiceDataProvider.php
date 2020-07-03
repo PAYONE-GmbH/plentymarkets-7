@@ -9,8 +9,6 @@ class GetInvoiceDataProvider extends DataProviderAbstract
      * {@inheritdoc}
      */
     public function getRequestData(string $paymentCode,
-                                   string $requestReference = null,
-                                   string $sequenceNumber = null,
                                    string $documentNumber = null)
     {
         $requestParams = $this->getDefaultRequestData($paymentCode);

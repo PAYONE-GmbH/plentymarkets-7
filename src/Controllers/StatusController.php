@@ -86,17 +86,18 @@ class StatusController extends Controller
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $txid);
         $this->logger->debug('Controller.Status', $this->request->all());
 
-        if ( $this->request->get('key') != md5($this->config->get(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE.'.key')) &&
-             $this->request->get('key') != md5($this->config->get('key')) )
-        {
+        if ($this->request->get('key') != md5($this->config->get(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE . '.key')) &&
+            $this->request->get('key') != md5($this->config->get('key'))) {
             return;
         }
 
         if ($txaction === 'invoice') {
-
-            $invoiceId = $this->request->get('invoiceid');
-            $invoiceDate = $this->request->get('invoice_date');
-            $this->paymentDocument->uploadDocument($txid, $sequenceNumber, $invoiceId, $invoiceDate);
+            $this
+                ->paymentDocument
+                ->uploadDocument($txid,
+                    $this->request->get('invoiceid'),
+                    $this->request->get('invoice_date'),
+                    $this->request->get('invoice_grossamount'));
         } else {
             $this->paymentCreation->updatePaymentStatus($txid, $txaction, $sequenceNumber);
         }

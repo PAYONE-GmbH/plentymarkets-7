@@ -22,7 +22,7 @@ class ApiCredentials
     }
 
     /**
-     * @param null $paymentCode
+     * @param int|null $paymentCode
      * @return string
      */
     public function getKey($paymentCode = null)

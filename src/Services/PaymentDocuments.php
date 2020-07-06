@@ -48,8 +48,6 @@ class PaymentDocuments
     private $logger;
 
     /**
-     * PaymentCreation constructor.
-     *
      * @param PaymentRepositoryContract $paymentRepository
      * @param PaymentHelper $paymentHelper
      * @param GetInvoiceDataProvider $getInvoiceDataProvider
@@ -158,12 +156,10 @@ class PaymentDocuments
     }
 
     /**
-     * Imports one invoice.
-     *
      * @param int $orderId
-     * @param array $invoice
-     * @throws InvalidDocumentTypeException
-     * @throws \Plenty\Exceptions\ValidationException
+     * @param string $invoiceNumber
+     * @param string $content
+     * @param string $invoiceDate
      */
     private function importInvoice(int $orderId, string $invoiceNumber, string $content, string $invoiceDate)
     {

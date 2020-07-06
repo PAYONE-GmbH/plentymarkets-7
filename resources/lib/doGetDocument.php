@@ -31,7 +31,7 @@ try {
         $e->getTraceAsString()
     );
 
-    return $errorResponse;
+    return $errorResponse->jsonSerialize();
 }
 
 if (!$response->getSuccess()) {

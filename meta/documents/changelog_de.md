@@ -1,6 +1,9 @@
 # Release Notes für PAYONE
 
-## 1.1.13 (2020-06-04)
+## 1.1.13 (2020-07-07)
+### Hinzugefügt
+- Zahlungsart "Secure Invoice" hinzugefügt
+
 ### Geändert
 - Icon für das Backend hinzugefügt
 

@@ -8,31 +8,32 @@ Das plentymarkets PAYONE Plugin bietet Ihnen Zugang zu internationalen und lokal
 
 Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
-* Rechnung
-* Gesicherte Rechnung
-* Paydirekt
-* Payolution Ratenzahlung
-* PayPal
-* RatePay Ratenzahlung
-* Sofortüberweisung
-* Vorkasse
-* Kreditkarte
-* Nachnahme
-* Lastschrift
+* Gesicherter Rechnungskauf 
+* Visa & MasterCard (inkl. Maestro) 
+* American Express - Anbindung Ihres bestehenden Akzeptanzvertrages 
+* SEPA Lastschrift 
+* giropay - Online-Überweisung Deutschland
+* Sofortüberweisung - Online-Überweisung international
+* Überweisung - Vorkasse & Rechnung & Nachnahme
+* PayPal - Anbindung Ihres PayPal-Accounts
+* Amazon Pay - Anbindung Ihres Amazon Pay-Accounts (In Kürze verfügbar!) 
 
 ## Erste Schritte
 
-<div class="alert alert-warning" role="alert">
-  Hinweis: Die Nutzung dieses Plugins erfordert einen Freischaltcode, den Sie über die PSG Projektmanagement GmbH erhalten können. Unter bestimmten Voraussetzungen können Sie in Verbindung mit dieser Zahlart über die PSG Projektmanagement GmbH in den Genuss eines attraktiven Förderprogramms kommen. [Hier geht es zum Anmeldeformular](https://www.psg-projektmanagement.de/bs-payone/).
-</div>
+Für die Nutzung benötigen Sie einen PAYONE Account und die PAYONE Zugangsdaten. Wenn Sie noch kein PAYONE Kunde sind und demnach keinen PAYONE Account besitzen, wenden Sie sich bitte an: 
 
-Kontaktieren Sie uns: <br>
 PSG Projektmanagement GmbH <br>
 Meergässle 4 <br>
 89180 Berghülen <br>
 Telefon: 07344-9592588 <br>
 E-Mail: plenty@psg-projektmanagement.de <br>
-Internet: http://www.psg-projektmanagement.de
+Internet: http://www.psg-projektmanagement.de <br>
+Oder nutzen Sie folgendes Anmeldeformular <br>
+https://www.psg-projektmanagement.de/payone-plentymarkets/
+
+<div class="alert alert-warning" role="alert">
+    Einen PAYONE-Account erhalten Sie nur über den oben genannten Partner. Bitte wenden Sie sich nicht direkt an die PAYONE, um den reibungslosen Ablauf nicht zu gefährden.
+</div>
 
 Nach Erhalt der Zugangsdaten loggen Sie sich im PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
 

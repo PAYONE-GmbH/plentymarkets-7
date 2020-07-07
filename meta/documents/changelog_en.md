@@ -1,8 +1,10 @@
 # Release Notes for PAYONE
 
-## 1.1.13 (2020-06-04)
+## 1.1.13 (2020-07-07)
+
 ### Geändert
 - Added Icon for the backend
+- Updated user guide
 
 ## 1.1.12 (2020-03-09)
 

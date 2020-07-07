@@ -1,8 +1,10 @@
 # Release Notes für PAYONE
 
-## 1.1.13 (2020-06-04)
+## 1.1.13 (2020-07-07
+)
 ### Geändert
 - Icon für das Backend hinzugefügt
+- User Guide aktualisiert
 
 ## 1.1.12 (2020-03-09)
 
@@ -58,7 +60,7 @@
 - Die Zahlungsart Amazon Pay wurde für das Backend hinzugefügt.
 
 ### Behoben
-- Einige Medlungen im Log
+- Einige Meldungen im Log
 
 ## 1.1.3 (2019-06-13)
 

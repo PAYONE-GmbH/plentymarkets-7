@@ -8,31 +8,32 @@ The plentymarkets PAYONE plugin offers you access to international as well as lo
 
 The plugin currently offers the following payment methods:
 
-* Invoice
-* Secure invoice
-* Paydirekt
-* Payolution Payment in installments
-* PayPal
-* RatePay Payment in installments
-* Sofortüberweisung
-* Cash in advance
-* Credit card
-* Cash on Delivery
-* Debit
+* Secure Invoice
+* Visa & MasterCard (incl. Maestro)
+* American Express - Integration of your existing acceptance contract
+* SEPA direct debit
+* giropay - online bank transfer Germany
+* Sofortüberweisung - Online bank transfer international
+* Transfer - Cash in advance & Invoice & Cash on Delivery
+* PayPal - Integration of your PayPal account
+* Amazon Pay - Integration of your Amazon Pay accounts (Available soon!)
 
 ## First steps
 
-<div class="alert alert-warning" role="alert">
-  Note: The use of this plugin requires an access code which can be obtained from PSG Projektmanagement GmbH. Under certain conditions, you can take part in an attractive promotion program through PSG Projektmanagement GmbH in connnection with this payment method. [Click here to access the registration form](https://www.psg-projektmanagement.de/bs-payone/).
-</div>
+The use requires a PAYONE account as well as PAYONE access data. If you are not a PAYONE customer yet and thus do not have a PAYONE account, please contact:
 
-Contact us: <br
 PSG Projektmanagement GmbH <br>
 Meergässle 4 <br>
 89180 Berghülen <br>
 Phone: 07344-9592588 <br>
 E-mail: plenty@psg-projektmanagement.de <br>
-Website: http://www.psg-projektmanagement.de
+Website: http://www.psg-projektmanagement.de <br>
+Or use the following registration form: <br>
+https://www.psg-projektmanagement.de/payone-plentymarkets/
+
+<div class="alert alert-warning" role="alert">
+   You can only get a PAYONE account via the partner mentioned above. In order not to compromise a smooth process, please do not contact PAYONE directly.
+</div>
 
 Upon receipt of your access data, log in to the PAYONE merchant interface and carry out the following settings.
 

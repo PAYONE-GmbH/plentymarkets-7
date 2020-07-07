@@ -69,6 +69,13 @@ class PaymentDocuments
         $this->logger = $logger;
     }
 
+    /**
+     * @param string $txid
+     * @param string $invoiceId
+     * @param string $invoiceDate
+     * @param float $invoiceTotal
+     * @throws \Exception
+     */
     public function uploadDocument($txid, $invoiceId, $invoiceDate, $invoiceTotal)
     {
         $this->logger->setIdentifier(__METHOD__);

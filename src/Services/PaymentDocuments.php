@@ -70,13 +70,15 @@ class PaymentDocuments
     }
 
     /**
+     * This function loads the invoice / credit documents from payone. The OrderId is determined over the taxid.
+     *
      * @param string $txid
      * @param string $invoiceId
      * @param string $invoiceDate
      * @param float $invoiceTotal
      * @throws \Exception
      */
-    public function uploadDocument($txid, $invoiceId, $invoiceDate, $invoiceTotal)
+    public function addInvoiceToOrder($txid, $invoiceId, $invoiceDate, $invoiceTotal)
     {
         $this->logger->setIdentifier(__METHOD__);
 

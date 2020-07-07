@@ -94,7 +94,7 @@ class StatusController extends Controller
         if ($txaction === 'invoice') {
             $this
                 ->paymentDocument
-                ->uploadDocument($txid,
+                ->addInvoiceToOrder($txid,
                     $this->request->get('invoiceid'),
                     $this->request->get('invoice_date'),
                     $this->request->get('invoice_grossamount'));

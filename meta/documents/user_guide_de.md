@@ -2,25 +2,25 @@
    Das PAYONE Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des PAYONE Plugins müssen die Plugins IO und Ceres aktiviert sein.
 </div>
 
-# PAYONE Payment für plentymarkets 7
+# PAYONE Payment für plentymarkets
 
-Das plentymarkets PAYONE Plugin bietet Ihnen Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig haben Sie Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
+Das plentymarkets PAYONE Plugin bietet Zugang zu internationalen und lokalen Zahlungsarten. Gleichzeitig hast du Zugriff auf ein integriertes Risikomanagement, automatisierte Gutschriften und schnelle Retourenabwicklung.
 
 Aktuell beinhaltet das Plugin die folgenden Zahlungsarten:
 
-* Gesicherter Rechnungskauf 
-* Visa & MasterCard (inkl. Maestro) 
-* American Express - Anbindung Ihres bestehenden Akzeptanzvertrages 
-* SEPA Lastschrift 
+* Gesicherter Rechnungskauf
+* Visa & MasterCard (inkl. Maestro)
+* American Express - Anbindung Ihres bestehenden Akzeptanzvertrages
+* SEPA Lastschrift
 * giropay - Online-Überweisung Deutschland
 * Sofortüberweisung - Online-Überweisung international
 * Überweisung - Vorkasse & Rechnung & Nachnahme
 * PayPal - Anbindung Ihres PayPal-Accounts
-* Amazon Pay - Anbindung Ihres Amazon Pay-Accounts (In Kürze verfügbar!) 
+* Amazon Pay - Anbindung Ihres Amazon Pay-Accounts (In Kürze verfügbar!)
 
 ## Erste Schritte
 
-Für die Nutzung benötigen Sie einen PAYONE Account und die PAYONE Zugangsdaten. Wenn Sie noch kein PAYONE Kunde sind und demnach keinen PAYONE Account besitzen, wenden Sie sich bitte an: 
+Für die Nutzung benötigst du einen PAYONE Account und die PAYONE Zugangsdaten. Wenn du noch kein PAYONE Kunde bist und demnach keinen PAYONE Account besitzt, wende dich bitte an:
 
 PSG Projektmanagement GmbH <br>
 Meergässle 4 <br>
@@ -28,39 +28,39 @@ Meergässle 4 <br>
 Telefon: 07344-9592588 <br>
 E-Mail: plenty@psg-projektmanagement.de <br>
 Internet: http://www.psg-projektmanagement.de <br>
-Oder nutzen Sie folgendes Anmeldeformular <br>
+Oder nutze folgendes Anmeldeformular <br>
 https://www.psg-projektmanagement.de/payone-plentymarkets/
 
 <div class="alert alert-warning" role="alert">
-    Einen PAYONE-Account erhalten Sie nur über den oben genannten Partner. Bitte wenden Sie sich nicht direkt an die PAYONE, um den reibungslosen Ablauf nicht zu gefährden.
+    Einen PAYONE-Account erhätst du nur über den oben genannten Partner. Bitte wende dich nicht direkt an die PAYONE, um den reibungslosen Ablauf nicht zu gefährden.
 </div>
 
-Nach Erhalt der Zugangsdaten loggen Sie sich im PAYONE Merchant Interface ein und nehmen die folgenden Einstellungen vor.
+Nach Erhalt der Zugangsdaten loggst du dich im PAYONE Merchant Interface ein und nimmst die folgenden Einstellungen vor.
 
 ##### Einstellungen im PAYONE Merchant Interface vornehmen:
 
-1. Öffnen Sie das Menü **Konfiguration » Zahlungsportale**.
-2. Öffnen Sie das Tab **Erweitert** des Zahlungsportals Ihres Shops.
-3. Tragen Sie im Feld **TransactionStatusURL** eine URL nach dem Schema **DOMAIN/payment/payone/status** ein. Den Platzhalter **DOMAIN** durch die URL zu Ihrem Webshop ersetzen.
-4. Wählen Sie als **Verfahren Hashwert-Prüfung** die Option **md5 oder sha2-384 (für Migration)**.
-5. **Speichern** Sie die Einstellungen.
+1. Öffne das Menü **Konfiguration » Zahlungsportale**.
+2. Öffne das Tab **Erweitert** des Zahlungsportals deines Shops.
+3. Trage im Feld **TransactionStatusURL** eine URL nach dem Schema **DOMAIN/payment/payone/status** ein. Den Platzhalter **DOMAIN** durch die URL zu deinem Webshop ersetzen.
+4. Wähle als **Verfahren Hashwert-Prüfung** die Option **md5 oder sha2-384 (für Migration)**.
+5. **Speichere** die Einstellungen.
 
-Aktivieren Sie die gewünschten PAYONE-Zahlungsarten in Ihrem plentymarkets Backend einmalig im Menü **System » Systemeinstellungen » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu finden Sie auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
+Aktiviere die gewünschten PAYONE-Zahlungsarten in deinem plentymarkets Backend einmalig im Menü **Einrichtung » Aufträge » Zahlung » Zahlungsarten**. Weitere Informationen dazu findest du auf der Handbuchseite <strong><a href="https://knowledge.plentymarkets.com/payment/zahlungsarten-verwalten#20" target="_blank"> Zahlungsarten verwalten </a></strong>.
 
-Stellen Sie zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.
+Stelle zudem sicher, dass die Zahlungsart unter dem Punkt **Erlaubte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/crm/kontakte-verwalten#15" target="_blank">Kundenklassen</a></strong> vorhanden ist und nicht im Bereich **Gesperrte Zahlungsarten** in den <strong><a href="https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1000" target="_blank">Versandprofilen</a></strong> aufgeführt ist.
 
 ## Einrichtung des Plugins
 
-Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolgen direkt in der Plugin-Übersicht Ihres plentymarkets Systems. Gehen Sie dazu wie im Folgenden beschrieben vor.
+Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugin erfolgen direkt in der Plugin-Übersicht deines plentymarkets-Systems. Gehe dazu wie im Folgenden beschrieben vor.
 
 ##### Grundeinstellungen vornehmen:
 
-1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**.
-2. Klicken Sie in der Liste der Plugins auf den Namen des Plugins **PAYONE**.
+1. Öffne das Menü **Plugins » Plugin-Übersicht**.
+2. Klicke in der Liste der Plugins auf den Namen des Plugins **PAYONE**.
 → Die Detailansicht des Plugins öffnet sich.
-3. Öffnen Sie den Menüpunkt **Konfiguration**.
-4. Klicken Sie auf **Grundeinstellungen**. Nehmen Sie die Einstellungen anhand der Informationen in Tabelle 1 vor.
-5. **Speichern** Sie die Einstellungen.
+3. Öffne den Menüpunkt **Konfiguration**.
+4. Klicke auf **Grundeinstellungen**. Nimm die Einstellungen anhand der Informationen in Tabelle 1 vor.
+5. **Speichere** die Einstellungen.
 
 <table>
 <caption>Tab. 1: Grundeinstellungen vornehmen</caption>
@@ -78,7 +78,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
             <b>Merchant ID</b>
          </td>
          <td>
-            Geben Sie hier die Kundennummer ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
+            Gib hier die Kundennummer ein, die du bei der Registrierung bei PAYONE erhalten hast.
          </td>
       </tr>
       <tr>
@@ -86,7 +86,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
             <b>Portal ID</b>
          </td>
          <td>
-            Geben Sie hier die ID des Zahlungsportals ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
+            Gib hier die ID des Zahlungsportals ein, die du bei der Registrierung bei PAYONE erhalten hast.
          </td>
       </tr>
       <tr>
@@ -94,7 +94,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
             <b>Account ID</b>
          </td>
          <td>
-            Geben Sie hier die Account-ID ein, die Sie bei der Registrierung bei PAYONE erhalten haben.
+            Gib hier die Account-ID ein, die du bei der Registrierung bei PAYONE erhalten hast.
          </td>
       </tr>
       <tr>
@@ -102,7 +102,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
             <b>Schlüssel</b>
          </td>
          <td>
-            Geben Sie hier den Schlüssel ein, den Sie bei der Registrierung bei PAYONE erhalten haben.
+            Gib hier den Schlüssel ein, den du bei der Registrierung bei PAYONE erhalten hast.
          </td>
       </tr>
       <tr>
@@ -110,7 +110,7 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
             <b>Modus</b>
          </td>
          <td>
-            Wahlen Sie zwischen den Optionen <strong>Test</strong> und <strong>Live</strong>. Wir empfehlen, während der Einrichtung des Plugins den Testmodus zu wählen. Währenddessen ist die Zahlungsart noch nicht in Ihrem Webshop verfügbar. Nach erfolgter Einrichtung wechseln Sie in den Livemodus und machen somit die Zahlungsart in Ihrem Webshop sichtbar.
+            Wähle zwischen den Optionen <strong>Test</strong> und <strong>Live</strong>. Wir empfehlen, während der Einrichtung des Plugins den Testmodus zu wählen. Währenddessen ist die Zahlungsart noch nicht in deinem Webshop verfügbar. Nach erfolgter Einrichtung wechsele in den Livemodus und mach somit die Zahlungsart in deinem Webshop sichtbar.
          </td>
       </tr>
       <tr>
@@ -118,8 +118,8 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
               <b>Art der Autorisierung</b>
           </td>
           <td>
-             <strong>Vorautorisierung</strong>: Wählen Sie diese Option, wenn der Zahlungseinzug beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5). <br />
-            <strong>Autorisierung:</strong>: Wählen Sie diese Option, wenn der Zahlungseinzug beim Käufer sofort stattfinden soll. Der Zahlungseingang wird somit direkt nach dem Kaufabschluss im Webshop in Ihrem plentymarkets System gebucht.
+             <strong>Vorautorisierung</strong>: Wähle diese Option, wenn der Zahlungseinzug beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5). <br />
+            <strong>Autorisierung:</strong>: Wähle diese Option, wenn der Zahlungseinzug beim Käufer sofort stattfinden soll. Der Zahlungseingang wird somit direkt nach dem Kaufabschluss im Webshop in deinem plentymarkets-System gebucht.
          </td>
       </tr>
    </tbody>
@@ -127,14 +127,14 @@ Die folgenden Einrichtungsschritte für das plentymarkets PAYONE Plugins erfolge
 
 ### Zahlungsarten einrichten
 
-Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop zur Verfügung stehen sollen. Außerdem nehmen Sie für die festgelegten Zahlungsarten genauere Einstellungen vor. Gehen Sie dazu wie im Folgenden beschrieben vor.
+Im Folgenden legst du fest, welche PAYONE-Zahlungsarten deinen Kunden im Webshop zur Verfügung stehen sollen. Außerdem nimmst du für die festgelegten Zahlungsarten genauere Einstellungen vor. Gehe dazu wie im Folgenden beschrieben vor.
 
 
 ##### Zahlungsarten einrichten:
 
-1. Öffnen Sie den Menüpunkt **Konfiguration** in der Detailansicht des Plugins.
-2. Klicken Sie auf den Menüpunkt der Zahlungsart. Nehmen Sie die Einstellungen anhand der Informationen in Tabelle 2 vor.
-5. **Speichern** Sie die Einstellungen.
+1. Öffne den Menüpunkt **Konfiguration** in der Detailansicht des Plugins.
+2. Klicke auf den Menüpunkt der Zahlungsart. Nimm die Einstellungen anhand der Informationen in Tabelle 2 vor.
+5. **Speichere** die Einstellungen.
 
 <table>
 <caption>Tab. 2: Zahlungsarten einrichten</caption>
@@ -152,7 +152,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Aktiv</b>
          </td>
          <td>
-            Wählen Sie die Option <strong>Ja</strong>, um die Zahlungsart zu aktivieren und somit im Webshop anzubieten.<br /> Wählen Sie die Option <strong>Nein</strong>, wenn die Zahlungsart deaktiviert werden und damit nicht zur Verfügung stehen soll.
+            Wähle die Option <strong>Ja</strong>, um die Zahlungsart zu aktivieren und somit im Webshop anzubieten.<br /> Wähle die Option <strong>Nein</strong>, wenn die Zahlungsart deaktiviert werden und damit nicht zur Verfügung stehen soll.
          </td>
       </tr>
       <tr>
@@ -160,7 +160,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Name</b>
          </td>
          <td>
-            Geben Sie einen Namen für die Zahlungsart ein. Dieser Name ist für Ihre Kunden im Webshop sichtbar.
+            Gib einen Namen für die Zahlungsart ein. Dieser Name ist für deine Kunden im Webshop sichtbar.
          </td>
       </tr>
       <tr>
@@ -168,7 +168,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Beschreibung</b>
          </td>
          <td>
-            Geben Sie einen Beschreibungstext für die Zahlungsart ein. Dieser Text ist für Ihre Kunden im Webshop sichtbar.
+            Gib einen Beschreibungstext für die Zahlungsart ein. Dieser Text ist für deine Kunden im Webshop sichtbar.
          </td>
       </tr>
       <tr>
@@ -176,7 +176,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Minimaler Bestellwert</b>
          </td>
          <td>
-            Geben Sie einen minimalen Bestellwert ein, ab dem die Zahlungsart im Webshop verfügbar sein soll.
+            Gib einen minimalen Bestellwert ein, ab dem die Zahlungsart im Webshop verfügbar sein soll.
          </td>
       </tr>
       <tr>
@@ -184,7 +184,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Maximaler Bestellwert</b>
          </td>
          <td>
-            Geben Sie einen maximalen Bestellwert ein, bis zu dem die Zahlungsart im Webshop verfügbar sein soll. Wird dieser Wert überschritten, ist die Zahlungsart nicht mehr verfügbar.
+            Gib einen maximalen Bestellwert ein, bis zu dem die Zahlungsart im Webshop verfügbar sein soll. Wird dieser Wert überschritten, ist die Zahlungsart nicht mehr verfügbar.
          </td>
       </tr>
       <tr>
@@ -192,7 +192,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
               <b>Erlaubte Lieferländer</b>
           </td>
           <td>
-            Geben Sie kommasepariert die Lieferländer aus, für die die Zahlungsart verfügbar sein soll.
+            Gib kommasepariert die Lieferländer aus, für die die Zahlungsart verfügbar sein soll.
          </td>
       </tr>
    </tbody>
@@ -216,7 +216,7 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
             <b>Minimale Kartengültigkeit in Tagen</b>
          </td>
          <td>
-            Geben Sie die erforderliche minimale Kartengültigkeit an, über die eine Kreditkarte verfügen muss, um für die Zahlungsart akzeptiert zu werden.
+            Gib die erforderliche minimale Kartengültigkeit an, über die eine Kreditkarte verfügen muss, um für die Zahlungsart akzeptiert zu werden.
          </td>
       </tr>
       <tr>
@@ -248,41 +248,46 @@ Im Folgenden legen Sie fest, welche PAYONE-Zahlungsarten Ihren Kunden im Webshop
               <b>Erlaubte Kartentypen</b>
           </td>
           <td>
-            Aktivieren Sie die Kartentypen, die für die Zahlungsart akzeptiert werden sollen.
+            Aktiviere die Kartentypen, die für die Zahlungsart akzeptiert werden sollen.
          </td>
       </tr>
    </tbody>
 </table>
 
+**Hinweis**: Für die Zahlungsart **Gesicherter Rechnungskauf** sind eine eigene **Portal-ID** sowie ein eigener **Schlüssel** notwendig. Diese Portal-ID und dieser Schlüssel müssen im Plugin unter **Gesicherte Rechnung** bei der Konfiguration separat hinterlegt werden. Die Portal-ID und den Schlüssel erhältst du über das PAYONE Merchant Interface über das Menü **Konfiguration » Zahlungsportale**.
+
 ## Ceres-Checkout anpassen
 
-Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit Ihre Kunden bei Bezahlvorgängen mit PAYONE ihr Geburtsdatum (nur für den gesicherten Rechnungskauf) korrekt eingeben können.
+Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit deine Kunden bei Bezahlvorgängen mit PAYONE ihr Geburtsdatum (nur für den gesicherten Rechnungskauf) korrekt eingeben können.
 
 <div class="alert alert-warning" role="alert">
-  Hinweis: Nehmen Sie die im Folgenden beschriebene Einstellung unbedingt sorgfältig vor, da Ihre Kunden andernfalls den Bezahlvorgang mit PAYONE nicht abschließen können!
+  Hinweis: Nimm die im Folgenden beschriebene Einstellung unbedingt sorgfältig vor, da deine Kunden andernfalls den Bezahlvorgang mit PAYONE nicht abschließen können!
 </div>
 
 ##### Ceres-Checkout anpassen für den gesicherten Rechnungskauf:
 
-1. Öffnen Sie das Menü **Plugins » Plugin-Übersicht**. <br > → Die Plugin-Übersicht wird geöffnet.
-2. Klicken Sie auf **Ceres**. <br > → Das Plugin wird geöffnet.
-3. Klicken Sie im Verzeichnisbaum auf **Konfiguration**.
-4. Wechseln Sie in das Tab **Kaufabwicklung und Mein Konto.**
-5. Klappen Sie den Bereich **Rechnungsadressfelder im Adressformular anzeigen (DE)** auf.
-6. Aktivieren Sie über die Checkbox die Option **Geburtsdatum**.
-7. **Speichern** Sie die Einstellungen. <br /> Im Checkout wird Ihren Kunden nun ein Feld zur Eingabe des Geburtsdatums angezeigt.
+1. Öffne das Menü **Plugins » Plugin-Übersicht**. <br >
+→ Die Plugin-Übersicht wird geöffnet.
+2. Klicke auf **Ceres**. <br >
+→ Das Plugin wird geöffnet.
+3. Klicke im Verzeichnisbaum auf **Konfiguration**.
+4. Wechsele in das Tab **Kaufabwicklung und Mein Konto.**
+5. Klappe den Bereich **Rechnungsadressfelder im Adressformular anzeigen (DE)** auf.
+6. Aktiviere über die Checkbox die Option **Geburtsdatum**.
+7. **Speichere** die Einstellungen. <br /> Im Checkout wird deinen Kunden nun ein Feld zur Eingabe des Geburtsdatums angezeigt.
 
 ## Template-Container verknüpfen
 
-Für die Zahlungsart PAYONE stehen Ihnen verschiedene Möglichkeiten zur Verfügung, um sie in Ihrem Webshop einzubinden.
+Für die Zahlungsart PAYONE stehen dir verschiedene Möglichkeiten zur Verfügung, um sie in deinem Webshop einzubinden.
 Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container hinterlegt, mit denen zur Individualisierung Contents verknüpft werden.
 
 ##### Container verknüpfen:
 
-1. Öffnen Sie das Menü **CMS » Container-Verknüpfungen**.
-2. Wählen Sie den gewünschten Content, der verknüpft werden soll.
-3. Wählen Sie einen oder mehrere Container, in denen der zuvor gewählte Content dargestellt werden soll. Beachten Sie dazu die Erläuterungen in Tabelle 4.
-4. **Speichern** Sie die Einstellungen.<br /> → Die Contents sind mit den Containern verknüpft.
+1. Öffne das Menü **CMS » Container-Verknüpfungen**.
+2. Wähle den gewünschten Content, der verknüpft werden soll.
+3. Wähle einen oder mehrere Container, in denen der zuvor gewählte Content dargestellt werden soll. Beachte dazu die Erläuterungen in Tabelle 4.
+4. **Speichere** die Einstellungen.<br />
+→ Die Contents sind mit den Containern verknüpft.
 
 <table>
 <caption>Tab. 4: Container verknüpfen</caption>
@@ -300,7 +305,7 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Order Confirmation Page Payment Data</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container Order confirmation: Additional payment information, um die PAYONE-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
+            Verknüpfe diesen Content mit dem Container Order confirmation: Additional payment information, um die PAYONE-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
          </td>
       </tr>
       <tr>
@@ -308,7 +313,7 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
             <b>Payone Checkout JS</b>
          </td>
          <td>
-            Verknüpfen Sie diesen Content mit dem Container Script loader: After script loaded, um die PAYONE-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
+            Verknüpfe diesen Content mit dem Container Script loader: After script loaded, um die PAYONE-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
          </td>
       </tr>
    </tbody>
@@ -316,20 +321,23 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
 
 ## Automatische Versandbestätigung an PAYONE senden
 
-Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an PAYONE zu senden, sobald Sie den Auftrag versendet haben.
+Richte eine Ereignisaktion ein, um eine automatische Versandbestätigung an PAYONE zu senden, sobald du den Auftrag versendet hast.
 
-**Hinweis:** Die Einrichtung dieser Ereignisaktion ist zwingend notwendig, wenn als **Art der Autorisierung** die Option **Vorautorisierung** gewählt wurde (siehe Tabelle 1). Haben Sie die Option **Autorisierung** gewählt, ist diese Ereignisaktion nicht nutzbar und nicht notwendig.
+**Hinweis:** Die Einrichtung dieser Ereignisaktion ist zwingend notwendig, wenn als **Art der Autorisierung** die Option **Vorautorisierung** gewählt wurde (siehe Tabelle 1). Hast du die Option **Autorisierung** gewählt, ist diese Ereignisaktion nicht nutzbar und nicht notwendig.
 
 ##### Ereignisaktion einrichten:
 
-1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
-2. Klicken Sie auf **Ereignisaktion hinzufügen**. <br > → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
-3. Geben Sie einen Namen ein.
-4. Wählen Sie das Ereignis gemäß Tabelle 5.
-5. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird angelegt.
-6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
-7. Setzen Sie ein Häkchen bei **Aktiv**.
-8. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird gespeichert.
+1. Öffne das Menü **System » Aufträge » Ereignisaktionen**.
+2. Klicke auf **Ereignisaktion hinzufügen**. <br >
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+3. Gib einen Namen ein.
+4. Wähle das Ereignis gemäß Tabelle 5.
+5. **Speichere** die Einstellungen. <br >
+→ Die Ereignisaktion wird angelegt.
+6. Nimm die weiteren Einstellungen gemäß Tabelle 5 vor.
+7. Setze ein Häkchen bei **Aktiv**.
+8. **Speichere** die Einstellungen. <br >
+→ Die Ereignisaktion wird gespeichert.
 
 <table>
 <caption>
@@ -369,18 +377,21 @@ Richten Sie eine Ereignisaktion ein, um eine automatische Versandbestätigung an
 
 ## PAYONE-Zahlung automatisch zurückzahlen
 
-Richten Sie eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über PAYONE zu automatisieren.
+Richte eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über PAYONE zu automatisieren.
 
 ##### Ereignisaktion einrichten:
 
-1. Öffnen Sie das Menü **System » Aufträge » Ereignisaktionen**.
-2. Klicken Sie auf **Ereignisaktion hinzufügen**. <br > → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
-3. Geben Sie einen Namen ein.
-4. Wählen Sie das Ereignis gemäß Tabelle 6.
-5. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird angelegt.
-6. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 6 vor.
-7. Setzen Sie ein Häkchen bei **Aktiv**.
-8. **Speichern** Sie die Einstellungen. <br > → Die Ereignisaktion wird gespeichert.
+1. Öffne das Menü **System » Aufträge » Ereignisaktionen**.
+2. Klicke auf **Ereignisaktion hinzufügen**. <br >
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+3. Gib einen Namen ein.
+4. Wähle das Ereignis gemäß Tabelle 6.
+5. **Speichere** die Einstellungen. <br >
+→ Die Ereignisaktion wird angelegt.
+6. Nimm die weiteren Einstellungen gemäß Tabelle 6 vor.
+7. Setze ein Häkchen bei **Aktiv**.
+8. **Speichere** die Einstellungen. <br >
+→ Die Ereignisaktion wird gespeichert.
 
 <table>
 <caption>

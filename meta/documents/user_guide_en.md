@@ -2,7 +2,7 @@
    The PAYONE plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
 </div>
 
-# PAYONE Payment for plentymarkets 7
+# PAYONE Payment for plentymarkets
 
 The plentymarkets PAYONE plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
 
@@ -45,7 +45,7 @@ Upon receipt of your access data, log in to the PAYONE merchant interface and ca
 4. For the option **Method hash calculation**, select the option **md5 or sha2-384 (during migration)**.
 5. **Save** the settings.
 
-In your plentymarkets back end, activate the payment method once in the **System » System Settings » Orders » Payment » Methods** menu. More information on carrying out this setting is available on the <strong><a href="https://knowledge.plentymarkets.com/en/payment/managing-payment-methods#20" target="_blank">Managing payment methods</a></strong> page of the manual.
+In your plentymarkets back end, activate the payment method once in the **Setup » Orders » Payment » Methods** menu. More information on carrying out this setting is available on the <strong><a href="https://knowledge.plentymarkets.com/en/payment/managing-payment-methods#20" target="_blank">Managing payment methods</a></strong> page of the manual.
 
 In addition, make sure that the payment method is included among the Permitted payment methods in the <strong><a href="https://knowledge.plentymarkets.com/en/crm/managing-contacts#15" target="_blank">customer classes</a></strong> and that it is not listed among the Blocked payment methods in the <strong><a href="https://knowledge.plentymarkets.com/en/order-processing/fulfilment/preparing-the-shipment#1000" target="_blank">shipping profiles</a></strong>.
 
@@ -56,7 +56,8 @@ The following steps for setting up the plentymarkets PAYONE plugin are carried o
 ##### Carrying out the basic settings
 
 1. Go to **Plugin » Plugin overview**.
-2. In the plugin list, click on the name of the plugin **PAYONE**. <br > → The detail view of the plugin  opens.
+2. In the plugin list, click on the name of the plugin **PAYONE**. <br >
+→ The detail view of the plugin  opens.
 3. Open the menu entry **Configuration**.
 4. Click on **Basic settings**. Carry out the settings according to the information provided in table 1.
 5. **Save** the settings.
@@ -252,6 +253,8 @@ In the following, you select the PAYONE payment methods that should be available
    </tbody>
 </table>
 
+**Note**: You need a separate **Portal ID** and **Key** for the payment method **Secure Invoice**. This Portal-ID and this key have to be deposited in the plugin while configuring it. You get the Portal ID and the Key via the PAYONE Merchant Interface in the **Configuration » Payment portals** menu.
+
 ## Adjusting the Ceres checkout
 
 In the next step, an adjustment to your Ceres checkout settings is necessary. These adjustments need to be made so that customers using PAYONE for payment processes can enter their date of birth (for secure invoice only) correctly.
@@ -262,8 +265,10 @@ In the next step, an adjustment to your Ceres checkout settings is necessary. Th
 
 ##### Adjusting the Ceres checkout for secure invoice:
 
-1. Go to **Plugins » Plugin overview**. <br > → The plugin overview opens.
-2. Click on **Ceres**. <br > → The plugin opens.
+1. Go to **Plugins » Plugin overview**. <br >
+→ The plugin overview opens.
+2. Click on **Ceres**. <br >
+→ The plugin opens.
 3. Click on **Configuration** in the directory tree.
 4. Click on the **Checkout and My account** tab.
 5. Open the **Show invoice address fields in the address form (DE)** area.
@@ -279,7 +284,8 @@ You have multiple options to integrate the payment method PAYONE into your onlin
 1. Go to **CMS » Container links**.
 2. Select the content that should be linked.
 3. Select one or more containers in which the previously selected content should be displayed. Pay attention to the information provided in table 4.
-4. **Save** the settings.<br /> → The content is linked to the containers
+4. **Save** the settings.<br />
+→ The content is linked to the containers
 
 <table>
 <caption>Tab. 4: Linking template containers</caption>
@@ -320,13 +326,16 @@ Set up an event procedure to send an automatic shipping confirmation to PAYONE a
 ##### Setting up an event procedure:
 
 1. Go to **System » Orders » Events**.
-2. Click on **Add event procedure**. <br > → The **Create new event procedure** window opens.
+2. Click on **Add event procedure**. <br >
+→ The **Create new event procedure** window opens.
 3. Enter a name.
 4. Select the event according to table 5.
-5. **Save** the settings. <br > → The event procedure is created.
+5. **Save** the settings. <br >
+→ The event procedure is created.
 6. Carry out the further settings according to table 5.
 7. Place a check mark next to the option **Active**.
-8. **Save** the settings. <br > → The event procedure is saved.
+8. **Save** the settings. <br >
+→ The event procedure is saved.
 
 <table>
 <caption>
@@ -371,13 +380,16 @@ Set up an event procedure to automatically refund a PAYONE payment.
 ##### Setting up an event procedure:
 
 1. Go to **System » Orders » Events**.
-2. Click on **Add event procedure**. <br > → The **Create new event procedure** window opens.
+2. Click on **Add event procedure**. <br >
+→ The **Create new event procedure** window opens.
 3. Enter a name.
 4. Select the event according to table 6.
-5. **Save** the settings. <br > → The event procedure is created.
+5. **Save** the settings. <br >
+→ The event procedure is created.
 6. Carry out the further settings according to table 6.
 7. Place a check mark next to the option **Active**.
-8. **Save** the settings. <br > → The event procedure is saved.
+8. **Save** the settings. <br >
+→ The event procedure is saved.
 
 <table>
 <caption>

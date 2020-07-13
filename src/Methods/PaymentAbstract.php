@@ -48,7 +48,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     public function isActive(): bool
     {
         return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
-            && $this->paymentValidator->validate($this);
+            && $this->paymentValidator->validate($this, $this->configRepo);
     }
 
     /**
@@ -186,5 +186,37 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
         $app = pluginApp(Application::class);
         $icon = $app->getUrlPath(PluginConstants::NAME).'/images/logos/'.strtolower($this::PAYMENT_CODE).'_backend_icon.svg';
         return $icon;
+    }
+
+    /**
+     * Can the delivery address be different from the invoice address?
+     * 
+     * @return bool
+     */
+    public function canHandleDifferingDeliveryAddress(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if all settings for the payment method are set.
+     * 
+     * @param ConfigAdapter $configRepo
+     * @return bool
+     */
+    public function validateSettings(ConfigAdapter $configRepo): bool
+    {
+        return true;
+    }
+
+    /**
+     * Is the payment method active for the given currency?
+     * 
+     * @param $currency
+     * @return bool
+     */
+    public function isActiveForCurrency($currency): bool
+    {
+        return true;
     }
 }

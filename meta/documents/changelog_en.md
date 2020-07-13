@@ -1,14 +1,19 @@
 # Release Notes for PAYONE
 
+## 1.1.14 (2020-07-08)
+
+### Added
+- Payment method "Secure Invoice" added
+
 ## 1.1.13 (2020-07-07)
 
-### Geändert
+### Changed
 - Added Icon for the backend
 - Updated user guide
 
 ## 1.1.12 (2020-03-09)
 
-### Geändert
+### Changed
 - Optimized logging of the data transfer with the Payone Api.
 
 ## 1.1.11 (2020-03-03)

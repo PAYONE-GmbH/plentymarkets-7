@@ -66,7 +66,6 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         in_array(
             $paymentCode,
             [
-                PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
                 PayoneInvoicePaymentMethod::PAYMENT_CODE,
                 PayonePrePaymentPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,

@@ -16,7 +16,7 @@ class InvoiceSecure extends AuthorizationRequestAbstract
 
     protected $clearingtype = ClearingTypes::REC;
 
-    protected $subclearingtype = self::PAYONE_INVOICE_CLEARING_TYPE;
+    protected $clearingsubtype = self::PAYONE_INVOICE_CLEARING_TYPE;
     /**
      * @var Cart
      */
@@ -37,13 +37,13 @@ class InvoiceSecure extends AuthorizationRequestAbstract
     }
 
     /**
-     * Getter for Subclearingtype
+     * Getter for clearingsubtype
      *
      * @return string
      */
-    public function getSubclearingtype()
+    public function getClearingsubtype()
     {
-        return $this->subclearingtype;
+        return $this->clearingsubtype;
     }
 
     /**

@@ -16,6 +16,7 @@ class Customer
     private $language;
     private $gender;
     private $ip;
+    private $businessrelation;
 
     /**
      * Customer constructor.
@@ -30,6 +31,7 @@ class Customer
      * @param string $language
      * @param string $gender
      * @param string $ip
+     * @param string $businessrelation
      */
     public function __construct(
         $title,
@@ -41,7 +43,8 @@ class Customer
         $birthday,
         $language,
         $gender,
-        $ip
+        $ip,
+        $businessrelation = 'b2c'
     ) {
         $this->salutation = $gender == 'm' ? 'Herr' : 'Frau';
         $this->title = $title;
@@ -54,6 +57,7 @@ class Customer
         $this->language = $language;
         $this->gender = $gender;
         $this->ip = $ip;
+        $this->businessrelation = $businessrelation;
     }
 
     /**
@@ -164,5 +168,13 @@ class Customer
     public function getIp()
     {
         return $this->ip;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusinessrelation()
+    {
+        return $this->businessrelation;
     }
 }

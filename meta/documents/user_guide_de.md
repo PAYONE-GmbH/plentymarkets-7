@@ -32,7 +32,7 @@ Oder nutze folgendes Anmeldeformular <br>
 https://www.psg-projektmanagement.de/payone-plentymarkets/
 
 <div class="alert alert-warning" role="alert">
-    Einen PAYONE-Account erhätst du nur über den oben genannten Partner. Bitte wende dich nicht direkt an die PAYONE, um den reibungslosen Ablauf nicht zu gefährden.
+    Einen PAYONE-Account erhältst du nur über den oben genannten Partner. Bitte wende dich nicht direkt an die PAYONE, um den reibungslosen Ablauf nicht zu gefährden.
 </div>
 
 Nach Erhalt der Zugangsdaten loggst du dich im PAYONE Merchant Interface ein und nimmst die folgenden Einstellungen vor.
@@ -283,11 +283,14 @@ Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container 
 
 ##### Container verknüpfen:
 
-1. Öffne das Menü **CMS » Container-Verknüpfungen**.
-2. Wähle den gewünschten Content, der verknüpft werden soll.
-3. Wähle einen oder mehrere Container, in denen der zuvor gewählte Content dargestellt werden soll. Beachte dazu die Erläuterungen in Tabelle 4.
-4. **Speichere** die Einstellungen.<br />
-→ Die Contents sind mit den Containern verknüpft.
+1. Öffne das Menü **Plugins » Plugin-Set-Übersicht**.
+2. Öffne das Plugin-Set, das du bearbeiten möchtest.
+3. Öffne die **Einstellungen** des Payone-Plugins.
+4. Klicke auf **Container-Verknüpfungen**.
+5. Wähle aus der Dropdown-Liste den Datenanbieter aus, den du verknüpfen möchtest.
+6. Wähle den Container aus, mit dem du den Datenanbieter verknüpfen möchtest. Beachte dazu die Erläuterungen in Tabelle 4.
+7. Wiederhole Schritte 5 und 6 für alle Datenanbieter, die due verknüpfen möchtest.
+8. **Speichere** die Einstellungen.
 
 <table>
 <caption>Tab. 4: Container verknüpfen</caption>

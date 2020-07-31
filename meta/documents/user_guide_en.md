@@ -281,11 +281,14 @@ You have multiple options to integrate the payment method PAYONE into your onlin
 
 ##### Linking template containers:
 
-1. Go to **CMS » Container links**.
-2. Select the content that should be linked.
-3. Select one or more containers in which the previously selected content should be displayed. Pay attention to the information provided in table 4.
-4. **Save** the settings.<br />
-→ The content is linked to the containers
+1. Go to Plugins » Plugin set overview.
+2. Open the plugin set you want to edit.
+3. Open the Settings of the Payone plugin.
+4. Click on Container links.
+5. From the drop-down list, select the data provider you want to link.
+6. Select the container you want to link the data provider to. Pay attention to the information provided in table 4.
+7. Repeat steps 5 and 6 for all data providers you want to link.
+8. Save the settings.
 
 <table>
 <caption>Tab. 4: Linking template containers</caption>

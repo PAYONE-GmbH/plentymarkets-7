@@ -63,6 +63,12 @@
               }
             ]
           }
+        },
+        "userId": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.userId",
+          "options": {}
         }
       }
     },
@@ -160,6 +166,18 @@
           "type": "inputText",
           "required": false,
           "label": "Config.PAYONEPAYONEINVOICESECUREDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.portalid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.portalidLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.key": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.keyLabel",
           "options": {}
         },
         "PAYONE_PAYONE_INVOICE_SECURE.minCartAmount": {
@@ -807,29 +825,6 @@
           "label": "Config.PAYONEPAYONEDIRECTDEBITAllowedCountriesLabel",
           "options": {
             "defaultValue": "DE,AT,CH"
-          }
-        }
-      }
-    },
-    "Config.DebuggingTab": {
-      "label": "Config.DebuggingTab",
-      "formFields": {
-        "debugging.active": {
-          "type": "selectBox",
-          "required": false,
-          "label": "Config.debuggingActiveLabel",
-          "options": {
-            "defaultValue": "0",
-            "selectBoxValues": [
-              {
-                "value": "0",
-                "caption": "Config.debuggingActivePossibleValue0"
-              },
-              {
-                "value": "1",
-                "caption": "Config.debuggingActivePossibleValue1"
-              }
-            ]
           }
         }
       }

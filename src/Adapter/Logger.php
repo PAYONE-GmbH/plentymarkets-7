@@ -38,8 +38,8 @@ class Logger //implements LoggerContract
      *
      * @param ShopHelper $shopHelper
      */
-    public function __construct(ShopHelper $shopHelper
-    ) {
+    public function __construct(ShopHelper $shopHelper)
+    {
         $this->shopHelper = $shopHelper;
         $this->identifier = __CLASS__;
         $this->logger = $this->getLogger($this->identifier);
@@ -53,8 +53,7 @@ class Logger //implements LoggerContract
     public function setIdentifier(string $identifier)
     {
         $this->logger = $this->getLogger($identifier);
-        $this->logger->setReferenceType($this->referenceType);
-        $this->logger->setReferenceValue($this->referenceValue);
+        $this->addReference($this->referenceType, $this->referenceValue);
 
         return $this;
     }
@@ -69,12 +68,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->debug(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -88,12 +82,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->info(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -107,12 +96,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->notice(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -126,12 +110,7 @@ class Logger //implements LoggerContract
         string $code,
         $additionalInfo = null
     ) {
-        if ($this->shopHelper->isDebugModeActive()) {
-            return $this->critical($code, $additionalInfo);
-        }
-
         $this->getPlentyLogger()->warning(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -146,7 +125,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->error(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -161,7 +139,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->critical(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -176,7 +153,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->alert(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -191,7 +167,6 @@ class Logger //implements LoggerContract
         $additionalInfo = null
     ) {
         $this->getPlentyLogger()->emergency(PluginConstants::NAME . '::' . $code, $additionalInfo);
-
         return $this;
     }
 
@@ -205,35 +180,19 @@ class Logger //implements LoggerContract
         \Exception $exception
     ) {
         $this->getPlentyLogger()->logException($exception);
-
         return $this;
     }
-
+    
     /**
-     * @param string $referenceType
+     * Adds a reference to the current logger instance, for a more understanding log message.
      *
-     * @return Logger
+     * @param   string          $referenceType      The reference type to be added to the log (e.g. orderId)
+     * @param   string          $referenceValue     The reference value for the current log message.
+     * @return $this
      */
-    public function setReferenceType(
-        string $referenceType
-    ) {
-        $this->referenceType = $referenceType;
-        $this->logger->setReferenceType($referenceType);
-
-        return $this;
-    }
-
-    /**
-     * @param $referenceValue
-     *
-     * @return Logger
-     */
-    public function setReferenceValue(
-        $referenceValue
-    ) {
-        $this->referenceValue = $referenceValue;
-        $this->logger->setReferenceValue($referenceValue);
-
+    public function addReference($referenceType, $referenceValue)
+    {
+        $this->logger->addReference($referenceType, $referenceValue);
         return $this;
     }
 

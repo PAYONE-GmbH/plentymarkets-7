@@ -92,6 +92,7 @@ class Auth
 
         $payment = $this->createPayment($selectedPaymentId, $authResponse, $basket);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->setActiveBasketId($basket->id);
 
         return $authResponse;
     }
@@ -142,6 +143,10 @@ class Auth
         );
 
         $requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'Api.doAuth',
+            ['requestData' => $requestData]
+        );
         try {
             $authResponse = $this->api->doAuth($requestData);
         } catch (\Exception $e) {

@@ -46,8 +46,7 @@ class ErrorMessageRenderer
         return $this->twig->render(
             PluginConstants::NAME . '::Partials.Error',
             [
-                'errorMessage' => $errorMessage,
-                'isDebugModeEnabled' => $this->shopHelper->isDebugModeActive(),
+                'errorMessage' => $errorMessage
             ]
         );
     }

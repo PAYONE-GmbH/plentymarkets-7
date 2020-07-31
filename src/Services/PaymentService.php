@@ -88,7 +88,7 @@ class PaymentService
         }
         if (!$authResponse->getSuccess()) {
             throw new \Exception(
-                $authResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment and retry'
+                $authResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment method and retry'
             );
         }
         $this->responseCache->storeAuth($selectedPaymentMopId, $authResponse);

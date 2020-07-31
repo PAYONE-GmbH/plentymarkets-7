@@ -4,10 +4,10 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
+use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 
-abstract class PaymentAbstract extends PaymentMethodService
+abstract class PaymentAbstract extends PaymentMethodBaseService
 {
     const PAYMENT_CODE = 'Payone';
 
@@ -45,18 +45,19 @@ abstract class PaymentAbstract extends PaymentMethodService
     /**
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
-            && $this->paymentValidator->validate($this);
+            && $this->paymentValidator->validate($this, $this->configRepo);
     }
 
     /**
      * Get shown name
      *
+     * @param string $lang
      * @return string
      */
-    public function getName(): string
+    public function getName(string $lang = 'de'): string
     {
         $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
 
@@ -72,9 +73,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getIcon(): string
+    public function getIcon(string $lang = 'de'): string
     {
         $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
 
@@ -82,9 +84,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(string $lang = 'de'): string
     {
         $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
 
@@ -130,5 +133,90 @@ abstract class PaymentAbstract extends PaymentMethodService
         );
 
         return $countries;
+    }
+
+    /**
+     * Check if this payment method should be searchable in the backend
+     *
+     * @return bool
+     */
+    public function isBackendSearchable():bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if this payment method should be active in the backend
+     *
+     * @return bool
+     */
+    public function isBackendActive():bool
+    {
+        return false;
+    }
+
+    /**
+     * Get name for the backend
+     *
+     * @param  string  $lang
+     * @return string
+     */
+    public function getBackendName(string $lang = 'de'):string
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Check if this payment method can handle subscriptions
+     *
+     * @return bool
+     */
+    public function canHandleSubscriptions():bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the url for the backend icon
+     *
+     * @return string
+     */
+    public function getBackendIcon(): string
+    {
+        $app = pluginApp(Application::class);
+        $icon = $app->getUrlPath(PluginConstants::NAME).'/images/logos/'.strtolower($this::PAYMENT_CODE).'_backend_icon.svg';
+        return $icon;
+    }
+
+    /**
+     * Can the delivery address be different from the invoice address?
+     * 
+     * @return bool
+     */
+    public function canHandleDifferingDeliveryAddress(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if all settings for the payment method are set.
+     * 
+     * @param ConfigAdapter $configRepo
+     * @return bool
+     */
+    public function validateSettings(ConfigAdapter $configRepo): bool
+    {
+        return true;
+    }
+
+    /**
+     * Is the payment method active for the given currency?
+     * 
+     * @param $currency
+     * @return bool
+     */
+    public function isActiveForCurrency($currency): bool
+    {
+        return true;
     }
 }

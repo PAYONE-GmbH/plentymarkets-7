@@ -6,6 +6,7 @@ use Payone\Adapter\Logger;
 use Payone\Helpers\AddressHelper;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
+use Payone\Adapter\Config as ConfigAdapter;
 
 class PaymentValidator
 {
@@ -42,7 +43,7 @@ class PaymentValidator
      *
      * @return bool
      */
-    public function validate(PaymentAbstract $payment)
+    public function validate(PaymentAbstract $payment, ConfigAdapter $configRepo)
     {
         $basketAmount = $this->basket->basketAmount;
         if ($payment->getMinCartAmount() && $basketAmount < $payment->getMinCartAmount()) {
@@ -58,8 +59,9 @@ class PaymentValidator
         }
 
         $billingAddress = $this->addressHelper->getBasketBillingAddress($this->basket);
-        $shippingAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
+        $deliveryAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
         if (!$billingAddress) {
+            // TODO: shouldn't this be 'return false'?
             return true;
         }
 
@@ -67,6 +69,18 @@ class PaymentValidator
         if (!in_array($country, $payment->getAllowedCountries())) {
             $this->log($payment->getName(), 'Payment.countryNotAllowed', $country);
 
+            return false;
+        }
+        
+        if (!$payment->canHandleDifferingDeliveryAddress() && $deliveryAddress && $billingAddress->id != $deliveryAddress->id) {
+            return false;
+        }
+        
+        if (!$payment->validateSettings($configRepo)) {
+            return false;
+        }
+        
+        if (!$payment->isActiveForCurrency($this->basket->currency)) {
             return false;
         }
 

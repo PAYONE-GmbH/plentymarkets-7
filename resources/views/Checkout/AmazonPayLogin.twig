@@ -1,0 +1,26 @@
+{% if content|trim is empty %}
+    <script>
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId({{ content.clientId }});
+        };
+
+        window.onAmazonPaymentsReady = function(){
+            // render the button here
+            var authRequest;
+
+            OffAmazonPayments.Button('LoginWithAmazon', {{ content.sellerId }}, {
+                type: {{ content.type }},
+                color: {{ content.color }},
+                size: {{ content.size }},
+                language: {{ content.language }},
+
+                authorization: function() {
+                    loginOptions = {scope: {{ content.scopes }}, popup: {{ content.popup }}};
+                    authRequest = amazon.Login.authorize (loginOptions, {{ content.redirectUrl }});
+                }
+            });
+        }
+    </script>
+{% else %}
+    <div id="LoginWithAmazon"></div>
+{% endif %}

@@ -14,11 +14,13 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
+use Payone\Services\Api;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\ErrorMessageRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
@@ -292,6 +294,46 @@ class CheckoutController extends Controller
         return $this->response->redirectTo('checkout');
     }
 
+    public function getAmazonPayLoginWidget(Twig $twig)
+    {
+        /** @var Api $api */
+        $api = pluginApp(Api::class);
+        /*$response = $api->doLibCall(Api::REQUEST_TYPE_CONFIGURATION, [
+            "paymentMethod" => "Amazon Pay",
+            "clearingtype" => "wlt",
+            "wallettype" => "amz"
+        ]);*/
+
+        $response = $api->doGetConfiguration([
+            "paymentMethod" => "Amazon Pay",
+            "clearingtype" => "wlt",
+            "wallettype" => "amz"
+        ]);
+
+        /** @var LocalizationRepositoryContract $localizationRepositoryContract */
+        $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
+        $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
+
+        $content = [
+            'clientId' => 2323,
+            'sellerId' => 23232,
+            'type' => "LwA",
+            'color' => "Gold",
+            'size' => "medium",
+            'language' => $lang,
+            'scopes' => "payments:widget",
+            'popup' => "true",
+            'redirectUrl' => "",
+        ];
+
+        $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', $content);
+    }
+
+    public function swapAmazonPayWidgets()
+    {
+        // SWAP containers here
+    }
+
     /**
      * @param null $data
      *
@@ -314,5 +356,27 @@ class CheckoutController extends Controller
         $data['errors'] = $errors;
 
         return $this->response->json($data, Response::HTTP_BAD_REQUEST);
+    }
+
+
+    private function getLanguageCode(string $lang): string
+    {
+        switch($lang){
+            case "de":
+                $lang = "de-De";
+                break;
+            case "en":
+                $lang = "en-GB";
+                break;
+            case "es":
+                $lang = "es-ES";
+                break;
+            case "fr":
+                $lang = "fr-FR";
+                break;
+            default:
+                $lang = "en-GB";
+        }
+        return $lang;
     }
 }

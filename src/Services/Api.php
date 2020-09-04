@@ -5,6 +5,7 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\GetConfigurationResponseFactory;
 use Payone\Models\Api\GetInvoiceResponse;
 use Payone\Models\Api\GetInvoiceResponseFactory;
 use Payone\Models\Api\ManagemandateResponse;
@@ -34,6 +35,7 @@ class Api
     const REQUEST_TYPE_DEBIT = 'Debit';
     const REQUEST_TYPE_MANAGEMANDATE = 'Managemandate';
     const REQUEST_TYPE_INVOICE = 'GetDocument';
+    const REQUEST_TYPE_CONFIGURATION = 'GetConfiguration';
 
     /**
      * @var LibraryCallContract
@@ -225,6 +227,14 @@ class Api
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_INVOICE), $response);
         return $responseObject;
+    }
+
+    public function doGetConfiguration($requestParams)
+    {
+        $response = $this->doLibCall((self::REQUEST_TYPE_CONFIGURATION), $requestParams);
+        //$responseObject = GetConfigurationResponseFactory::create($response);
+        return $response;
+        //$responseObject;
     }
 
     /**

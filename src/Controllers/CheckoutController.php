@@ -315,8 +315,8 @@ class CheckoutController extends Controller
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-            'clientId' => 2323,
-            'sellerId' => 23232,
+            'clientId' => "32322",
+            'sellerId' => "23232",
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",
@@ -326,7 +326,7 @@ class CheckoutController extends Controller
             'redirectUrl' => "",
         ];
 
-        $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', $content);
+        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', $content);
     }
 
     public function swapAmazonPayWidgets()

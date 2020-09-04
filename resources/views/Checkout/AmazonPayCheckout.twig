@@ -1,0 +1,23 @@
+{% if services.template.isCurrentTemplate('tpl.checkout') %}
+    <script type="text/javascript">
+
+        if ({{ currentPaymentId }} == {{ amazonPayMopId }} ) {
+            loadAmazonLoginButton();
+        }
+        document.addEventListener("afterPaymentMethodChanged", function (e) {
+            if (e.detail == {{ amazonPayMopId }} ) {
+                loadAmazonLoginButton();
+            }
+        });
+
+        function loadAmazonLoginButton() {
+            if (App.templateType === "checkout") {
+                console.log("loadAmazonLoginButton");
+                $.get("/payment/payone/checkout/amazonPayWidget", function (data) {
+                    // $('#amazonLoginButton').html(data);
+                    $("body").append(data);
+                });
+            }
+        }
+    </script>
+{% endif %}

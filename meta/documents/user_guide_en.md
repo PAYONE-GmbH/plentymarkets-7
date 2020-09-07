@@ -1,6 +1,7 @@
 <div class="alert alert-warning" role="alert">
    The PAYONE plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
 </div>
+![Payone Banner][https://www.psg-projektmanagement.de/wp-content/uploads/2020/08/payone-aktion.jpg]
 
 # PAYONE Payment for plentymarkets 7
 

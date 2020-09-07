@@ -172,10 +172,12 @@ abstract class DataProviderAbstract
             /** @var ItemText $itemText */
             $itemText = $item->texts;
 
-            $basketItem = $basketItem->toArray();
-            $basketItem['name'] = $itemText->first()->name1;
+            $basketItemArr = $basketItem->toArray();
+            $basketItemArr['name'] = $itemText->first()->name1;
+            $basketItemArr['price'] = (int)round($basketItem->price * 100);
+            $basketItemArr['vat'] = (int)$basketItem->vat;
 
-            $items[] = $basketItem;
+            $items[] = $basketItemArr;
         }
 
         return $items;
@@ -200,7 +202,7 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $orderItemData['vat'] = $orderItemData['vatRate'];
+            $orderItemData['vat'] = (int)$orderItemData['vatRate'];
             $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
             $orderItemData['name'] = $orderItemData['orderItemName'];
             $orderItemData['itemId'] = $orderItemData['id'];
@@ -248,6 +250,13 @@ abstract class DataProviderAbstract
             $customerData['gender'] = 'f';
         }
 
+        $taxIdNumber = $addressObj->taxIdNumber;
+        if (!empty($taxIdNumber)) {
+            $customerData['businessrelation'] = 'b2b';
+        } else {
+            $customerData['businessrelation'] = 'b2c';
+        }
+
         return $customerData;
     }
 
@@ -261,16 +270,17 @@ abstract class DataProviderAbstract
         return [
             'paymentMethod' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
-            'context' => $this->getApiContextParams(),
+            'context' => $this->getApiContextParams($paymentCode),
         ];
     }
 
     /**
+     * @param int $paymentCode
      * @return array
      */
-    protected function getApiContextParams()
+    protected function getApiContextParams($paymentCode)
     {
-        return $this->config->getApiCredentials();
+        return $this->config->getApiCredentials($paymentCode);
     }
 
     /**
@@ -546,11 +556,10 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $priceGross = $amount['priceGross'];
 
-            return $priceGross * 100 / ($orderItem['vatRate'] + 100.);
+            return $amount['priceNet'];
         }
 
-        return 0.;
+        return 0;
     }
 }

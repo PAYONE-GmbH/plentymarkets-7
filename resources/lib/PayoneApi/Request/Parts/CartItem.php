@@ -163,12 +163,12 @@ class CartItem implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' . $this->getPosition() => $this->getId(),
-            'it' . $this->getPosition() => $this->getIt(),
-            'no' . $this->getPosition() => $this->getNo(),
-            'pr' . $this->getPosition() => $this->getPr(),
-            'de' . $this->getPosition() => $this->getDe(),
-            'va' . $this->getPosition() => $this->getva(),
+            'id[' . $this->getPosition().']' => $this->getId(),
+            'it[' . $this->getPosition().']' => $this->getIt(),
+            'no[' . $this->getPosition().']' => $this->getNo(),
+            'pr[' . $this->getPosition().']' => $this->getPr(),
+            'de[' . $this->getPosition().']' => $this->getDe(),
+            'va[' . $this->getPosition().']' => $this->getva(),
         ];
     }
 }

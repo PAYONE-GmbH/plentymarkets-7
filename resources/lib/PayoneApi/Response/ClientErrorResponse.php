@@ -8,16 +8,16 @@ namespace PayoneApi\Response;
 class ClientErrorResponse extends ResponseDataAbstract implements ResponseContract
 {
     /** @var string */
-    private $message;
+    private $errorMessage;
 
     /**
      * ClientErrorResponse constructor.
      *
-     * @param string $message
+     * @param string $errorMessage
      */
-    public function __construct($message)
+    public function __construct($errorMessage)
     {
-        $this->message = $message;
+        $this->errorMessage = $errorMessage;
     }
 
     /**
@@ -33,7 +33,7 @@ class ClientErrorResponse extends ResponseDataAbstract implements ResponseContra
      */
     public function getErrorMessage()
     {
-        return $this->message;
+        return $this->errorMessage;
     }
 
     /**

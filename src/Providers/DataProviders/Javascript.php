@@ -21,7 +21,11 @@ class Javascript
      * @param CreditcardTypes $creditcardTypes
      * @param CreditCardStyle $style
      * @param PaymentHelper $paymentHelper
+     * @param BasketRepositoryContract $basketRepository
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function call(
         Twig $twig,

@@ -1,13 +1,31 @@
 <?php
 
-namespace Payone\Models\Api;
+namespace Payone\Models\Api\GenericPayment;
+
+use Payone\Models\Api\ResponseAbstract;
 
 /**
  * Class GetConfigurationResponse
  */
-class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializable
+class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
-
+    /**
+    status=OK
+    add_paydata[shipping_zip]=80939
+    add_paydata[shipping_city]=München
+    add_paydata[shipping_type]=Physical
+    add_paydata[shipping_country]=DE
+    add_paydata[shipping_firstname]=Alfred
+    add_paydata[shipping_lastname]=Amazing
+    add_paydata[billing_zip]=80939
+    add_paydata[billing_city]=München
+    add_paydata[billing_type]=Physical
+    add_paydata[billing_country]=DE
+    add_paydata[billing_firstname]=Alfred
+    add_paydata[billing_lastname]=Amazing
+    add_paydata[storename]= Your Storename
+    workorderid= WORKORDERID12345
+     */
     private $clientId = '';
     private $sellerId = '';
     private $workorderId = '';

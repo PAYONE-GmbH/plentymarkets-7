@@ -15,6 +15,7 @@ use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
+use Payone\Providers\Api\Request\Models\GenericPayment;
 use Payone\Services\Api;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
@@ -305,22 +306,24 @@ class CheckoutController extends Controller
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
         $requestParams = $genericPaymentDataProvider->getGetConfigRequestData("Amazon Pay");
 
-        $configResponse = $api->doGetConfiguration($requestParams);
+        $configResponse = $api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
 
         /** @var LocalizationRepositoryContract $localizationRepositoryContract */
         $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-            'clientId' => $configResponse->getClientId(),
-            'sellerId' => $configResponse->getSellerId(),
+            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
+            'sellerId' => "A13SNST9X74Q8L",
+        /*    'clientId' => $configResponse->getClientId(),
+            'sellerId' => $configResponse->getSellerId(),*/
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",
             'language' => $lang,
             'scopes' => "payments:widget",
             'popup' => "true",
-            'redirectUrl' => "https://test.de",
+            'redirectUrl' => "http://master.plentymarkets.com/checkout",
         ];
 
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);
@@ -328,7 +331,31 @@ class CheckoutController extends Controller
 
     public function swapAmazonPayWidgets()
     {
+        $workorderId = "123";
+        $amazonReferenceId = "123";
+        $amazonAddressToken = "123";
+
+        /** @var Api $api */
+        $api = pluginApp(Api::class);
+
+        /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
+        $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
+        $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
+            "Amazon Pay",
+            $workorderId,
+            $amazonReferenceId,
+            $amazonAddressToken
+        );
+
+
+
         // SWAP containers here
+        $content = [
+            'clientId' => 1,
+            'sellerId' => 2,
+            'addressBookScope' => 3,
+            'walletScope' => 3,
+        ];
     }
 
     /**

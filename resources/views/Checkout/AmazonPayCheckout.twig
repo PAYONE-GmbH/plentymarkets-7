@@ -16,7 +16,7 @@
             if (App.templateType === "checkout") {
                 console.log("loadAmazonLoginButton");
                 $.get("/payment/payone/checkout/amazonPayWidget", function (data) {
-                    // $('#amazonLoginButton').html(data);
+                    //$('#LoginWithAmazon').append(data);
                     $("body").append(data);
                 });
             }

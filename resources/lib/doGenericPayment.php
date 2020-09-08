@@ -5,7 +5,7 @@ use PayoneApi\Api\Client;
 use PayoneApi\Api\PostApi;
 use PayoneApi\Lib\Version;
 use PayoneApi\Request\ArraySerializer;
-use PayoneApi\Request\Genericpayment\GetConfigurationRequestFactory;
+use PayoneApi\Request\Genericpayment\GenericPaymentRequestFactory;
 use PayoneApi\Response\ClientErrorResponse;
 
 try {
@@ -15,10 +15,11 @@ try {
         $sdkRestApi = \SdkRestApi::class;
     }
     $data = [];
-    //$data['request'] = $sdkRestApi::getParam('request');
+
+    $data['request'] = $sdkRestApi::getParam('request');
     $data['clearingtype'] = $sdkRestApi::getParam('clearingtype');
     $data['wallettype'] = $sdkRestApi::getParam('wallettype');
-    $data['add_paydata'] = $sdkRestApi::getParam('addPaydata');
+    $data['add_paydata'] = $sdkRestApi::getParam('add_paydata');
     $data['currency'] = $sdkRestApi::getParam('currency');
 
     $data['context'] = $sdkRestApi::getParam('context');
@@ -26,7 +27,7 @@ try {
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
-    $request = GetConfigurationRequestFactory::create($paymentMethod, $data);
+    $request = GenericPaymentRequestFactory::create($paymentMethod, $data);
 
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);

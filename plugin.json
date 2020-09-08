@@ -1,11 +1,14 @@
 {
   "version": "1.1.14",
-  "license":"MIT",
-  "pluginIcon":"icon_plugin_xs.png",
-  "price":0.0,
-  "authorIcon":"icon_author_xs.png",
+  "license": "MIT",
+  "pluginIcon": "icon_plugin_xs.png",
+  "price": 0.0,
+  "authorIcon": "icon_author_xs.png",
   "name": "Payone",
-  "marketplaceName" : {"de":"PAYONE","en":"PAYONE"},
+  "marketplaceName": {
+    "de": "PAYONE",
+    "en": "PAYONE"
+  },
   "shortDescription": {
     "de": "Das offizielle Payone plugin für plentymarkets Webshops. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
     "en": "The official Payone plugin for plentymarkets online stores"
@@ -14,14 +17,22 @@
   "author": "plentysystems AG",
   "email": "sales@plentymarkets.com",
   "phone": "+49 561 98 681 100",
-  "keywords": ["Payone", "plentymarkets", "payment"],
-  "categories": [3519],
+  "keywords": [
+    "Payone",
+    "plentymarkets",
+    "payment"
+  ],
+  "categories": [
+    3519
+  ],
   "type": "payment",
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": ["IO"],
-  "dependencies":{
+  "require": [
+    "IO"
+  ],
+  "dependencies": {
     "guzzlehttp/guzzle": "6.*",
     "symfony/serializer": "3.2.7",
     "symfony/property-access": "3.2.7",
@@ -47,6 +58,16 @@
       "key": "Payone\\Providers\\DataProviders\\AmazonPayIntegration",
       "name": "Payone Checkout Amazon Pay Integration",
       "description": "Block to integrate the Amazon Login, as well as the Widgets for Amazon Pay"
+    },
+    {
+      "key": "Payone\\Providers\\DataProviders\\AmazonPayAddressBookWidget",
+      "name": "Payone Checkout Amazon Pay AddressBook-Widget",
+      "description": "Block to integrate the Amazon Pay address book widget in the checkout."
+    },
+    {
+      "key": "Payone\\Providers\\DataProviders\\AmazonPayWalletWidget",
+      "name": "Payone Checkout Amazon Pay Wallet-Widget",
+      "description": "Block to integrate the Amazon Pay wallet widget in the checkout."
     }
   ]
 }

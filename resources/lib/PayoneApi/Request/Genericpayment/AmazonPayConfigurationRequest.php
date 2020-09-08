@@ -7,7 +7,7 @@ use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
 
-class AmazonPayConfiguration
+class AmazonPayConfigurationRequest
 {
     private $request = Types::GENERICPAYMENT;
 

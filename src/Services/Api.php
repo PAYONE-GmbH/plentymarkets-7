@@ -2,12 +2,11 @@
 
 namespace Payone\Services;
 
-use Elasticsearch\Endpoints\Get;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
-use Payone\Models\Api\GetConfigurationResponse;
-use Payone\Models\Api\GetConfigurationResponseFactory;
+use Payone\Models\Api\GenericPayment\GenericPaymentResponseFactory;
+use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GetInvoiceResponse;
 use Payone\Models\Api\GetInvoiceResponseFactory;
 use Payone\Models\Api\ManagemandateResponse;
@@ -17,6 +16,7 @@ use Payone\Models\Api\PreAuthResponseFactory;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseFactory;
 use Payone\PluginConstants;
+use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 
 /**
@@ -37,7 +37,7 @@ class Api
     const REQUEST_TYPE_DEBIT = 'Debit';
     const REQUEST_TYPE_MANAGEMANDATE = 'Managemandate';
     const REQUEST_TYPE_INVOICE = 'GetDocument';
-    const REQUEST_TYPE_CONFIGURATION = 'GetConfiguration';
+    const REQUEST_TYPE_GENERIC_PAYMENT = 'GenericPayment';
 
     /**
      * @var LibraryCallContract
@@ -232,13 +232,14 @@ class Api
     }
 
     /**
+     * @param string $actionType
      * @param array $requestParams
      * @return GetConfigurationResponse
      */
-    public function doGetConfiguration(array $requestParams): GetConfigurationResponse
+    public function doGenericPayment(string $actionType, array $requestParams): GetConfigurationResponse
     {
-        $response = $this->doLibCall((self::REQUEST_TYPE_CONFIGURATION), $requestParams);
-        $responseObject = GetConfigurationResponseFactory::create($response);
+        $response = $this->doLibCall(self::REQUEST_TYPE_GENERIC_PAYMENT, $requestParams);
+        $responseObject = GenericPaymentResponseFactory::create($actionType, $response);
 
         return $responseObject;
     }

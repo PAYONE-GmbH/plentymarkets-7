@@ -2,9 +2,11 @@
 
 namespace Payone\Services;
 
+use Elasticsearch\Endpoints\Get;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\GetConfigurationResponse;
 use Payone\Models\Api\GetConfigurationResponseFactory;
 use Payone\Models\Api\GetInvoiceResponse;
 use Payone\Models\Api\GetInvoiceResponseFactory;
@@ -229,12 +231,16 @@ class Api
         return $responseObject;
     }
 
-    public function doGetConfiguration($requestParams)
+    /**
+     * @param array $requestParams
+     * @return GetConfigurationResponse
+     */
+    public function doGetConfiguration(array $requestParams): GetConfigurationResponse
     {
         $response = $this->doLibCall((self::REQUEST_TYPE_CONFIGURATION), $requestParams);
-        //$responseObject = GetConfigurationResponseFactory::create($response);
-        return $response;
-        //$responseObject;
+        $responseObject = GetConfigurationResponseFactory::create($response);
+
+        return $responseObject;
     }
 
     /**

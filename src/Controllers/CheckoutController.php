@@ -14,11 +14,13 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
+use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Services\Api;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\ErrorMessageRenderer;
+use PayoneApi\Request\PaymentTypes;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -298,35 +300,30 @@ class CheckoutController extends Controller
     {
         /** @var Api $api */
         $api = pluginApp(Api::class);
-        /*$response = $api->doLibCall(Api::REQUEST_TYPE_CONFIGURATION, [
-            "paymentMethod" => "Amazon Pay",
-            "clearingtype" => "wlt",
-            "wallettype" => "amz"
-        ]);*/
 
-        $response = $api->doGetConfiguration([
-            "paymentMethod" => "Amazon Pay",
-            "clearingtype" => "wlt",
-            "wallettype" => "amz"
-        ]);
+        /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
+        $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
+        $requestParams = $genericPaymentDataProvider->getGetConfigRequestData("Amazon Pay");
+
+        $configResponse = $api->doGetConfiguration($requestParams);
 
         /** @var LocalizationRepositoryContract $localizationRepositoryContract */
         $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-            'clientId' => "32322",
-            'sellerId' => "23232",
+            'clientId' => $configResponse->getClientId(),
+            'sellerId' => $configResponse->getSellerId(),
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",
             'language' => $lang,
             'scopes' => "payments:widget",
             'popup' => "true",
-            'redirectUrl' => "",
+            'redirectUrl' => "https://test.de",
         ];
 
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', $content);
+        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);
     }
 
     public function swapAmazonPayWidgets()
@@ -363,7 +360,7 @@ class CheckoutController extends Controller
     {
         switch($lang){
             case "de":
-                $lang = "de-De";
+                $lang = "de-DE";
                 break;
             case "en":
                 $lang = "en-GB";

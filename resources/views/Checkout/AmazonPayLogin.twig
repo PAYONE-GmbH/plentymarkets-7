@@ -1,26 +1,34 @@
-{% if content|trim is empty %}
-    <script>
-        window.onAmazonLoginReady = function() {
-            amazon.Login.setClientId({{ content.clientId }});
-        };
+<script>
+    window.onAmazonLoginReady = function () {
+        console.log('{{ content.clientId }}');
 
-        window.onAmazonPaymentsReady = function(){
-            // render the button here
-            var authRequest;
+        amazon.Login.setClientId('{{ content.clientId }}');
+    };
+    window.onAmazonPaymentsReady = function () {
+        console.log('{{ content.clientId }}');
 
-            OffAmazonPayments.Button('LoginWithAmazon', {{ content.sellerId }}, {
-                type: {{ content.type }},
-                color: {{ content.color }},
-                size: {{ content.size }},
-                language: {{ content.language }},
+        var authRequest;
 
-                authorization: function() {
-                    loginOptions = {scope: {{ content.scopes }}, popup: {{ content.popup }}};
-                    authRequest = amazon.Login.authorize (loginOptions, {{ content.redirectUrl }});
-                }
-            });
-        }
-    </script>
-{% else %}
-    <div id="LoginWithAmazon"></div>
-{% endif %}
+        OffAmazonPayments.Button('LoginWithAmazon', '{{ content.sellerId }}', {
+            type: '{{ content.type }}',
+            color: '{{ content.color }}',
+            size: '{{ content.size }}',
+            language: '{{ content.language }}',
+
+            authorization: function () {
+                loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
+                authRequest = amazon.Login.authorize(loginOptions, '{{ content.redirectUrl }}');
+            },
+            onError: function (error) {
+                // your error handling code.
+                console.log("The following error occurred: "
+                    + error.getErrorCode()
+                    + ' - ' + error.getErrorMessage());
+            }
+        });
+    }
+
+</script>
+<script async="async"
+        src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'>
+</script>

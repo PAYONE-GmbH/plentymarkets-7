@@ -11,6 +11,7 @@ class Types
     const DEBIT = 'debit';
     const MANAGEMANDATE = 'managemandate';
     const INVOICE = 'getinvoice';
+    const GENERICPAYMENT = 'genericpayment';
 
     /**
      * @return mixed

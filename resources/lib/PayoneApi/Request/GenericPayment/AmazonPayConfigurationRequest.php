@@ -1,6 +1,6 @@
 <?php
 
-namespace PayoneApi\Request\Genericpayment;
+namespace PayoneApi\Request\GenericPayment;
 
 use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
@@ -29,7 +29,7 @@ class AmazonPayConfigurationRequest
     private $info;
 
     /**
-     * ManageMandate constructor.
+     * AmazonPayConfigurationRequest constructor.
      *
      * @param Config $config
      * @param SystemInfo $info

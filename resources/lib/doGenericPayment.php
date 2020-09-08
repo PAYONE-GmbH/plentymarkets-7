@@ -5,7 +5,7 @@ use PayoneApi\Api\Client;
 use PayoneApi\Api\PostApi;
 use PayoneApi\Lib\Version;
 use PayoneApi\Request\ArraySerializer;
-use PayoneApi\Request\Genericpayment\GenericPaymentRequestFactory;
+use PayoneApi\Request\GenericPayment\GenericPaymentRequestFactory;
 use PayoneApi\Response\ClientErrorResponse;
 
 try {
@@ -21,6 +21,7 @@ try {
     $data['wallettype'] = $sdkRestApi::getParam('wallettype');
     $data['add_paydata'] = $sdkRestApi::getParam('add_paydata');
     $data['currency'] = $sdkRestApi::getParam('currency');
+    $data['workorderid'] = $sdkRestApi::getParam('workorderid');
 
     $data['context'] = $sdkRestApi::getParam('context');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');

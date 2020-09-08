@@ -5,7 +5,9 @@
         amazon.Login.setClientId('{{ content.clientId }}');
     };
     window.onAmazonPaymentsReady = function () {
-        console.log('{{ content.clientId }}');
+        console.log('Client-ID: {{ content.clientId }}');
+        console.log('Seller-ID: {{ content.sellerId }}');
+        console.log('WorkOrder-ID: {{ content.debug1 }}');
 
         var authRequest;
 

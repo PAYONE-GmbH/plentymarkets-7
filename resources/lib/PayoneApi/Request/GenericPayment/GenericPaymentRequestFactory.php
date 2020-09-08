@@ -1,6 +1,6 @@
 <?php
 
-namespace PayoneApi\Request\Genericpayment;
+namespace PayoneApi\Request\GenericPayment;
 
 use PayoneApi\Lib\Version;
 use PayoneApi\Request\Parts\SystemInfo;
@@ -15,7 +15,7 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
      * @param array $data
      * @param string|bool $referenceId Reference to previous request
      *
-     * @return AmazonPayConfigurationRequest
+     * @return mixed
      */
     public static function create($paymentMethod, $data, $referenceId = null)
     {
@@ -43,7 +43,13 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                 return new AmazonPayConfigurationRequest($config, $systemInfo, $data['currency']);
                 break;
             case 'getorderreferencedetails':
-                //return new AmazonPay
+                return new AmazonPayGetOrderReferenceRequest(
+                    $config,
+                    $systemInfo,
+                    $data['add_paydata']['amazon_address_token'],
+                    $data['add_paydata']['amazon_reference_id'],
+                    $data['workorderid'],
+                    $data['currency']);
                 break;
         }
 

@@ -313,17 +313,18 @@ class CheckoutController extends Controller
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
-            'sellerId' => "A13SNST9X74Q8L",
-        /*    'clientId' => $configResponse->getClientId(),
-            'sellerId' => $configResponse->getSellerId(),*/
+//            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
+//            'sellerId' => "A13SNST9X74Q8L",
+            'clientId' => $configResponse->getClientId(),
+            'sellerId' => $configResponse->getSellerId(),
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",
             'language' => $lang,
-            'scopes' => "payments:widget",
+            'scopes' => "profile payments:widget payments:shipping_address payments:billing_address",
             'popup' => "true",
-            'redirectUrl' => "http://master.plentymarkets.com/checkout",
+            'redirectUrl' => "https://pm-order.plentymarkets-cloud01.com/checkout",
+            'debug1' => $configResponse->getWorkorderId()
         ];
 
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);

@@ -313,10 +313,10 @@ class CheckoutController extends Controller
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-//            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
-//            'sellerId' => "A13SNST9X74Q8L",
-            'clientId' => $configResponse->getClientId(),
-            'sellerId' => $configResponse->getSellerId(),
+            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
+            'sellerId' => "A13SNST9X74Q8L",
+//            'clientId' => $configResponse->getClientId(),
+//            'sellerId' => $configResponse->getSellerId(),
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",

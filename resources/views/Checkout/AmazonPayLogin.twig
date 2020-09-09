@@ -26,6 +26,11 @@
                     console.log(t.access_token);
                     console.log(t.expires_in);
                     console.log(t.token_type);
+
+                    $.post("/payment/payone/checkout/swapAmazonPayWidgets", { "accessToken" : t.access_token}, function (data) {
+                        //$('#LoginWithAmazon').append(data);
+                        $("body").append(data);
+                    });
                 });
             },
             onError: function (error) {

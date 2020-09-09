@@ -1,9 +1,9 @@
-<script>
-    window.onAmazonLoginReady = function() {
-        amazon.Login.setClientId('{{ content.clientId }}');
-    };
+<script type="text/javascript">
+    $( document ).ready(function() {
+        window.onAmazonLoginReady = function() {
+            amazon.Login.setClientId('{{ content.clientId }}');
+        };
 
-    window.onAmazonPaymentsReady = function() {
         addressBookWidget = new OffAmazonPayments.Widgets.AddressBook({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.addressBookScope }}',
@@ -42,7 +42,6 @@
         });
         addressBookWidget.bind("addressBookWidgetDiv");
 
-
         walletWidget = new OffAmazonPayments.Widgets.Wallet({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.walletScope }}',
@@ -67,9 +66,5 @@
         walletWidget.setPresentmentCurrency("EUR"); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
         walletWidget.bind("walletWidgetDiv");
 
-    };
-</script>
-
-<script async="async"
-        src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'>
+    });
 </script>

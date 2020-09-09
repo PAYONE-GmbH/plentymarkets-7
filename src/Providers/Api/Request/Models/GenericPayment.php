@@ -9,5 +9,6 @@ class GenericPayment
 
     const ACTIONTYPE_GETCONFIGURATION = "getconfiguration";
     const ACTIONTYPE_GETORDERREFERENCEDETAILS = "getorderreferencedetails";
+    const ACTIONTYPE_SETORDERREFERENCEDETAILS = "setorderreferencedetails";
 
 }

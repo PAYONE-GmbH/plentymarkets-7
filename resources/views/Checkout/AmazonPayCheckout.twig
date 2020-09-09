@@ -15,7 +15,7 @@
         function loadAmazonLoginButton() {
             if (App.templateType === "checkout") {
                 console.log("loadAmazonLoginButton");
-                $.get("/payment/payone/checkout/amazonPayWidget", function (data) {
+                $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
                     //$('#LoginWithAmazon').append(data);
                     $("body").append(data);
                 });

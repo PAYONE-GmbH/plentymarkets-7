@@ -123,5 +123,24 @@ class AmazonPayController extends Controller
 
     }
 
-
+    private function getLanguageCode(string $lang): string
+    {
+        switch($lang){
+            case "de":
+                $lang = "de-DE";
+                break;
+            case "en":
+                $lang = "en-GB";
+                break;
+            case "es":
+                $lang = "es-ES";
+                break;
+            case "fr":
+                $lang = "fr-FR";
+                break;
+            default:
+                $lang = "en-GB";
+        }
+        return $lang;
+    }
 }

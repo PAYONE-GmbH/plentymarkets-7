@@ -297,38 +297,6 @@ class CheckoutController extends Controller
         return $this->response->redirectTo('checkout');
     }
 
-    public function getAmazonPayLoginWidget(Twig $twig)
-    {
-        /** @var Api $api */
-        $api = pluginApp(Api::class);
-
-        /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
-        $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
-        $requestParams = $genericPaymentDataProvider->getGetConfigRequestData("Amazon Pay");
-
-        $configResponse = $api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
-
-        /** @var LocalizationRepositoryContract $localizationRepositoryContract */
-        $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
-        $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
-
-        $content = [
-            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
-            'sellerId' => "A13SNST9X74Q8L",
-//            'clientId' => $configResponse->getClientId(),
-//            'sellerId' => $configResponse->getSellerId(),
-            'type' => "LwA",
-            'color' => "Gold",
-            'size' => "medium",
-            'language' => $lang,
-            'scopes' => "profile payments:widget payments:shipping_address payments:billing_address",
-            'popup' => "true",
-            'debug1' => $configResponse->getWorkorderId()
-        ];
-
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);
-    }
-
     /**
      * @param null $data
      *
@@ -351,27 +319,5 @@ class CheckoutController extends Controller
         $data['errors'] = $errors;
 
         return $this->response->json($data, Response::HTTP_BAD_REQUEST);
-    }
-
-
-    private function getLanguageCode(string $lang): string
-    {
-        switch($lang){
-            case "de":
-                $lang = "de-DE";
-                break;
-            case "en":
-                $lang = "en-GB";
-                break;
-            case "es":
-                $lang = "es-ES";
-                break;
-            case "fr":
-                $lang = "fr-FR";
-                break;
-            default:
-                $lang = "en-GB";
-        }
-        return $lang;
     }
 }

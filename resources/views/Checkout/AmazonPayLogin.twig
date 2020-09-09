@@ -20,6 +20,9 @@
             authorization: function () {
                 loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
                 authRequest = amazon.Login.authorize(loginOptions, function(t) {
+                    var $logoutButton = $('<button type="button" name="button" id="Logout">Logout</button>');
+
+                    $("body").append($logoutButton);
                     console.log(t.access_token);
                     console.log(t.expires_in);
                     console.log(t.token_type);

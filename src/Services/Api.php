@@ -234,9 +234,9 @@ class Api
     /**
      * @param string $actionType
      * @param array $requestParams
-     * @return GetConfigurationResponse
+     * @return mixed
      */
-    public function doGenericPayment(string $actionType, array $requestParams): GetConfigurationResponse
+    public function doGenericPayment(string $actionType, array $requestParams)
     {
         $response = $this->doLibCall(self::REQUEST_TYPE_GENERIC_PAYMENT, $requestParams);
         $responseObject = GenericPaymentResponseFactory::create($actionType, $response);

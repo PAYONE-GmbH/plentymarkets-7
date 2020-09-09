@@ -12,7 +12,7 @@ class GenericPaymentResponseFactory
     /**
      * @param string $actionType
      * @param array $responseData
-     * @return GetConfigurationResponse|GetOrderReferenceDetailsResponse
+     * @return mixed
      */
     public static function create(string $actionType, array $responseData)
     {

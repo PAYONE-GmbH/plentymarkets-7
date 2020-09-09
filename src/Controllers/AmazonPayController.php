@@ -120,7 +120,7 @@ class AmazonPayController extends Controller
             $amount
         );
 
-        $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
+        $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
         return $configResponse;
     }
 

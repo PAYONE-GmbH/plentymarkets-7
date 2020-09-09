@@ -9,43 +9,61 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
-    /**
-    status=OK
-    add_paydata[shipping_zip]=80939
-    add_paydata[shipping_city]=München
-    add_paydata[shipping_type]=Physical
-    add_paydata[shipping_country]=DE
-    add_paydata[shipping_firstname]=Alfred
-    add_paydata[shipping_lastname]=Amazing
-    add_paydata[billing_zip]=80939
-    add_paydata[billing_city]=München
-    add_paydata[billing_type]=Physical
-    add_paydata[billing_country]=DE
-    add_paydata[billing_firstname]=Alfred
-    add_paydata[billing_lastname]=Amazing
-    add_paydata[storename]= Your Storename
-    workorderid= WORKORDERID12345
-     */
-    private $clientId = '';
-    private $sellerId = '';
-    private $workorderId = '';
+    private $shippingZip;
+    private $shippingCity;
+    private $shippingType;
+    private $shippingCountry;
+    private $shippingFirstname;
+    private $shippingLastname;
+    private $billingZip;
+    private $billingCity;
+    private $billingType;
+    private $billingCountry;
+    private $billingFirstname;
+    private $billingLastname;
+    private $storename;
+    private $workOrderId;
 
     /**
      * @param $success
      * @param $errorMessage
-     * @param $clientId
-     * @param $sellerId
-     * @param $workorderId
-     *
+     * @param $shippingZip
+     * @param $shippingCity
+     * @param $shippingType
+     * @param $shippingCountry
+     * @param $shippingFirstname
+     * @param $shippingLastname
+     * @param $billingZip
+     * @param $billingCity
+     * @param $billingType
+     * @param $billingCountry
+     * @param $billingFirstname
+     * @param $billingLastname
+     * @param $storename
+     * @param $workOrderId
      * @return $this
      */
-    public function init($success, $errorMessage, $clientId, $sellerId, $workorderId)
+    public function init($success, $errorMessage, $shippingZip, $shippingCity, $shippingType, $shippingCountry,
+                         $shippingFirstname, $shippingLastname, $billingZip, $billingCity, $billingType, $billingCountry,
+                         $billingFirstname, $billingLastname, $storename, $workOrderId)
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
-        $this->clientId = $clientId;
-        $this->sellerId = $sellerId;
-        $this->workorderId = $workorderId;
+        $this->shippingZip = $shippingZip;
+        $this->shippingCity = $shippingCity;
+        $this->shippingType = $shippingType;
+        $this->shippingCountry = $shippingCountry;
+        $this->shippingFirstname = $shippingFirstname;
+        $this->shippingLastname = $shippingLastname;
+        $this->billingZip = $billingZip;
+        $this->billingCity = $billingCity;
+        $this->billingType = $billingType;
+        $this->billingCountry = $billingCountry;
+        $this->billingFirstname = $billingFirstname;
+        $this->billingLastname = $billingLastname;
+        $this->storename = $storename;
+        $this->workOrderId = $workOrderId;
+
         return $this;
     }
 
@@ -53,34 +71,157 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     {
         return parent::jsonSerialize() +
             [
-                'clientId' => $this->clientId,
-                'sellerId' => $this->sellerId,
-                'workorderId' => $this->workorderId,
+                'shippingCity' => $this->shippingCity,
+                'shippingType' => $this->shippingType,
+                'shippingCountry' => $this->shippingCountry,
+                'shippingFirstname' => $this->shippingFirstname,
+                'shippingLastname' => $this->shippingLastname,
+                'billingZip' => $this->billingZip,
+                'billingCity' => $this->billingCity,
+                'billingType' => $this->billingType,
+                'billingCountry' => $this->billingCountry,
+                'billingFirstname' => $this->billingFirstname,
+                'billingLastname' => $this->billingLastname,
+                'storename' => $this->storename,
+                'workOrderId' => $this->workOrderId
             ];
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getClientId(): string
+    public function getShippingZip()
     {
-        return $this->clientId;
+        return $this->shippingZip;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingCity()
+    {
+        return $this->shippingCity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingType()
+    {
+        return $this->shippingType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingCountry()
+    {
+        return $this->shippingCountry;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingFirstname()
+    {
+        return $this->shippingFirstname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShippingLastname()
+    {
+        return $this->shippingLastname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingZip()
+    {
+        return $this->billingZip;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingCity()
+    {
+        return $this->billingCity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingType()
+    {
+        return $this->billingType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingCountry()
+    {
+        return $this->billingCountry;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingFirstname()
+    {
+        return $this->billingFirstname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBillingLastname()
+    {
+        return $this->billingLastname;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStorename()
+    {
+        return $this->storename;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkOrderId()
+    {
+        return $this->workOrderId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
     }
 
     /**
      * @return string
      */
-    public function getSellerId(): string
+    public function getErrorMessage(): string
     {
-        return $this->sellerId;
+        return $this->errorMessage;
     }
 
     /**
      * @return string
      */
-    public function getWorkorderId(): string
+    public function getTransactionID(): string
     {
-        return $this->workorderId;
+        return $this->transactionID;
     }
+
 
 }

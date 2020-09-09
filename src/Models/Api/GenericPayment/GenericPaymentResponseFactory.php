@@ -16,8 +16,7 @@ class GenericPaymentResponseFactory
      */
     public static function create(string $actionType, array $responseData)
     {
-        switch($actionType)
-        {
+        switch ($actionType) {
             case GenericPayment::ACTIONTYPE_GETCONFIGURATION:
                 return self::makeGetConfigurationResponse($responseData);
                 break;
@@ -58,8 +57,19 @@ class GenericPaymentResponseFactory
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
-            $responseData['responseData']['add_paydata[client_id]'] ?? '',
-            $responseData['responseData']['add_paydata[seller_id]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_zip]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_city]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_type]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_country]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_firstname]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_lastname]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_zip]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_city]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_type]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_country]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_firstname]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_lastname]'] ?? '',
+            $responseData['responseData']['add_paydata[storename]'] ?? '',
             $responseData['responseData']['workorderid'] ?? ''
         );
     }

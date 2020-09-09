@@ -4,13 +4,14 @@
             amazon.Login.setClientId('{{ content.clientId }}');
         };
 
+        var $orderReferenceId;
         addressBookWidget = new OffAmazonPayments.Widgets.AddressBook({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.addressBookScope }}',
             onOrderReferenceCreate: function(orderReference) {
                 // Here is where you can grab the Order Reference ID.
                 console.log("AmazonOrderReference: " + orderReference.getAmazonOrderReferenceId());
-                orderReference.getAmazonOrderReferenceId();
+                $orderReferenceId = orderReference.getAmazonOrderReferenceId();
             },
             onAddressSelect: function(orderReference) {
                 // Replace the following code with the action that you want
@@ -19,7 +20,7 @@
                 // details by calling the GetOrderReferenceDetails operation.
                 console.log("After Event: AccessToken= {{ accessToken }}");
                 console.log("After Event: workOrderId= {{ workOrderId }}");
-                console.log("After Event: AccessToken= " + orderReference.getAmazonOrderReferenceId());
+                console.log("After Event: AccessToken= " + $orderReferenceId);
 
 
                 $.post("/payment/payone/checkout/amazonPay/getOrderReference'", { "accessToken" : t.access_token}, function (data) {

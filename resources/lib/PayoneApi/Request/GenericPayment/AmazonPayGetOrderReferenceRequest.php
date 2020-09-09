@@ -22,7 +22,6 @@ class AmazonPayGetOrderReferenceRequest
 
     private $add_paydata = [
         'action' => 'getconfiguration',
-        'amazon_address_token' => '',
         'amazon_reference_id' => '',
     ];
 
@@ -45,7 +44,6 @@ class AmazonPayGetOrderReferenceRequest
     public function __construct(
         Config $config,
         SystemInfo $info,
-        string $amazonAddressToken,
         string $amazonReferenceId,
         string $workOrderId,
         string $currency

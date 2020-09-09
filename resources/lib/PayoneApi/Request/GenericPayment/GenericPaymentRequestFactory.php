@@ -46,7 +46,6 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                 return new AmazonPayGetOrderReferenceRequest(
                     $config,
                     $systemInfo,
-                    $data['add_paydata']['amazon_address_token'],
                     $data['add_paydata']['amazon_reference_id'],
                     $data['workorderid'],
                     $data['currency']);

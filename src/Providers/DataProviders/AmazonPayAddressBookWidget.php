@@ -16,6 +16,6 @@ class AmazonPayAddressBookWidget
      */
     public function call(Twig $twig)
     {
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayWalletWidget');
+        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayAddressBookWidget');
     }
 }

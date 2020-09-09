@@ -323,7 +323,7 @@ class CheckoutController extends Controller
             'language' => $lang,
             'scopes' => "profile payments:widget payments:shipping_address payments:billing_address",
             'popup' => "true",
-            'redirectUrl' => "https://pm-order.plentymarkets-cloud01.com/checkout",
+            'redirectUrl' => "",
             'debug1' => $configResponse->getWorkorderId()
         ];
 

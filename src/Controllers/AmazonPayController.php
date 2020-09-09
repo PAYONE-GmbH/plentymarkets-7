@@ -81,24 +81,26 @@ class AmazonPayController extends Controller
         ]);
     }
 
-    public function getOrderReference()
+    public function getOrderReference(Request $request)
     {
-        $accestoken = "Atza|IwEBIJZWMleom3psDFOhELQjK6lHD-XtaxDJJhI4z7TzpELpshPpyJRSq-Zt3a5yPW7EjwWczlrBF2Vj6TgoRE4HPoGRiYhor5aqphG8iFKj-ATAFKHDspzQXl68xl0nozJSjUXNtdoK_LO-X7P0KZnw8Q2f6uojm1R1MkxGwLjgn96Y5gwE1eJ1_YJVxv-zpQahxJagDyGIlEWbX2AqtEArP_l8cR6n58hxDh_1olffwjk4XxlpVFlBNaI6lnJX15EamZkojPBkNRp3NGBMzJDGlXOapRtTCq5O56LZmVJaH8r2fWzaLYqyWl2cuRI7N6ioFoG-TVr4zQvxvgJzro8vn-jhSvPKq0k-0gusOG-iM6tWPwIxZ12eeljOkKJU8VV_nHS1KhKJRCvucb_X_ulWUoqxhrdmhvr4uRuuDszX7inVZQ";
-        $workorderId = "123";
-        $amazonReferenceId = "123";
-        $amazonAddressToken = "123";
-
-        /** @var Api $api */
-        $api = pluginApp(Api::class);
+        $accessToken = $request->get('accessToken');
+        $workOrderId = $request->get('workOrderId');
+        $amazonReferenceId = $request->get('amazonReferenceId');
+        $amazonAddressToken = $request->get('amazonAddressToken') ?? "";
 
         /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
         $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
             "Amazon Pay",
-            $workorderId,
+            $workOrderId,
             $amazonReferenceId,
             $amazonAddressToken
         );
+
+        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
+
+
+        return $orderReferenceResponse;
     }
 
     public function setOrderReference(Request $request)

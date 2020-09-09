@@ -20,14 +20,20 @@
                 // details by calling the GetOrderReferenceDetails operation.
                 console.log("After Event: AccessToken= {{ accessToken }}");
                 console.log("After Event: workOrderId= {{ workOrderId }}");
-                console.log("After Event: AccessToken= " + $orderReferenceId);
+                console.log("After Event: orderReferenceId= " + $orderReferenceId);
 
 
-                $.post("/payment/payone/checkout/amazonPay/getOrderReference'", { "accessToken" : t.access_token}, function (data) {
-                    //$('#LoginWithAmazon').append(data);
-                    console.log(data);
-                    $("body").append(data);
-                });
+                $.post("/payment/payone/checkout/amazonPay/getOrderReference'",
+                    {
+                        "accessToken": "{{ accessToken }}",
+                        "workOrderId": "{{ workOrderId }}",
+                        "amazonReferenceId": $orderReferenceId
+                    },
+                    function (data) {
+                        //$('#LoginWithAmazon').append(data);
+                        console.log(data);
+                        $("body").append(data);
+                    });
 
                 // If rendering the AddressBook and Wallet widgets
                 // on the same page, you do not have to provide any additional

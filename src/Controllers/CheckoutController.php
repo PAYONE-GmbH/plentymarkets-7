@@ -323,7 +323,6 @@ class CheckoutController extends Controller
             'language' => $lang,
             'scopes' => "profile payments:widget payments:shipping_address payments:billing_address",
             'popup' => "true",
-            'redirectUrl' => "",
             'debug1' => $configResponse->getWorkorderId()
         ];
 

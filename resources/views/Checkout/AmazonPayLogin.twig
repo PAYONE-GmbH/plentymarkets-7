@@ -19,7 +19,11 @@
 
             authorization: function () {
                 loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
-                authRequest = amazon.Login.authorize(loginOptions, '{{ content.redirectUrl }}');
+                authRequest = amazon.Login.authorize(loginOptions, function(t) {
+                    console.log(t.access_token);
+                    console.log(t.expires_in);
+                    console.log(t.token_type);
+                });
             },
             onError: function (error) {
                 // your error handling code.

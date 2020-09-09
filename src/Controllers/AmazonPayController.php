@@ -99,8 +99,7 @@ class AmazonPayController extends Controller
 
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 
-
-        return $orderReferenceResponse;
+        return json_encode($orderReferenceResponse, true);
     }
 
     public function setOrderReference(Request $request)
@@ -122,7 +121,7 @@ class AmazonPayController extends Controller
         );
 
         $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
-
+        return $configResponse;
     }
 
     private function getLanguageCode(string $lang): string

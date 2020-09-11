@@ -7,7 +7,7 @@ use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
 
-class AmazonPayGetOrderReferenceRequest
+class AmazonPayConfirmOrderReferenceRequest
 {
 
     private $request = Types::GENERICPAYMENT;
@@ -22,8 +22,13 @@ class AmazonPayGetOrderReferenceRequest
 
     private $workorderid;
 
+    private $successurl;
+
+    private $errorurl;
+
     private $add_paydata = [
-        'action' => 'getorderreferencedetails',
+        'action' => 'confirmorderreference',
+        'reference' => '',
         'amazon_reference_id' => '',
     ];
 
@@ -33,6 +38,7 @@ class AmazonPayGetOrderReferenceRequest
     /** @var SystemInfo */
     private $info;
 
+
     /**
      * AmazonPayGetOrderReferenceRequest constructor.
      *
@@ -40,21 +46,30 @@ class AmazonPayGetOrderReferenceRequest
      * @param SystemInfo $info
      * @param string $amazonReferenceId
      * @param string $workOrderId
+     * @param string $amount
      * @param string $currency
+     * @param string $successurl
+     * @param string $errorurl
      */
     public function __construct(
         Config $config,
         SystemInfo $info,
         string $amazonReferenceId,
         string $workOrderId,
-        string $currency
+        string $amount,
+        string $currency,
+        string $successurl,
+        string $errorurl
     )
     {
         $this->config = $config;
         $this->info = $info;
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
         $this->workorderid = $workOrderId;
+        $this->amount = $amount;
         $this->currency = $currency;
+        $this->successurl = $successurl;
+        $this->errorurl = $errorurl;
     }
 
     /**
@@ -82,9 +97,9 @@ class AmazonPayGetOrderReferenceRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmount()
+    public function getAmount(): string
     {
         return $this->amount;
     }
@@ -103,6 +118,22 @@ class AmazonPayGetOrderReferenceRequest
     public function getWorkorderid(): string
     {
         return $this->workorderid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuccessurl(): string
+    {
+        return $this->successurl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorurl(): string
+    {
+        return $this->errorurl;
     }
 
     /**
@@ -128,5 +159,4 @@ class AmazonPayGetOrderReferenceRequest
     {
         return $this->info;
     }
-
 }

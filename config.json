@@ -887,6 +887,14 @@
           "options": {
             "defaultValue": "DE,AT,CH"
           }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.sandbox": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYSandboxLabel",
+          "options": {
+            "defaultValue": "0"
+          }
         }
       }
     }

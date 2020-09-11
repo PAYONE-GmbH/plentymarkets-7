@@ -10,26 +10,29 @@ use Payone\Models\Api\ResponseAbstract;
 class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializable
 {
 
-    private $clientId = '';
-    private $sellerId = '';
-    private $workorderId = '';
+    private $clientId;
+    private $sellerId;
+    private $currency;
+    private $workOrderId;
 
     /**
      * @param $success
      * @param $errorMessage
      * @param $clientId
      * @param $sellerId
+     * @param $currency
      * @param $workorderId
      *
      * @return $this
      */
-    public function init($success, $errorMessage, $clientId, $sellerId, $workorderId)
+    public function init($success, $errorMessage, $clientId, $sellerId, $currency, $workorderId)
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
         $this->clientId = $clientId;
         $this->sellerId = $sellerId;
-        $this->workorderId = $workorderId;
+        $this->currency = $currency;
+        $this->workOrderId = $workorderId;
         return $this;
     }
 
@@ -39,7 +42,8 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
             [
                 'clientId' => $this->clientId,
                 'sellerId' => $this->sellerId,
-                'workorderId' => $this->workorderId,
+                'currency' => $this->currency,
+                'workOrderId' => $this->workOrderId,
             ];
     }
 
@@ -62,9 +66,17 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     /**
      * @return string
      */
-    public function getWorkorderId(): string
+    public function getCurrency(): string
     {
-        return $this->workorderId;
+        return $this->currency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkOrderId(): string
+    {
+        return $this->workOrderId;
     }
 
 }

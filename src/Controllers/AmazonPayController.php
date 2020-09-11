@@ -2,10 +2,19 @@
 
 namespace Payone\Controllers;
 
+use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
+use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
+use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\PluginConstants;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
+use Payone\Services\AmazonPayService;
 use Payone\Services\Api;
+use PayoneApi\Request\GenericPayment\AmazonPayGetOrderReferenceRequest;
+use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\Frontend\Contracts\Checkout;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
@@ -60,7 +69,7 @@ class AmazonPayController extends Controller
     }
 
 
-    public function renderWidgets(Twig $twig, Request $request)
+    public function renderWidgets(Twig $twig, PaymentHelper $paymentHelper, Request $request)
     {
         // AccessToken in Request
         $accessToken = $request->get('accessToken');
@@ -73,55 +82,106 @@ class AmazonPayController extends Controller
             'addressBookScope' => "profile payments:widget payments:shipping_address payments:billing_address",
             'walletScope' => "profile payments:widget payments:shipping_address payments:billing_address",
         ];
+        $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayWidgets', [
             'content' => $content,
             'accessToken' => $accessToken,
-            'workOrderId' => $workdOrderId
+            'workOrderId' => $workdOrderId,
+            'amazonPayMopId' => $amazonPayMopId
         ]);
     }
 
-    public function getOrderReference(Request $request)
+    public function getOrderReference(Request $request, Checkout $checkout)
     {
-        $accessToken = $request->get('accessToken');
         $workOrderId = $request->get('workOrderId');
         $amazonReferenceId = $request->get('amazonReferenceId');
-        $amazonAddressToken = $request->get('amazonAddressToken') ?? "";
+        // $amazonAddressToken = $request->get('amazonAddressToken') ?? "";
 
         /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
         $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
             "Amazon Pay",
             $workOrderId,
-            $amazonReferenceId,
-            $amazonAddressToken
+            $amazonReferenceId
         );
 
+        /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 
-        return json_encode($orderReferenceResponse, true);
+        /** @var AmazonPayService $amazonPayService */
+        $amazonPayService = pluginApp(AmazonPayService::class);
+        $newAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
+
+        $checkout->setCustomerInvoiceAddressId($newAddress->id);
+        $checkout->setCustomerShippingAddressId($newAddress->id);
+
+        return json_encode($checkout, true);
     }
 
-    public function setOrderReference(Request $request)
+    public function setOrderReference(Request $request, BasketRepositoryContract $basketRepositoryContract)
     {
-        $workOrderId = "";
-        $amazonReferenceId = "";
-        $amazonAddressToken = "";
-        $storename = "";
-        $amount = "";
+        $basket = $basketRepositoryContract->load();
+        $amount = $basket->basketAmount;
 
+        //$amount = $request->get('amount');
+        $workOrderId = $request->get('workOrderId');
+        $amazonReferenceId = $request->get('amazonReferenceId');
+        //$amazonAddressToken = $request->get('workOrderId');
+        //$storename = $request->get('storename');
 
         $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
             "Amazon Pay",
             $workOrderId,
             $amazonReferenceId,
-            $amazonAddressToken,
-            $storename,
+         //   $amazonAddressToken,
+         //   $storename,
             $amount
         );
 
-        $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
-        return $configResponse;
+        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
+        return $orderReferenceResponse;
+    }
+
+    public function placeOrder()
+    {
+        // setOrder
+
+
+        $workOrderId = "";
+        $reference = "";
+        $amazonReferenceId = "";
+        $amount = "";
+
+        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
+
+        $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+        return $confirmOrderReferenceResponse;
+    }
+
+    public function debugTest()
+    {
+        /** @var GetOrderReferenceDetailsResponse $orderRefDetails */
+        $orderRefDetails = pluginApp(GetOrderReferenceDetailsResponse::class);
+        $orderRefDetails->shippingCompany = "TestCompany";
+        $orderRefDetails->shippingFirstname = "FirstName";
+        $orderRefDetails->shippingLastname = "LastName";
+        $orderRefDetails->shippingStreet = "Street 123";
+        $orderRefDetails->shippingZip = "12345";
+        $orderRefDetails->shippingCity = "Kassel";
+        $orderRefDetails->shippingCountry = "DE";
+
+
+
+        /** @var AmazonPayService $apiDebug */
+        $apiDebug = pluginApp(AmazonPayService::class);
+        $address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails);
+
+        // basket setShipping/setBilling... Methode zum Setzen der Addresse
+        //$createdAddress = $contactAddress->createAddress($address->toArray(),
+         //   AddressRelationType::DELIVERY_ADDRESS);
+
+        return $address;
     }
 
     private function getLanguageCode(string $lang): string

@@ -23,6 +23,12 @@ class GenericPaymentResponseFactory
             case GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS:
                 return self::makeGetOrderReferenceDetailsResponse($responseData);
                 break;
+            case GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS:
+                return self::makeSetOrderReferenceDetailsResponse($responseData);
+                break;
+            case GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE:
+                return self::makeConfirmOrderReferenceResponse($responseData);
+                break;
         }
 
     }
@@ -41,6 +47,7 @@ class GenericPaymentResponseFactory
             $responseData['errormessage'] ?? '',
             $responseData['responseData']['add_paydata[client_id]'] ?? '',
             $responseData['responseData']['add_paydata[seller_id]'] ?? '',
+            $responseData['responseData']['currency'] ?? '',
             $responseData['responseData']['workorderid'] ?? ''
         );
     }
@@ -58,18 +65,65 @@ class GenericPaymentResponseFactory
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
             $responseData['responseData']['add_paydata[shipping_zip]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_street]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_company]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_city]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_type]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_country]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_district]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_telephonenumber]'] ?? '',
+            $responseData['responseData']['add_paydata[shipping_state]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_firstname]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_lastname]'] ?? '',
             $responseData['responseData']['add_paydata[billing_zip]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_street]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_company]'] ?? '',
             $responseData['responseData']['add_paydata[billing_city]'] ?? '',
             $responseData['responseData']['add_paydata[billing_type]'] ?? '',
             $responseData['responseData']['add_paydata[billing_country]'] ?? '',
             $responseData['responseData']['add_paydata[billing_firstname]'] ?? '',
             $responseData['responseData']['add_paydata[billing_lastname]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_district]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_telephonenumber]'] ?? '',
+            $responseData['responseData']['add_paydata[billing_state]'] ?? '',
             $responseData['responseData']['add_paydata[storename]'] ?? '',
+            $responseData['responseData']['workorderid'] ?? ''
+        );
+    }
+
+    /**
+     * @param array $responseData
+     * @return SetOrderReferenceDetailsResponse
+     */
+    private static function makeSetOrderReferenceDetailsResponse(array $responseData): SetOrderReferenceDetailsResponse
+    {
+        /** @var SetOrderReferenceDetailsResponse $response */
+        $response = pluginApp(SetOrderReferenceDetailsResponse::class);
+
+        return $response->init(
+            $responseData['success'] ?? false,
+            $responseData['errormessage'] ?? '',
+            $responseData['responseData']['add_paydata[amazonAddressToken]'] ?? '',
+            $responseData['responseData']['add_paydata[amazonReferenceId]'] ?? '',
+            $responseData['responseData']['add_paydata[storename]'] ?? '',
+            $responseData['responseData']['amount'] ?? '',
+            $responseData['responseData']['currency'] ?? '',
+            $responseData['responseData']['workorderid'] ?? ''
+        );
+    }
+
+    /**
+     * @param array $responseData
+     * @return ConfirmOrderReferenceResponse
+     */
+    private static function makeConfirmOrderReferenceResponse(array $responseData)
+    {
+        /** @var ConfirmOrderReferenceResponse $response */
+        $response = pluginApp(ConfirmOrderReferenceResponse::class);
+
+        return $response->init(
+            $responseData['success'] ?? false,
+            $responseData['errormessage'] ?? '',
             $responseData['responseData']['workorderid'] ?? ''
         );
     }

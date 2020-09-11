@@ -7,7 +7,7 @@ use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
 
-class AmazonPayGetOrderReferenceRequest
+class AmazonPaySetOrderReferenceRequest
 {
 
     private $request = Types::GENERICPAYMENT;
@@ -23,7 +23,7 @@ class AmazonPayGetOrderReferenceRequest
     private $workorderid;
 
     private $add_paydata = [
-        'action' => 'getorderreferencedetails',
+        'action' => 'setorderreferencedetails',
         'amazon_reference_id' => '',
     ];
 
@@ -34,12 +34,13 @@ class AmazonPayGetOrderReferenceRequest
     private $info;
 
     /**
-     * AmazonPayGetOrderReferenceRequest constructor.
+     * AmazonPaySetOrderReferenceRequest constructor.
      *
      * @param Config $config
      * @param SystemInfo $info
      * @param string $amazonReferenceId
      * @param string $workOrderId
+     * @param string $amount
      * @param string $currency
      */
     public function __construct(
@@ -47,6 +48,7 @@ class AmazonPayGetOrderReferenceRequest
         SystemInfo $info,
         string $amazonReferenceId,
         string $workOrderId,
+        string $amount,
         string $currency
     )
     {
@@ -54,6 +56,7 @@ class AmazonPayGetOrderReferenceRequest
         $this->info = $info;
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
         $this->workorderid = $workOrderId;
+        $this->amount = $amount;
         $this->currency = $currency;
     }
 
@@ -82,9 +85,9 @@ class AmazonPayGetOrderReferenceRequest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmount()
+    public function getAmount(): string
     {
         return $this->amount;
     }

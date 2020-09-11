@@ -356,4 +356,9 @@ class PayoneServiceProvider extends ServiceProvider
             }
         );
     }
+
+    public function registerAmazonPayIntegration(Dispatcher $eventDispatcher)
+    {
+       //$eventDispatcher->listen();
+    }
 }

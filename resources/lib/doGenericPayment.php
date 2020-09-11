@@ -20,8 +20,13 @@ try {
     $data['clearingtype'] = $sdkRestApi::getParam('clearingtype');
     $data['wallettype'] = $sdkRestApi::getParam('wallettype');
     $data['add_paydata'] = $sdkRestApi::getParam('add_paydata');
-    $data['currency'] = $sdkRestApi::getParam('currency');
     $data['workorderid'] = $sdkRestApi::getParam('workorderid');
+
+    $data['currency'] = $sdkRestApi::getParam('currency');
+    $data['amount'] = $sdkRestApi::getParam('amount');
+
+    $data['successurl'] = $sdkRestApi::getParam('successurl');
+    $data['errorurl'] = $sdkRestApi::getParam('errorurl');
 
     $data['context'] = $sdkRestApi::getParam('context');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');

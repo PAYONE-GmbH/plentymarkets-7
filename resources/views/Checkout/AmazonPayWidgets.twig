@@ -22,6 +22,14 @@
                 console.log("After Event: workOrderId= {{ workOrderId }}");
                 console.log("After Event: orderReferenceId= " + $orderReferenceId);
 
+                // ID still required!
+                var buyNowBtn = document.getElementById("buy-now");
+
+                buyNowBtn.addEventListener('click', function () {
+                    OffAmazonPayments.initConfirmationFlow("{{ content.sellerId }}", $orderReferenceId, function(confirmationFlow) {
+                        placeOrder(confirmationFlow);
+                    });
+                });
 
                 $.post("/payment/payone/checkout/amazonPay/getOrderReference'",
                     {
@@ -50,11 +58,8 @@
                 // when the AddressBook widget has been rendered.
             },
             onError: function(error) {
-                // Your error handling code.
-                // During development you can use the following
-                // code to view error messages:
-                // console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                // See "Handling Errors" for more information.
+                document.getElementById("errorCode").innerHTML = error.getErrorCode();
+                document.getElementById("errorMessage").innerHTML = error.getErrorMessage();
             }
         });
         addressBookWidget.bind("addressBookWidgetDiv");
@@ -83,5 +88,21 @@
         walletWidget.setPresentmentCurrency("EUR"); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
         walletWidget.bind("walletWidgetDiv");
 
+
+        // your function to initiate order processing in backend
+        // recommendation: use the latest version of the jQuery library for the $.ajax function
+        function placeOrder(confirmationFlow) {
+            $.ajax({
+                url: "/payment/payone/checkout/amazonPay/placeOrder",
+                success: function (data) {
+                    confirmationFlow.success(); // continue Amazon Pay hosted site
+                },
+                error: function (data) { // called on ajax error and timeout
+                    confirmationFlow.error(); // abort Amazon Pay initConfirmationFlow
+                    // you might want to add additional error handling
+                },
+                timeout: "4000"
+            });
+        }
     });
 </script>

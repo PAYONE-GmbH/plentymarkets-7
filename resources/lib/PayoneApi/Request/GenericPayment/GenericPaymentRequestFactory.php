@@ -3,6 +3,7 @@
 namespace PayoneApi\Request\GenericPayment;
 
 use PayoneApi\Lib\Version;
+use PayoneApi\Request\Parts\RedirectUrls;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\RequestFactoryContract;
@@ -36,8 +37,7 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
             $systemInfoData['module_version']
         );
 
-        switch($data['add_paydata']['action'])
-        {
+        switch ($data['add_paydata']['action']) {
             case 'getconfiguration':
                 // Other configs can be added here. Just add an if-condition for $paymentMethod
                 return new AmazonPayConfigurationRequest($config, $systemInfo, $data['currency']);
@@ -49,6 +49,26 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                     $data['add_paydata']['amazon_reference_id'],
                     $data['workorderid'],
                     $data['currency']);
+                break;
+            case 'setorderreferencedetails':
+                return new AmazonPaySetOrderReferenceRequest(
+                    $config,
+                    $systemInfo,
+                    $data['add_paydata']['amazon_reference_id'],
+                    $data['workorderid'],
+                    $data['amount'],
+                    $data['currency']);
+                break;
+            case 'confirmorderreference':
+                return new AmazonPayConfirmOrderReferenceRequest(
+                    $config,
+                    $systemInfo,
+                    $data['add_paydata']['amazon_reference_id'],
+                    $data['workorderid'],
+                    $data['amount'],
+                    $data['currency'],
+                    $data['successurl'],
+                    $data['errorurl']);
                 break;
         }
 

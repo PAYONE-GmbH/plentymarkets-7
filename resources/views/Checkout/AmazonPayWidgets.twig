@@ -23,13 +23,13 @@
                 console.log("After Event: orderReferenceId= " + $orderReferenceId);
 
                 // ID still required!
-                var buyNowBtn = document.getElementById("buy-now");
+                /*var buyNowBtn = document.getElementById("buy-now");
 
                 buyNowBtn.addEventListener('click', function () {
                     OffAmazonPayments.initConfirmationFlow("{{ content.sellerId }}", $orderReferenceId, function(confirmationFlow) {
                         placeOrder(confirmationFlow);
                     });
-                });
+                });*/
 
                 $.post("/payment/payone/checkout/amazonPay/getOrderReference'",
                     {

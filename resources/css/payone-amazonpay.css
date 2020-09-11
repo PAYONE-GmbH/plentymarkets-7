@@ -5,7 +5,7 @@ measurement to make sure the widget renders in the
 optimal size allowed.
 */
 
-#addressBookWidgetDiv {
+.addressBookWidgetDiv {
     min-width: 300px;
     width: 100%;
     max-width: 900px;
@@ -14,7 +14,7 @@ optimal size allowed.
     max-height: 400px;
 }
 
-#walletWidgetDiv {
+.walletWidgetDiv {
     min-width: 300px;
     width: 100%;
     max-width: 900px;

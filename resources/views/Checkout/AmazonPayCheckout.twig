@@ -32,7 +32,8 @@
 
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LoginWithAmazon'></div></div></label>");
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LogoutWithAmazon' style='display:none'>'Logout'</div></div></label>");
-                $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' style='width:100%;display:none'></div>");
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv'></div>");
+
 
                 $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
                     //$('#LoginWithAmazon').append(data);

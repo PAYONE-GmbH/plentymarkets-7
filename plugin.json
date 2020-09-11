@@ -63,11 +63,6 @@
       "key": "Payone\\Providers\\DataProviders\\AmazonPayAddressBookWidget",
       "name": "Payone Checkout Amazon Pay AddressBook-Widget",
       "description": "Block to integrate the Amazon Pay address book widget in the checkout."
-    },
-    {
-      "key": "Payone\\Providers\\DataProviders\\AmazonPayWalletWidget",
-      "name": "Payone Checkout Amazon Pay Wallet-Widget",
-      "description": "Block to integrate the Amazon Pay wallet widget in the checkout."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {% if services.template.isCurrentTemplate('tpl.checkout') %}
     {#<div id="LoginWithAmazon"></div>#}
     {#<div id="LogoutWithAmazon" style="display:none;">Logout</div>#}
-
+    <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
 
     <script type="text/javascript">
         console.log("{{ amazonPayMopId }}");
@@ -32,7 +32,7 @@
 
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LoginWithAmazon'></div></div></label>");
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LogoutWithAmazon' style='display:none'>'Logout'</div></div></label>");
-                $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv'></div>");
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
 
                 $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
@@ -44,7 +44,7 @@
                     document.getElementById("LoginWithAmazon").style.display = "block";
                     document.getElementById("LogoutWithAmazon").style.display = "none";
                     document.getElementById("addressBookWidgetDiv").style.display = "none";
-                    document.getElementById("LogoutWithAmazon").style.display = "none";
+                    document.getElementById("walletWidgetDiv").style.display = "none";
                 };
             }
         }

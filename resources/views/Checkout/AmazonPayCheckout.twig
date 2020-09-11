@@ -1,17 +1,12 @@
 {% if services.template.isCurrentTemplate('tpl.checkout') %}
-    {#<div id="LoginWithAmazon"></div>#}
-    {#<div id="LogoutWithAmazon" style="display:none;">Logout</div>#}
     <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
 
     <script type="text/javascript">
         console.log("{{ amazonPayMopId }}");
 
-        // document.getElementById("LoginWithAmazon").style.display = "none";
-        //document.getElementById("LogoutWithAmazon").style.display = "none";
-       document.getElementById("addressBookWidgetDiv").style.display = "none";
+        document.getElementById("addressBookWidgetDiv").style.display = "none";
 
         if ({{ currentPaymentId }} == {{ amazonPayMopId }} ) {
-            // document.getElementById("LoginWithAmazon").style.display = "block";
             loadAmazonLoginButton();
         }
 
@@ -20,9 +15,12 @@
                 // document.getElementById("LoginWithAmazon").style.display = "block";
                 loadAmazonLoginButton();
             } else {
-                //document.getElementById("LoginWithAmazon").style.display = "block";
-                // document.getElementById("walletWidgetDiv").style.display = "block";
-                //document.getElementById("addressBookWidgetDiv").style.display = "block";
+                if (document.getElementById("LoginWithAmazon") !== undefined) {
+                    document.getElementById("LoginWithAmazon").style.display = "block";
+                    document.getElementById("walletWidgetDiv").style.display = "block";
+                    document.getElementById("addressBookWidgetDiv").style.display = "block";
+                }
+
             }
         });
 

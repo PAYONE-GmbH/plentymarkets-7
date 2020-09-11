@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
@@ -96,7 +97,11 @@ class AmazonPayController extends Controller
     {
         $workOrderId = $request->get('workOrderId');
         $amazonReferenceId = $request->get('amazonReferenceId');
-        // $amazonAddressToken = $request->get('amazonAddressToken') ?? "";
+
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $sessionStorage->setSessionValue('workOrderId', $workOrderId);
+        $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
 
         /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
@@ -119,45 +124,6 @@ class AmazonPayController extends Controller
         return json_encode($checkout, true);
     }
 
-    public function setOrderReference(Request $request, BasketRepositoryContract $basketRepositoryContract)
-    {
-        $basket = $basketRepositoryContract->load();
-        $amount = $basket->basketAmount;
-
-        //$amount = $request->get('amount');
-        $workOrderId = $request->get('workOrderId');
-        $amazonReferenceId = $request->get('amazonReferenceId');
-        //$amazonAddressToken = $request->get('workOrderId');
-        //$storename = $request->get('storename');
-
-        $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
-            "Amazon Pay",
-            $workOrderId,
-            $amazonReferenceId,
-         //   $amazonAddressToken,
-         //   $storename,
-            $amount
-        );
-
-        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
-        return $orderReferenceResponse;
-    }
-
-    public function placeOrder()
-    {
-        // setOrder
-
-
-        $workOrderId = "";
-        $reference = "";
-        $amazonReferenceId = "";
-        $amount = "";
-
-        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
-
-        $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
-        return $confirmOrderReferenceResponse;
-    }
 
     public function debugTest()
     {
@@ -170,8 +136,6 @@ class AmazonPayController extends Controller
         $orderRefDetails->shippingZip = "12345";
         $orderRefDetails->shippingCity = "Kassel";
         $orderRefDetails->shippingCountry = "DE";
-
-
 
         /** @var AmazonPayService $apiDebug */
         $apiDebug = pluginApp(AmazonPayService::class);

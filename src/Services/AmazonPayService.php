@@ -7,12 +7,16 @@ use Address;
 use IO\Builder\Order\AddressType;
 use IO\Services\CustomerService;
 use function Matrix\add;
+use Payone\Adapter\SessionStorage;
+use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
+use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use Plenty\Modules\Account\Address\Models\AddressOption;
 use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
+use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Frontend\Services\AccountService;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
@@ -20,6 +24,23 @@ use Plenty\Modules\Order\Shipping\Countries\Models\CountryState;
 
 class AmazonPayService
 {
+    /** @var Api */
+    private $api;
+
+    /** @var GenericPaymentDataProvider */
+    private $dataProvider;
+
+    /**
+     * AmazonPayService constructor.
+     * @param Api $api
+     * @param GenericPaymentDataProvider $dataProvider
+     */
+    public function __construct(Api $api,
+                                GenericPaymentDataProvider $dataProvider)
+    {
+        $this->api = $api;
+        $this->dataProvider = $dataProvider;
+    }
 
     public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails)
     {
@@ -50,7 +71,6 @@ class AmazonPayService
 
     /**
      * @param GetOrderReferenceDetailsResponse $amazonAddress
-     * @param int $isCompany
      * @return Address
      */
     private function mapAmazonAddressToAddress(GetOrderReferenceDetailsResponse $amazonAddress)
@@ -109,12 +129,46 @@ class AmazonPayService
         return $address;
     }
 
-    public function confirmOrderReference($workOrderId, $reference, $amazonReferenceId, $amount)
+    /**
+     * @param Basket $basket
+     * @return mixed
+     */
+    public function setOrderReference(Basket $basket)
     {
-        $workOrderId = "";
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amount = $basket->basketAmount;
+        $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+        $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
+
+        $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
+            "Amazon Pay",
+            $workOrderId,
+            $amazonReferenceId,
+            //   $amazonAddressToken,
+            //   $storename,
+            $amount
+        );
+
+        /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */
+        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
+        return $orderReferenceResponse;
+    }
+
+    /**
+     * @param Basket $basket
+     * @return mixed
+     */
+    public function confirmOrderReference(Basket $basket)
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+
+        $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+        $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amount = $basket->basketAmount;
+
         $reference = "";
-        $amazonReferenceId = "";
-        $amount = "";
 
         /** @var GenericPaymentDataProvider $dataProvider */
         $dataProvider = pluginApp(GenericPaymentDataProvider::class);
@@ -123,6 +177,7 @@ class AmazonPayService
 
         $requestParams = $dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
 
+        /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
         $confirmOrderReferenceResponse = $api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
         return $confirmOrderReferenceResponse;
     }

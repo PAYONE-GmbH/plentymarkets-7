@@ -21,9 +21,12 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
+use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
+use Payone\Services\AmazonPayService;
 use Payone\Services\Capture;
 use Payone\Services\OrderPdf;
 use Payone\Services\PaymentCreation;
@@ -36,6 +39,7 @@ use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
+use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Document\Models\Document;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
@@ -357,8 +361,31 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    public function registerAmazonPayIntegration(Dispatcher $eventDispatcher)
+    public function registerAmazonPayIntegration(Dispatcher $eventDispatcher, BasketRepositoryContract $basketRepository, AmazonPayService $amazonPayService)
     {
-       //$eventDispatcher->listen();
+        $eventDispatcher->listen(GetPaymentMethodContent::class, function (GetPaymentMethodContent $event) use ($basketRepository, $amazonPayService) {
+            /** @var PaymentHelper $paymentHelper */
+            $paymentHelper = pluginApp(PaymentHelper::class);
+            if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+
+                /** @var Basket $basket */
+                $basket = $basketRepository->load();
+
+                /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
+                $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
+
+                /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
+                $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
+
+
+                if($confirmOrderRefResponse->getSuccess() == true) {
+                    $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();});";
+                } else {
+                    $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();});";
+                }
+
+                return $content; // muss in html gerendert werden
+            }
+        });
     }
 }

@@ -87,22 +87,5 @@
         });
         walletWidget.setPresentmentCurrency("EUR"); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
         walletWidget.bind("walletWidgetDiv");
-
-
-        // your function to initiate order processing in backend
-        // recommendation: use the latest version of the jQuery library for the $.ajax function
-        function placeOrder(confirmationFlow) {
-            $.ajax({
-                url: "/payment/payone/checkout/amazonPay/placeOrder",
-                success: function (data) {
-                    confirmationFlow.success(); // continue Amazon Pay hosted site
-                },
-                error: function (data) { // called on ajax error and timeout
-                    confirmationFlow.error(); // abort Amazon Pay initConfirmationFlow
-                    // you might want to add additional error handling
-                },
-                timeout: "4000"
-            });
-        }
     });
 </script>

@@ -30,6 +30,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      */
     public function getGetOrderReferenceDetailsRequestData(string $paymentCode,
                                                            string $workOrderId,
+                                                           string $amazonAddressToken,
                                                            string $amazonReferenceId): array
     {
         // TODO: Maybe load creds from cache/session ?
@@ -43,7 +44,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
 
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS;
-        //$requestParams['add_paydata']['amazon_address_token'] = $amazonAddressToken;
+        $requestParams['add_paydata']['amazon_address_token'] = $amazonAddressToken;
         $requestParams['add_paydata']['amazon_reference_id'] = $amazonReferenceId;
         $requestParams['workorderid'] = $workOrderId;
 

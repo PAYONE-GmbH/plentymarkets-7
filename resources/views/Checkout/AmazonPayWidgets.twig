@@ -21,6 +21,7 @@
                 console.log("After Event: AccessToken= {{ accessToken }}");
                 console.log("After Event: workOrderId= {{ workOrderId }}");
                 console.log("After Event: orderReferenceId= " + $orderReferenceId);
+                console.log("After Event: amazonAddressToken= " + {{ amazonAddressToken }});
 
                 // ID still required!
                 /*var buyNowBtn = document.getElementById("buy-now");
@@ -35,6 +36,7 @@
                     {
                         "accessToken": "{{ accessToken }}",
                         "workOrderId": "{{ workOrderId }}",
+                        "amazonAddressToken": "{{ amazonAddressToken }}",
                         "amazonReferenceId": $orderReferenceId
                     },
                     function (data) {

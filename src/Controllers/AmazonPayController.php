@@ -78,6 +78,7 @@ class AmazonPayController extends Controller
         // AccessToken in Request
         $accessToken = $request->get('accessToken');
         $workdOrderId = $request->get('workOrderId');
+        $amazonAddressToken = $request->get('amazonAddressToken');
 
         // SWAP containers here
         $content = [
@@ -92,7 +93,8 @@ class AmazonPayController extends Controller
             'content' => $content,
             'accessToken' => $accessToken,
             'workOrderId' => $workdOrderId,
-            'amazonPayMopId' => $amazonPayMopId
+            'amazonPayMopId' => $amazonPayMopId,
+            'amazonAddressToken' => $amazonAddressToken
         ]);
     }
 
@@ -100,17 +102,20 @@ class AmazonPayController extends Controller
     {
         $workOrderId = $request->get('workOrderId');
         $amazonReferenceId = $request->get('amazonReferenceId');
+        $amazonAddressToken = $request->get('amazonAddressToken');
 
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
         $sessionStorage->setSessionValue('workOrderId', $workOrderId);
         $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
+        $sessionStorage->setSessionValue('amazonAddressToken', $amazonAddressToken);
 
         /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
         $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
             "Amazon Pay",
             $workOrderId,
+            $amazonAddressToken,
             $amazonReferenceId
         );
         $this->getLogger(__METHOD__)

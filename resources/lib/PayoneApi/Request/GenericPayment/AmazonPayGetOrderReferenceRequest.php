@@ -25,6 +25,7 @@ class AmazonPayGetOrderReferenceRequest
     private $add_paydata = [
         'action' => 'getorderreferencedetails',
         'amazon_reference_id' => '',
+        'amazon_address_token' => '',
     ];
 
     /** @var Config */
@@ -46,6 +47,7 @@ class AmazonPayGetOrderReferenceRequest
         Config $config,
         SystemInfo $info,
         string $amazonReferenceId,
+        string $amazonAddressToken,
         string $workOrderId,
         string $currency
     )
@@ -53,6 +55,7 @@ class AmazonPayGetOrderReferenceRequest
         $this->config = $config;
         $this->info = $info;
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
+        $this->add_paydata['amazon_address_token'] = $amazonAddressToken;
         $this->workorderid = $workOrderId;
         $this->currency = $currency;
     }

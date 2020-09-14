@@ -47,6 +47,7 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                     $config,
                     $systemInfo,
                     $data['add_paydata']['amazon_reference_id'],
+                    $data['add_paydata']['amazon_address_token'],
                     $data['workorderid'],
                     $data['currency']);
                 break;

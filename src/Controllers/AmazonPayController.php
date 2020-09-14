@@ -116,10 +116,12 @@ class AmazonPayController extends Controller
 
         /** @var AmazonPayService $amazonPayService */
         $amazonPayService = pluginApp(AmazonPayService::class);
-        $newAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
+        $shippingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
+        $billingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse, true);
 
-        $checkout->setCustomerInvoiceAddressId($newAddress->id);
-        $checkout->setCustomerShippingAddressId($newAddress->id);
+
+        $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
+        $checkout->setCustomerShippingAddressId($billingAddress->id);
 
         return json_encode($checkout, true);
     }
@@ -136,10 +138,17 @@ class AmazonPayController extends Controller
         $orderRefDetails->shippingZip = "12345";
         $orderRefDetails->shippingCity = "Kassel";
         $orderRefDetails->shippingCountry = "DE";
+        $orderRefDetails->shippingState = "Hessen";
+        $orderRefDetails->shippingTelephonenumber = "01726265233";
 
         /** @var AmazonPayService $apiDebug */
         $apiDebug = pluginApp(AmazonPayService::class);
-        $address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails);
+        //$address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails);
+
+
+        $address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails, true);
+
+
 
         // basket setShipping/setBilling... Methode zum Setzen der Addresse
         //$createdAddress = $contactAddress->createAddress($address->toArray(),

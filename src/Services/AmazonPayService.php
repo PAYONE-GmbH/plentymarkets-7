@@ -42,86 +42,96 @@ class AmazonPayService
         $this->dataProvider = $dataProvider;
     }
 
-    public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails)
+    public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails, $billingAddress = false)
     {
+        $addressData = [];
+        if ($billingAddress)
+        {
+            $addressData['company'] = $orderRefDetails->getBillingCompany() ?? "";
+            $addressData['firstName'] = $orderRefDetails->getBillingFirstname() ?? "";
+            $addressData['lastName'] = $orderRefDetails->getBillingLastname() ?? "";
+            $addressData['streetAndNumber'] = $orderRefDetails->getBillingStreet() ?? "";
+            $addressData['postalCode'] = $orderRefDetails->getBillingZip() ?? "";
+            $addressData['city'] = $orderRefDetails->getBillingCity() ?? "";
+            $addressData['state'] = $orderRefDetails->getBillingState() ?? "";
+            $addressData['countryId'] = $orderRefDetails->getBillingCountry() ?? "";
+            $addressData['telNo'] = $orderRefDetails->getBillingTelephonenumber() ?? "";
+        } else {
+            $addressData['company'] = $orderRefDetails->getShippingCompany() ?? "";
+            $addressData['firstName'] = $orderRefDetails->getShippingFirstname() ?? "";
+            $addressData['lastName'] = $orderRefDetails->getShippingLastname() ?? "";
+            $addressData['streetAndNumber'] = $orderRefDetails->getShippingStreet() ?? "";
+            $addressData['postalCode'] = $orderRefDetails->getShippingZip() ?? "";
+            $addressData['city'] = $orderRefDetails->getShippingCity() ?? "";
+            $addressData['state'] = $orderRefDetails->getShippingState() ?? "";
+            $addressData['countryId'] = $orderRefDetails->getShippingCountry() ?? "";
+            $addressData['telNo'] = $orderRefDetails->getShippingTelephonenumber() ?? "";
+        }
 
-        $addressData['name1'] = $orderRefDetails->getShippingCompany() ?? "";
-        $addressData['name2'] = $orderRefDetails->getShippingFirstname() ?? "";
-        $addressData['name3'] = $orderRefDetails->getShippingLastname() ?? "";
-        $addressData['address1'] = $orderRefDetails->getShippingStreet() ?? "";
-        // How to handle this issue?
-        $addressData['address2'] = " ";
-        $addressData['postalCode'] = $orderRefDetails->getShippingZip() ?? "";
-        $addressData['town'] = $orderRefDetails->getShippingCity() ?? "";
-        $addressData['countryId'] = $orderRefDetails->getShippingCountry() ?? "";
-        $addressData['gender'] = null;
-
-
-        $newAddress = $this->mapAmazonAddressToAddress($orderRefDetails);
-
-        // Guest or logged-in user?
+        $newAddress = $this->mapAmazonAddressToAddress($addressData);
 
         /** @var AddressRepositoryContract $contactAddressRepo */
         $addressRepo = pluginApp(AddressRepositoryContract::class);
         $createdAddress = $addressRepo->createAddress($newAddress->toArray());
 
-
         return $createdAddress;
     }
+
+
 
     /**
      * @param GetOrderReferenceDetailsResponse $amazonAddress
      * @return Address
      */
-    private function mapAmazonAddressToAddress(GetOrderReferenceDetailsResponse $amazonAddress)
+    private function mapAmazonAddressToAddress(array $amazonAddress)
     {
         /** @var Address $address */
         $address = pluginApp(\Plenty\Modules\Account\Address\Models\Address::class);
 
-        if (strlen($amazonAddress->getShippingCompany())) {
-            $address->name1 = $amazonAddress->getShippingCompany();
+        if (strlen($amazonAddress['company'])) {
+            $address->name1 = $amazonAddress['company'];
             /** @var AddressOption $addressOption */
             $addressOption = pluginApp(\Plenty\Modules\Account\Address\Models\AddressOption::class);
 
             $addressOption->typeId = AddressOption::TYPE_CONTACT_PERSON;
-            $addressOption->value = $amazonAddress->getShippingFirstname()." ".$amazonAddress->getShippingLastname();
+            $addressOption->value = $amazonAddress['firstName']." ".$amazonAddress['lastName'];
 
             $address->options->push($addressOption->toArray());
         }
 
-        $address->name2 = $amazonAddress->getShippingFirstname();
-        $address->name3 = $amazonAddress->getShippingLastname();
+        $address->name2 = $amazonAddress['firstName'];
+        $address->name3 = $amazonAddress['lastName'];
 
         /** @var CountryRepositoryContract $countryContract */
         $countryContract = pluginApp(\Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract::class);
 
         /** @var Country $country */
-        $country = $countryContract->getCountryByIso($amazonAddress->getShippingCountry(), 'isoCode2');
+        $country = $countryContract->getCountryByIso($amazonAddress['countryId'], 'isoCode2');
 
-        $addressArr = $this->extractAddress($amazonAddress->getShippingStreet(), '', $country->id == 12); //UK
+        $addressArr = $this->extractAddress($amazonAddress['streetAndNumber'], '', $country->id == 12); //UK
 
         $address->address1 = $addressArr[0];
         $address->address2 = $addressArr[1];
         if (strlen($addressArr[2])) {
             $address->address3 = $addressArr[2];
         }
-        $address->town = $amazonAddress->getShippingCity();
-        $address->postalCode = $amazonAddress->getShippingZip();
+        $address->town = $amazonAddress['city'];
+        $address->postalCode = $amazonAddress['postalCode'];
         $address->countryId = $country->id;
 
-        if (strlen($amazonAddress->getShippingState())) {
+        if (strlen($amazonAddress['state'])) {
             /** @var CountryState $state */
-            $state = $countryContract->getCountryStateByIso($country->id, $amazonAddress->getShippingState());
+            $state = $countryContract->getCountryStateByIso($country->id, $amazonAddress['state']);
             $address->state = $state;
             $address->stateId = $state->id;
         }
 
-        if (strlen($amazonAddress->getShippingTelephonenumber())) {
+        if (strlen($amazonAddress['telNo'])) {
             /** @var AddressOption $addressOption */
             $addressOption = pluginApp(\Plenty\Modules\Account\Address\Models\AddressOption::class);
 
             $addressOption->typeId = AddressOption::TYPE_TELEPHONE;
-            $addressOption->value = $amazonAddress->getShippingTelephonenumber();
+            $addressOption->value = $amazonAddress['telNo'];
 
             $address->options->push($addressOption->toArray());
         }

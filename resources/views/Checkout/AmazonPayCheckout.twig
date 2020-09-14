@@ -44,8 +44,11 @@
                     document.getElementById("addressBookWidgetDiv").style.display = "none";
                     document.getElementById("walletWidgetDiv").style.display = "none";
 
-                    document.getElementById("invoice-addresses-select").style.display = "block";
-                    document.getElementById("shipping-addresses-select").style.display = "block";
+                    if (document.getElementById("invoice-addresses-select") !== undefined && document.getElementById("shipping-addresses-select") !== undefined)
+                    {
+                        document.getElementById("invoice-addresses-select").style.display = "block";
+                        document.getElementById("shipping-addresses-select").style.display = "block";
+                    }
                 };
             }
         }

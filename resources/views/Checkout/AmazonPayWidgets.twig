@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $( document ).ready(function() {
-        window.onAmazonLoginReady = function() {
+        window.onAmazonLoginReady = function () {
             amazon.Login.setClientId('{{ content.clientId }}');
         };
 
@@ -8,12 +8,12 @@
         addressBookWidget = new OffAmazonPayments.Widgets.AddressBook({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.addressBookScope }}',
-            onOrderReferenceCreate: function(orderReference) {
+            onOrderReferenceCreate: function (orderReference) {
                 // Here is where you can grab the Order Reference ID.
                 console.log("AmazonOrderReference: " + orderReference.getAmazonOrderReferenceId());
                 $orderReferenceId = orderReference.getAmazonOrderReferenceId();
             },
-            onAddressSelect: function(orderReference) {
+            onAddressSelect: function (orderReference) {
                 // Replace the following code with the action that you want
                 // to perform after the address is selected. The
                 // amazonOrderReferenceId can be used to retrieve the address
@@ -53,21 +53,22 @@
             design: {
                 designMode: 'responsive'
             },
-            onReady: function(orderReference) {
+            onReady: function (orderReference) {
                 // Enter code here you want to be executed
                 // when the AddressBook widget has been rendered.
             },
-            onError: function(error) {
+            onError: function (error) {
                 document.getElementById("errorCode").innerHTML = error.getErrorCode();
                 document.getElementById("errorMessage").innerHTML = error.getErrorMessage();
             }
         });
         addressBookWidget.bind("addressBookWidgetDiv");
 
+
         walletWidget = new OffAmazonPayments.Widgets.Wallet({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.walletScope }}',
-            onPaymentSelect: function(orderReference) {
+            onPaymentSelect: function (orderReference) {
                 // Replace this code with the action that you want to perform
                 // after the payment method is selected.
 
@@ -77,7 +78,7 @@
             design: {
                 designMode: 'responsive'
             },
-            onError: function(error) {
+            onError: function (error) {
                 // Your error handling code.
                 // During development you can use the following
                 // code to view error messages:
@@ -87,5 +88,11 @@
         });
         walletWidget.setPresentmentCurrency("EUR"); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
         walletWidget.bind("walletWidgetDiv");
+
+        if (document.getElementById("invoice-addresses-select") !== undefined && document.getElementById("shipping-addresses-select") !== undefined)
+        {
+            document.getElementById("invoice-addresses-select").style.display = "none";
+            document.getElementById("shipping-addresses-select").style.display = "none";
+        }
     });
 </script>

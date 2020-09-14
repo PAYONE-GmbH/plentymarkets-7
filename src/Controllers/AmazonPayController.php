@@ -47,7 +47,7 @@ class AmazonPayController extends Controller
 
     public function getAmazonPayLoginWidget(Twig $twig)
     {
-        $requestParams = $this->dataProvider->getGetConfigRequestData("Amazon Pay");
+        $requestParams = $this->dataProvider->getGetConfigRequestData(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
 
@@ -111,7 +111,7 @@ class AmazonPayController extends Controller
         /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
         $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
         $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
-            "Amazon Pay",
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $accessToken,
             $amazonReferenceId

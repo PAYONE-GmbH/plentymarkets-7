@@ -8,6 +8,7 @@ use IO\Builder\Order\AddressType;
 use IO\Services\CustomerService;
 use function Matrix\add;
 use Payone\Adapter\SessionStorage;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
@@ -158,7 +159,7 @@ class AmazonPayService
         $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
 
         $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
-            "Amazon Pay",
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $amazonReferenceId,
             //   $amazonAddressToken,

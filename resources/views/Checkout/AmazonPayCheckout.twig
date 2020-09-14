@@ -29,7 +29,7 @@
                 console.log("loadAmazonLoginButton");
 
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LoginWithAmazon'></div></div></label>");
-                $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LogoutWithAmazon' style='display:none'>'Logout'</div></div></label>");
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LogoutWithAmazon' style='display:none'>Logout</div></div></label>");
                 $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
 
@@ -43,6 +43,9 @@
                     document.getElementById("LogoutWithAmazon").style.display = "none";
                     document.getElementById("addressBookWidgetDiv").style.display = "none";
                     document.getElementById("walletWidgetDiv").style.display = "none";
+
+                    document.getElementById("invoice-addresses-select").style.display = "block";
+                    document.getElementById("shipping-addresses-select").style.display = "block";
                 };
             }
         }

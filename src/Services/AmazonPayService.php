@@ -21,9 +21,12 @@ use Plenty\Modules\Frontend\Services\AccountService;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
 use Plenty\Modules\Order\Shipping\Countries\Models\CountryState;
+use Plenty\Plugin\Log\Loggable;
 
 class AmazonPayService
 {
+    use Loggable;
+
     /** @var Api */
     private $api;
 
@@ -44,6 +47,9 @@ class AmazonPayService
 
     public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails, $billingAddress = false)
     {
+        $this->getLogger(__METHOD__)
+            ->debug('Payone::Payone.payoneLog', json_decode($orderRefDetails, true));
+
         $addressData = [];
         if ($billingAddress)
         {

@@ -19,11 +19,14 @@ use Plenty\Modules\Frontend\Contracts\Checkout;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
+use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\Templates\Twig;
 
 
 class AmazonPayController extends Controller
 {
+    use Loggable;
+
     /** @var Api */
     private $api;
 
@@ -110,9 +113,14 @@ class AmazonPayController extends Controller
             $workOrderId,
             $amazonReferenceId
         );
+        $this->getLogger(__METHOD__)
+            ->debug('Payone::Payone.payoneLog', $requestParams);
 
         /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
+
+        $this->getLogger(__METHOD__)
+            ->debug('Payone::Payone.payoneLog', json_decode($orderReferenceResponse, true));
 
         /** @var AmazonPayService $amazonPayService */
         $amazonPayService = pluginApp(AmazonPayService::class);

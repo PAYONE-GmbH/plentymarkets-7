@@ -114,13 +114,13 @@ class AmazonPayController extends Controller
             $amazonReferenceId
         );
         $this->getLogger(__METHOD__)
-            ->debug('Payone::Payone.payoneLog', $requestParams);
+            ->error('Payone::Payone.payoneLog', $requestParams);
 
         /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 
         $this->getLogger(__METHOD__)
-            ->debug('Payone::Payone.payoneLog', (array)$orderReferenceResponse);
+            ->error('Payone::Payone.payoneLog', (array)$orderReferenceResponse);
 
         /** @var AmazonPayService $amazonPayService */
         $amazonPayService = pluginApp(AmazonPayService::class);

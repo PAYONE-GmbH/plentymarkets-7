@@ -48,7 +48,7 @@ class AmazonPayService
     public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails, $billingAddress = false)
     {
         $this->getLogger(__METHOD__)
-            ->debug('Payone::Payone.payoneLog', (array)$orderRefDetails);
+            ->error('Payone::Payone.payoneLog', (array)$orderRefDetails);
 
         $addressData = [];
         if ($billingAddress)

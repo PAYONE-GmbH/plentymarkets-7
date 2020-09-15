@@ -9,17 +9,17 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
-    public $shippingZip;
-    public $shippingStreet;
-    public $shippingCompany;
-    public $shippingCity;
-    public $shippingType;
-    public $shippingCountry;
-    public $shippingDistrict;
-    public $shippingTelephonenumber;
-    public $shippingState;
-    public $shippingFirstname;
-    public $shippingLastname;
+    private $shippingZip;
+    private $shippingStreet;
+    private $shippingCompany;
+    private $shippingCity;
+    private $shippingType;
+    private $shippingCountry;
+    private $shippingDistrict;
+    private $shippingTelephonenumber;
+    private $shippingState;
+    private $shippingFirstname;
+    private $shippingLastname;
     private $billingZip;
     private $billingStreet;
     private $billingCompany;
@@ -345,6 +345,5 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     {
         return $this->transactionID;
     }
-
 
 }

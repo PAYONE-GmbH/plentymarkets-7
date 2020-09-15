@@ -7,6 +7,7 @@ use Address;
 use IO\Builder\Order\AddressType;
 use IO\Services\CustomerService;
 use function Matrix\add;
+use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
@@ -26,30 +27,35 @@ use Plenty\Plugin\Log\Loggable;
 
 class AmazonPayService
 {
-    use Loggable;
-
     /** @var Api */
     private $api;
 
     /** @var GenericPaymentDataProvider */
     private $dataProvider;
 
+    /** @var Logger  */
+    private $logger;
+
     /**
      * AmazonPayService constructor.
      * @param Api $api
      * @param GenericPaymentDataProvider $dataProvider
+     * @param Logger $logger
      */
     public function __construct(Api $api,
-                                GenericPaymentDataProvider $dataProvider)
+                                GenericPaymentDataProvider $dataProvider,
+                                Logger $logger)
     {
         $this->api = $api;
         $this->dataProvider = $dataProvider;
+        $this->logger = $logger;
     }
 
     public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails, $billingAddress = false)
     {
-        $this->getLogger(__METHOD__)
-            ->error('Payone::Payone.payoneLog', (array)$orderRefDetails);
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Customer addresses from Amazon', (array)$orderRefDetails);
 
         $addressData = [];
         if ($billingAddress)
@@ -169,6 +175,16 @@ class AmazonPayService
 
         /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Set order reference on Amazon', [
+                "workOrderId" => $workOrderId,
+                "amazonReferenceId" => $amazonReferenceId,
+                "requestParams" => $requestParams,
+                "setOrderReferenceResponse" => (array)$orderReferenceResponse
+            ]);
+
         return $orderReferenceResponse;
     }
 
@@ -187,15 +203,21 @@ class AmazonPayService
 
         $reference = "";
 
-        /** @var GenericPaymentDataProvider $dataProvider */
-        $dataProvider = pluginApp(GenericPaymentDataProvider::class);
-        /** @var Api $api */
-        $api = pluginApp(Api::class);
-
-        $requestParams = $dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
+        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
 
         /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
-        $confirmOrderReferenceResponse = $api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+        $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Confirm order reference on Amazon', [
+                "workOrderId" => $workOrderId,
+                "amazonReferenceId" => $amazonReferenceId,
+                "amount" => $amount,
+                "requestParams" => $requestParams,
+                "confirmOrderReferenceResponse" => (array)$confirmOrderReferenceResponse
+            ]);
+
         return $confirmOrderReferenceResponse;
     }
 

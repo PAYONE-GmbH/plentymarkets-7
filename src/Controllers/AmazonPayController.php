@@ -2,6 +2,7 @@
 
 namespace Payone\Controllers;
 
+use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
@@ -25,24 +26,29 @@ use Plenty\Plugin\Templates\Twig;
 
 class AmazonPayController extends Controller
 {
-    use Loggable;
-
+    
     /** @var Api */
     private $api;
 
     /** @var GenericPaymentDataProvider */
     private $dataProvider;
 
+    /** @var Logger */
+    private $logger;
+
     /**
      * AmazonPayController constructor.
      * @param Api $api
      * @param GenericPaymentDataProvider $dataProvider
+     * @param Logger $logger
      */
     public function __construct(Api $api,
-                                GenericPaymentDataProvider $dataProvider)
+                                GenericPaymentDataProvider $dataProvider,
+                                Logger $logger)
     {
         $this->api = $api;
         $this->dataProvider = $dataProvider;
+        $this->logger = $logger;
     }
 
     public function getAmazonPayLoginWidget(Twig $twig)
@@ -51,13 +57,15 @@ class AmazonPayController extends Controller
 
         $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
 
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Config for login button', (array)$configResponse);
+
         /** @var LocalizationRepositoryContract $localizationRepositoryContract */
         $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-//            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
-//            'sellerId' => "A13SNST9X74Q8L",
             'clientId' => $configResponse->getClientId(),
             'sellerId' => $configResponse->getSellerId(),
             'type' => "LwA",
@@ -116,14 +124,20 @@ class AmazonPayController extends Controller
             $accessToken,
             $amazonReferenceId
         );
-        $this->getLogger(__METHOD__)
-            ->error('Payone::Payone.payoneLog', $requestParams);
 
         /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
         $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 
-        $this->getLogger(__METHOD__)
-            ->error('Payone::Payone.payoneLog', (array)$orderReferenceResponse);
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Get order reference from Amazon', [
+                "workOrderId" => $workOrderId,
+                "amazonReferenceId" => $amazonReferenceId,
+                "accessToken" => $accessToken,
+                "requestParams" => $requestParams,
+                "orderReferenceResponse" => (array)$orderReferenceResponse
+            ]);
+
 
         /** @var AmazonPayService $amazonPayService */
         $amazonPayService = pluginApp(AmazonPayService::class);
@@ -135,7 +149,6 @@ class AmazonPayController extends Controller
         $checkout->setCustomerShippingAddressId($shippingAddress->id);
         //$checkout->setCustomerShippingAddressId($billingAddress->id);
 
-        return json_encode($checkout, true);
     }
 
 
@@ -143,15 +156,15 @@ class AmazonPayController extends Controller
     {
         /** @var GetOrderReferenceDetailsResponse $orderRefDetails */
         $orderRefDetails = pluginApp(GetOrderReferenceDetailsResponse::class);
-        $orderRefDetails->shippingCompany = "TestCompany";
-        $orderRefDetails->shippingFirstname = "FirstName";
-        $orderRefDetails->shippingLastname = "LastName";
-        $orderRefDetails->shippingStreet = "Street 123";
-        $orderRefDetails->shippingZip = "12345";
-        $orderRefDetails->shippingCity = "Kassel";
-        $orderRefDetails->shippingCountry = "DE";
-        $orderRefDetails->shippingState = "Hessen";
-        $orderRefDetails->shippingTelephonenumber = "01726265233";
+//        $orderRefDetails->shippingCompany = "TestCompany";
+//        $orderRefDetails->shippingFirstname = "FirstName";
+//        $orderRefDetails->shippingLastname = "LastName";
+//        $orderRefDetails->shippingStreet = "Street 123";
+//        $orderRefDetails->shippingZip = "12345";
+//        $orderRefDetails->shippingCity = "Kassel";
+//        $orderRefDetails->shippingCountry = "DE";
+//        $orderRefDetails->shippingState = "Hessen";
+//        $orderRefDetails->shippingTelephonenumber = "01726265233";
 
         /** @var AmazonPayService $apiDebug */
         $apiDebug = pluginApp(AmazonPayService::class);
@@ -161,17 +174,16 @@ class AmazonPayController extends Controller
         $address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails, true);
 
 
-
         // basket setShipping/setBilling... Methode zum Setzen der Addresse
         //$createdAddress = $contactAddress->createAddress($address->toArray(),
-         //   AddressRelationType::DELIVERY_ADDRESS);
+        //   AddressRelationType::DELIVERY_ADDRESS);
 
         return $address;
     }
 
     private function getLanguageCode(string $lang): string
     {
-        switch($lang){
+        switch ($lang) {
             case "de":
                 $lang = "de-DE";
                 break;

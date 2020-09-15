@@ -368,15 +368,26 @@ class PayoneServiceProvider extends ServiceProvider
             $paymentHelper = pluginApp(PaymentHelper::class);
             if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
 
+                /** @var Logger $logger */
+                $logger = pluginApp(Logger::class);
+                $logger
+                    ->setIdentifier(__METHOD__)
+                    ->info('Event.checkout', ['event' => (array) $event]);
+
                 /** @var Basket $basket */
                 $basket = $basketRepository->load();
 
                 /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
                 $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
+                $logger
+                    ->setIdentifier(__METHOD__)
+                    ->info('Event.checkout', ['setOrderRefResponse' => (array) $setOrderRefResponse]);
 
                 /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
                 $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
-
+                $logger
+                    ->setIdentifier(__METHOD__)
+                    ->info('Event.checkout', ['confirmOrderRefResponse' => (array) $confirmOrderRefResponse]);
 
                 if($confirmOrderRefResponse->getSuccess() == true) {
                     $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();});";

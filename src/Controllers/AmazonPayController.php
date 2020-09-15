@@ -26,7 +26,7 @@ use Plenty\Plugin\Templates\Twig;
 
 class AmazonPayController extends Controller
 {
-    
+
     /** @var Api */
     private $api;
 
@@ -106,48 +106,55 @@ class AmazonPayController extends Controller
 
     public function getOrderReference(Request $request, Checkout $checkout)
     {
-        $workOrderId = $request->get('workOrderId');
-        $amazonReferenceId = $request->get('amazonReferenceId');
-        $accessToken = $request->get('accessToken');
+        try{
+            $workOrderId = $request->get('workOrderId');
+            $amazonReferenceId = $request->get('amazonReferenceId');
+            $accessToken = $request->get('accessToken');
 
-        /** @var SessionStorage $sessionStorage */
-        $sessionStorage = pluginApp(SessionStorage::class);
-        $sessionStorage->setSessionValue('workOrderId', $workOrderId);
-        $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
-        $sessionStorage->setSessionValue('accessToken', $accessToken);
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+            $sessionStorage->setSessionValue('workOrderId', $workOrderId);
+            $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
+            $sessionStorage->setSessionValue('accessToken', $accessToken);
 
-        /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
-        $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
-        $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
-            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
-            $workOrderId,
-            $accessToken,
-            $amazonReferenceId
-        );
+            /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
+            $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
+            $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+                $workOrderId,
+                $accessToken,
+                $amazonReferenceId
+            );
 
-        /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
-        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
+            /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
+            $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 
-        $this->logger
-            ->setIdentifier(__METHOD__)
-            ->debug('Get order reference from Amazon', [
-                "workOrderId" => $workOrderId,
-                "amazonReferenceId" => $amazonReferenceId,
-                "accessToken" => $accessToken,
-                "requestParams" => $requestParams,
-                "orderReferenceResponse" => (array)$orderReferenceResponse
-            ]);
-
-
-        /** @var AmazonPayService $amazonPayService */
-        $amazonPayService = pluginApp(AmazonPayService::class);
-        $shippingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
-        //$billingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse, true);
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('Get order reference from Amazon', [
+                    "workOrderId" => $workOrderId,
+                    "amazonReferenceId" => $amazonReferenceId,
+                    "accessToken" => $accessToken,
+                    "requestParams" => $requestParams,
+                    "orderReferenceResponse" => (array)$orderReferenceResponse
+                ]);
 
 
-        $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
-        $checkout->setCustomerShippingAddressId($shippingAddress->id);
-        //$checkout->setCustomerShippingAddressId($billingAddress->id);
+            /** @var AmazonPayService $amazonPayService */
+            $amazonPayService = pluginApp(AmazonPayService::class);
+            $shippingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
+            //$billingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse, true);
+
+
+            $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
+            $checkout->setCustomerShippingAddressId($shippingAddress->id);
+            //$checkout->setCustomerShippingAddressId($billingAddress->id);
+        } catch (\Exception $exception)
+        {
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->error('Get order reference from Amazon', $exception);
+        }
 
     }
 

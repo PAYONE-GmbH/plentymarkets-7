@@ -79,6 +79,8 @@ class PayoneServiceProvider extends ServiceProvider
     ) {
         $this->registerPaymentMethods($payContainer);
 
+        $this->registerAmazonPayIntegration($eventDispatcher, $basket);
+
         $this->registerPaymentRendering(
             $eventDispatcher,
             $basket
@@ -392,7 +394,8 @@ class PayoneServiceProvider extends ServiceProvider
                     $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();});";
                 }
 
-                return $content; // muss in html gerendert werden
+                $event->setValue($content);
+                $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
             }
         });
     }

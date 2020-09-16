@@ -59,7 +59,7 @@ class AmazonPayController extends Controller
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Config for login button', (array)$configResponse);
+            ->debug('AmazonPay.configLoginButton', (array)$configResponse);
 
         /** @var LocalizationRepositoryContract $localizationRepositoryContract */
         $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);
@@ -79,7 +79,7 @@ class AmazonPayController extends Controller
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Render login widgets', [
+            ->debug('AmazonPay.renderLoginWidget', [
                 "content" => (array)$content
             ]);
 
@@ -104,7 +104,7 @@ class AmazonPayController extends Controller
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Render widgets', [
+            ->debug('AmazonPay.renderWidgets', [
                 "content" => (array)$content
             ]);
 
@@ -143,7 +143,7 @@ class AmazonPayController extends Controller
 
             $this->logger
                 ->setIdentifier(__METHOD__)
-                ->debug('Get order reference from Amazon', [
+                ->debug('AmazonPay.getOrderReference', [
                     "workOrderId" => $workOrderId,
                     "amazonReferenceId" => $amazonReferenceId,
                     "accessToken" => $accessToken,
@@ -161,11 +161,10 @@ class AmazonPayController extends Controller
             $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
             $checkout->setCustomerShippingAddressId($shippingAddress->id);
             //$checkout->setCustomerShippingAddressId($billingAddress->id);
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             $this->logger
                 ->setIdentifier(__METHOD__)
-                ->error('Get order reference from Amazon', $exception);
+                ->error('AmazonPay.getOrderReference', $exception);
         }
 
     }

@@ -55,7 +55,7 @@ class AmazonPayService
     {
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Customer addresses from Amazon', (array)$orderRefDetails);
+            ->debug('AmazonPay.registerCustomer', (array)$orderRefDetails);
 
         $addressData = [];
         if ($billingAddress)
@@ -178,7 +178,7 @@ class AmazonPayService
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Set order reference on Amazon', [
+            ->debug('AmazonPay.setOrderReference', [
                 "workOrderId" => $workOrderId,
                 "amazonReferenceId" => $amazonReferenceId,
                 "requestParams" => $requestParams,
@@ -210,7 +210,7 @@ class AmazonPayService
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('Confirm order reference on Amazon', [
+            ->debug('AmazonPay.confirmOrderReference', [
                 "workOrderId" => $workOrderId,
                 "amazonReferenceId" => $amazonReferenceId,
                 "amount" => $amount,

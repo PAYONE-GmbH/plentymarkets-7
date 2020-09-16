@@ -241,6 +241,16 @@ class Api
         $response = $this->doLibCall(self::REQUEST_TYPE_GENERIC_PAYMENT, $requestParams);
         $responseObject = GenericPaymentResponseFactory::create($actionType, $response);
 
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->addReference('requestType', self::REQUEST_TYPE_GENERIC_PAYMENT)
+            ->debug('AmazonPay.apiCall', [
+                'actionType' => $actionType,
+                'requestParams' => $requestParams,
+                'response' => $response,
+                'responseObject' => $responseObject
+            ]);
+
         return $responseObject;
     }
 

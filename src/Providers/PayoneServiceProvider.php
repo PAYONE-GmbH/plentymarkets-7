@@ -374,6 +374,8 @@ class PayoneServiceProvider extends ServiceProvider
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
 
+            try {
+
 
             if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
 
@@ -403,6 +405,11 @@ class PayoneServiceProvider extends ServiceProvider
 
                 $event->setValue($content);
                 $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
+            }
+            } catch (\Exception $exception) {
+                $logger
+                    ->setIdentifier(__METHOD__)
+                    ->error('AmazonPay.paymentMethodContent', $exception);
             }
         });
     }

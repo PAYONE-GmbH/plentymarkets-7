@@ -201,9 +201,15 @@ class AmazonPayService
         $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
         $amount = $basket->basketAmount;
 
-        $reference = "";
+        $reference = $basket->orderId;
 
-        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData("Amazon Pay", $workOrderId, $reference, $amazonReferenceId, $amount);
+        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+            $workOrderId,
+            $reference,
+            $amazonReferenceId,
+            $amount
+        );
 
         /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
         $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);

@@ -366,6 +366,8 @@ class PayoneServiceProvider extends ServiceProvider
     public function registerAmazonPayIntegration(Dispatcher $eventDispatcher, BasketRepositoryContract $basketRepository, AmazonPayService $amazonPayService)
     {
         $eventDispatcher->listen(GetPaymentMethodContent::class, function (GetPaymentMethodContent $event) use ($basketRepository, $amazonPayService) {
+            /** @var Logger $logger */
+            $logger = pluginApp(Logger::class);
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
             if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
@@ -379,7 +381,7 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
                 $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
 
-                $this->logger
+                $logger
                     ->setIdentifier(__METHOD__)
                     ->debug('AmazonPay.paymentMethodContent', [
                         "event" => (array) $event,

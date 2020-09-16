@@ -77,6 +77,12 @@ class AmazonPayController extends Controller
             'workOrderId' => $configResponse->getWorkorderId()
         ];
 
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Render login widgets', [
+                "content" => (array)$content
+            ]);
+
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);
     }
 
@@ -95,6 +101,12 @@ class AmazonPayController extends Controller
             'walletScope' => "profile payments:widget payments:shipping_address payments:billing_address",
         ];
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Render widgets', [
+                "content" => (array)$content
+            ]);
 
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayWidgets', [
             'content' => $content,

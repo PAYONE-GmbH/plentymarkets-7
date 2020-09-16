@@ -195,8 +195,6 @@ class AmazonPayService
     public function confirmOrderReference(Basket $basket)
     {
         try {
-
-
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
 
@@ -204,7 +202,7 @@ class AmazonPayService
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
             $amount = $basket->basketAmount;
 
-            $reference = $basket->orderId;
+            $reference = null;
 
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,

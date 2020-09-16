@@ -87,7 +87,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     /**
      * {@inheritdoc}
      */
-    public function getConfirmOrderReferenceRequestData(string $paymentCode, string $workOrderId, string $reference, string $amazonReferenceId, string $amount)
+    public function getConfirmOrderReferenceRequestData(string $paymentCode, string $workOrderId, $reference, string $amazonReferenceId, string $amount)
     {
         $requestParams = $this->getDefaultRequestData($paymentCode);
         $requestParams['request'] = GenericPayment::REQUEST_TYPE;

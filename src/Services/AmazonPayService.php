@@ -194,37 +194,48 @@ class AmazonPayService
      */
     public function confirmOrderReference(Basket $basket)
     {
-        /** @var SessionStorage $sessionStorage */
-        $sessionStorage = pluginApp(SessionStorage::class);
+        try {
 
-        $workOrderId = $sessionStorage->getSessionValue('workOrderId');
-        $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
-        $amount = $basket->basketAmount;
 
-        $reference = $basket->orderId;
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
 
-        $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
-            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
-            $workOrderId,
-            $reference,
-            $amazonReferenceId,
-            $amount
-        );
+            $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+            $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
+            $amount = $basket->basketAmount;
 
-        /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
-        $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+            $reference = $basket->orderId;
 
-        $this->logger
-            ->setIdentifier(__METHOD__)
-            ->debug('AmazonPay.confirmOrderReference', [
-                "workOrderId" => $workOrderId,
-                "amazonReferenceId" => $amazonReferenceId,
-                "amount" => $amount,
-                "requestParams" => $requestParams,
-                "confirmOrderReferenceResponse" => (array)$confirmOrderReferenceResponse
-            ]);
+            $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+                $workOrderId,
+                $reference,
+                $amazonReferenceId,
+                $amount
+            );
 
-        return $confirmOrderReferenceResponse;
+            /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
+            $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.confirmOrderReference', [
+                    "workOrderId" => $workOrderId,
+                    "amazonReferenceId" => $amazonReferenceId,
+                    "amount" => $amount,
+                    "requestParams" => $requestParams,
+                    "confirmOrderReferenceResponse" => (array)$confirmOrderReferenceResponse
+                ]);
+
+            return $confirmOrderReferenceResponse;
+        } catch (\Exception $exception)
+        {
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->error('AmazonPay.confirmOrderReference', $exception);
+
+            return $exception;
+        }
     }
 
 

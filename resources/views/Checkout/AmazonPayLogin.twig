@@ -24,8 +24,6 @@
                     console.log(t.expires_in);
                     console.log(t.token_type);
 
-                    userLoggedIn = true;
-
                     $.post("/payment/payone/checkout/amazonPay/renderWidgets",
                         {
                             "accessToken": t.access_token,
@@ -37,7 +35,12 @@
                             $("body").append(data);
                         });
 
-                    showWidgets(true);
+
+                    if (document.getElementById("walletWidgetDiv") !== undefined &&
+                        document.getElementById("addressBookWidgetDiv") !== undefined) {
+                        document.getElementById("walletWidgetDiv").style.display = "block";
+                        document.getElementById("addressBookWidgetDiv").style.display = "block";
+                    }
 
                     document.getElementById("LoginWithAmazon").style.display = "none";
                     document.getElementById("LogoutWithAmazon").style.display = "block";

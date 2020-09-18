@@ -66,8 +66,8 @@ class AmazonPayConfirmOrderReferenceRequest
     {
         $this->config = $config;
         $this->info = $info;
+        $this->add_paydata['reference'] = $reference;
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
-        $this->add_paydata['amazon_reference'] = $reference;
         $this->workorderid = $workOrderId;
         $this->amount = $amount;
         $this->currency = $currency;

@@ -272,9 +272,9 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerPaymentExecute(Dispatcher $dispatcher, Basket $basket)
+    protected function registerPaymentExecute(Dispatcher $dispatcher, BasketRepositoryContract $basketRepository)
     {
-        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) use ($basket){
+        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) use ($basketRepository){
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
             /** @var Logger $logger */
@@ -284,6 +284,7 @@ class PayoneServiceProvider extends ServiceProvider
                 if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
                     /** @var PaymentService $paymentService */
                     $paymentService = pluginApp(PaymentService::class);
+                    $basket = $basketRepository->load();
 
                     $auth = $paymentService->openTransaction($basket);
                     $logger

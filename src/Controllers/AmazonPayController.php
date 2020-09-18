@@ -173,6 +173,8 @@ class AmazonPayController extends Controller
 
             /** @var CheckoutService $checkoutService */
             $checkoutService = pluginApp(CheckoutService::class);
+            $checkoutService->setBillingAddressId($shippingAddress->id);
+            $checkoutService->setDeliveryAddressId($shippingAddress->id);
 
             $responseData['events']['AfterBasketChanged']['basket'] = $basketService->getBasketForTemplate();
             $responseData['events']['AfterBasketChanged']['showNetPrices'] = $contactRepository->showNetPrices();
@@ -180,7 +182,7 @@ class AmazonPayController extends Controller
                 '',
                 false
             );
-            $responseData['events']['CheckoutChanged']['checkout'] = (array) $checkout;
+            $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
 
             return $response->make(json_encode($responseData), 200);
 

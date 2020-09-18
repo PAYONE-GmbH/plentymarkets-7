@@ -419,11 +419,10 @@ class PayoneServiceProvider extends ServiceProvider
 
 
                 if($confirmOrderRefResponse->getSuccess() == true) {
-                    $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();});";
+                    $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();}); }}";
                 } else {
-                    $content = "OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();});";
+                    $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();}); }}";
                 }
-
                 $event->setValue($content);
                 $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
             }

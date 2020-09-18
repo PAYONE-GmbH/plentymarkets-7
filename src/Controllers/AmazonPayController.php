@@ -180,7 +180,7 @@ class AmazonPayController extends Controller
                 '',
                 false
             );
-            $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
+            $responseData['events']['CheckoutChanged']['checkout'] = (array) $checkout;
 
             return $response->make(json_encode($responseData), 200);
 

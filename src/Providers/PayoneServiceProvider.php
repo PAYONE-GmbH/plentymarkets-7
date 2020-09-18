@@ -86,7 +86,7 @@ class PayoneServiceProvider extends ServiceProvider
             $basket
         );
 
-        $this->registerPaymentExecute($eventDispatcher);
+        $this->registerPaymentExecute($eventDispatcher, $basket);
 
         $captureProcedureTitle = [
             'de' => 'Versandbestätigung an ' . PluginConstants::NAME,
@@ -210,6 +210,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $selectedPaymentMopId = $event->getMop();
                 if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
                     return;
+                } elseif ($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)){
+                    // Because AmazonPay has its own event-handler
+                    return;
                 }
                 $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
                 /** @var PaymentAbstract $payment */
@@ -269,12 +272,28 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerPaymentExecute(Dispatcher $dispatcher)
+    protected function registerPaymentExecute(Dispatcher $dispatcher, Basket $basket)
     {
-        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) {
+        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) use ($basket){
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
+            /** @var Logger $logger */
+            $logger = pluginApp(Logger::class);
+
             if($paymentHelper->isPayonePayment($event->getMop())) {
+                if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                    /** @var PaymentService $paymentService */
+                    $paymentService = pluginApp(PaymentService::class);
+
+                    $auth = $paymentService->openTransaction($basket);
+                    $logger
+                        ->setIdentifier(__METHOD__)
+                        ->debug('AmazonPay.paymentExecute', [
+                            "auth" => (array) $auth
+                        ]);
+                }
+
+
                 /** @var OrderRepositoryContract $orderRepository */
                 $orderRepository = pluginApp(OrderRepositoryContract::class);
                 /** @var PaymentCache $paymentCache */
@@ -382,6 +401,7 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var Basket $basket */
                 $basket = $basketRepository->load();
 
+                // send orderID as reference if order exists?
                 /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
                 $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
 

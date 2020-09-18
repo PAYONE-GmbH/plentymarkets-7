@@ -205,6 +205,12 @@ class AmazonPayService
             // Added for debugging
             $reference = $basket->basketAmount == 80 ? "DebugTest" : null;
 
+            $workOrderId = "WX1A2TQ0H7BD69KQ";
+            $amazonReferenceId = "S02-8373658-0172780";
+            $reference = "Debug";
+            $amount = 2323;
+
+
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
                 $workOrderId,

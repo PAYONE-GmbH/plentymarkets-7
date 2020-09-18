@@ -54,6 +54,7 @@ use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
+use Plenty\Plugin\Templates\Twig;
 
 class PayoneServiceProvider extends ServiceProvider
 {
@@ -393,6 +394,8 @@ class PayoneServiceProvider extends ServiceProvider
             $logger = pluginApp(Logger::class);
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
 
             try {
 
@@ -418,12 +421,18 @@ class PayoneServiceProvider extends ServiceProvider
                     ]);
 
 
-                if($confirmOrderRefResponse->getSuccess() == true) {
+                /*if($confirmOrderRefResponse->getSuccess() == true) {
                     $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();}); }}";
                 } else {
                     $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();}); }}";
-                }
-                $event->setValue($content);
+                }*/
+
+                $event->setValue($twig->render(
+                    PluginConstants::NAME . '::Checkout.Confirmation',
+                    [
+                        'success' => $confirmOrderRefResponse->getSuccess()
+                    ]
+                ));
                 $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
             }
             } catch (\Exception $exception) {

@@ -184,6 +184,14 @@ class AmazonPayController extends Controller
             );
             $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
 
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.getOrderReference', [
+                    "shippingAddress" => (array) $shippingAddress,
+                    "checkout" => (array) $checkout,
+                    "checkoutViaService" => (array)$checkoutService->getCheckout()
+                ]);
+
             return $response->make(json_encode($responseData), 200);
 
             //return $response->json(['success' => true, 'message' => "Address changed", 'data' => $responseData]);
@@ -199,33 +207,21 @@ class AmazonPayController extends Controller
     }
 
 
-    public function debugTest()
+    public function debugTest(BasketRepositoryContract $basketRepo)
     {
-        /** @var GetOrderReferenceDetailsResponse $orderRefDetails */
-        $orderRefDetails = pluginApp(GetOrderReferenceDetailsResponse::class);
-//        $orderRefDetails->shippingCompany = "TestCompany";
-//        $orderRefDetails->shippingFirstname = "FirstName";
-//        $orderRefDetails->shippingLastname = "LastName";
-//        $orderRefDetails->shippingStreet = "Street 123";
-//        $orderRefDetails->shippingZip = "12345";
-//        $orderRefDetails->shippingCity = "Kassel";
-//        $orderRefDetails->shippingCountry = "DE";
-//        $orderRefDetails->shippingState = "Hessen";
-//        $orderRefDetails->shippingTelephonenumber = "01726265233";
-
         /** @var AmazonPayService $apiDebug */
         $apiDebug = pluginApp(AmazonPayService::class);
-        //$address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails);
 
+        $basket = $basketRepo->load();
 
-        $address = $apiDebug->registerCustomerFromAmazonPay($orderRefDetails, true);
+        $confirmOrderResponse = $apiDebug->confirmOrderReference($basket);
 
 
         // basket setShipping/setBilling... Methode zum Setzen der Addresse
         //$createdAddress = $contactAddress->createAddress($address->toArray(),
         //   AddressRelationType::DELIVERY_ADDRESS);
 
-        return $address;
+        return (array)$confirmOrderResponse;
     }
 
     private function getLanguageCode(string $lang): string

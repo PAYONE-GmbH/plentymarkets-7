@@ -415,15 +415,6 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
                 $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
 
-                $logger
-                    ->setIdentifier(__METHOD__)
-                    ->debug('AmazonPay.paymentMethodContent', [
-                        "event" => (array) $event,
-                        "setOrderRefResponse" => (array) $setOrderRefResponse,
-                        "confirmOrderRefResponse" => (array) $confirmOrderRefResponse
-                    ]);
-
-
                 /*if($confirmOrderRefResponse->getSuccess() == true) {
                     $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();}); }}";
                 } else {
@@ -439,6 +430,14 @@ class PayoneServiceProvider extends ServiceProvider
                     ]
                 ));
                 $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
+
+                $logger
+                    ->setIdentifier(__METHOD__)
+                    ->debug('AmazonPay.paymentMethodContent', [
+                        "event" => (array) $event,
+                        "setOrderRefResponse" => (array) $setOrderRefResponse,
+                        "confirmOrderRefResponse" => (array) $confirmOrderRefResponse
+                    ]);
             }
             } catch (\Exception $exception) {
                 $logger

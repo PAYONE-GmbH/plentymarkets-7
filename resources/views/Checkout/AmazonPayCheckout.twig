@@ -15,7 +15,7 @@
 
             $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
                 //$('#LoginWithAmazon').append(data);
-                // $("body").append(data);
+                $("body").append(data);
             });
 
             document.getElementById('LogoutWithAmazon').onclick = function () {

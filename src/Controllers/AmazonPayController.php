@@ -2,6 +2,8 @@
 
 namespace Payone\Controllers;
 
+use IO\Services\BasketService;
+use IO\Services\CheckoutService;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
@@ -17,9 +19,11 @@ use PayoneApi\Request\GenericPayment\AmazonPayGetOrderReferenceRequest;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Frontend\Contracts\Checkout;
+use Plenty\Modules\Webshop\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
+use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\Templates\Twig;
 
@@ -116,7 +120,7 @@ class AmazonPayController extends Controller
         ]);
     }
 
-    public function getOrderReference(Request $request, Checkout $checkout)
+    public function getOrderReference(Request $request, Response $response, Checkout $checkout)
     {
         try{
             $workOrderId = $request->get('workOrderId');
@@ -160,6 +164,29 @@ class AmazonPayController extends Controller
 
             $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
             $checkout->setCustomerShippingAddressId($shippingAddress->id);
+
+            /** @var BasketService $basketService */
+            $basketService = pluginApp(BasketService::class);
+
+            /** @var ContactRepositoryContract $contactRepository */
+            $contactRepository = pluginApp(ContactRepositoryContract::class);
+
+            /** @var CheckoutService $checkoutService */
+            $checkoutService = pluginApp(CheckoutService::class);
+
+            $responseData['events']['AfterBasketChanged']['basket'] = $basketService->getBasketForTemplate();
+            $responseData['events']['AfterBasketChanged']['showNetPrices'] = $contactRepository->showNetPrices();
+            $responseData['events']['AfterBasketChanged']['basketItems'] = $basketService->getBasketItemsForTemplate(
+                '',
+                false
+            );
+            $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
+
+
+
+            return $response->json(['success' => true, 'message' => null, 'data' => $responseData]);
+
+
             //$checkout->setCustomerShippingAddressId($billingAddress->id);
         } catch (\Exception $exception) {
             $this->logger

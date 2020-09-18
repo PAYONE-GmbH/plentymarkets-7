@@ -202,7 +202,8 @@ class AmazonPayService
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
             $amount = $basket->basketAmount;
 
-            $reference = null;
+            // Added for debugging
+            $reference = $basket->basketAmount == 80 ? "DebugTest" : null;
 
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,

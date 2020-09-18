@@ -184,7 +184,7 @@ class AmazonPayController extends Controller
 
 
 
-            return $response->json(['success' => true, 'data' => $responseData]);
+            return $response->json(['success' => true, 'message' => "Address changed", 'data' => $responseData]);
 
 
             //$checkout->setCustomerShippingAddressId($billingAddress->id);

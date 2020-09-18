@@ -182,9 +182,9 @@ class AmazonPayController extends Controller
             );
             $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
 
+            return $response->make(json_encode($responseData), 200);
 
-
-            return $response->json(['success' => true, 'message' => "Address changed", 'data' => $responseData]);
+            //return $response->json(['success' => true, 'message' => "Address changed", 'data' => $responseData]);
 
 
             //$checkout->setCustomerShippingAddressId($billingAddress->id);

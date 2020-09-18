@@ -8,6 +8,7 @@ use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
+use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\PluginConstants;
@@ -55,11 +56,15 @@ class AmazonPayController extends Controller
         $this->logger = $logger;
     }
 
-    public function getAmazonPayLoginWidget(Twig $twig)
+    public function getAmazonPayLoginWidget(Twig $twig, SessionStorage $sessionStorage)
     {
         $requestParams = $this->dataProvider->getGetConfigRequestData(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
+        /** @var GetConfigurationResponse $configResponse */
         $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
+
+        $sessionStorage->setSessionValue('clientId', $configResponse->getClientId());
+        $sessionStorage->setSessionValue('sellerId', $configResponse->getSellerId());
 
         $this->logger
             ->setIdentifier(__METHOD__)
@@ -91,11 +96,14 @@ class AmazonPayController extends Controller
     }
 
 
-    public function renderWidgets(Twig $twig, PaymentHelper $paymentHelper, Request $request)
+    public function renderWidgets(Twig $twig, PaymentHelper $paymentHelper, Request $request, SessionStorage $sessionStorage)
     {
         // AccessToken in Request
         $accessToken = $request->get('accessToken');
         $workdOrderId = $request->get('workOrderId');
+
+        $sessionStorage->setSessionValue('accessToken', $accessToken);
+        $sessionStorage->setSessionValue('workOrderId', $workdOrderId);
 
         // SWAP containers here
         $content = [
@@ -120,18 +128,14 @@ class AmazonPayController extends Controller
         ]);
     }
 
-    public function getOrderReference(Request $request, Response $response, Checkout $checkout)
+    public function getOrderReference(Request $request, Response $response, Checkout $checkout, SessionStorage $sessionStorage)
     {
         try{
-            $workOrderId = $request->get('workOrderId');
             $amazonReferenceId = $request->get('amazonReferenceId');
-            $accessToken = $request->get('accessToken');
-
-            /** @var SessionStorage $sessionStorage */
-            $sessionStorage = pluginApp(SessionStorage::class);
-            $sessionStorage->setSessionValue('workOrderId', $workOrderId);
             $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
-            $sessionStorage->setSessionValue('accessToken', $accessToken);
+
+            $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+            $accessToken = $sessionStorage->getSessionValue('accessToken');
 
             /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
             $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);

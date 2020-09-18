@@ -1,10 +1,10 @@
 <script>
     {% if success == "true" %}
-    OffAmazonPayments.initConfirmationFlow(sellerId, id, function (confirmationFlow) {
+    OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
         confirmationFlow.success();
     });
     {% else %}
-    OffAmazonPayments.initConfirmationFlow(sellerId, id, function (confirmationFlow) {
+    OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
         confirmationFlow.error();
     });
     {% endif %}

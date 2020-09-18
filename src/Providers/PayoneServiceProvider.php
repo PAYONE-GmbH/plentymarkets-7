@@ -3,6 +3,7 @@
 namespace Payone\Providers;
 
 use Payone\Adapter\Logger;
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
@@ -396,6 +397,8 @@ class PayoneServiceProvider extends ServiceProvider
             $paymentHelper = pluginApp(PaymentHelper::class);
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
 
             try {
 
@@ -430,7 +433,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $event->setValue($twig->render(
                     PluginConstants::NAME . '::Checkout.Confirmation',
                     [
-                        'success' => $confirmOrderRefResponse->getSuccess()
+                        'success' => $confirmOrderRefResponse->getSuccess(),
+                        'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                        'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
                     ]
                 ));
                 $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);

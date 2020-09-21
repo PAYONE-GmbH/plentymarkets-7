@@ -201,7 +201,7 @@ class AmazonPayService
             $amount = $basket->basketAmount*100;
 
             // Added for debugging
-            $reference = "DebugReference";
+            $reference = null;
 
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,

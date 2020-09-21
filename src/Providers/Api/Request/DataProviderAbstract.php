@@ -538,10 +538,10 @@ abstract class DataProviderAbstract
         $amazonAuthConfig = [];
         $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
         $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
-        $amazonAuthConfig['reference'] = "DebugReference";
+        $amazonAuthConfig['reference'] = null;
 
         $amazonAuthConfig['currency'] = $currency;
-        $amazonAuthConfig['amount'] = $basketAmount*100;
+        $amazonAuthConfig['amount'] = $basketAmount * 100;
 
         return $amazonAuthConfig;
     }

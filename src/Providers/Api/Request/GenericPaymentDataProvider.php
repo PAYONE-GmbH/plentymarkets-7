@@ -90,7 +90,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      */
     public function getConfirmOrderReferenceRequestData(string $paymentCode,
                                                         string $workOrderId,
-                                                        string $reference,
+                                                        $reference,
                                                         string $amazonReferenceId,
                                                         string $amount,
                                                         string $basketId)

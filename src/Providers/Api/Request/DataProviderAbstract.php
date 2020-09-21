@@ -469,6 +469,7 @@ abstract class DataProviderAbstract
                 PayonePayPalPaymentMethod::PAYMENT_CODE,
                 PayonePaydirektPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             ]
         )
         ) {

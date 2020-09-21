@@ -90,7 +90,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      */
     public function getConfirmOrderReferenceRequestData(string $paymentCode,
                                                         string $workOrderId,
-                                                        $reference,
+                                                        string $reference,
                                                         string $amazonReferenceId,
                                                         string $amount,
                                                         string $basketId)
@@ -100,7 +100,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = "EUR";
         // amount in smallest unit
-        $requestParams['amount'] = $amount;
+        $requestParams['amount'] = $amount * 100;
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE;
         $requestParams['add_paydata']['reference'] = $reference;

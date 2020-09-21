@@ -198,17 +198,13 @@ class AmazonPayService
 
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
-            $amount = $basket->basketAmount*100;
-
-            // Added for debugging
-            $reference = null;
 
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
                 $workOrderId,
-                $reference,
+                $basket->id,
                 $amazonReferenceId,
-                $amount,
+                $basket->basketAmount,
                 $basket->id
             );
 
@@ -220,7 +216,6 @@ class AmazonPayService
                 ->debug('AmazonPay.confirmOrderReference', [
                     "workOrderId" => $workOrderId,
                     "amazonReferenceId" => $amazonReferenceId,
-                    "amount" => $amount,
                     "requestParams" => $requestParams,
                     "confirmOrderReferenceResponse" => (array)$confirmOrderReferenceResponse
                 ]);

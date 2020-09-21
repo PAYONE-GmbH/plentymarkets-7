@@ -45,7 +45,7 @@ class AmazonPayConfirmOrderReferenceRequest
      * @param Config $config
      * @param SystemInfo $info
      * @param string $amazonReferenceId
-     * @param $reference
+     * @param string $reference
      * @param string $workOrderId
      * @param string $amount
      * @param string $currency
@@ -56,7 +56,7 @@ class AmazonPayConfirmOrderReferenceRequest
         Config $config,
         SystemInfo $info,
         string $amazonReferenceId,
-        $reference,
+        string $reference,
         string $workOrderId,
         string $amount,
         string $currency,

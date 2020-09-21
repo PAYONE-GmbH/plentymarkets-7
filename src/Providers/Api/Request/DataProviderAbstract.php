@@ -527,18 +527,19 @@ abstract class DataProviderAbstract
     }
 
     /**
+     * @param string $basketId
      * @param $basketAmount
-     * @param $currency
+     * @param string $currency
      * @return array
      */
-    protected function getAmazonPayData($basketAmount, $currency)
+    protected function getAmazonPayData(string $basketId, $basketAmount, string $currency)
     {
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
         $amazonAuthConfig = [];
         $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
         $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
-        $amazonAuthConfig['reference'] = null;
+        $amazonAuthConfig['reference'] = $basketId;
 
         $amazonAuthConfig['currency'] = $currency;
         $amazonAuthConfig['amount'] = $basketAmount * 100;

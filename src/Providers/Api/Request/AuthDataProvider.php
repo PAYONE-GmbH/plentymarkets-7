@@ -53,7 +53,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['sepaMandate'] = $this->getSepaMandateData();
         }
         if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
-            $requestParams['amazonPayAuth'] = $this->getAmazonPayData($basket->basketAmount, $basket->currency);
+            $requestParams['amazonPayAuth'] = $this->getAmazonPayData($basket->id, $basket->basketAmount, $basket->currency);
         }
 
         $requestParams['referenceId'] = $requestReference;

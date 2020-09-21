@@ -210,7 +210,8 @@ class AmazonPayService
                 $workOrderId,
                 $reference,
                 $amazonReferenceId,
-                $amount
+                $amount,
+                $basket->id
             );
 
             /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */

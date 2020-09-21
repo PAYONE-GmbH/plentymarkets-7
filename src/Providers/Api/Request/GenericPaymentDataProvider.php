@@ -87,7 +87,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     /**
      * {@inheritdoc}
      */
-    public function getConfirmOrderReferenceRequestData(string $paymentCode, string $workOrderId, $reference, string $amazonReferenceId, string $amount)
+    public function getConfirmOrderReferenceRequestData(string $paymentCode, string $workOrderId, $reference,
+                                                        string $amazonReferenceId, string $amount, string $basketId = "")
     {
         $requestParams = $this->getDefaultRequestData($paymentCode);
         $requestParams['request'] = GenericPayment::REQUEST_TYPE;
@@ -106,8 +107,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         /** @var ShopHelper $shopHelper */
         $shopHelper = pluginApp(ShopHelper::class);
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess';
-        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess';
+        $successParam = '';
+        if(strlen($basketId)){
+            $successParam = '?transactionBasketId='.$basketId;
+        }
+
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
 
         return $requestParams;
     }

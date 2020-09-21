@@ -8,25 +8,29 @@ use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\RedirectUrls;
 
 /**
- * Class PayPal
+ * Class AmazonPay
  */
 class AmazonPay extends AuthorizationRequestAbstract
 {
+    /** @var string */
     const WALLET_TYPE = 'AMZ';
 
+    /** @var string */
     protected $clearingtype = ClearingTypes::WALLET;
-    /**
-     * @var string
-     */
+
+    /** @var string */
     private $wallettype = self::WALLET_TYPE;
 
-    private $amount;
-
+    /** @var string */
     private $workorderid;
 
+    /** @var string */
     private $reference;
 
+    /** @var string */
     private $currency;
+
+    private $amount;
 
     private $add_paydata = [
         'amazon_reference_id' => '',
@@ -43,20 +47,21 @@ class AmazonPay extends AuthorizationRequestAbstract
      * @param GenericAuthorizationRequest $authorizationRequest
      * @param RedirectUrls $urls
      * @param $amount
-     * @param $workOrderId
-     * @param $reference
-     * @param $currency
-     * @param $amazonReferenceId
+     * @param string $workOrderId
+     * @param string $reference
+     * @param string $currency
+     * @param string $amazonReferenceId
      */
     public function __construct(
         GenericAuthorizationRequest $authorizationRequest,
         RedirectUrls $urls,
         $amount,
-        $workOrderId,
-        $reference,
-        $currency,
-        $amazonReferenceId
-    ) {
+        string $workOrderId,
+        string $reference,
+        string $currency,
+        string $amazonReferenceId
+    )
+    {
         $this->authorizationRequest = $authorizationRequest;
         $this->urls = $urls;
 
@@ -84,35 +89,35 @@ class AmazonPay extends AuthorizationRequestAbstract
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWorkorderid()
+    public function getWorkorderid(): string
     {
         return $this->workorderid;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->reference;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         return $this->currency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 
     /**
@@ -130,6 +135,5 @@ class AmazonPay extends AuthorizationRequestAbstract
     {
         return $this->urls;
     }
-
 
 }

@@ -160,7 +160,6 @@ class AmazonPayService
     {
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
-        $amount = $basket->basketAmount;
         $workOrderId = $sessionStorage->getSessionValue('workOrderId');
         $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
 
@@ -168,9 +167,8 @@ class AmazonPayService
             PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $amazonReferenceId,
-            //   $amazonAddressToken,
-            //   $storename,
-            $amount
+            $basket->currency,
+            $basket->basketAmount
         );
 
         /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */
@@ -200,7 +198,7 @@ class AmazonPayService
 
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
-            $amount = $basket->basketAmount;
+            $amount = $basket->basketAmount*100;
 
             // Added for debugging
             $reference = "DebugReference";

@@ -541,7 +541,7 @@ abstract class DataProviderAbstract
         $amazonAuthConfig['reference'] = "DebugReference";
 
         $amazonAuthConfig['currency'] = $currency;
-        $amazonAuthConfig['amount'] = $basketAmount;
+        $amazonAuthConfig['amount'] = $basketAmount*100;
 
         return $amazonAuthConfig;
     }

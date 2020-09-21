@@ -3,19 +3,31 @@
 namespace Payone\Providers\Api\Request;
 
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 
 class GenericPaymentDataProvider extends DataProviderAbstract
 {
+
+    private function getDefaultPaymentRequestData(string $paymentCode)
+    {
+        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams['request'] = GenericPayment::REQUEST_TYPE;
+
+        if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
+            $requestParams['clearingtype'] = PayoneAmazonPayPaymentMethod::CLEARING_TYPE;
+            $requestParams['wallettype'] = PayoneAmazonPayPaymentMethod::CLEARING_TYPE;
+        }
+
+        return $requestParams;
+    }
     /**
      * {@inheritdoc}
      */
     public function getGetConfigRequestData(string $paymentCode): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['request'] = GenericPayment::REQUEST_TYPE;
-        $requestParams['clearingtype'] = "wlt";
-        $requestParams['wallettype'] = "AMZ";
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = "EUR";
 
@@ -33,12 +45,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
                                                            string $amazonAddressToken,
                                                            string $amazonReferenceId): array
     {
-        // TODO: Maybe load creds from cache/session ?
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
-        $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['request'] = GenericPayment::REQUEST_TYPE;
-        $requestParams['clearingtype'] = "wlt";
-        $requestParams['wallettype'] = "AMZ";
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = "EUR";
 
@@ -58,26 +66,19 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     public function getSetOrderReferenceDetailsRequestData(string $paymentCode,
                                                            string $workOrderId,
                                                            string $amazonReferenceId,
-                                                           //string $amazonAddressToken,
-                                                        //   string $storename,
+                                                           string $currency,
                                                            string $amount): array
     {
-        // TODO: Maybe load creds from cache/session ?
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
-        $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['request'] = GenericPayment::REQUEST_TYPE;
-        $requestParams['clearingtype'] = "wlt";
-        $requestParams['wallettype'] = "AMZ";
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = "EUR";
+        $requestParams['currency'] = $currency;
         // amount in smallest unit
-        $requestParams['amount'] = $amount;
+        $requestParams['amount'] = $amount * 100;
 
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS;
         $requestParams['add_paydata']['amazon_reference_id'] = $amazonReferenceId;
-        //$requestParams['add_paydata']['amazon_address_token'] = $amazonAddressToken;
-        //$requestParams['add_paydata']['storename'] = $storename;
         $requestParams['workorderid'] = $workOrderId;
 
         $this->validator->validate($requestParams);
@@ -87,13 +88,15 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     /**
      * {@inheritdoc}
      */
-    public function getConfirmOrderReferenceRequestData(string $paymentCode, string $workOrderId, $reference,
-                                                        string $amazonReferenceId, string $amount, string $basketId = "")
+    public function getConfirmOrderReferenceRequestData(string $paymentCode,
+                                                        string $workOrderId,
+                                                        string $reference,
+                                                        string $amazonReferenceId,
+                                                        string $amount,
+                                                        string $basketId)
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
-        $requestParams['request'] = GenericPayment::REQUEST_TYPE;
-        $requestParams['clearingtype'] = "wlt";
-        $requestParams['wallettype'] = "AMZ";
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = "EUR";
         // amount in smallest unit
@@ -115,6 +118,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
         $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
 
+        $this->validator->validate($requestParams);
         return $requestParams;
     }
 }

@@ -408,6 +408,8 @@ class PayoneServiceProvider extends ServiceProvider
             $twig = pluginApp(Twig::class);
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
+            /** @var PaymentCache $paymentCache */
+            $paymentCache = pluginApp(PaymentCache::class);
 
             try {
 
@@ -416,6 +418,8 @@ class PayoneServiceProvider extends ServiceProvider
 
                 /** @var Basket $basket */
                 $basket = $basketRepository->load();
+
+                $paymentCache->setActiveBasketId($basket->id);
 
                 // send orderID as reference if order exists?
                 /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */

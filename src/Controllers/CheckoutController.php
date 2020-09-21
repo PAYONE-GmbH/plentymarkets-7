@@ -257,6 +257,8 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
+        $authenticationStatus = $this->request->get('AuthenticationStatus');
+
         if(strlen($transactionBasketId)){
             $storedBasketId = $paymentCache->getActiveBasketId();
             if($storedBasketId === null){
@@ -264,6 +266,10 @@ class CheckoutController extends Controller
             }
             if($storedBasketId != $transactionBasketId){
                 return $this->response->redirectTo('payone/error');
+            }
+        } elseif (isset($authenticationStatus)) {
+            if ($authenticationStatus == "Success") {
+                return $this->response->redirectTo('confirmation');
             }
         }
         else{

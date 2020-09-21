@@ -68,22 +68,68 @@ class AmazonPay extends AuthorizationRequestAbstract
     }
 
     /**
-     * Getter for Urls
-     *
+     * @return string
+     */
+    public function getClearingtype(): string
+    {
+        return $this->clearingtype;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWallettype(): string
+    {
+        return $this->wallettype;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkorderid()
+    {
+        return $this->workorderid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAddPaydata(): array
+    {
+        return $this->add_paydata;
+    }
+
+    /**
      * @return RedirectUrls
      */
-    public function getUrls()
+    public function getUrls(): RedirectUrls
     {
         return $this->urls;
     }
 
-    /**
-     * Getter for Wallettype
-     *
-     * @return string
-     */
-    public function getWallettype()
-    {
-        return $this->wallettype;
-    }
+
 }

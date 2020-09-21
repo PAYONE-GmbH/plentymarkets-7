@@ -117,7 +117,6 @@ class RequestFactory implements RequestFactoryContract
                 );
             case PaymentTypes::PAYONE_AMAZON_PAY:
                 $amazonPayAuth = $data['amazonPayAuth'];
-                return $amazonPayAuth;
                 return new AmazonPay(
                     $genericAuthRequest,
                     self::createUrls($data['redirect']),

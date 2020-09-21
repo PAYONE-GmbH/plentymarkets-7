@@ -2,8 +2,10 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -521,6 +523,26 @@ abstract class DataProviderAbstract
         }
 
         return $account->jsonSerialize();
+    }
+
+    /**
+     * @param $basketAmount
+     * @param $currency
+     * @return array
+     */
+    protected function getAmazonPayData($basketAmount, $currency)
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amazonAuthConfig = [];
+        $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
+        $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amazonAuthConfig['reference'] = "DebugReference";
+
+        $amazonAuthConfig['currency'] = $currency;
+        $amazonAuthConfig['amount'] = $basketAmount;
+
+        return $amazonAuthConfig;
     }
 
     /**

@@ -20,6 +20,18 @@ class AmazonPay extends AuthorizationRequestAbstract
      */
     private $wallettype = self::WALLET_TYPE;
 
+    private $amount;
+
+    private $workorderid;
+
+    private $reference;
+
+    private $currency;
+
+    private $add_paydata = [
+        'amazon_reference_id' => '',
+    ];
+
     /**
      * @var RedirectUrls
      */
@@ -30,13 +42,29 @@ class AmazonPay extends AuthorizationRequestAbstract
      *
      * @param GenericAuthorizationRequest $authorizationRequest
      * @param RedirectUrls $urls
+     * @param $amount
+     * @param $workOrderId
+     * @param $reference
+     * @param $currency
+     * @param $amazonReferenceId
      */
     public function __construct(
         GenericAuthorizationRequest $authorizationRequest,
-        RedirectUrls $urls
+        RedirectUrls $urls,
+        $amount,
+        $workOrderId,
+        $reference,
+        $currency,
+        $amazonReferenceId
     ) {
         $this->authorizationRequest = $authorizationRequest;
         $this->urls = $urls;
+
+        $this->amount = $amount;
+        $this->workorderid = $workOrderId;
+        $this->reference = $reference;
+        $this->currency = $currency;
+        $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
     }
 
     /**

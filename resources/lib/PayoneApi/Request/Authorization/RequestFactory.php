@@ -116,9 +116,15 @@ class RequestFactory implements RequestFactoryContract
                     $shippingAddress
                 );
             case PaymentTypes::PAYONE_AMAZON_PAY:
+                $amazonPayAuth = $data['amazonPayAuth'];
                 return new AmazonPay(
                     $genericAuthRequest,
-                    self::createUrls($data['redirect'])
+                    self::createUrls($data['redirect']),
+                    $amazonPayAuth['amount'],
+                    $amazonPayAuth['workOrderId'],
+                    $amazonPayAuth['reference'],
+                    $amazonPayAuth['currency'],
+                    $amazonPayAuth['amazonReferenceId']
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

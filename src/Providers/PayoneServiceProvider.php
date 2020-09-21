@@ -283,40 +283,49 @@ class PayoneServiceProvider extends ServiceProvider
             $logger = pluginApp(Logger::class);
 
             if($paymentHelper->isPayonePayment($event->getMop())) {
-                if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
-                    /** @var PaymentService $paymentService */
-                    $paymentService = pluginApp(PaymentService::class);
-                    $basket = $basketRepository->load();
+                try{
+                    if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                        /** @var PaymentService $paymentService */
+                        $paymentService = pluginApp(PaymentService::class);
+                        $basket = $basketRepository->load();
 
-                    $auth = $paymentService->openTransaction($basket);
+                        $auth = $paymentService->openTransaction($basket);
+                        $logger
+                            ->setIdentifier(__METHOD__)
+                            ->debug('AmazonPay.paymentExecute', [
+                                "auth" => (array) $auth
+                            ]);
+                    }
+                    /** @var OrderRepositoryContract $orderRepository */
+                    $orderRepository = pluginApp(OrderRepositoryContract::class);
+                    /** @var PaymentCache $paymentCache */
+                    $paymentCache = pluginApp(PaymentCache::class);
+
+                    $order = $orderRepository->findOrderById($event->getOrderId());
+                    $payment = $paymentCache->loadPayment($event->getMop());
+                    if (!($payment instanceof Payment)) {
+                        $message = 'Payment could not be assigned to order.';
+
+                        /** @var Logger $logger */
+                        $logger = pluginApp(Logger::class);
+                        $logger->error($message, $payment);
+                        return;
+                    }
+
+                    /** @var PaymentCreation $paymentCreationService */
+                    $paymentCreationService = pluginApp(PaymentCreation::class);
+                    $paymentCreationService->assignPaymentToOrder($payment, $order);
+                    $paymentCache->deletePayment($event->getMop());
+
+                } catch (\Exception $exception){
                     $logger
                         ->setIdentifier(__METHOD__)
-                        ->debug('AmazonPay.paymentExecute', [
-                            "auth" => (array) $auth
-                        ]);
+                        ->error('Error in paymentExecute-Event', $exception);
                 }
 
 
-                /** @var OrderRepositoryContract $orderRepository */
-                $orderRepository = pluginApp(OrderRepositoryContract::class);
-                /** @var PaymentCache $paymentCache */
-                $paymentCache = pluginApp(PaymentCache::class);
 
-                $order = $orderRepository->findOrderById($event->getOrderId());
-                $payment = $paymentCache->loadPayment($event->getMop());
-                if (!($payment instanceof Payment)) {
-                    $message = 'Payment could not be assigned to order.';
 
-                    /** @var Logger $logger */
-                    $logger = pluginApp(Logger::class);
-                    $logger->error($message, $payment);
-                    return;
-                }
-
-                /** @var PaymentCreation $paymentCreationService */
-                $paymentCreationService = pluginApp(PaymentCreation::class);
-                $paymentCreationService->assignPaymentToOrder($payment, $order);
-                $paymentCache->deletePayment($event->getMop());
             }
         });
 

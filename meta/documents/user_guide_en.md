@@ -17,7 +17,7 @@ The plugin currently offers the following payment methods:
 * Sofortüberweisung - Online bank transfer international
 * Transfer - Cash in advance & Invoice & Cash on Delivery
 * PayPal - Integration of your PayPal account
-* Amazon Pay - Integration of your Amazon Pay accounts (Available soon!)
+* Amazon Pay - Integration of your Amazon Pay account
 
 ## First steps
 
@@ -255,6 +255,9 @@ In the following, you select the PAYONE payment methods that should be available
 </table>
 
 **Note**: You need a separate **Portal ID** and **Key** for the payment method **Secure Invoice**. This Portal-ID and this key have to be deposited in the plugin while configuring it. You get the Portal ID and the Key via the PAYONE Merchant Interface in the **Configuration » Payment portals** menu.
+
+**Note**: In order to use the payment method **Amazon Pay** you have to link your Amazon account with Payone. To do so, contact the <strong><a href="https://www.payone.com/kontakt/" target="_blank">Payone support</a></strong>.
+When setting up the payment method **Amazon Pay**, you can activate the setting **Test-Environment** additionally to the settings described in table 2. This setting enables you to test the payment method first with test purchases. You cannot generate orders or turnover with these, they are solely for testing the payment method. Deactivate the setting **Test-Environment** to activate Amazon Pay.
 
 ## Adjusting the Ceres checkout
 

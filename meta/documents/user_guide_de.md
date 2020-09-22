@@ -199,7 +199,7 @@ Im Folgenden legst du fest, welche PAYONE-Zahlungsarten deinen Kunden im Webshop
    </tbody>
 </table>
 
-**Hinweis**: Die Zahlungsart **Kreditkarte** stellt einen Sonderfall dar. Für diese Zahlungsart sind zusätzliche Einstellungen notwendig. Diese Einstellungen werden in Tabelle 3 beschrieben.
+**Hinweise zur Kreditkarte**: Die Zahlungsart **Kreditkarte** stellt einen Sonderfall dar. Für diese Zahlungsart sind zusätzliche Einstellungen notwendig. Diese Einstellungen werden in Tabelle 3 beschrieben.
 
 <table>
 <caption>Tab. 3: Zahlungsart Kreditkarte einrichten</caption>
@@ -255,10 +255,11 @@ Im Folgenden legst du fest, welche PAYONE-Zahlungsarten deinen Kunden im Webshop
    </tbody>
 </table>
 
-**Hinweis**: Für die Zahlungsart **Gesicherter Rechnungskauf** sind eine eigene **Portal-ID** sowie ein eigener **Schlüssel** notwendig. Diese Portal-ID und dieser Schlüssel müssen im Plugin unter **Gesicherte Rechnung** bei der Konfiguration separat hinterlegt werden. Die Portal-ID und den Schlüssel erhältst du über das PAYONE Merchant Interface über das Menü **Konfiguration » Zahlungsportale**.
+**Hinweise zum gesicherten Rechnungskauf**: Für die Zahlungsart **Gesicherter Rechnungskauf** sind eine eigene **Portal-ID** sowie ein eigener **Schlüssel** notwendig. Diese Portal-ID und dieser Schlüssel müssen im Plugin unter **Gesicherte Rechnung** bei der Konfiguration separat hinterlegt werden. Die Portal-ID und den Schlüssel erhältst du über das PAYONE Merchant Interface über das Menü **Konfiguration » Zahlungsportale**.
 
-**Hinweis**: Um die Zahlungsart **Amazon Pay** nutzen zu können, musst du dein Amazon-Konto mit Payone verknüpfen. Wende dich dafür an den <strong><a href="https://www.payone.com/kontakt/" target="_blank">Payone Support</a></strong>.
+**Hinweise zu Amazon Pay**: Um die Zahlungsart **Amazon Pay** nutzen zu können, musst du dein Amazon-Konto mit Payone verknüpfen. Wende dich dafür an den <strong><a href="https://www.payone.com/kontakt/" target="_blank">Payone Support</a></strong>.
 Bei der Einrichtung der Zahlungsart **Amazon Pay** kannst du zusätzlich zu den in Tabelle 2 beschriebenen Einstellungen noch die Einstellung **Testumgebung** aktivieren. Diese ermöglicht es dir die Zahlungsart zunächst auszutesten und Testkäufe zu tätigen. Mit diesen lassen sich keine Aufträge und kein Umsatz generieren. Deaktiviere die Einstellung **Testumgebung**, um Amazon Pay aktiv zu schalten.
+Beachte, dass Amazon Pay nicht genutzt werden kann, wenn du bereits **PayPal** in Mode 1 integriert hast. In diesem Mode überschreibt PayPal den gesamten Checkout mit der PayPal-Wall, daher stehen die für Amazon Pay benötigten Widgets nicht zur Verfügung.
 
 ## Ceres-Checkout anpassen
 

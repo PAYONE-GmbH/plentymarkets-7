@@ -183,7 +183,6 @@ class AmazonPayController extends Controller
             $shippingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
             $billingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse, true);
 
-
             $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
             $checkout->setCustomerShippingAddressId($billingAddress->id);
 
@@ -206,20 +205,21 @@ class AmazonPayController extends Controller
             );
             $responseData['events']['CheckoutChanged']['checkout'] = $checkoutService->getCheckout();
 
+            $responseData['events']['CheckoutChanged']['AmazonPayAddress']['changed'] = true;
+            $responseData['events']['CheckoutChanged']['AmazonPayAddress']['shippingAddress'] = $shippingAddress;
+            $responseData['events']['CheckoutChanged']['AmazonPayAddress']['billingAddress'] = $billingAddress;
+
             $this->logger
                 ->setIdentifier(__METHOD__)
                 ->debug('AmazonPay.getOrderReference', [
                     "shippingAddress" => (array) $shippingAddress,
+                    "billingAddress" => (array) $billingAddress,
                     "checkout" => (array) $checkout,
                     "checkoutViaService" => (array)$checkoutService->getCheckout()
                 ]);
 
             return $response->make(json_encode($responseData), 200);
 
-            //return $response->json(['success' => true, 'message' => "Address changed", 'data' => $responseData]);
-
-
-            //$checkout->setCustomerShippingAddressId($billingAddress->id);
         } catch (\Exception $exception) {
             $this->logger
                 ->setIdentifier(__METHOD__)

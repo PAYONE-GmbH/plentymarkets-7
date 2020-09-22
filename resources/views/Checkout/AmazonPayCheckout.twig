@@ -4,16 +4,18 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LoginWithAmazon'style='display:none'></div></div></label>");
+            $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LoginWithAmazon' style='display:none'></div></div></label>");
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label' <div class='content' <div id='LogoutWithAmazon' style='display:none'>Logout</div></div></label>");
             // <button type="button" name="button" id="Logout">Logout</button>
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
             document.getElementById("addressBookWidgetDiv").style.display = "none";
 
 
-            $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
+
+
+            /*$.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
                 $("body").append(data);
-            });
+            });*/
 
             document.getElementById('LogoutWithAmazon').onclick = function () {
                 amazon.Login.logout();

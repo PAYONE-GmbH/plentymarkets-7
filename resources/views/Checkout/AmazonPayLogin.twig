@@ -7,7 +7,9 @@
 
         document.addEventListener("afterPaymentMethodChanged", function (e) {
             if (e.detail == {{ amazonPayMopId }}) {
-                document.getElementById("LoginWithAmazon").style.display = "block";
+                if (document.getElementById("LoginWithAmazon") !== undefined) {
+                    document.getElementById("LoginWithAmazon").style.display = "block";
+                }
             } else {
                 if (document.getElementById("walletWidgetDiv") !== undefined &&
                     document.getElementById("addressBookWidgetDiv") !== undefined) {

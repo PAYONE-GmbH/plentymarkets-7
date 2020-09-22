@@ -183,8 +183,8 @@ class AmazonPayController extends Controller
             $shippingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse);
             $billingAddress = $amazonPayService->registerCustomerFromAmazonPay($orderReferenceResponse, true);
 
-            $checkout->setCustomerInvoiceAddressId($shippingAddress->id);
-            $checkout->setCustomerShippingAddressId($billingAddress->id);
+            $checkout->setCustomerShippingAddressId($shippingAddress->id);
+            $checkout->setCustomerInvoiceAddressId($billingAddress->id);
 
             /** @var BasketService $basketService */
             $basketService = pluginApp(BasketService::class);

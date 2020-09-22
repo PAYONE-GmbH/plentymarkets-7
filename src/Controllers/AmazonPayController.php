@@ -10,22 +10,18 @@ use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
-use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\PluginConstants;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Payone\Services\AmazonPayService;
 use Payone\Services\Api;
-use PayoneApi\Request\GenericPayment\AmazonPayGetOrderReferenceRequest;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
-use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Frontend\Contracts\Checkout;
 use Plenty\Modules\Webshop\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
-use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\Templates\Twig;
 
 
@@ -56,6 +52,16 @@ class AmazonPayController extends Controller
         $this->logger = $logger;
     }
 
+    /**
+     * @param Twig $twig
+     * @param SessionStorage $sessionStorage
+     * @param BasketRepositoryContract $basketRepository
+     * @param PaymentHelper $paymentHelper
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function getAmazonPayLoginWidget(Twig $twig,
                                             SessionStorage $sessionStorage,
                                             BasketRepositoryContract $basketRepository,
@@ -106,7 +112,17 @@ class AmazonPayController extends Controller
         ]);
     }
 
-
+    /**
+     * @param Twig $twig
+     * @param PaymentHelper $paymentHelper
+     * @param BasketRepositoryContract $basketRepository
+     * @param Request $request
+     * @param SessionStorage $sessionStorage
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function renderWidgets(Twig $twig,
                                   PaymentHelper $paymentHelper,
                                   BasketRepositoryContract $basketRepository,
@@ -146,9 +162,16 @@ class AmazonPayController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param Checkout $checkout
+     * @param SessionStorage $sessionStorage
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function getOrderReference(Request $request, Response $response, Checkout $checkout, SessionStorage $sessionStorage)
     {
-        try{
+        try {
             $amazonReferenceId = $request->get('amazonReferenceId');
             $sessionStorage->setSessionValue('amazonReferenceId', $amazonReferenceId);
 
@@ -194,8 +217,6 @@ class AmazonPayController extends Controller
 
             /** @var CheckoutService $checkoutService */
             $checkoutService = pluginApp(CheckoutService::class);
-          /*  $checkoutService->setBillingAddressId($shippingAddress->id);
-            $checkoutService->setDeliveryAddressId($shippingAddress->id);*/
 
             $responseData['events']['AfterBasketChanged']['basket'] = $basketService->getBasketForTemplate();
             $responseData['events']['AfterBasketChanged']['showNetPrices'] = $contactRepository->showNetPrices();
@@ -212,9 +233,9 @@ class AmazonPayController extends Controller
             $this->logger
                 ->setIdentifier(__METHOD__)
                 ->debug('AmazonPay.getOrderReference', [
-                    "shippingAddress" => (array) $shippingAddress,
-                    "billingAddress" => (array) $billingAddress,
-                    "checkout" => (array) $checkout,
+                    "shippingAddress" => (array)$shippingAddress,
+                    "billingAddress" => (array)$billingAddress,
+                    "checkout" => (array)$checkout,
                     "checkoutViaService" => (array)$checkoutService->getCheckout()
                 ]);
 
@@ -224,27 +245,12 @@ class AmazonPayController extends Controller
                 ->setIdentifier(__METHOD__)
                 ->error('AmazonPay.getOrderReference', $exception);
         }
-
     }
 
-
-    public function debugTest(BasketRepositoryContract $basketRepo)
-    {
-        /** @var AmazonPayService $apiDebug */
-        $apiDebug = pluginApp(AmazonPayService::class);
-
-        $basket = $basketRepo->load();
-
-        $confirmOrderResponse = $apiDebug->confirmOrderReference($basket);
-
-
-        // basket setShipping/setBilling... Methode zum Setzen der Addresse
-        //$createdAddress = $contactAddress->createAddress($address->toArray(),
-        //   AddressRelationType::DELIVERY_ADDRESS);
-
-        return (array)$confirmOrderResponse;
-    }
-
+    /**
+     * @param string $lang
+     * @return string
+     */
     private function getLanguageCode(string $lang): string
     {
         switch ($lang) {

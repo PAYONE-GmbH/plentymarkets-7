@@ -26,7 +26,7 @@ class AmazonPayService
     /** @var GenericPaymentDataProvider */
     private $dataProvider;
 
-    /** @var Logger  */
+    /** @var Logger */
     private $logger;
 
     /**
@@ -44,6 +44,11 @@ class AmazonPayService
         $this->logger = $logger;
     }
 
+    /**
+     * @param GetOrderReferenceDetailsResponse $orderRefDetails
+     * @param bool $billingAddress
+     * @return mixed
+     */
     public function registerCustomerFromAmazonPay(GetOrderReferenceDetailsResponse $orderRefDetails, $billingAddress = false)
     {
         $this->logger
@@ -53,8 +58,7 @@ class AmazonPayService
         $addressData = [];
         $addressData['email'] = $orderRefDetails->getEmail() ?? "";
 
-        if ($billingAddress)
-        {
+        if ($billingAddress) {
             $addressData['company'] = $orderRefDetails->getBillingCompany() ?? "";
             $addressData['firstName'] = $orderRefDetails->getBillingFirstname() ?? "";
             $addressData['lastName'] = $orderRefDetails->getBillingLastname() ?? "";
@@ -86,9 +90,8 @@ class AmazonPayService
     }
 
 
-
     /**
-     * @param GetOrderReferenceDetailsResponse $amazonAddress
+     * @param array $amazonAddress
      * @return Address
      */
     private function mapAmazonAddressToAddress(array $amazonAddress)
@@ -102,7 +105,7 @@ class AmazonPayService
             $addressOption = pluginApp(AddressOption::class);
 
             $addressOption->typeId = AddressOption::TYPE_CONTACT_PERSON;
-            $addressOption->value = $amazonAddress['firstName']." ".$amazonAddress['lastName'];
+            $addressOption->value = $amazonAddress['firstName'] . " " . $amazonAddress['lastName'];
 
             $address->options->push($addressOption->toArray());
         }
@@ -225,8 +228,7 @@ class AmazonPayService
                 ]);
 
             return $confirmOrderReferenceResponse;
-        } catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             $this->logger
                 ->setIdentifier(__METHOD__)
                 ->error('AmazonPay.confirmOrderReference', $exception);
@@ -243,7 +245,7 @@ class AmazonPayService
      * @param bool $checkUKAddress
      * @return array (street, houseNo, additionalAddress)
      */
-    private function extractAddress(String $street1, String $street2, $checkUKAddress=false)
+    private function extractAddress(String $street1, String $street2, $checkUKAddress = false)
     {
         $address = trim($street1 . ' ' . $street2);
 
@@ -276,9 +278,9 @@ class AmazonPayService
             }
         }
 
-        if($checkUKAddress && preg_match($reqex4foreign, $street1, $machtes) > 0) {
-            $street         = trim($machtes['ad']);
-            $houseNo        = trim($machtes['no']);
+        if ($checkUKAddress && preg_match($reqex4foreign, $street1, $machtes) > 0) {
+            $street = trim($machtes['ad']);
+            $houseNo = trim($machtes['no']);
             $additionalAddress = $street2;
         } elseif (preg_match($reqex4foreign, $street1, $matches) > 0) {
             // house number is in street1 - foreign address

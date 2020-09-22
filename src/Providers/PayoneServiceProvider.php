@@ -343,10 +343,6 @@ class PayoneServiceProvider extends ServiceProvider
                         ->setIdentifier(__METHOD__)
                         ->error('Error in paymentExecute-Event', $exception);
                 }
-
-
-
-
             }
         });
 

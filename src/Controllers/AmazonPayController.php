@@ -71,7 +71,10 @@ class AmazonPayController extends Controller
         $selectedPaymentId = $basket->methodOfPaymentId;
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
-        $requestParams = $this->dataProvider->getGetConfigRequestData(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+        $requestParams = $this->dataProvider->getGetConfigRequestData(
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+            $basket->currency
+        );
 
         /** @var GetConfigurationResponse $configResponse */
         $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
@@ -165,11 +168,16 @@ class AmazonPayController extends Controller
     /**
      * @param Request $request
      * @param Response $response
+     * @param BasketRepositoryContract $basketRepositoryContract
      * @param Checkout $checkout
      * @param SessionStorage $sessionStorage
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getOrderReference(Request $request, Response $response, Checkout $checkout, SessionStorage $sessionStorage)
+    public function getOrderReference(Request $request,
+                                      Response $response,
+                                      BasketRepositoryContract $basketRepositoryContract,
+                                      Checkout $checkout,
+                                      SessionStorage $sessionStorage)
     {
         try {
             $amazonReferenceId = $request->get('amazonReferenceId');
@@ -178,13 +186,16 @@ class AmazonPayController extends Controller
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $accessToken = $sessionStorage->getSessionValue('accessToken');
 
+            $basket = $basketRepositoryContract->load();
+
             /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
             $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
             $requestParams = $genericPaymentDataProvider->getGetOrderReferenceDetailsRequestData(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
                 $workOrderId,
                 $accessToken,
-                $amazonReferenceId
+                $amazonReferenceId,
+                $basket->currency
             );
 
             /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */

@@ -212,6 +212,7 @@ class AmazonPayService
                 $basket->id,
                 $amazonReferenceId,
                 $basket->basketAmount,
+                $basket->currency,
                 $basket->id
             );
 

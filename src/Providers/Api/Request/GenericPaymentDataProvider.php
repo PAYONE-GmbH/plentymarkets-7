@@ -21,15 +21,16 @@ class GenericPaymentDataProvider extends DataProviderAbstract
 
         return $requestParams;
     }
+
     /**
      * {@inheritdoc}
      */
-    public function getGetConfigRequestData(string $paymentCode): array
+    public function getGetConfigRequestData(string $paymentCode, string $currency): array
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = "EUR";
+        $requestParams['currency'] = $currency;
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_GETCONFIGURATION;
 
@@ -43,12 +44,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     public function getGetOrderReferenceDetailsRequestData(string $paymentCode,
                                                            string $workOrderId,
                                                            string $amazonAddressToken,
-                                                           string $amazonReferenceId): array
+                                                           string $amazonReferenceId,
+                                                           string $currency): array
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = "EUR";
+        $requestParams['currency'] = $currency;
 
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS;
@@ -93,12 +95,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
                                                         string $reference,
                                                         string $amazonReferenceId,
                                                         string $amount,
+                                                        string $currency,
                                                         string $basketId)
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = "EUR";
+        $requestParams['currency'] = $currency;
         // amount in smallest unit
         $requestParams['amount'] = $amount * 100;
 
@@ -111,8 +114,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $shopHelper = pluginApp(ShopHelper::class);
 
         $successParam = '';
-        if(strlen($basketId)){
-            $successParam = '?transactionBasketId='.$basketId;
+        if (strlen($basketId)) {
+            $successParam = '?transactionBasketId=' . $basketId;
         }
 
         $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;

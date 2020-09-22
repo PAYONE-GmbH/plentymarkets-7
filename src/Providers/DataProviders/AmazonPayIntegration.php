@@ -14,7 +14,6 @@ class AmazonPayIntegration
 {
     /**
      * @param Twig $twig
-     * @param BasketRepositoryContract $basketRepository
      * @param PaymentHelper $paymentHelper
      * @return string
      * @throws \Twig_Error_Loader
@@ -23,17 +22,13 @@ class AmazonPayIntegration
      */
     public function call(
         Twig $twig,
-        BasketRepositoryContract $basketRepository,
         PaymentHelper $paymentHelper)
     {
-        $basket = $basketRepository->load();
-        $selectedPaymentId = $basket->methodOfPaymentId;
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         return $twig->render(
             PluginConstants::NAME . '::Checkout.AmazonPayCheckout',
             [
-                'currentPaymentId' => $selectedPaymentId,
                 'amazonPayMopId' => $amazonPayMopId
             ]);
     }

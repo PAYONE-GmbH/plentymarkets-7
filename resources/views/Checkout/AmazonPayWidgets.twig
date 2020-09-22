@@ -86,7 +86,7 @@
                 // See "Handling Errors" for more information.
             }
         });
-        walletWidget.setPresentmentCurrency("EUR"); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
+        walletWidget.setPresentmentCurrency('{{ content.currency }}'); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
         walletWidget.bind("walletWidgetDiv");
 
         /*if (document.getElementById("invoice-addresses-select") !== undefined && document.getElementById("shipping-addresses-select") !== undefined)

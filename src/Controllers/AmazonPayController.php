@@ -107,8 +107,14 @@ class AmazonPayController extends Controller
     }
 
 
-    public function renderWidgets(Twig $twig, PaymentHelper $paymentHelper, Request $request, SessionStorage $sessionStorage)
+    public function renderWidgets(Twig $twig,
+                                  PaymentHelper $paymentHelper,
+                                  BasketRepositoryContract $basketRepository,
+                                  Request $request,
+                                  SessionStorage $sessionStorage)
     {
+        $basket = $basketRepository->load();
+
         // AccessToken in Request
         $accessToken = $request->get('accessToken');
         $workdOrderId = $request->get('workOrderId');
@@ -122,6 +128,7 @@ class AmazonPayController extends Controller
             'sellerId' => "A13SNST9X74Q8L",
             'addressBookScope' => "profile payments:widget payments:shipping_address payments:billing_address",
             'walletScope' => "profile payments:widget payments:shipping_address payments:billing_address",
+            'currency' => $basket->currency
         ];
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 

@@ -33,6 +33,7 @@
                     if (response.hasOwnProperty('events')) {
                         if (response.events.hasOwnProperty('CheckoutChanged')) {
                             if (response.events.CheckoutChanged.hasOwnProperty('AmazonPayAddress')) {
+                                console.log(response.events.CheckoutChanged.AmazonPayAddress);
                                 if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('changed')) {
                                     if (response.events.CheckoutChanged.AmazonPayAddress.changed) {
                                         if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('billingAddress')) {
@@ -63,7 +64,9 @@
                     function (data) {
                         //$('#LoginWithAmazon').append(data);
                         console.log(data);
-                        //$("body").append(data);
+                        console.log(data.events.CheckoutChanged.AmazonPayAddress.changed);
+                        console.log(data.events.CheckoutChanged.AmazonPayAddress.shippingAddress);
+                        console.log(data.events.CheckoutChanged.AmazonPayAddress.billingAddress);
                     });
 
                 // If rendering the AddressBook and Wallet widgets

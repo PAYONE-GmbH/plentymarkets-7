@@ -9,7 +9,7 @@
             // <button type="button" name="button" id="Logout">Logout</button>
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
             document.getElementById("addressBookWidgetDiv").style.display = "none";
-            
+
             $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
                 $("body").append(data);
             });

@@ -1,4 +1,18 @@
-<script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        if ({{ selectedPaymentId }} == {{ amazonPayMopId }}) {
+            document.getElementById("LoginWithAmazon").style.display = "block";
+        }
+
+        document.addEventListener("afterPaymentMethodChanged", function (e) {
+            if (e.detail == {{ amazonPayMopId }}) {
+                document.getElementById("LoginWithAmazon").style.display = "block";
+            } else {
+                document.getElementById("LoginWithAmazon").style.display = "none";
+            }
+        });
+    });
     window.onAmazonLoginReady = function () {
         console.log('{{ content.clientId }}');
 
@@ -40,6 +54,10 @@
                         document.getElementById("addressBookWidgetDiv") !== undefined) {
                         document.getElementById("walletWidgetDiv").style.display = "block";
                         document.getElementById("addressBookWidgetDiv").style.display = "block";
+                    }
+                    if (document.getElementsByClassName("invoice-addresses-select")[0] !== undefined && document.getElementsByClassName("shipping-addresses-select")[0] !== undefined) {
+                        document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'none';
+                        document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'none';
                     }
 
                     document.getElementById("LoginWithAmazon").style.display = "none";

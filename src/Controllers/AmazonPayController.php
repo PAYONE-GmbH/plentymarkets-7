@@ -56,8 +56,15 @@ class AmazonPayController extends Controller
         $this->logger = $logger;
     }
 
-    public function getAmazonPayLoginWidget(Twig $twig, SessionStorage $sessionStorage)
+    public function getAmazonPayLoginWidget(Twig $twig,
+                                            SessionStorage $sessionStorage,
+                                            BasketRepositoryContract $basketRepository,
+                                            PaymentHelper $paymentHelper)
     {
+        $basket = $basketRepository->load();
+        $selectedPaymentId = $basket->methodOfPaymentId;
+        $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+
         $requestParams = $this->dataProvider->getGetConfigRequestData(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         /** @var GetConfigurationResponse $configResponse */
@@ -92,7 +99,11 @@ class AmazonPayController extends Controller
                 "content" => (array)$content
             ]);
 
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', ['content' => $content]);
+        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', [
+            'selectedPaymentId' => $selectedPaymentId,
+            'amazonPayMopId' => $amazonPayMopId,
+            'content' => $content
+        ]);
     }
 
 

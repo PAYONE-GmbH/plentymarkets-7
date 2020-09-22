@@ -2,6 +2,7 @@
 
 namespace Payone\Providers;
 
+use Ceres\Helper\LayoutContainer;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
@@ -28,14 +29,11 @@ use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
 use Payone\Services\AmazonPayService;
-use Payone\Services\Capture;
 use Payone\Services\OrderPdf;
 use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentService;
 use Payone\Views\ErrorMessageRenderer;
 use Payone\Views\PaymentRenderer;
-use Plenty\Log\Exceptions\ReferenceTypeException;
-use Plenty\Log\Services\ReferenceContainer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
@@ -45,8 +43,6 @@ use Plenty\Modules\Document\Models\Document;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Order\Events\OrderCreated;
-use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
@@ -72,12 +68,16 @@ class PayoneServiceProvider extends ServiceProvider
      * @param BasketRepositoryContract $basket
      * @param PaymentMethodContainer $payContainer
      * @param EventProceduresService $eventProceduresService
+     * @param Twig $twig
+     * @param PaymentHelper $paymentHelper
      */
     public function boot(
         Dispatcher $eventDispatcher,
         BasketRepositoryContract $basket,
         PaymentMethodContainer $payContainer,
-        EventProceduresService $eventProceduresService
+        EventProceduresService $eventProceduresService,
+        Twig $twig,
+        PaymentHelper $paymentHelper
     ) {
         $this->registerPaymentMethods($payContainer);
 
@@ -113,6 +113,27 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $this->registerInvoicePdfGeneration($eventDispatcher);
+
+        $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+
+        $eventDispatcher->listen(
+            'IO.Resources.Import', function ($resourceContainer) use ($amazonPayMopId) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $resourceContainer->addScriptTemplate(
+                PluginConstants::NAME . '::Checkout.AmazonPayCheckout',
+                [
+                    'amazonPayMopId' => $amazonPayMopId
+                ]);
+        });
+
+        $eventDispatcher->listen(
+            "Ceres.LayoutContainer.Checkout.BeforeBillingAddress",
+            function (LayoutContainer $container) use ($twig) {
+
+                $container->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayAddressBookWidget'));
+
+            }
+        );
     }
 
     /**

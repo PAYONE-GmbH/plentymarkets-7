@@ -4,9 +4,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label'><div class='content'><div id='LoginWithAmazon' style='display:none'></div></div></label>");
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").append("<label class='provider-select-label'><div class='content'><div id='LogoutWithAmazon' style='display:none'>Logout</div></div></label>");
-            // <button type="button" name="button" id="Logout">Logout</button>
+            $("li.method-list-item[data-id={{ amazonPayMopId }}] > label").append("<div id='LoginWithAmazon' style='display:none'></div>");
+            $("li.method-list-item[data-id={{ amazonPayMopId }}] > label").append("<button type='button' name='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
+
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
             document.getElementById("addressBookWidgetDiv").style.display = "none";
 
@@ -25,6 +25,8 @@
                     document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
                     document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
                 }
+                $('.shipping-addresses-select').prev('header').style.display = 'block';
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').style.display = 'block';
             };
         });
     </script>

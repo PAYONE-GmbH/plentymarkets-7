@@ -14,7 +14,6 @@
 
 
             $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
-                //$('#LoginWithAmazon').append(data);
                 $("body").append(data);
             });
 
@@ -31,22 +30,6 @@
                 }
 
             };
-
-
-
-            function showWidgets(show) {
-                if (document.getElementById("walletWidgetDiv") !== undefined &&
-                    document.getElementById("addressBookWidgetDiv") !== undefined) {
-                    document.getElementById("walletWidgetDiv").style.display = (show ? "block" : "none");
-                    document.getElementById("addressBookWidgetDiv").style.display = (show ? "block" : "none");
-                }
-                if (document.getElementsByClassName("invoice-addresses-select")[0] !== undefined && document.getElementsByClassName("shipping-addresses-select")[0] !== undefined) {
-                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = (show ? "none" : "block");
-                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = (show ? "none" : "block");
-                }
-
-            }
-
         });
     </script>
 {% endif %}

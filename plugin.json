@@ -53,16 +53,6 @@
       "key": "Payone\\Providers\\DataProviders\\Javascript",
       "name": "Payone Checkout JS",
       "description": "Block to integrate the payone payments into checkout"
-    },
-    {
-      "key": "Payone\\Providers\\DataProviders\\AmazonPayIntegration",
-      "name": "Payone Checkout Amazon Pay Integration",
-      "description": "Block to integrate the Amazon Login, as well as the Widgets for Amazon Pay"
-    },
-    {
-      "key": "Payone\\Providers\\DataProviders\\AmazonPayAddressBookWidget",
-      "name": "Payone Checkout Amazon Pay AddressBook-Widget",
-      "description": "Block to integrate the Amazon Pay address book widget in the checkout."
     }
   ]
 }

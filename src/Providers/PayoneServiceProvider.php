@@ -114,14 +114,17 @@ class PayoneServiceProvider extends ServiceProvider
 
         $this->registerInvoicePdfGeneration($eventDispatcher);
 
+        $basketData = $basket->load();
+        $selectedPaymentId = $paymentHelper->getPaymentCodeByMop($basketData->methodOfPaymentId);
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         $eventDispatcher->listen(
-            'IO.Resources.Import', function ($resourceContainer) use ($amazonPayMopId) {
+            'IO.Resources.Import', function ($resourceContainer) use ($selectedPaymentId, $amazonPayMopId) {
             /** @noinspection PhpUndefinedMethodInspection */
             $resourceContainer->addScriptTemplate(
                 PluginConstants::NAME . '::Checkout.AmazonPayCheckout',
                 [
+                    'selectedPaymentId' => $selectedPaymentId,
                     'amazonPayMopId' => $amazonPayMopId
                 ]);
         });

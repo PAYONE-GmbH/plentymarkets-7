@@ -9,7 +9,17 @@
             if (e.detail == {{ amazonPayMopId }}) {
                 document.getElementById("LoginWithAmazon").style.display = "block";
             } else {
-                document.getElementById("LoginWithAmazon").style.display = "none";
+                if (document.getElementById("walletWidgetDiv") !== undefined &&
+                    document.getElementById("addressBookWidgetDiv") !== undefined) {
+                    document.getElementById("walletWidgetDiv").style.display = "none";
+                    document.getElementById("addressBookWidgetDiv").style.display = "none";
+                }
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== undefined && document.getElementsByClassName("shipping-addresses-select")[0] !== undefined) {
+                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                }
+                $('.shipping-addresses-select').prev('header').css("display",'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display",'block');
             }
         });
     });

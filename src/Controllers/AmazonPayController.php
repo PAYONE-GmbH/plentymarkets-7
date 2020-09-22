@@ -195,8 +195,8 @@ class AmazonPayController extends Controller
 
             /** @var CheckoutService $checkoutService */
             $checkoutService = pluginApp(CheckoutService::class);
-            $checkoutService->setBillingAddressId($shippingAddress->id);
-            $checkoutService->setDeliveryAddressId($shippingAddress->id);
+          /*  $checkoutService->setBillingAddressId($shippingAddress->id);
+            $checkoutService->setDeliveryAddressId($shippingAddress->id);*/
 
             $responseData['events']['AfterBasketChanged']['basket'] = $basketService->getBasketForTemplate();
             $responseData['events']['AfterBasketChanged']['showNetPrices'] = $contactRepository->showNetPrices();

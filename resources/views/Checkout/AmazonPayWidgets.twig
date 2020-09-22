@@ -61,12 +61,30 @@
                         "workOrderId": "{{ workOrderId }}",
                         "amazonReferenceId": $orderReferenceId
                     },
-                    function (data) {
-                        //$('#LoginWithAmazon').append(data);
-                        console.log(data);
-                        console.log(data.events.CheckoutChanged.AmazonPayAddress.changed);
-                        console.log(data.events.CheckoutChanged.AmazonPayAddress.shippingAddress);
-                        console.log(data.events.CheckoutChanged.AmazonPayAddress.billingAddress);
+                    function (response) {
+                        if (response.hasOwnProperty('events')) {
+                            if (response.events.hasOwnProperty('CheckoutChanged')) {
+                                if (response.events.CheckoutChanged.hasOwnProperty('AmazonPayAddress')) {
+                                    console.log(response.events.CheckoutChanged.AmazonPayAddress);
+                                    if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('changed')) {
+                                        if (response.events.CheckoutChanged.AmazonPayAddress.changed) {
+                                            if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('billingAddress')) {
+                                                window.ceresStore.dispatch("createAddress", {
+                                                    address: response.events.CheckoutChanged.AmazonPayAddress.billingAddress,
+                                                    addressType: "1"
+                                                });
+                                            }
+                                            if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('shippingAddress')) {
+                                                window.ceresStore.dispatch("createAddress", {
+                                                    address: response.events.CheckoutChanged.AmazonPayAddress.shippingAddress,
+                                                    addressType: "2"
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     });
 
                 // If rendering the AddressBook and Wallet widgets

@@ -25,8 +25,8 @@
                     document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
                     document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
                 }
-                $('.shipping-addresses-select').prev('header').style.display = 'block';
-                $('.invoice-addresses-select').prev().prev().prev().prev('header').style.display = 'block';
+                $('.shipping-addresses-select').prev('header').css("display",'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display",'block');
             };
         });
     </script>

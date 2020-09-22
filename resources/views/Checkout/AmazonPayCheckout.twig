@@ -21,7 +21,8 @@
                 document.getElementById("addressBookWidgetDiv").style.display = "none";
                 document.getElementById("walletWidgetDiv").style.display = "none";
 
-                if (document.getElementsByClassName("invoice-addresses-select")[0] !== undefined && document.getElementsByClassName("shipping-addresses-select")[0] !== undefined) {
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
                     document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
                     document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
                 }

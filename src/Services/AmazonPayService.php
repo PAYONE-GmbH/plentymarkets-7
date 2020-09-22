@@ -2,11 +2,6 @@
 
 namespace Payone\Services;
 
-
-use Address;
-use IO\Builder\Order\AddressType;
-use IO\Services\CustomerService;
-use function Matrix\add;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
@@ -16,14 +11,12 @@ use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
+use Plenty\Modules\Account\Address\Models\Address;
 use Plenty\Modules\Account\Address\Models\AddressOption;
-use Plenty\Modules\Account\Contact\Contracts\ContactAddressRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
-use Plenty\Modules\Frontend\Services\AccountService;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
 use Plenty\Modules\Order\Shipping\Countries\Models\CountryState;
-use Plenty\Plugin\Log\Loggable;
 
 class AmazonPayService
 {
@@ -58,6 +51,8 @@ class AmazonPayService
             ->debug('AmazonPay.registerCustomer', (array)$orderRefDetails);
 
         $addressData = [];
+        $addressData['email'] = $orderRefDetails->getEmail() ?? "";
+
         if ($billingAddress)
         {
             $addressData['company'] = $orderRefDetails->getBillingCompany() ?? "";
@@ -99,12 +94,12 @@ class AmazonPayService
     private function mapAmazonAddressToAddress(array $amazonAddress)
     {
         /** @var Address $address */
-        $address = pluginApp(\Plenty\Modules\Account\Address\Models\Address::class);
+        $address = pluginApp(Address::class);
 
         if (strlen($amazonAddress['company'])) {
             $address->name1 = $amazonAddress['company'];
             /** @var AddressOption $addressOption */
-            $addressOption = pluginApp(\Plenty\Modules\Account\Address\Models\AddressOption::class);
+            $addressOption = pluginApp(AddressOption::class);
 
             $addressOption->typeId = AddressOption::TYPE_CONTACT_PERSON;
             $addressOption->value = $amazonAddress['firstName']." ".$amazonAddress['lastName'];
@@ -116,7 +111,7 @@ class AmazonPayService
         $address->name3 = $amazonAddress['lastName'];
 
         /** @var CountryRepositoryContract $countryContract */
-        $countryContract = pluginApp(\Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract::class);
+        $countryContract = pluginApp(CountryRepositoryContract::class);
 
         /** @var Country $country */
         $country = $countryContract->getCountryByIso($amazonAddress['countryId'], 'isoCode2');
@@ -141,10 +136,19 @@ class AmazonPayService
 
         if (strlen($amazonAddress['telNo'])) {
             /** @var AddressOption $addressOption */
-            $addressOption = pluginApp(\Plenty\Modules\Account\Address\Models\AddressOption::class);
+            $addressOption = pluginApp(AddressOption::class);
 
             $addressOption->typeId = AddressOption::TYPE_TELEPHONE;
             $addressOption->value = $amazonAddress['telNo'];
+
+            $address->options->push($addressOption->toArray());
+        }
+        if (strlen($amazonAddress['email'])) {
+            /** @var AddressOption $addressOption */
+            $addressOption = pluginApp(AddressOption::class);
+
+            $addressOption->typeId = AddressOption::TYPE_EMAIL;
+            $addressOption->value = $amazonAddress['email'];
 
             $address->options->push($addressOption->toArray());
         }

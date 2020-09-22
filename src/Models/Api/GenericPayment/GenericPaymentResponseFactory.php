@@ -64,6 +64,7 @@ class GenericPaymentResponseFactory
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
+            $responseData['responseData']['add_paydata[email]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_zip]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_street]'] ?? '',
             $responseData['responseData']['add_paydata[shipping_company]'] ?? '',

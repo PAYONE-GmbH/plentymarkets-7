@@ -9,6 +9,7 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
+    private $email;
     private $shippingZip;
     private $shippingStreet;
     private $shippingCompany;
@@ -37,6 +38,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @param $success
      * @param $errorMessage
+     * @param $email
      * @param $shippingZip
      * @param $shippingStreet
      * @param $shippingCompany
@@ -63,7 +65,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      * @param $workOrderId
      * @return $this
      */
-    public function init($success, $errorMessage, $shippingZip, $shippingStreet, $shippingCompany, $shippingCity,
+    public function init($success, $errorMessage, $email, $shippingZip, $shippingStreet, $shippingCompany, $shippingCity,
                          $shippingType, $shippingCountry, $shippingDistrict, $shippingTelephonenumber, $shippingState,
                          $shippingFirstname, $shippingLastname, $billingZip, $billingStreet, $billingCompany, $billingCity, $billingType,
                          $billingCountry, $billingFirstname, $billingLastname, $billingDistrict, $billingTelephonenumber,
@@ -71,6 +73,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
+        $this->email = $email;
         $this->shippingZip = $shippingZip;
         $this->shippingStreet = $shippingStreet;
         $this->shippingCompany = $shippingCompany;
@@ -103,6 +106,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     {
         return parent::jsonSerialize() +
             [
+                'email' => $this->email,
                 'shippingZip' => $this->shippingZip,
                 'shippingStreet' => $this->shippingStreet,
                 'shippingCompany' => $this->shippingCompany,
@@ -128,6 +132,14 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
                 'storename' => $this->storename,
                 'workOrderId' => $this->workOrderId
             ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**

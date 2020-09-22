@@ -27,6 +27,7 @@ try {
     $data['pseudocardpan'] = $sdkRestApi::getParam('pseudocardpan');
     $data['sepaMandate'] = $sdkRestApi::getParam('sepaMandate');
     $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');
+    $data['amazonPayAuth'] = $sdkRestApi::getParam('amazonPayAuth');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

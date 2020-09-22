@@ -114,27 +114,24 @@ class PayoneServiceProvider extends ServiceProvider
 
         $this->registerInvoicePdfGeneration($eventDispatcher);
 
-        $basketData = $basket->load();
-        $selectedPaymentId = $paymentHelper->getPaymentCodeByMop($basketData->methodOfPaymentId);
+
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         $eventDispatcher->listen(
-            'IO.Resources.Import', function ($resourceContainer) use ($selectedPaymentId, $amazonPayMopId) {
+            'IO.Resources.Import', function ($resourceContainer) use ($basket, $amazonPayMopId) {
+            $basketData = $basket->load();
             /** @noinspection PhpUndefinedMethodInspection */
             $resourceContainer->addScriptTemplate(
-                PluginConstants::NAME . '::Checkout.AmazonPayCheckout',
-                [
-                    'selectedPaymentId' => $selectedPaymentId,
-                    'amazonPayMopId' => $amazonPayMopId
-                ]);
+                PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
+                'selectedPaymentId' => $basketData->methodOfPaymentId,
+                'amazonPayMopId' => $amazonPayMopId
+            ]);
         });
 
         $eventDispatcher->listen(
             "Ceres.LayoutContainer.Checkout.BeforeBillingAddress",
             function (LayoutContainer $container) use ($twig) {
-
                 $container->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayAddressBookWidget'));
-
             }
         );
     }

@@ -218,8 +218,7 @@ class AmazonPayController extends Controller
                     "checkoutViaService" => (array)$checkoutService->getCheckout()
                 ]);
 
-            return $response->make(json_encode($responseData), 200);
-
+            return $response->json($responseData, 200);
         } catch (\Exception $exception) {
             $this->logger
                 ->setIdentifier(__METHOD__)

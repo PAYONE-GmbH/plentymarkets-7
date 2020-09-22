@@ -10,7 +10,8 @@
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
             document.getElementById("addressBookWidgetDiv").style.display = "none";
 
-            if ({{ selectedPaymentId }} === {{ amazonPayMopId }}) {
+            if ({{ selectedPaymentId }} === {{ amazonPayMopId }})
+            {
                 document.getElementById("LoginWithAmazon").style.display = "block";
             }
 
@@ -30,8 +31,8 @@
                         document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
                         document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
                     }
-                    $('.shipping-addresses-select').prev('header').css("display",'block');
-                    $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display",'block');
+                    $('.shipping-addresses-select').prev('header').css("display", 'block');
+                    $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
                 }
             });
 
@@ -51,8 +52,8 @@
                     document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
                     document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
                 }
-                $('.shipping-addresses-select').prev('header').css("display",'block');
-                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display",'block');
+                $('.shipping-addresses-select').prev('header').css("display", 'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
             };
         });
     </script>

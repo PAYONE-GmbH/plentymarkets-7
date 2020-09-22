@@ -411,6 +411,10 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * @param Dispatcher $eventDispatcher
+     * @param BasketRepositoryContract $basketRepository
+     */
     public function registerAmazonPayIntegration(Dispatcher $eventDispatcher, BasketRepositoryContract $basketRepository)
     {
         $eventDispatcher->listen(GetPaymentMethodContent::class, function (GetPaymentMethodContent $event) use ($basketRepository) {
@@ -429,46 +433,36 @@ class PayoneServiceProvider extends ServiceProvider
             $paymentCache = pluginApp(PaymentCache::class);
 
             try {
+                if ($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
 
+                    /** @var Basket $basket */
+                    $basket = $basketRepository->load();
 
-            if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                    $paymentCache->setActiveBasketId($basket->id);
 
-                /** @var Basket $basket */
-                $basket = $basketRepository->load();
+                    /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
+                    $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
+                    /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
+                    $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
 
-                $paymentCache->setActiveBasketId($basket->id);
+                    $event->setValue($twig->render(
+                        PluginConstants::NAME . '::Checkout.Confirmation',
+                        [
+                            'success' => $confirmOrderRefResponse->getSuccess(),
+                            'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                            'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                        ]
+                    ));
+                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
 
-                // send orderID as reference if order exists?
-                /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
-                $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
-
-                /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
-                $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
-
-                /*if($confirmOrderRefResponse->getSuccess() == true) {
-                    $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.success();}); }}";
-                } else {
-                    $content = "{{ OffAmazonPayments.initConfirmationFlow(sellerId, id, function(confirmationFlow) {confirmationFlow.error();}); }}";
-                }*/
-
-                $event->setValue($twig->render(
-                    PluginConstants::NAME . '::Checkout.Confirmation',
-                    [
-                        'success' => $confirmOrderRefResponse->getSuccess(),
-                        'sellerId' => $sessionStorage->getSessionValue('sellerId'),
-                        'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
-                    ]
-                ));
-                $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
-
-                $logger
-                    ->setIdentifier(__METHOD__)
-                    ->debug('AmazonPay.paymentMethodContent', [
-                        "event" => (array) $event,
-                        "setOrderRefResponse" => (array) $setOrderRefResponse,
-                        "confirmOrderRefResponse" => (array) $confirmOrderRefResponse
-                    ]);
-            }
+                    $logger
+                        ->setIdentifier(__METHOD__)
+                        ->debug('AmazonPay.paymentMethodContent', [
+                            "event" => (array)$event,
+                            "setOrderRefResponse" => (array)$setOrderRefResponse,
+                            "confirmOrderRefResponse" => (array)$confirmOrderRefResponse
+                        ]);
+                }
             } catch (\Exception $exception) {
                 $logger
                     ->setIdentifier(__METHOD__)

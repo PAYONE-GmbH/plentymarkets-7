@@ -31,7 +31,7 @@
   "containers": [],
   "require": {
     "IO": "~5.0.10",
-    "Ceres":">=5.0.12"
+    "Ceres":">=5.0.11"
   },
   "dependencies": {
     "guzzlehttp/guzzle": "6.*",

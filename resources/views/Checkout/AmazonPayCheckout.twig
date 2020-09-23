@@ -14,6 +14,8 @@
                 // perform cleanup on consecutive function calls
                 //$('#walletWidgetDiv, #LoginWithAmazon, #LogoutWithAmazon').remove();
 
+                console.log('amazon paymap id is: ', {{  amazonPayMopId }}, ' (it should be 6035)');
+
                 $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label')
                     .append("<div id='LoginWithAmazon' style='display:none'></div>")
                     .append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");

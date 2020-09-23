@@ -14,8 +14,7 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param string|bool $referenceId Reference to previous request
-     *
+     * @param null $referenceId
      * @return mixed
      */
     public static function create($paymentMethod, $data, $referenceId = null)

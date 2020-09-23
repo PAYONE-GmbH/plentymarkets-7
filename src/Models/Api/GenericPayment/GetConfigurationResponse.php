@@ -36,6 +36,9 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() +
@@ -48,35 +51,58 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getClientId(): string
+    public function getClientId()
     {
         return $this->clientId;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSellerId(): string
+    public function getSellerId()
     {
         return $this->sellerId;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCurrency(): string
+    public function getCurrency()
     {
         return $this->currency;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getWorkOrderId(): string
+    public function getWorkOrderId()
     {
         return $this->workOrderId;
     }
 
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionID(): string
+    {
+        return $this->transactionID;
+    }
 }

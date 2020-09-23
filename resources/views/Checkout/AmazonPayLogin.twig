@@ -67,10 +67,7 @@
                 });
             },
             onError: function (error) {
-                // your error handling code.
-                console.log("The following error occurred: "
-                    + error.getErrorCode()
-                    + ' - ' + error.getErrorMessage());
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
         });
     }

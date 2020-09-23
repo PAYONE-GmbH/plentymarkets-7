@@ -42,6 +42,9 @@ class SetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() +
@@ -54,5 +57,78 @@ class SetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
                 'workOrderId' => $this->workOrderId
             ];
     }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionID(): string
+    {
+        return $this->transactionID;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmazonAddressToken()
+    {
+        return $this->amazonAddressToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmazonReferenceId()
+    {
+        return $this->amazonReferenceId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStorename()
+    {
+        return $this->storename;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkOrderId()
+    {
+        return $this->workOrderId;
+    }
+
 
 }

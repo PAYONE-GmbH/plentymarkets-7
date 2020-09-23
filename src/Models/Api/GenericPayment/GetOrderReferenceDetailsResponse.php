@@ -102,6 +102,9 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() +

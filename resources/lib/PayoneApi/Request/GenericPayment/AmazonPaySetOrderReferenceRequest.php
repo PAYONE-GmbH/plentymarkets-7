@@ -6,6 +6,7 @@ use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
+use PayoneApi\Request\WalletTypes;
 
 class AmazonPaySetOrderReferenceRequest
 {
@@ -14,7 +15,7 @@ class AmazonPaySetOrderReferenceRequest
 
     private $clearingtype = ClearingTypes::WALLET;
 
-    private $wallettype = "AMZ";
+    private $wallettype = WalletTypes::AMAZON_PAYMENTS;
 
     private $amount;
 

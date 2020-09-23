@@ -27,8 +27,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->post('payment/payone/checkout/amazonPay/renderWidgets', 'Payone\Controllers\AmazonPayController@renderWidgets');
         $router->post('payment/payone/checkout/amazonPay/getOrderReference', 'Payone\Controllers\AmazonPayController@getOrderReference');
         $router->get('payment/payone/checkout/amazonPay/placeOrder', 'Payone\Controllers\AmazonPayController@placeOrder');
-        $router->post('payment/payone/checkout/amazonPay/debugTest', 'Payone\Controllers\AmazonPayController@debugTest');
-
 
         $router->get('payment/payone/error', 'Payone\Controllers\CheckoutController@redirectWithNotice');
         $router->get('payment/payone/checkoutSuccess', 'Payone\Controllers\CheckoutController@checkoutSuccess');

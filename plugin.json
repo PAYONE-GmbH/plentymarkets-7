@@ -1,5 +1,5 @@
 {
-  "version": "1.1.14",
+  "version": "1.1.15",
   "license": "MIT",
   "pluginIcon": "icon_plugin_xs.png",
   "price": 0.0,
@@ -23,15 +23,16 @@
     "payment"
   ],
   "categories": [
-    3519
+    4083
   ],
   "type": "payment",
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": [
-    "IO"
-  ],
+  "require": {
+    "IO": "~5.0.10",
+    "Ceres":">=5.0.12"
+  },
   "dependencies": {
     "guzzlehttp/guzzle": "6.*",
     "symfony/serializer": "3.2.7",

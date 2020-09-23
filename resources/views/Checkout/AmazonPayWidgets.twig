@@ -69,8 +69,7 @@
                 // when the AddressBook widget has been rendered.
             },
             onError: function (error) {
-                document.getElementById("errorCode").innerHTML = error.getErrorCode();
-                document.getElementById("errorMessage").innerHTML = error.getErrorMessage();
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
         });
         addressBookWidget.bind("addressBookWidgetDiv");
@@ -93,8 +92,7 @@
                 // Your error handling code.
                 // During development you can use the following
                 // code to view error messages:
-                // console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-                // See "Handling Errors" for more information.
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
         });
         walletWidget.setPresentmentCurrency('{{ content.currency }}'); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.

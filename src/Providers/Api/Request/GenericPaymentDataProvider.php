@@ -9,7 +9,11 @@ use Payone\Providers\Api\Request\Models\GenericPayment;
 class GenericPaymentDataProvider extends DataProviderAbstract
 {
 
-    private function getDefaultPaymentRequestData(string $paymentCode)
+    /**
+     * @param string $paymentCode
+     * @return array
+     */
+    private function getDefaultPaymentRequestData(string $paymentCode): array
     {
         $requestParams = $this->getDefaultRequestData($paymentCode);
         $requestParams['request'] = GenericPayment::REQUEST_TYPE;
@@ -23,7 +27,10 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param string $currency
+     * @return array
+     * @throws \Exception
      */
     public function getGetConfigRequestData(string $paymentCode, string $currency): array
     {
@@ -39,7 +46,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param string $workOrderId
+     * @param string $amazonAddressToken
+     * @param string $amazonReferenceId
+     * @param string $currency
+     * @return array
+     * @throws \Exception
      */
     public function getGetOrderReferenceDetailsRequestData(string $paymentCode,
                                                            string $workOrderId,
@@ -63,7 +76,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param string $workOrderId
+     * @param string $amazonReferenceId
+     * @param string $currency
+     * @param string $amount
+     * @return array
+     * @throws \Exception
      */
     public function getSetOrderReferenceDetailsRequestData(string $paymentCode,
                                                            string $workOrderId,
@@ -88,7 +107,15 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param string $workOrderId
+     * @param string $reference
+     * @param string $amazonReferenceId
+     * @param string $amount
+     * @param string $currency
+     * @param string $basketId
+     * @return array
+     * @throws \Exception
      */
     public function getConfirmOrderReferenceRequestData(string $paymentCode,
                                                         string $workOrderId,
@@ -96,7 +123,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
                                                         string $amazonReferenceId,
                                                         string $amount,
                                                         string $currency,
-                                                        string $basketId)
+                                                        string $basketId): array
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 

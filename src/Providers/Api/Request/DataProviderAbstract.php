@@ -532,7 +532,7 @@ abstract class DataProviderAbstract
      * @param string $currency
      * @return array
      */
-    protected function getAmazonPayData(string $basketId, $basketAmount, string $currency)
+    protected function getAmazonPayData(string $basketId, $basketAmount, string $currency): array
     {
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
@@ -542,6 +542,7 @@ abstract class DataProviderAbstract
         $amazonAuthConfig['reference'] = $basketId;
 
         $amazonAuthConfig['currency'] = $currency;
+        // amount in smallest unit
         $amazonAuthConfig['amount'] = $basketAmount * 100;
 
         return $amazonAuthConfig;

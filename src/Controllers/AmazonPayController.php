@@ -53,6 +53,8 @@ class AmazonPayController extends Controller
     }
 
     /**
+     * Renders login button for the frontend.
+     *
      * @param Twig $twig
      * @param SessionStorage $sessionStorage
      * @param BasketRepositoryContract $basketRepository
@@ -65,7 +67,7 @@ class AmazonPayController extends Controller
     public function getAmazonPayLoginWidget(Twig $twig,
                                             SessionStorage $sessionStorage,
                                             BasketRepositoryContract $basketRepository,
-                                            PaymentHelper $paymentHelper)
+                                            PaymentHelper $paymentHelper): string
     {
         $basket = $basketRepository->load();
         $selectedPaymentId = $basket->methodOfPaymentId;
@@ -116,6 +118,8 @@ class AmazonPayController extends Controller
     }
 
     /**
+     * Renders the address book and wallet widget for the frontend.
+     *
      * @param Twig $twig
      * @param PaymentHelper $paymentHelper
      * @param BasketRepositoryContract $basketRepository
@@ -130,7 +134,7 @@ class AmazonPayController extends Controller
                                   PaymentHelper $paymentHelper,
                                   BasketRepositoryContract $basketRepository,
                                   Request $request,
-                                  SessionStorage $sessionStorage)
+                                  SessionStorage $sessionStorage): string
     {
         $basket = $basketRepository->load();
 
@@ -138,13 +142,16 @@ class AmazonPayController extends Controller
         $accessToken = $request->get('accessToken');
         $workdOrderId = $request->get('workOrderId');
 
+        $clientId = $sessionStorage->getSessionValue('clientId');
+        $sellerId = $sessionStorage->getSessionValue('sellerId');
+
         $sessionStorage->setSessionValue('accessToken', $accessToken);
         $sessionStorage->setSessionValue('workOrderId', $workdOrderId);
 
         // SWAP containers here
         $content = [
-            'clientId' => "amzn1.application-oa2-client.2c027e55b128457bb16edc2f0fc6bd71",
-            'sellerId' => "A13SNST9X74Q8L",
+            'clientId' => $clientId,
+            'sellerId' => $sellerId,
             'addressBookScope' => "profile payments:widget payments:shipping_address payments:billing_address",
             'walletScope' => "profile payments:widget payments:shipping_address payments:billing_address",
             'currency' => $basket->currency
@@ -166,18 +173,21 @@ class AmazonPayController extends Controller
     }
 
     /**
+     * Loads the contact data via the selected address in the widget,
+     * maps it to our address structure and sets it in the checkout.
+     *
      * @param Request $request
      * @param Response $response
      * @param BasketRepositoryContract $basketRepositoryContract
      * @param Checkout $checkout
      * @param SessionStorage $sessionStorage
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getOrderReference(Request $request,
                                       Response $response,
                                       BasketRepositoryContract $basketRepositoryContract,
                                       Checkout $checkout,
-                                      SessionStorage $sessionStorage)
+                                      SessionStorage $sessionStorage): Response
     {
         try {
             $amazonReferenceId = $request->get('amazonReferenceId');
@@ -259,6 +269,8 @@ class AmazonPayController extends Controller
     }
 
     /**
+     * Maps our language key into the specified language key from Amazon
+     *
      * @param string $lang
      * @return string
      */

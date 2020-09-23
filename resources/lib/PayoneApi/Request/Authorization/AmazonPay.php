@@ -6,6 +6,7 @@ use PayoneApi\Request\AuthorizationRequestAbstract;
 use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\RedirectUrls;
+use PayoneApi\Request\WalletTypes;
 
 /**
  * Class AmazonPay
@@ -13,7 +14,7 @@ use PayoneApi\Request\Parts\RedirectUrls;
 class AmazonPay extends AuthorizationRequestAbstract
 {
     /** @var string */
-    const WALLET_TYPE = 'AMZ';
+    const WALLET_TYPE = WalletTypes::AMAZON_PAYMENTS;
 
     /** @var string */
     protected $clearingtype = ClearingTypes::WALLET;

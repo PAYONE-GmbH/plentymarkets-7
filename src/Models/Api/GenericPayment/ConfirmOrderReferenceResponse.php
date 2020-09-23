@@ -23,6 +23,9 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return parent::jsonSerialize() +
@@ -39,4 +42,27 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
         return $this->workOrderId;
     }
 
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return $this->errorMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionID(): string
+    {
+        return $this->transactionID;
+    }
 }

@@ -6,26 +6,29 @@ use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
+use PayoneApi\Request\WalletTypes;
 
 class AmazonPayConfigurationRequest
 {
+    /** @var string  */
     private $request = Types::GENERICPAYMENT;
 
+    /** @var string  */
     private $clearingtype = ClearingTypes::WALLET;
 
-    private $wallettype = "AMZ";
+    /** @var string  */
+    private $wallettype = WalletTypes::AMAZON_PAYMENTS;
 
+    /** @var array  */
     private $add_paydata = ['action' => 'getconfiguration'];
 
+    /** @var string  */
     private $currency;
 
-    /**
-     * @var Config
-     */
+    /** @var Config  */
     private $config;
-    /**
-     * @var SystemInfo
-     */
+
+    /** @var SystemInfo  */
     private $info;
 
     /**

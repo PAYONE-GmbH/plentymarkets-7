@@ -5,11 +5,12 @@
         $(document).ready(function () {
 
             $("li.method-list-item[data-id={{ amazonPayMopId }}] > label").append("<div id='LoginWithAmazon' style='display:none'></div>");
-            $("li.method-list-item[data-id={{ amazonPayMopId }}] > label").append("<button type='button' name='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
+            $("li.method-list-item[data-id={{ amazonPayMopId }}] > label").append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
 
             $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
             document.getElementById("addressBookWidgetDiv").style.display = "none";
 
+            console.log({{ selectedPaymentId }} + " selectedMop & amazonPayMop " + {{ amazonPayMopId }});
             if ({{ selectedPaymentId }} === {{ amazonPayMopId }})
             {
                 document.getElementById("LoginWithAmazon").style.display = "block";

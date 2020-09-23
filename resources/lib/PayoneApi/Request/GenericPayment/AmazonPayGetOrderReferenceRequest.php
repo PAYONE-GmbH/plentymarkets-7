@@ -6,22 +6,26 @@ use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
+use PayoneApi\Request\WalletTypes;
 
 class AmazonPayGetOrderReferenceRequest
 {
-
+    /** @var string  */
     private $request = Types::GENERICPAYMENT;
 
+    /** @var string  */
     private $clearingtype = ClearingTypes::WALLET;
 
-    private $wallettype = "AMZ";
+    /** @var string  */
+    private $wallettype = WalletTypes::AMAZON_PAYMENTS;
 
-    private $amount;
-
+    /** @var string  */
     private $currency;
 
+    /** @var string  */
     private $workorderid;
 
+    /** @var array  */
     private $add_paydata = [
         'action' => 'getorderreferencedetails',
         'amazon_reference_id' => '',
@@ -40,6 +44,7 @@ class AmazonPayGetOrderReferenceRequest
      * @param Config $config
      * @param SystemInfo $info
      * @param string $amazonReferenceId
+     * @param string $amazonAddressToken
      * @param string $workOrderId
      * @param string $currency
      */

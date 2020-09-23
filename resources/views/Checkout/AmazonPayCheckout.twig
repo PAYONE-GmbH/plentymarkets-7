@@ -9,7 +9,11 @@
 
                 debugger;
 
+                // perform cleanup on consecutive function calls
+                $('#walletWidgetDiv, #LoginWithAmazon, #LogoutWithAmazon').remove();
+
                 $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label')
+                    .remove("#LoginWithAmazon, #LogoutWithAmazon")
                     .append("<div id='LoginWithAmazon' style='display:none'></div>")
                     .append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
 
@@ -18,6 +22,7 @@
                 document.getElementById("addressBookWidgetDiv").style.display = "none";
 
                 console.log({{ selectedPaymentId }} + " selectedMop & amazonPayMop " + {{ amazonPayMopId }});
+
                 if ({{ selectedPaymentId }} === {{ amazonPayMopId }})
                 {
                     document.getElementById("LoginWithAmazon").style.display = "block";

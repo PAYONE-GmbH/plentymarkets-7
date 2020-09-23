@@ -7,18 +7,13 @@
             window.amazonPay = function ()
             {
 
-                console.log("Selector found: ", $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label').length, ' elements');
+                debugger;
 
                 $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label')
-                    .each(function(){
-                        console.log("Appending in list item #{{ amazonPayMapId }}", this);
-                    })
                     .append("<div id='LoginWithAmazon' style='display:none'></div>")
                     .append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
 
-                $('li.method-list-item[data-id="{{ amazonPayMopId }}"]').each(function (){
-                    console.log(this, 3);
-                }).after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+                $('li.method-list-item[data-id="{{ amazonPayMopId }}"]').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
                 document.getElementById("addressBookWidgetDiv").style.display = "none";
 

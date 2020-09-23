@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 1.1.15 (2020-09-23)
+
+### Added
+- Payment method "Amazon Pay" added
+
 ## 1.1.14 (2020-07-08)
 
 ### Added

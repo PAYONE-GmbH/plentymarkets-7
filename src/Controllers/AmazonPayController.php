@@ -181,13 +181,13 @@ class AmazonPayController extends Controller
      * @param BasketRepositoryContract $basketRepositoryContract
      * @param Checkout $checkout
      * @param SessionStorage $sessionStorage
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getOrderReference(Request $request,
                                       Response $response,
                                       BasketRepositoryContract $basketRepositoryContract,
                                       Checkout $checkout,
-                                      SessionStorage $sessionStorage): Response
+                                      SessionStorage $sessionStorage): \Symfony\Component\HttpFoundation\Response
     {
         try {
             $amazonReferenceId = $request->get('amazonReferenceId');

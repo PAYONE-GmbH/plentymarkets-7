@@ -7,9 +7,9 @@
             window.amazonPay = function ()
             {
 
-                console.log("Selector found: ", $('li.method-list-item[data-id="{{ amazonPayMopId }}" label').length, ' elements');
+                console.log("Selector found: ", $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label').length, ' elements');
 
-                $('li.method-list-item[data-id="{{ amazonPayMopId }}" label')
+                $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label')
                     .each(function(){
                         console.log("Appending in list item #{{ amazonPayMapId }}", this);
                     })

@@ -14,7 +14,7 @@
                 // perform cleanup on consecutive function calls
                 //$('#walletWidgetDiv, #LoginWithAmazon, #LogoutWithAmazon').remove();
 
-                console.log('amazon paymap id is: ', {{  amazonPayMopId }}, ' (it should be 6035)');
+                console.warn('amazon paymap id is: ', {{  amazonPayMopId }}, ' (it should be 6035)');
 
                 $('li.method-list-item[data-id="{{ amazonPayMopId }}"] label')
                     .append("<div id='LoginWithAmazon' style='display:none'></div>")
@@ -32,6 +32,8 @@
                 }
 
                 if ( window['afterPaymentMethodChangedEventListenerAdded'] === false ) {
+
+                    console.warn('added event listeners');
 
                     [
                         'afterShippingCountryChanged',

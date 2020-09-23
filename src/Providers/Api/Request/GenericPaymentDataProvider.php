@@ -51,6 +51,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $amazonAddressToken
      * @param string $amazonReferenceId
      * @param string $currency
+     * @param string $amount
      * @return array
      * @throws \Exception
      */
@@ -58,12 +59,15 @@ class GenericPaymentDataProvider extends DataProviderAbstract
                                                            string $workOrderId,
                                                            string $amazonAddressToken,
                                                            string $amazonReferenceId,
-                                                           string $currency): array
+                                                           string $currency,
+                                                           string $amount): array
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = $currency;
+        // amount in smallest unit
+        $requestParams['amount'] = $amount * 100;
 
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS;

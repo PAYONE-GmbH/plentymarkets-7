@@ -205,7 +205,8 @@ class AmazonPayController extends Controller
                 $workOrderId,
                 $accessToken,
                 $amazonReferenceId,
-                $basket->currency
+                $basket->currency,
+                $basket->basketAmount
             );
 
             /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */

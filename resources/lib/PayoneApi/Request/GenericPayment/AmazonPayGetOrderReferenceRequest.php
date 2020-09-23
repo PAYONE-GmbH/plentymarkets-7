@@ -23,6 +23,9 @@ class AmazonPayGetOrderReferenceRequest
     private $currency;
 
     /** @var string  */
+    private $amount;
+
+    /** @var string  */
     private $workorderid;
 
     /** @var array  */
@@ -46,6 +49,7 @@ class AmazonPayGetOrderReferenceRequest
      * @param string $amazonReferenceId
      * @param string $amazonAddressToken
      * @param string $workOrderId
+     * @param string $amount
      * @param string $currency
      */
     public function __construct(
@@ -54,6 +58,7 @@ class AmazonPayGetOrderReferenceRequest
         string $amazonReferenceId,
         string $amazonAddressToken,
         string $workOrderId,
+        string $amount,
         string $currency
     )
     {
@@ -62,6 +67,7 @@ class AmazonPayGetOrderReferenceRequest
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
         $this->add_paydata['amazon_address_token'] = $amazonAddressToken;
         $this->workorderid = $workOrderId;
+        $this->amount = $amount;
         $this->currency = $currency;
     }
 

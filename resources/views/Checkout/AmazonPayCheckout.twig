@@ -4,29 +4,52 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").find("label").append("<div id='LoginWithAmazon' style='display:none'></div>");
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").find("label").append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
-
-            $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
-            document.getElementById("addressBookWidgetDiv").style.display = "none";
-
-            console.log({{ selectedPaymentId }} + " selectedMop & amazonPayMop " + {{ amazonPayMopId }});
-            if ({{ selectedPaymentId }} === {{ amazonPayMopId }})
+            function amazonPay ()
             {
-                document.getElementById("LoginWithAmazon").style.display = "block";
-            }
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").find("label").append("<div id='LoginWithAmazon' style='display:none'></div>");
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").find("label").append("<button type='button' class='btn btn-primary btn-block' id='LogoutWithAmazon' style='display:none;width:50%'>Logout</button>");
 
-            document.addEventListener("afterPaymentMethodChanged", function (e) {
-                if (e.detail === {{ amazonPayMopId }}) {
-                    if (document.getElementById("LoginWithAmazon") !== null) {
-                        document.getElementById("LoginWithAmazon").style.display = "block";
+                $("li.method-list-item[data-id={{ amazonPayMopId }}]").after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+                document.getElementById("addressBookWidgetDiv").style.display = "none";
+
+                console.log({{ selectedPaymentId }} + " selectedMop & amazonPayMop " + {{ amazonPayMopId }});
+                if ({{ selectedPaymentId }} === {{ amazonPayMopId }})
+                {
+                    document.getElementById("LoginWithAmazon").style.display = "block";
+                }
+
+                document.addEventListener("afterPaymentMethodChanged", function (e) {
+                    if (e.detail === {{ amazonPayMopId }}) {
+                        if (document.getElementById("LoginWithAmazon") !== null) {
+                            document.getElementById("LoginWithAmazon").style.display = "block";
+                        }
+                    } else {
+                        if (document.getElementById("walletWidgetDiv") !== null &&
+                            document.getElementById("addressBookWidgetDiv") !== null) {
+                            document.getElementById("walletWidgetDiv").style.display = "none";
+                            document.getElementById("addressBookWidgetDiv").style.display = "none";
+                        }
+                        if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                            document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
+                            document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                            document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                        }
+                        $('.shipping-addresses-select').prev('header').css("display", 'block');
+                        $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
                     }
-                } else {
-                    if (document.getElementById("walletWidgetDiv") !== null &&
-                        document.getElementById("addressBookWidgetDiv") !== null) {
-                        document.getElementById("walletWidgetDiv").style.display = "none";
-                        document.getElementById("addressBookWidgetDiv").style.display = "none";
-                    }
+                });
+
+                $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
+                    $("body").append(data);
+                });
+
+                document.getElementById('LogoutWithAmazon').onclick = function () {
+                    amazon.Login.logout();
+                    document.getElementById("LoginWithAmazon").style.display = "block";
+                    document.getElementById("LogoutWithAmazon").style.display = "none";
+                    document.getElementById("addressBookWidgetDiv").style.display = "none";
+                    document.getElementById("walletWidgetDiv").style.display = "none";
+
                     if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
                         document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
                         document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
@@ -34,28 +57,9 @@
                     }
                     $('.shipping-addresses-select').prev('header').css("display", 'block');
                     $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
-                }
-            });
-
-            $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
-                $("body").append(data);
-            });
-
-            document.getElementById('LogoutWithAmazon').onclick = function () {
-                amazon.Login.logout();
-                document.getElementById("LoginWithAmazon").style.display = "block";
-                document.getElementById("LogoutWithAmazon").style.display = "none";
-                document.getElementById("addressBookWidgetDiv").style.display = "none";
-                document.getElementById("walletWidgetDiv").style.display = "none";
-
-                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
-                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
-                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
-                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
-                }
-                $('.shipping-addresses-select').prev('header').css("display", 'block');
-                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
-            };
+                };
+            }
+            amazonPay();
         });
     </script>
 {% endif %}

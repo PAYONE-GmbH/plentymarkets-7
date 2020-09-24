@@ -885,7 +885,7 @@
           "required": false,
           "label": "Config.PAYONEPAYONEAMAZONPAYAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,FR,IT,ES,LU,NL,SE,PT,HU,DK"
           }
         },
         "PAYONE_PAYONE_AMAZON_PAY.sandbox": {

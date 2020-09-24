@@ -78,11 +78,23 @@ class AmazonPayController extends Controller
             $basket->currency
         );
 
-        /** @var GetConfigurationResponse $configResponse */
-        $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
+        $clientId = $sessionStorage->getSessionValue('clientId');
+        $sellerId = $sessionStorage->getSessionValue('sellerId');
+        $workOrderId = $sessionStorage->getSessionValue('workOrderId');
 
-        $sessionStorage->setSessionValue('clientId', $configResponse->getClientId());
-        $sessionStorage->setSessionValue('sellerId', $configResponse->getSellerId());
+        if(strlen($clientId) <= 0 || strlen($sellerId) <= 0 || strlen($workOrderId) <= 0) {
+            /** Only load the configuration data if not already stored within the session */
+            /** @var GetConfigurationResponse $configResponse */
+            $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
+
+            $clientId = $configResponse->getClientId();
+            $sellerId = $configResponse->getSellerId();
+            $workOrderId = $configResponse->getWorkOrderId();
+
+            $sessionStorage->setSessionValue('clientId', $clientId);
+            $sessionStorage->setSessionValue('sellerId', $sellerId);
+            $sessionStorage->setSessionValue('workOrderId', $workOrderId);
+        }
 
         $this->logger
             ->setIdentifier(__METHOD__)
@@ -93,15 +105,15 @@ class AmazonPayController extends Controller
         $lang = $this->getLanguageCode($localizationRepositoryContract->getLanguage());
 
         $content = [
-            'clientId' => $configResponse->getClientId(),
-            'sellerId' => $configResponse->getSellerId(),
+            'clientId' => $clientId,
+            'sellerId' => $sellerId,
             'type' => "LwA",
             'color' => "Gold",
             'size' => "medium",
             'language' => $lang,
             'scopes' => "profile payments:widget payments:shipping_address payments:billing_address",
             'popup' => "true",
-            'workOrderId' => $configResponse->getWorkorderId()
+            'workOrderId' => $workOrderId
         ];
 
         $this->logger

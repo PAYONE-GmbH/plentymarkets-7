@@ -1,13 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        console.log('{{ content.clientId }}');
-
         amazon.Login.setClientId('{{ content.clientId }}');
-
-        console.log('Client-ID: {{ content.clientId }}');
-        console.log('Seller-ID: {{ content.sellerId }}');
-        console.log('WorkOrder-ID: {{ content.workOrderId }}');
-
         var authRequest;
 
         OffAmazonPayments.Button('LoginWithAmazon', '{{ content.sellerId }}', {
@@ -19,10 +12,6 @@
             authorization: function () {
                 loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
                 authRequest = amazon.Login.authorize(loginOptions, function (t) {
-                    console.log(t.access_token);
-                    console.log(t.expires_in);
-                    console.log(t.token_type);
-
                     $.post("/payment/payone/checkout/amazonPay/renderWidgets",
                         {
                             "accessToken": t.access_token,
@@ -30,7 +19,6 @@
                         },
                         function (data) {
                             //$('#LoginWithAmazon').append(data);
-                            console.log(data);
                             $("body").append(data);
                         });
 

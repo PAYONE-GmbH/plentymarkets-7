@@ -8,7 +8,6 @@
             scope: '{{ content.addressBookScope }}',
             onOrderReferenceCreate: function (orderReference) {
                 // Here is where you can grab the Order Reference ID.
-                console.log("AmazonOrderReference: " + orderReference.getAmazonOrderReferenceId());
                 $orderReferenceId = orderReference.getAmazonOrderReferenceId();
             },
             onAddressSelect: function (orderReference) {
@@ -16,10 +15,6 @@
                 // to perform after the address is selected. The
                 // amazonOrderReferenceId can be used to retrieve the address
                 // details by calling the GetOrderReferenceDetails operation.
-                console.log("After Event: AccessToken= {{ accessToken }}");
-                console.log("After Event: workOrderId= {{ workOrderId }}");
-                console.log("After Event: orderReferenceId= " + $orderReferenceId);
-
                 $.post("/payment/payone/checkout/amazonPay/getOrderReference",
                     {
                         "accessToken": "{{ accessToken }}",
@@ -30,7 +25,6 @@
                         if (response.hasOwnProperty('events')) {
                             if (response.events.hasOwnProperty('CheckoutChanged')) {
                                 if (response.events.CheckoutChanged.hasOwnProperty('AmazonPayAddress')) {
-                                    console.log(response.events.CheckoutChanged.AmazonPayAddress);
                                     if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('changed')) {
                                         if (response.events.CheckoutChanged.AmazonPayAddress.changed) {
                                             if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('billingAddress')) {

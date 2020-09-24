@@ -9,67 +9,68 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
-    private $email;
-    private $shippingZip;
-    private $shippingStreet;
-    private $shippingCompany;
-    private $shippingCity;
-    private $shippingType;
-    private $shippingCountry;
-    private $shippingDistrict;
-    private $shippingTelephonenumber;
-    private $shippingState;
-    private $shippingFirstname;
-    private $shippingLastname;
-    private $billingZip;
-    private $billingStreet;
-    private $billingCompany;
-    private $billingCity;
-    private $billingType;
-    private $billingCountry;
-    private $billingFirstname;
-    private $billingLastname;
-    private $billingDistrict;
-    private $billingTelephonenumber;
-    private $billingState;
-    private $storename;
-    private $workOrderId;
+    protected $email;
+    protected $shippingZip;
+    protected $shippingStreet;
+    protected $shippingCompany;
+    protected $shippingCity;
+    protected $shippingType;
+    protected $shippingCountry;
+    protected $shippingDistrict;
+    protected $shippingTelephonenumber;
+    protected $shippingState;
+    protected $shippingFirstname;
+    protected $shippingLastname;
+    protected $billingZip;
+    protected $billingStreet;
+    protected $billingCompany;
+    protected $billingCity;
+    protected $billingType;
+    protected $billingCountry;
+    protected $billingFirstname;
+    protected $billingLastname;
+    protected $billingDistrict;
+    protected $billingTelephonenumber;
+    protected $billingState;
+    protected $storename;
+    protected $workOrderId;
 
     /**
-     * @param $success
-     * @param $errorMessage
-     * @param $email
-     * @param $shippingZip
-     * @param $shippingStreet
-     * @param $shippingCompany
-     * @param $shippingCity
-     * @param $shippingType
-     * @param $shippingCountry
-     * @param $shippingDistrict
-     * @param $shippingTelephonenumber
-     * @param $shippingState
-     * @param $shippingFirstname
-     * @param $shippingLastname
-     * @param $billingZip
-     * @param $billingStreet
-     * @param $billingCompany
-     * @param $billingCity
-     * @param $billingType
-     * @param $billingCountry
-     * @param $billingFirstname
-     * @param $billingLastname
-     * @param $billingDistrict
-     * @param $billingTelephonenumber
-     * @param $billingState
-     * @param $storename
-     * @param $workOrderId
+     * @param bool $success
+     * @param string $errorMessage
+     * @param string $email
+     * @param int $shippingZip
+     * @param string $shippingStreet
+     * @param string $shippingCompany
+     * @param string $shippingCity
+     * @param string $shippingType
+     * @param int $shippingCountry
+     * @param string $shippingDistrict
+     * @param string $shippingTelephonenumber
+     * @param string $shippingState
+     * @param string $shippingFirstname
+     * @param string $shippingLastname
+     * @param int $billingZip
+     * @param string $billingStreet
+     * @param string $billingCompany
+     * @param string $billingCity
+     * @param string $billingType
+     * @param int $billingCountry
+     * @param string $billingFirstname
+     * @param string $billingLastname
+     * @param string $billingDistrict
+     * @param string $billingTelephonenumber
+     * @param string $billingState
+     * @param string $storename
+     * @param string $workOrderId
+     *
      * @return $this
      */
-    public function init($success, $errorMessage, $email, $shippingZip, $shippingStreet, $shippingCompany, $shippingCity,
-                         $shippingType, $shippingCountry, $shippingDistrict, $shippingTelephonenumber, $shippingState,
-                         $shippingFirstname, $shippingLastname, $billingZip, $billingStreet, $billingCompany, $billingCity, $billingType,
-                         $billingCountry, $billingFirstname, $billingLastname, $billingDistrict, $billingTelephonenumber,
-                         $billingState, $storename, $workOrderId)
+    public function init(bool $success, string $errorMessage, string $email, int $shippingZip, string $shippingStreet, string $shippingCompany, string $shippingCity,
+                         string $shippingType, int $shippingCountry, string $shippingDistrict, string $shippingTelephonenumber, string $shippingState,
+                         string $shippingFirstname, string $shippingLastname, int $billingZip, string $billingStreet, string $billingCompany, string $billingCity, string $billingType,
+                         int $billingCountry, string $billingFirstname, string $billingLastname, string $billingDistrict, string $billingTelephonenumber,
+                         string $billingState, string $storename, string $workOrderId)
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
@@ -138,7 +139,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -146,7 +147,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getShippingZip()
     {
@@ -154,7 +155,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingStreet()
     {
@@ -162,7 +163,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingCompany()
     {
@@ -170,7 +171,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingCity()
     {
@@ -178,7 +179,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingType()
     {
@@ -186,7 +187,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getShippingCountry()
     {
@@ -194,7 +195,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingDistrict()
     {
@@ -202,7 +203,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingTelephonenumber()
     {
@@ -210,7 +211,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingState()
     {
@@ -218,7 +219,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingFirstname()
     {
@@ -226,7 +227,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getShippingLastname()
     {
@@ -234,7 +235,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getBillingZip()
     {
@@ -242,7 +243,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingStreet()
     {
@@ -250,7 +251,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingCompany()
     {
@@ -258,7 +259,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingCity()
     {
@@ -266,7 +267,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingType()
     {
@@ -274,7 +275,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getBillingCountry()
     {
@@ -282,7 +283,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingFirstname()
     {
@@ -290,7 +291,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingLastname()
     {
@@ -298,7 +299,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingDistrict()
     {
@@ -306,7 +307,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingTelephonenumber()
     {
@@ -314,7 +315,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillingState()
     {
@@ -322,7 +323,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getStorename()
     {
@@ -330,7 +331,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getWorkOrderId()
     {
@@ -342,23 +343,6 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      */
     public function isSuccess(): bool
     {
-        return $this->success;
+        return $this->getSuccess();
     }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage(): string
-    {
-        return $this->errorMessage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransactionID(): string
-    {
-        return $this->transactionID;
-    }
-
 }

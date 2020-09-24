@@ -9,23 +9,37 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializable
 {
-
-    private $clientId;
-    private $sellerId;
-    private $currency;
-    private $workOrderId;
+    /**
+     * @var string
+     */
+    protected $clientId;
 
     /**
-     * @param $success
-     * @param $errorMessage
-     * @param $clientId
-     * @param $sellerId
-     * @param $currency
-     * @param $workorderId
+     * @var string
+     */
+    protected $sellerId;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var string
+     */
+    protected $workOrderId;
+
+    /**
+     * @param bool $success
+     * @param string $errorMessage
+     * @param string $clientId
+     * @param string $sellerId
+     * @param string $currency
+     * @param string $workorderId
      *
      * @return $this
      */
-    public function init($success, $errorMessage, $clientId, $sellerId, $currency, $workorderId)
+    public function init(bool $success, string $errorMessage, string $clientId, string $sellerId, string $currency, string $workorderId)
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
@@ -51,7 +65,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getClientId()
     {
@@ -59,7 +73,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getSellerId()
     {
@@ -67,7 +81,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCurrency()
     {
@@ -75,7 +89,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getWorkOrderId()
     {
@@ -87,22 +101,6 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
      */
     public function isSuccess(): bool
     {
-        return $this->success;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage(): string
-    {
-        return $this->errorMessage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransactionID(): string
-    {
-        return $this->transactionID;
+        return $this->getSuccess();
     }
 }

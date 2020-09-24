@@ -6,16 +6,16 @@ use Payone\Models\Api\ResponseAbstract;
 
 class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSerializable
 {
-    private $workOrderId;
+    protected $workOrderId;
 
     /**
-     * @param $success
-     * @param $errorMessage
-     * @param $workorderId
+     * @param bool $success
+     * @param string $errorMessage
+     * @param string $workorderId
      *
      * @return $this
      */
-    public function init($success, $errorMessage, $workorderId)
+    public function init(bool $success, string $errorMessage, string $workorderId)
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;
@@ -35,7 +35,7 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getWorkOrderId()
     {
@@ -47,22 +47,6 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
      */
     public function isSuccess(): bool
     {
-        return $this->success;
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMessage(): string
-    {
-        return $this->errorMessage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransactionID(): string
-    {
-        return $this->transactionID;
+        return $this->getSuccess();
     }
 }

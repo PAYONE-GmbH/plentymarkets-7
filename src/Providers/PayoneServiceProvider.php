@@ -324,6 +324,12 @@ class PayoneServiceProvider extends ServiceProvider
                             ->debug('AmazonPay.paymentExecute', [
                                 "auth" => (array) $auth
                             ]);
+                        /** @var SessionStorage $sessionStorage */
+                        $sessionStorage = pluginApp(SessionStorage::class);
+                        $sessionStorage->setSessionValue('clientId', null);
+                        $sessionStorage->setSessionValue('sellerId', null);
+                        $sessionStorage->setSessionValue('workOrderId', null);
+                        $sessionStorage->setSessionValue('accessToken', null);
                     }
                     /** @var OrderRepositoryContract $orderRepository */
                     $orderRepository = pluginApp(OrderRepositoryContract::class);

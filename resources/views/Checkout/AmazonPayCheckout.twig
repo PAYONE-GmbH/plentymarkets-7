@@ -25,7 +25,11 @@
             [
                 'afterShippingCountryChanged',
                 'afterShippingProfileChanged',
-                'onSetMethodOfPaymentList'
+                'onSetMethodOfPaymentList',
+                'afterBasketItemQuantityUpdated',
+                'afterBasketItemRemoved',
+                'afterBasketItemAdded',
+                'onSetCouponCode'
             ].forEach(event =>
                 document.addEventListener(event, function (e) {
                     checkAmazonPayButton();

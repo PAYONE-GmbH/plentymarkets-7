@@ -234,6 +234,12 @@ class AmazonPayController extends Controller
                     "orderReferenceResponse" => (array)$orderReferenceResponse
                 ]);
 
+            if(!$orderReferenceResponse->getSuccess()) {
+                return $response->json([
+                    'error' => $orderReferenceResponse->getErrorMessage()
+                ], 200);
+            }
+
 
             /** @var AmazonPayService $amazonPayService */
             $amazonPayService = pluginApp(AmazonPayService::class);

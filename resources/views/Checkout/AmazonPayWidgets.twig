@@ -43,6 +43,10 @@
                                     }
                                 }
                             }
+                        } else {
+                            window.CeresNotification.error('ACHTUNG ACHTUNG');
+                            window.CeresNotification.error(response.error);
+                            console.log(response);
                         }
                     });
 

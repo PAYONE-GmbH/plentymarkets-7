@@ -10,14 +10,24 @@ class ClientErrorResponse extends ResponseDataAbstract implements ResponseContra
     /**
      * @var string
      */
-    private $errorMessage;
+    protected $errorMessage;
+
+    /**
+     * @var mixed
+     */
+    protected $requestData;
+
+    /**
+     * @var mixed
+     */
+    protected $responseData;
 
     /**
      * ClientErrorResponse constructor.
      *
      * @param string $errorMessage
      */
-    public function __construct($errorMessage, array $requestData = [], array $responseData = [])
+    public function __construct($errorMessage, $requestData = null, $responseData = null)
     {
         $this->errorMessage = $errorMessage;
         $this->requestData = $requestData;
@@ -54,5 +64,21 @@ class ClientErrorResponse extends ResponseDataAbstract implements ResponseContra
     public function getTransactionID()
     {
         return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestData()
+    {
+        return $this->requestData;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseData()
+    {
+        return $this->responseData;
     }
 }

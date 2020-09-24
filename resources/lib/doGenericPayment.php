@@ -54,7 +54,9 @@ if (!$response->getSuccess()) {
         'Lib version: ' . Version::getVersion() . PHP_EOL .
         'Message: ' . $response->getErrorMessage() . PHP_EOL .
         'Request was : ' . json_encode($serializer->serialize($request), JSON_PRETTY_PRINT) . PHP_EOL .
-        'Response was: ' . json_encode($serializer->serialize($response), JSON_PRETTY_PRINT)
+        'Response was: ' . json_encode($serializer->serialize($response), JSON_PRETTY_PRINT),
+        json_encode($serializer->serialize($request), JSON_PRETTY_PRINT),
+        json_encode($serializer->serialize($response), JSON_PRETTY_PRINT)
     );
 
     return $errorResponse->jsonSerialize();

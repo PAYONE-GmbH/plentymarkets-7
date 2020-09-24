@@ -17,7 +17,7 @@ class RequestFactory implements RequestFactoryContract
      *
      * @return GetInvoice
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, $referenceId = null)
     {
         if ($paymentMethod != PaymentTypes::PAYONE_INVOICE_SECURE) {
             throw new \Exception('Get invoice only for secure invoice');

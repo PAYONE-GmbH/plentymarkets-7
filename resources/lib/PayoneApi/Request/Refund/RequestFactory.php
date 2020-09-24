@@ -15,7 +15,7 @@ class RequestFactory implements RequestFactoryContract
      *
      * @return Refund|\PayoneApi\Request\RequestDataContract
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, $referenceId = null)
     {
         $genericRequest = GenericRequestFactory::create(Types::REFUND, $data);
 

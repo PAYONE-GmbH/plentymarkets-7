@@ -17,7 +17,7 @@ class RequestFactory implements RequestFactoryContract
      *
      * @return Debit|\PayoneApi\Request\RequestDataContract
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, $referenceId = null)
     {
         $data['basket']['basketAmount'] *= -1;
         $genericRequest = GenericRequestFactory::create(Types::DEBIT, $data);

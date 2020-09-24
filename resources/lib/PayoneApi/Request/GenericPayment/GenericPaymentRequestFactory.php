@@ -7,7 +7,7 @@ use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\RequestFactoryContract;
 
-class GenericPaymentRequestFactory implements RequestFactoryContract
+class GenericPaymentRequestFactory
 {
 
     /**
@@ -16,7 +16,7 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
      * @param null $referenceId
      * @return mixed
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, $referenceId = null)
     {
         $context = $data['context'];
         $config = new Config(

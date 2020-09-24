@@ -44,7 +44,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      * @param string $shippingCompany
      * @param string $shippingCity
      * @param string $shippingType
-     * @param int $shippingCountry
+     * @param string $shippingCountry
      * @param string $shippingDistrict
      * @param string $shippingTelephonenumber
      * @param string $shippingState
@@ -55,7 +55,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      * @param string $billingCompany
      * @param string $billingCity
      * @param string $billingType
-     * @param int $billingCountry
+     * @param string $billingCountry
      * @param string $billingFirstname
      * @param string $billingLastname
      * @param string $billingDistrict
@@ -67,9 +67,9 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      * @return $this
      */
     public function init(bool $success, string $errorMessage, string $email, int $shippingZip, string $shippingStreet, string $shippingCompany, string $shippingCity,
-                         string $shippingType, int $shippingCountry, string $shippingDistrict, string $shippingTelephonenumber, string $shippingState,
+                         string $shippingType, string $shippingCountry, string $shippingDistrict, string $shippingTelephonenumber, string $shippingState,
                          string $shippingFirstname, string $shippingLastname, int $billingZip, string $billingStreet, string $billingCompany, string $billingCity, string $billingType,
-                         int $billingCountry, string $billingFirstname, string $billingLastname, string $billingDistrict, string $billingTelephonenumber,
+                         string $billingCountry, string $billingFirstname, string $billingLastname, string $billingDistrict, string $billingTelephonenumber,
                          string $billingState, string $storename, string $workOrderId)
     {
         $this->success = $success;
@@ -187,7 +187,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getShippingCountry()
     {
@@ -275,7 +275,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getBillingCountry()
     {

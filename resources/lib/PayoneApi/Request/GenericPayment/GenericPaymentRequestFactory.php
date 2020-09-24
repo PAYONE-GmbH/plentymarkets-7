@@ -40,7 +40,6 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
             case 'getconfiguration':
                 // Other configs can be added here. Just add an if-condition for $paymentMethod
                 return new AmazonPayConfigurationRequest($config, $systemInfo, $data['currency']);
-                break;
             case 'getorderreferencedetails':
                 return new AmazonPayGetOrderReferenceRequest(
                     $config,
@@ -50,7 +49,6 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                     $data['workorderid'],
                     $data['amount'],
                     $data['currency']);
-                break;
             case 'setorderreferencedetails':
                 return new AmazonPaySetOrderReferenceRequest(
                     $config,
@@ -59,7 +57,6 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                     $data['workorderid'],
                     $data['amount'],
                     $data['currency']);
-                break;
             case 'confirmorderreference':
                 return new AmazonPayConfirmOrderReferenceRequest(
                     $config,
@@ -71,7 +68,6 @@ class GenericPaymentRequestFactory implements RequestFactoryContract
                     $data['currency'],
                     $data['successurl'],
                     $data['errorurl']);
-                break;
         }
 
 

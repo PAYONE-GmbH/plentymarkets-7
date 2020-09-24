@@ -2,37 +2,20 @@
 
 namespace PayoneApi\Request\GenericPayment;
 
-use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
-use PayoneApi\Request\Types;
-use PayoneApi\Request\WalletTypes;
 
-class AmazonPaySetOrderReferenceRequest
+class AmazonPaySetOrderReferenceRequest extends GenericeRequestBase
 {
+    /**
+     * @var string
+     */
+    protected $amount;
 
-    private $request = Types::GENERICPAYMENT;
-
-    private $clearingtype = ClearingTypes::WALLET;
-
-    private $wallettype = WalletTypes::AMAZON_PAYMENTS;
-
-    private $amount;
-
-    private $currency;
-
-    private $workorderid;
-
-    private $add_paydata = [
-        'action' => 'setorderreferencedetails',
-        'amazon_reference_id' => '',
-    ];
-
-    /** @var Config */
-    private $config;
-
-    /** @var SystemInfo */
-    private $info;
+    /**
+     * @var string
+     */
+    protected $workorderid;
 
     /**
      * AmazonPaySetOrderReferenceRequest constructor.
@@ -53,36 +36,18 @@ class AmazonPaySetOrderReferenceRequest
         string $currency
     )
     {
-        $this->config = $config;
-        $this->info = $info;
-        $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
+        parent::__construct(
+            [
+                'action' => 'setorderreferencedetails',
+                'amazon_reference_id' => $amazonReferenceId,
+            ],
+            $config,
+            $info,
+            $currency
+        );
+
         $this->workorderid = $workOrderId;
         $this->amount = $amount;
-        $this->currency = $currency;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequest(): string
-    {
-        return $this->request;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClearingtype(): string
-    {
-        return $this->clearingtype;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWallettype(): string
-    {
-        return $this->wallettype;
     }
 
     /**
@@ -96,41 +61,8 @@ class AmazonPaySetOrderReferenceRequest
     /**
      * @return string
      */
-    public function getCurrency(): string
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @return string
-     */
     public function getWorkorderid(): string
     {
         return $this->workorderid;
     }
-
-    /**
-     * @return array
-     */
-    public function getAddPaydata(): array
-    {
-        return $this->add_paydata;
-    }
-
-    /**
-     * @return Config
-     */
-    public function getConfig(): Config
-    {
-        return $this->config;
-    }
-
-    /**
-     * @return SystemInfo
-     */
-    public function getInfo(): SystemInfo
-    {
-        return $this->info;
-    }
-
 }

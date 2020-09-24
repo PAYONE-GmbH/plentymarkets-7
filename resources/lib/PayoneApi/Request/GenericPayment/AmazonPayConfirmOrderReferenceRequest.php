@@ -2,50 +2,30 @@
 
 namespace PayoneApi\Request\GenericPayment;
 
-use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
-use PayoneApi\Request\Types;
-use PayoneApi\Request\WalletTypes;
 
-class AmazonPayConfirmOrderReferenceRequest
+class AmazonPayConfirmOrderReferenceRequest extends GenericeRequestBase
 {
-    /** @var string  */
-    private $request = Types::GENERICPAYMENT;
-
-    /** @var string  */
-    private $clearingtype = ClearingTypes::WALLET;
-
-    /** @var string  */
-    private $wallettype = WalletTypes::AMAZON_PAYMENTS;
-
-    /** @var string  */
+    /**
+     * @var string
+     */
     private $amount;
 
-    /** @var string  */
-    private $currency;
-
-    /** @var string  */
+    /**
+     * @var string
+     */
     private $workorderid;
 
-    /** @var string  */
+    /**
+     * @var string
+     */
     private $successurl;
 
-    /** @var string  */
+    /**
+     * @var string
+     */
     private $errorurl;
-
-    /** @var array  */
-    private $add_paydata = [
-        'action' => 'confirmorderreference',
-        'reference' => '',
-        'amazon_reference_id' => '',
-    ];
-
-    /** @var Config */
-    private $config;
-
-    /** @var SystemInfo */
-    private $info;
 
     /**
      * AmazonPayGetOrderReferenceRequest constructor.
@@ -72,39 +52,21 @@ class AmazonPayConfirmOrderReferenceRequest
         string $errorurl
     )
     {
-        $this->config = $config;
-        $this->info = $info;
-        $this->add_paydata['reference'] = $reference;
-        $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
+        parent::__construct(
+            [
+                'action' => 'confirmorderreference',
+                'reference' => $reference,
+                'amazon_reference_id' => $amazonReferenceId,
+            ],
+            $config,
+            $info,
+            $currency
+        );
+
         $this->workorderid = $workOrderId;
         $this->amount = $amount;
-        $this->currency = $currency;
         $this->successurl = $successurl;
         $this->errorurl = $errorurl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequest(): string
-    {
-        return $this->request;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClearingtype(): string
-    {
-        return $this->clearingtype;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWallettype(): string
-    {
-        return $this->wallettype;
     }
 
     /**
@@ -113,14 +75,6 @@ class AmazonPayConfirmOrderReferenceRequest
     public function getAmount(): string
     {
         return $this->amount;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrency(): string
-    {
-        return $this->currency;
     }
 
     /**
@@ -145,29 +99,5 @@ class AmazonPayConfirmOrderReferenceRequest
     public function getErrorurl(): string
     {
         return $this->errorurl;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAddPaydata(): array
-    {
-        return $this->add_paydata;
-    }
-
-    /**
-     * @return Config
-     */
-    public function getConfig(): Config
-    {
-        return $this->config;
-    }
-
-    /**
-     * @return SystemInfo
-     */
-    public function getInfo(): SystemInfo
-    {
-        return $this->info;
     }
 }

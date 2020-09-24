@@ -1,8 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        window.onAmazonLoginReady = function () {
-            amazon.Login.setClientId('{{ content.clientId }}');
-        };
+        amazon.Login.setClientId('{{ content.clientId }}');
 
         var $orderReferenceId;
         addressBookWidget = new OffAmazonPayments.Widgets.AddressBook({
@@ -47,8 +45,6 @@
                                                     addressType: "2"
                                                 });
                                             }
-                                            window.amazonPay();
-                                            //amazonPay()
                                         }
                                     }
                                 }

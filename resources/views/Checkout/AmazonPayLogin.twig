@@ -1,23 +1,9 @@
-<head>
-    <script type="text/javascript">
-        window.onAmazonLoginReady = function () {
-            console.log('{{ content.clientId }}');
-
-            amazon.Login.setClientId('{{ content.clientId }}');
-        };
-
-    </script>
-    {% if config('Payone.PAYONE_PAYONE_AMAZON_PAY.sandbox') == "true" %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
-    {% else %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
-    {% endif %}
-
-</head>
-
 <script type="text/javascript">
+    $(document).ready(function () {
+        console.log('{{ content.clientId }}');
 
-    window.onAmazonPaymentsReady = function () {
+        amazon.Login.setClientId('{{ content.clientId }}');
+
         console.log('Client-ID: {{ content.clientId }}');
         console.log('Seller-ID: {{ content.sellerId }}');
         console.log('WorkOrder-ID: {{ content.workOrderId }}');
@@ -70,6 +56,6 @@
                 console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
         });
-    }
+    });
 </script>
 

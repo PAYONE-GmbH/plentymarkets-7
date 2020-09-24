@@ -59,8 +59,8 @@ class AmazonPayController extends Controller
      * @param SessionStorage $sessionStorage
      * @param BasketRepositoryContract $basketRepository
      * @param PaymentHelper $paymentHelper
-     * @return string
-     * @throws \Twig_Error_Loader
+     * @return string|Response
+     * @throws \Twig_Error_Loasder
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
@@ -68,7 +68,7 @@ class AmazonPayController extends Controller
                                             Response $response,
                                             SessionStorage $sessionStorage,
                                             BasketRepositoryContract $basketRepository,
-                                            PaymentHelper $paymentHelper): string
+                                            PaymentHelper $paymentHelper)
     {
         $basket = $basketRepository->load();
         $selectedPaymentId = $basket->methodOfPaymentId;

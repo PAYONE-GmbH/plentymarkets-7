@@ -100,7 +100,7 @@
                 }
             }
 
-            function amazonLogout() {
+            window.amazonLogout = function() {
                 amazon.Login.logout();
                 document.getElementById("LoginWithAmazon").style.display = "block";
                 document.getElementById("LogoutWithAmazon").style.display = "none";

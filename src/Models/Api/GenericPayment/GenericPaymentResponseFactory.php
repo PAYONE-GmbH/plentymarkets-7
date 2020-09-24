@@ -38,9 +38,13 @@ class GenericPaymentResponseFactory
         $response = pluginApp(GetConfigurationResponse::class);
 
         if(!$responseData['success']) {
+            $customerErrorMessage = '';
+            if($responseData['responseData'] && $responseData['responseData']['responseData'] && $responseData['responseData']['responseData']['customermessage']) {
+                $customerErrorMessage = $responseData['responseData']['responseData']['customermessage'];
+            }
             return $response->init(
                 false,
-                $responseData['responseData']['responseData']['customermessage']
+                $customerErrorMessage
             );
         }
 
@@ -64,9 +68,13 @@ class GenericPaymentResponseFactory
         $response = pluginApp(GetOrderReferenceDetailsResponse::class);
 
         if(!$responseData['success']) {
+            $customerErrorMessage = '';
+            if($responseData['responseData'] && $responseData['responseData']['responseData'] && $responseData['responseData']['responseData']['customermessage']) {
+                $customerErrorMessage = $responseData['responseData']['responseData']['customermessage'];
+            }
             return $response->init(
                 false,
-                $responseData['responseData']['responseData']['customermessage']
+                $customerErrorMessage
             );
         }
 
@@ -111,9 +119,13 @@ class GenericPaymentResponseFactory
         $response = pluginApp(SetOrderReferenceDetailsResponse::class);
 
         if(!$responseData['success']) {
+            $customerErrorMessage = '';
+            if($responseData['responseData'] && $responseData['responseData']['responseData'] && $responseData['responseData']['responseData']['customermessage']) {
+                $customerErrorMessage = $responseData['responseData']['responseData']['customermessage'];
+            }
             return $response->init(
                 false,
-                $responseData['responseData']['responseData']['customermessage']
+                $customerErrorMessage
             );
         }
 
@@ -139,9 +151,13 @@ class GenericPaymentResponseFactory
         $response = pluginApp(ConfirmOrderReferenceResponse::class);
 
         if(!$responseData['success']) {
+            $customerErrorMessage = '';
+            if($responseData['responseData'] && $responseData['responseData']['responseData'] && $responseData['responseData']['responseData']['customermessage']) {
+                $customerErrorMessage = $responseData['responseData']['responseData']['customermessage'];
+            }
             return $response->init(
                 false,
-                $responseData['responseData']['responseData']['customermessage']
+                $customerErrorMessage
             );
         }
 

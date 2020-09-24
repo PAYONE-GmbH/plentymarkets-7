@@ -65,6 +65,7 @@ class AmazonPayController extends Controller
      * @throws \Twig_Error_Syntax
      */
     public function getAmazonPayLoginWidget(Twig $twig,
+                                            Response $response,
                                             SessionStorage $sessionStorage,
                                             BasketRepositoryContract $basketRepository,
                                             PaymentHelper $paymentHelper): string
@@ -86,6 +87,14 @@ class AmazonPayController extends Controller
             /** Only load the configuration data if not already stored within the session */
             /** @var GetConfigurationResponse $configResponse */
             $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
+
+            if(!$configResponse->getSuccess()) {
+                return $response->json([
+                    'error' => [
+                        'message' => $configResponse->getErrorMessage()
+                    ]
+                ], 200);
+            }
 
             $clientId = $configResponse->getClientId();
             $sellerId = $configResponse->getSellerId();
@@ -236,10 +245,11 @@ class AmazonPayController extends Controller
 
             if(!$orderReferenceResponse->getSuccess()) {
                 return $response->json([
-                    'error' => $orderReferenceResponse->getErrorMessage()
+                    'error' => [
+                        'message' => $orderReferenceResponse->getErrorMessage()
+                    ]
                 ], 200);
             }
-
 
             /** @var AmazonPayService $amazonPayService */
             $amazonPayService = pluginApp(AmazonPayService::class);

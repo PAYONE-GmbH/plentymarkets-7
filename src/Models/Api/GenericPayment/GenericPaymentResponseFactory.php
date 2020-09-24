@@ -26,7 +26,6 @@ class GenericPaymentResponseFactory
             case GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE:
                 return self::makeConfirmOrderReferenceResponse($responseData);
         }
-
     }
 
     /**
@@ -41,7 +40,7 @@ class GenericPaymentResponseFactory
         if(!$responseData['success']) {
             return $response->init(
                 false,
-                $responseData['responseData']['customermessage']
+                $responseData['responseData']['responseData']['customermessage']
             );
         }
 
@@ -67,7 +66,7 @@ class GenericPaymentResponseFactory
         if(!$responseData['success']) {
             return $response->init(
                 false,
-                $responseData['responseData']['customermessage']
+                $responseData['responseData']['responseData']['customermessage']
             );
         }
 
@@ -114,7 +113,7 @@ class GenericPaymentResponseFactory
         if(!$responseData['success']) {
             return $response->init(
                 false,
-                $responseData['responseData']['customermessage']
+                $responseData['responseData']['responseData']['customermessage']
             );
         }
 
@@ -142,7 +141,7 @@ class GenericPaymentResponseFactory
         if(!$responseData['success']) {
             return $response->init(
                 false,
-                $responseData['responseData']['customermessage']
+                $responseData['responseData']['responseData']['customermessage']
             );
         }
 

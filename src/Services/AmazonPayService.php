@@ -8,6 +8,7 @@ use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
+use Payone\PluginConstants;
 use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
@@ -17,6 +18,7 @@ use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
 use Plenty\Modules\Order\Shipping\Countries\Models\CountryState;
+use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 
 class AmazonPayService
 {
@@ -119,12 +121,16 @@ class AmazonPayService
         /** @var Country $country */
         $country = $countryContract->getCountryByIso($amazonAddress['countryId'], 'isoCode2');
 
-        $addressArr = $this->extractAddress($amazonAddress['streetAndNumber'], '', $country->id == 12); //UK
+        /** @var LibraryCallContract $libCall */
+        $libCall = pluginApp(LibraryCallContract::class);
+        $parsedAddress = $libCall->call(PluginConstants::NAME .'::addressParser', [
+            'address' => $amazonAddress['streetAndNumber']
+        ]);
 
-        $address->address1 = $addressArr[0];
-        $address->address2 = $addressArr[1];
-        if (strlen($addressArr[2])) {
-            $address->address3 = $addressArr[2];
+        $address->address1 = $parsedAddress['address1'];
+        $address->address2 = $parsedAddress['address2'];
+        if (strlen($parsedAddress['address3'])) {
+            $address->address3 = $parsedAddress['address3'];
         }
         $address->town = $amazonAddress['city'];
         $address->postalCode = $amazonAddress['postalCode'];
@@ -236,97 +242,5 @@ class AmazonPayService
 
             return $exception;
         }
-    }
-
-
-    /**
-     * extract the house number, the street and the additional name from the specified address fields
-     * @param string $street1
-     * @param string $street2
-     * @param bool $checkUKAddress
-     * @return array (street, houseNo, additionalAddress)
-     */
-    private function extractAddress(String $street1, String $street2, $checkUKAddress = false)
-    {
-        $address = trim($street1 . ' ' . $street2);
-
-        $reqex = '/(?<ad>(.*?)[\D]{3}[\s,.])(?<no>';
-        $reqex .= '|[0-9]{1,3}[ a-zA-Z-\/\.]{0,6}'; // f.e. "Rosenstr. 14"
-        $reqex .= '|[0-9]{1,3}[ a-zA-Z-\/\.]{1,6}[0-9]{1,4}[ a-zA-Z-\/\.]{0,6}[0-9]{0,3}[ a-zA-Z-\/\.]{0,6}[0-9]{0,3}'; // f.e. "Straße in Österreich 30/4/12.2"
-        $reqex .= ')$/';
-        $reqex4foreign = '/^(?<no>[0-9]{1,4}([\D]{0,2}([\s]|[^a-zA-Z0-9])))(?<ad>([\D]+))$/';    // f.e. "16 Bellevue Road"
-        if (stripos($address, 'POSTFILIALE') !== false) {
-            $id = '';
-            $result = array();
-
-            if (preg_match("/([\D].*?)(([\d]{4,})|(?<id>[\d]{3}))([\D]*?)/i", $address, $result) > 0) {
-                $id = $result['id'];
-
-                $address = preg_replace("/([\D].*?)" . $result['id'] . "([\D]*)/i", '\1\2', $address);
-
-                if ($id
-                    && preg_match("/(?<id>[\d\s]{6,14})/i", $address, $result) > 0) {
-                    $street = preg_replace("/\s/", '', $result['id']) . ' POSTFILIALE';
-                    $houseNo = $id;
-                    $additionalAddress = '';
-
-                    return array(
-                        $street,
-                        $houseNo,
-                        $additionalAddress,
-                    );
-                }
-            }
-        }
-
-        if ($checkUKAddress && preg_match($reqex4foreign, $street1, $machtes) > 0) {
-            $street = trim($machtes['ad']);
-            $houseNo = trim($machtes['no']);
-            $additionalAddress = $street2;
-        } elseif (preg_match($reqex4foreign, $street1, $matches) > 0) {
-            // house number is in street1 - foreign address
-            $street = trim($matches['no']) . ' ' . trim($matches['ad']);
-            $houseNo = '';
-            $additionalAddress = $street2;
-        } else {
-            if (preg_match($reqex, $street1, $matches) > 0) {
-                // house number is in street1
-                $street = trim($matches['ad']);
-                $houseNo = trim($matches['no']);
-                $additionalAddress = $street2;
-            } else {
-                if (preg_match($reqex4foreign, $street2, $matches) > 0) {
-                    // house number is in street2 - foreign address
-                    $street = trim($matches['no']) . ' ' . trim($matches['ad']);
-                    $houseNo = '';
-                    $additionalAddress = $street1;
-                } else {
-                    if (preg_match($reqex, $street2, $matches) > 0) {
-                        // house number is in street2
-                        $street = trim($matches['ad']);
-                        $houseNo = trim($matches['no']);
-                        $additionalAddress = $street1;
-                    } else {
-                        if (preg_match($reqex, $address, $matches) > 0) {
-                            // house number is in street2
-                            $street = trim($matches['ad']);
-                            $houseNo = trim($matches['no']);
-                            $additionalAddress = '';
-                        } else {
-                            // no house number was found
-                            $street = $address;
-                            $houseNo = '';
-                            $additionalAddress = '';
-                        }
-                    }
-                }
-            }
-        }
-
-        return array(
-            $street,
-            $houseNo,
-            $additionalAddress,
-        );
     }
 }

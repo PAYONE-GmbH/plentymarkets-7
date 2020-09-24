@@ -5,6 +5,16 @@ namespace PayoneApi\Response;
 class ResponseDataAbstract
 {
     /**
+     * @var array
+     */
+    protected $requestData;
+
+    /**
+     * @var array
+     */
+    protected $responseData;
+
+    /**
      * @return array
      */
     public function jsonSerialize()
@@ -27,5 +37,21 @@ class ResponseDataAbstract
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequestData()
+    {
+        return $this->requestData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseData()
+    {
+        return $this->responseData;
     }
 }

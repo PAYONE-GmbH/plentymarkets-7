@@ -19,16 +19,12 @@ class GenericPaymentResponseFactory
         switch ($actionType) {
             case GenericPayment::ACTIONTYPE_GETCONFIGURATION:
                 return self::makeGetConfigurationResponse($responseData);
-                break;
             case GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS:
                 return self::makeGetOrderReferenceDetailsResponse($responseData);
-                break;
             case GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS:
                 return self::makeSetOrderReferenceDetailsResponse($responseData);
-                break;
             case GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE:
                 return self::makeConfirmOrderReferenceResponse($responseData);
-                break;
         }
 
     }

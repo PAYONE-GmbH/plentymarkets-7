@@ -30,8 +30,8 @@
   "javaScriptFiles": [],
   "containers": [],
   "require": {
-    "IO": "~5.0.10",
-    "Ceres":">=5.0.11"
+    "IO": ">=5.0.4",
+    "Ceres":">=5.0.4"
   },
   "dependencies": {
     "guzzlehttp/guzzle": "6.*",

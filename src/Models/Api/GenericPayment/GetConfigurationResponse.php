@@ -39,7 +39,14 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
      *
      * @return $this
      */
-    public function init(bool $success, string $errorMessage, string $clientId, string $sellerId, string $currency, string $workorderId)
+    public function init(
+        bool $success = false,
+        string $errorMessage = '',
+        string $clientId = '',
+        string $sellerId = '',
+        string $currency = '',
+        string $workorderId = ''
+    )
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;

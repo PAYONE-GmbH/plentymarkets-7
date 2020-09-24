@@ -15,7 +15,11 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
      *
      * @return $this
      */
-    public function init(bool $success, string $errorMessage, string $workorderId)
+    public function init(
+        bool $success = false,
+        string $errorMessage = '',
+        string $workorderId = ''
+    )
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;

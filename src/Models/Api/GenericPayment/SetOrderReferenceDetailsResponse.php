@@ -9,26 +9,34 @@ use Payone\Models\Api\ResponseAbstract;
  */
 class SetOrderReferenceDetailsResponse extends ResponseAbstract implements \JsonSerializable
 {
-    private $amazonAddressToken;
-    private $amazonReferenceId;
-    private $storename;
-    private $amount;
-    private $currency;
-    private $workOrderId;
+    protected $amazonAddressToken;
+    protected $amazonReferenceId;
+    protected $storename;
+    protected $amount;
+    protected $currency;
+    protected $workOrderId;
 
     /**
-     * @param $success
-     * @param $errorMessage
-     * @param $amazonAddressToken
-     * @param $amazonReferenceId
-     * @param $storename
-     * @param $amount
-     * @param $currency
-     * @param $workOrderId
+     * @param bool $success
+     * @param string $errorMessage
+     * @param string $amazonAddressToken
+     * @param string $amazonReferenceId
+     * @param string $storename
+     * @param string $amount
+     * @param string $currency
+     * @param string $workOrderId
      * @return $this
      */
-    public function init($success, $errorMessage, $amazonAddressToken, $amazonReferenceId,
-                         $storename, $amount, $currency, $workOrderId)
+    public function init(
+        bool $success = false,
+        string $errorMessage = '',
+        string $amazonAddressToken = '',
+        string $amazonReferenceId = '',
+        string $storename = '',
+        string $amount = '',
+        string $currency = '',
+        string $workOrderId = ''
+    )
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;

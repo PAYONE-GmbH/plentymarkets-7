@@ -66,11 +66,35 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
      *
      * @return $this
      */
-    public function init(bool $success, string $errorMessage, string $email, string $shippingZip, string $shippingStreet, string $shippingCompany, string $shippingCity,
-                         string $shippingType, string $shippingCountry, string $shippingDistrict, string $shippingTelephonenumber, string $shippingState,
-                         string $shippingFirstname, string $shippingLastname, string $billingZip, string $billingStreet, string $billingCompany, string $billingCity, string $billingType,
-                         string $billingCountry, string $billingFirstname, string $billingLastname, string $billingDistrict, string $billingTelephonenumber,
-                         string $billingState, string $storename, string $workOrderId)
+    public function init(
+        bool $success = false,
+        string $errorMessage = '',
+        string $email = '',
+        string $shippingZip = '',
+        string $shippingStreet = '',
+        string $shippingCompany = '',
+        string $shippingCity = '',
+        string $shippingType = '',
+        string $shippingCountry = '',
+        string $shippingDistrict = '',
+        string $shippingTelephonenumber = '',
+        string $shippingState = '',
+        string $shippingFirstname = '',
+        string $shippingLastname = '',
+        string $billingZip = '',
+        string $billingStreet = '',
+        string $billingCompany = '',
+        string $billingCity = '',
+        string $billingType = '',
+        string $billingCountry = '',
+        string $billingFirstname = '',
+        string $billingLastname = '',
+        string $billingDistrict = '',
+        string $billingTelephonenumber = '',
+        string $billingState = '',
+        string $storename = '',
+        string $workOrderId = ''
+    )
     {
         $this->success = $success;
         $this->errorMessage = $errorMessage;

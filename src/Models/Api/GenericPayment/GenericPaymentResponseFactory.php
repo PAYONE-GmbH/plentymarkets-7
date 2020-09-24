@@ -38,6 +38,13 @@ class GenericPaymentResponseFactory
         /** @var GetConfigurationResponse $response */
         $response = pluginApp(GetConfigurationResponse::class);
 
+        if(!$response['success']) {
+            return $response->init(
+                false,
+                $response['responseData']['customermessage']
+            );
+        }
+
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
@@ -56,6 +63,13 @@ class GenericPaymentResponseFactory
     {
         /** @var GetOrderReferenceDetailsResponse $response */
         $response = pluginApp(GetOrderReferenceDetailsResponse::class);
+
+        if(!$response['success']) {
+            return $response->init(
+                false,
+                $response['responseData']['customermessage']
+            );
+        }
 
         return $response->init(
             $responseData['success'] ?? false,
@@ -97,6 +111,13 @@ class GenericPaymentResponseFactory
         /** @var SetOrderReferenceDetailsResponse $response */
         $response = pluginApp(SetOrderReferenceDetailsResponse::class);
 
+        if(!$response['success']) {
+            return $response->init(
+                false,
+                $response['responseData']['customermessage']
+            );
+        }
+
         return $response->init(
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
@@ -117,6 +138,13 @@ class GenericPaymentResponseFactory
     {
         /** @var ConfirmOrderReferenceResponse $response */
         $response = pluginApp(ConfirmOrderReferenceResponse::class);
+
+        if(!$response['success']) {
+            return $response->init(
+                false,
+                $response['responseData']['customermessage']
+            );
+        }
 
         return $response->init(
             $responseData['success'] ?? false,

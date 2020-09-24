@@ -22,7 +22,7 @@ class AmazonPayConfigurationRequest extends GenericeRequestBase
     {
         parent::__construct(
             [
-            'action' => 'getconfiguration'
+                'action' => 'getconfiguration'
             ],
             $config,
             $info,

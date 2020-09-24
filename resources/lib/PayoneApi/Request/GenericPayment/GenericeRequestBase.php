@@ -30,7 +30,7 @@ class GenericeRequestBase
     /**
      * @var array
      */
-    protected $add_paydata = [];
+    protected $addPaydata = [];
 
     /**
      * @var string
@@ -53,7 +53,7 @@ class GenericeRequestBase
         SystemInfo $info,
         string $currency)
     {
-        $this->add_paydata = $payData;
+        $this->addPaydata = $payData;
         $this->config = $config;
         $this->info = $info;
         $this->currency = $currency;
@@ -88,7 +88,7 @@ class GenericeRequestBase
      */
     public function getAddPaydata(): array
     {
-        return $this->add_paydata;
+        return $this->addPaydata;
     }
 
     /**

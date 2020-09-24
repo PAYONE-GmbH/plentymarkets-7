@@ -3,7 +3,6 @@
 namespace PayoneApi\Request\GenericPayment;
 
 use PayoneApi\Lib\Version;
-use PayoneApi\Request\Parts\RedirectUrls;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\RequestFactoryContract;

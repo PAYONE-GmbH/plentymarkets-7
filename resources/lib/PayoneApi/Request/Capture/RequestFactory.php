@@ -14,7 +14,7 @@ class RequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param string $referenceId
+     * @param string|null $referenceId
      *
      * @return Capture|RequestDataContract
      */

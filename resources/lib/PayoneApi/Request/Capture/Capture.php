@@ -39,7 +39,7 @@ class Capture
      * @param string $txid
      * @param string $capturemode
      * @param string $settleaccount
-     * @param Cart $cart
+     * @param Cart|null $cart
      */
     public function __construct(
         GenericRequest $request,

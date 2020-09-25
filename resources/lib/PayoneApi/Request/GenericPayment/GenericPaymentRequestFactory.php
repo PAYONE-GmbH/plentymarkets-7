@@ -12,7 +12,7 @@ class GenericPaymentRequestFactory
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param string $referenceId
+     * @param string|null $referenceId
      * @return mixed
      */
     public static function create(string $paymentMethod, array $data, string $referenceId = null)

@@ -21,13 +21,13 @@ class RequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param bool $referenceId
+     * @param string|null $referenceId
      *
      * @throws \Exception
      *
      * @return AuthorizationRequestAbstract
      */
-    public static function create(string $paymentMethod, array $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $genericAuthRequest = GenericAuthRequestFactory::create(static::$requestType, $data);
         switch ($paymentMethod) {

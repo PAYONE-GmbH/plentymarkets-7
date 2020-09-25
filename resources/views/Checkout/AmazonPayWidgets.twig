@@ -27,13 +27,13 @@
                                 if (response.events.CheckoutChanged.hasOwnProperty('AmazonPayAddress')) {
                                     if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('changed')) {
                                         if (response.events.CheckoutChanged.AmazonPayAddress.changed) {
-                                            if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('billingAddress')) {
+                                            if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('billingAddress')) {
                                                 window.ceresStore.dispatch("createAddress", {
                                                     address: response.events.CheckoutChanged.AmazonPayAddress.billingAddress,
                                                     addressType: "1"
                                                 });
                                             }
-                                            if (response.events.CheckoutChanged.AmazonPayAddress.changed.hasOwnProperty('shippingAddress')) {
+                                            if (response.events.CheckoutChanged.AmazonPayAddress.hasOwnProperty('shippingAddress')) {
                                                 window.ceresStore.dispatch("createAddress", {
                                                     address: response.events.CheckoutChanged.AmazonPayAddress.shippingAddress,
                                                     addressType: "2"

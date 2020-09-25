@@ -10,7 +10,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             window.checkIfWidgetsPlacesCorrect = function() {
-                if($('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label div#AmazonLoginButton').length === 0) {
+                if($('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label div#LoginWithAmazon').length === 0) {
                     if (document.getElementById("LoginWithAmazon") !== null) {
                         document.getElementById("LoginWithAmazon").remove();
                     }
@@ -95,6 +95,8 @@
                 }
                 $('.shipping-addresses-select').prev('header').css("display", 'block');
                 $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
+
+                checkAmazonPayButton();
             };
 
             [

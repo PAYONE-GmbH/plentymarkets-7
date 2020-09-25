@@ -13,15 +13,21 @@ use PayoneApi\Request\Parts\RedirectUrls;
  */
 class OnlineBankTransfer extends AuthorizationRequestAbstract
 {
-    const ONLINE_TRANSFER = 'EPS';
-
-    protected $onlinebanktransfertype = self::ONLINE_TRANSFER;
+    /**
+     * @var string
+     */
     protected $clearingtype = ClearingTypes::ONLINE_BANK_TRANSFER;
+
+    /**
+     * @var string
+     */
+    protected $onlinebanktransfertype = 'EPS';
 
     /**
      * @var RedirectUrls
      */
     private $urls;
+
     /**
      * @var BankAccount
      */

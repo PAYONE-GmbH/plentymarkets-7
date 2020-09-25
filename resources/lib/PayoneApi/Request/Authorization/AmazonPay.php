@@ -13,41 +13,54 @@ use PayoneApi\Request\WalletTypes;
  */
 class AmazonPay extends AuthorizationRequestAbstract
 {
-    /** @var string */
-    const WALLET_TYPE = WalletTypes::AMAZON_PAYMENTS;
-
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $clearingtype = ClearingTypes::WALLET;
 
-    /** @var string */
-    private $wallettype = self::WALLET_TYPE;
+    /**
+     * @var string
+     */
+    protected $wallettype = WalletTypes::AMAZON_PAYMENTS;
 
-    /** @var string */
-    private $workorderid;
+    /**
+     * @var string
+     */
+    protected $workorderid;
 
-    /** @var string */
-    private $reference;
+    /**
+     * @var string
+     */
+    protected $reference;
 
-    /** @var string */
-    private $currency;
+    /**
+     * @var string
+     */
+    protected $currency;
 
-    private $amount;
+    /**
+     * @var string
+     */
+    protected $amount;
 
-    private $add_paydata = [
+    /**
+     * @var string[]
+     */
+    protected $add_paydata = [
         'amazon_reference_id' => '',
     ];
 
     /**
      * @var RedirectUrls
      */
-    private $urls;
+    protected $urls;
 
     /**
      * PayPal constructor.
      *
      * @param GenericAuthorizationRequest $authorizationRequest
      * @param RedirectUrls $urls
-     * @param $amount
+     * @param string $amount
      * @param string $workOrderId
      * @param string $reference
      * @param string $currency
@@ -56,7 +69,7 @@ class AmazonPay extends AuthorizationRequestAbstract
     public function __construct(
         GenericAuthorizationRequest $authorizationRequest,
         RedirectUrls $urls,
-        $amount,
+        string $amount,
         string $workOrderId,
         string $reference,
         string $currency,
@@ -71,14 +84,6 @@ class AmazonPay extends AuthorizationRequestAbstract
         $this->reference = $reference;
         $this->currency = $currency;
         $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClearingtype(): string
-    {
-        return $this->clearingtype;
     }
 
     /**
@@ -114,7 +119,7 @@ class AmazonPay extends AuthorizationRequestAbstract
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAmount()
     {

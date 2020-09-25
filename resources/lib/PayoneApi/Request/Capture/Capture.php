@@ -7,29 +7,45 @@ use PayoneApi\Request\Parts\Cart;
 
 class Capture
 {
-    private $txid;
-    private $capturemode;
-    private $cart;
+    /**
+     * @var string
+     */
+    protected $txid;
+
+    /**
+     * @var string
+     */
+    protected $capturemode;
+
+    /**
+     * @var Cart|null
+     */
+    protected $cart;
+
     /**
      * @var GenericRequest
      */
-    private $request;
-    private $settleaccount;
+    protected $request;
+
+    /**
+     * @var string
+     */
+    protected $settleaccount;
 
     /**
      * Capture constructor.
      *
      * @param GenericRequest $request
-     * @param $txid
-     * @param $capturemode
-     * @param $settleaccount
+     * @param string $txid
+     * @param string $capturemode
+     * @param string $settleaccount
      * @param Cart $cart
      */
     public function __construct(
         GenericRequest $request,
-        $txid,
-        $capturemode,
-        $settleaccount,
+        string $txid,
+        string $capturemode,
+        string $settleaccount,
         Cart $cart = null
     ) {
         $this->request = $request;
@@ -80,7 +96,7 @@ class Capture
 
     /**
      * Getter for Settleaccount
-     * @return mixed
+     * @return string
      */
     public function getSettleaccount()
     {

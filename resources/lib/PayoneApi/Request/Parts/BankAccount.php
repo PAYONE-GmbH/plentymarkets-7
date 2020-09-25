@@ -7,32 +7,37 @@ class BankAccount
     /**
      * @var string
      */
-    private $bankcountry;
+    protected $bankcountry;
+
     /**
      * @var string
      */
-    private $iban;
+    protected $iban;
+
     /**
      * @var string
      */
-    private $bic;
+    protected $bic;
+
     /**
      * @var string
      */
-    private $firstname;
+    protected $firstname;
+
     /**
      * @var string
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * BankAccount constructor.
      *
      * @param string $bankcountry
+     * @param string $holder
      * @param string $iban
      * @param string $bic
      */
-    public function __construct($bankcountry, $holder, $iban, $bic)
+    public function __construct(string $bankcountry, string $holder, string $iban, string $bic)
     {
         $this->bankcountry = $bankcountry;
         $this->iban = $iban;
@@ -45,7 +50,7 @@ class BankAccount
     /**
      * Getter for Bankcountry
      *
-     * @return mixed
+     * @return string
      */
     public function getBankcountry()
     {
@@ -55,7 +60,7 @@ class BankAccount
     /**
      * Getter for Iban
      *
-     * @return mixed
+     * @return string
      */
     public function getIban()
     {
@@ -65,7 +70,7 @@ class BankAccount
     /**
      * Getter for Bic
      *
-     * @return mixed
+     * @return string
      */
     public function getBic()
     {
@@ -75,7 +80,7 @@ class BankAccount
     /**
      * Getter for Firstname
      *
-     * @return mixed
+     * @return string
      */
     public function getFirstname()
     {
@@ -85,7 +90,7 @@ class BankAccount
     /**
      * Getter for Lastname
      *
-     * @return mixed
+     * @return string
      */
     public function getLastname()
     {

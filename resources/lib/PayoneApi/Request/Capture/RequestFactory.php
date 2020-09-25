@@ -14,11 +14,11 @@ class RequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param string|null $referenceId
+     * @param string $referenceId
      *
      * @return Capture|RequestDataContract
      */
-    public static function create(string $paymentMethod, array $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $genericRequest = GenericRequestFactory::create(Types::CAPTURE, $data);
         $context = $data['context'];

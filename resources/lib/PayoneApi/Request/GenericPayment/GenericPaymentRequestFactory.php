@@ -9,14 +9,13 @@ use PayoneApi\Request\RequestFactoryContract;
 
 class GenericPaymentRequestFactory
 {
-
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param null $referenceId
+     * @param string $referenceId
      * @return mixed
      */
-    public static function create(string $paymentMethod, array $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         if($data['context']) {
             $context = $data['context'];

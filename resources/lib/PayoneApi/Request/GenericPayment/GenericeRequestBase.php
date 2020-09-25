@@ -47,6 +47,13 @@ class GenericeRequestBase
      */
     protected $info;
 
+    /**
+     * GenericeRequestBase constructor.
+     * @param array $payData
+     * @param Config $config
+     * @param SystemInfo $info
+     * @param string $currency
+     */
     public function __construct(
         array $payData,
         Config $config,

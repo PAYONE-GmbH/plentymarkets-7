@@ -8,17 +8,25 @@ use PayoneApi\Request\Types;
 
 class GetInvoice
 {
-    private $invoiceTitle;
+    /**
+     * @var string
+     */
+    protected $invoiceTitle;
 
-    private $request = Types::INVOICE;
+    /**
+     * @var string
+     */
+    protected $request = Types::INVOICE;
+
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
+
     /**
      * @var SystemInfo
      */
-    private $info;
+    protected $info;
 
     /**
      * ManageMandate constructor.
@@ -29,7 +37,7 @@ class GetInvoice
      */
     public function __construct(
         Config $config,
-        $invoiceTitle,
+        string $invoiceTitle,
         SystemInfo $info
     ) {
         $this->config = $config;

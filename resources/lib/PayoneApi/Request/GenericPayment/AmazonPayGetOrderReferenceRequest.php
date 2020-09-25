@@ -10,12 +10,12 @@ class AmazonPayGetOrderReferenceRequest extends GenericeRequestBase
     /**
      * @var string
      */
-    private $amount;
+    protected $amount;
 
     /**
      * @var string
      */
-    private $workorderid;
+    protected $workorderid;
 
     /**
      * AmazonPayGetOrderReferenceRequest constructor.

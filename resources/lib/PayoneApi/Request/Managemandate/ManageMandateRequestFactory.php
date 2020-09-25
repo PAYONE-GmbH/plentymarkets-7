@@ -15,11 +15,11 @@ class ManageMandateRequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param null $referenceId
+     * @param string $referenceId
      *
      * @return ManageMandate
      */
-    public static function create(string $paymentMethod, array $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $context = $data['context'];
         $config = new Config(

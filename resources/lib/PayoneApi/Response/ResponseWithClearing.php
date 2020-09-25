@@ -7,7 +7,7 @@ class ResponseWithClearing extends GenericResponse implements ResponseContract
     /**
      * @var Clearing
      */
-    private $clearing;
+    protected $clearing;
 
     /**
      * @param Clearing $clearing

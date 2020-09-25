@@ -26,6 +26,8 @@ class ClientErrorResponse extends ResponseDataAbstract implements ResponseContra
      * ClientErrorResponse constructor.
      *
      * @param string $errorMessage
+     * @param mixed $requestData
+     * @param mixed $responseData
      */
     public function __construct($errorMessage, $requestData = null, $responseData = null)
     {

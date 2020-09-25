@@ -13,19 +13,25 @@ use PayoneApi\Request\Parts\RedirectUrls;
  */
 class Sofort extends AuthorizationRequestAbstract
 {
-    const SOFORT_BANK_TRANSFER_TYPE = 'PNT';
-
-    protected $onlinebanktransfertype = self::SOFORT_BANK_TRANSFER_TYPE;
+    /**
+     * @var string
+     */
     protected $clearingtype = ClearingTypes::ONLINE_BANK_TRANSFER;
+
+    /**
+     * @var string
+     */
+    protected $onlinebanktransfertype = 'PNT';
 
     /**
      * @var RedirectUrls
      */
-    private $urls;
+    protected $urls;
+
     /**
      * @var BankAccount
      */
-    private $bankAccount;
+    protected $bankAccount;
 
     /**
      * PayPal constructor.

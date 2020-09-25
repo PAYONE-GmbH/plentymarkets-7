@@ -134,13 +134,24 @@ class PaymentCreation
             $payment->receivedAt = date('Y-m-d H:i:s');
         }
 
-        /** @var CurrencyExchangeRepositoryContract $currencyService */
-        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+        try {
+            /** @var CurrencyExchangeRepositoryContract $currencyService */
+            $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
 
-        $defaultCurrency = $currencyService->getDefaultCurrency();
+            $defaultCurrency = $currencyService->getDefaultCurrency();
 
-        if ($payment->currency != $defaultCurrency) {
-            $payment->isSystemCurrency = false;
+            if ($payment->currency != $defaultCurrency) {
+                $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
+                $payment->amount = round(
+                    $currencyService->convertToDefaultCurrency(
+                        $payment->currency,
+                        $payment->amount,
+                        $payment->exchangeRatio
+                    ),
+                    2);
+            }
+        } catch (\Exception $cEx) {
+
         }
 
         $payment->type = 'credit';

@@ -12,6 +12,7 @@ use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\Frontend\Contracts\CurrencyExchangeRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -131,6 +132,15 @@ class PaymentCreation
             $payment->currency = $basketData['currency'];
             $payment->amount = $basketData['basketAmount'];
             $payment->receivedAt = date('Y-m-d H:i:s');
+        }
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        if ($payment->currency != $defaultCurrency) {
+            $payment->isSystemCurrency = false;
         }
 
         $payment->type = 'credit';

@@ -5,7 +5,7 @@ namespace PayoneApi\Request\GenericPayment;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 
-class AmazonPayConfigurationRequest extends GenericeRequestBase
+class AmazonPayConfigurationRequest extends GenericAmazonPayRequestBase
 {
     /**
      * AmazonPayConfigurationRequest constructor.

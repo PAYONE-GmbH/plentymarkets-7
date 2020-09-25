@@ -74,7 +74,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     /**
      * @return string
      */
-    public function getClientId()
+    public function getClientId(): string
     {
         return $this->clientId;
     }
@@ -82,7 +82,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     /**
      * @return string
      */
-    public function getSellerId()
+    public function getSellerId(): string
     {
         return $this->sellerId;
     }
@@ -90,7 +90,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     /**
      * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         return $this->currency;
     }
@@ -98,7 +98,7 @@ class GetConfigurationResponse extends ResponseAbstract implements \JsonSerializ
     /**
      * @return string
      */
-    public function getWorkOrderId()
+    public function getWorkOrderId(): string
     {
         return $this->workOrderId;
     }

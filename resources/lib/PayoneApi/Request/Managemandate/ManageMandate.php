@@ -170,7 +170,7 @@ class ManageMandate implements RequestDataContract
     /**
      * Getter for Amount
      *
-     * @return int
+     * @return null
      */
     public function getAmount()
     {

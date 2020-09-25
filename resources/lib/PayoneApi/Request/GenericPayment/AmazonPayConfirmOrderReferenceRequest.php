@@ -5,7 +5,7 @@ namespace PayoneApi\Request\GenericPayment;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
 
-class AmazonPayConfirmOrderReferenceRequest extends GenericeRequestBase
+class AmazonPayConfirmOrderReferenceRequest extends GenericAmazonPayRequestBase
 {
     /**
      * @var string

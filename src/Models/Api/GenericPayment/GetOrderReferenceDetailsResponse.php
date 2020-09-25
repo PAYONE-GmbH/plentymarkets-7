@@ -165,7 +165,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -173,7 +173,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingZip()
+    public function getShippingZip(): string
     {
         return $this->shippingZip;
     }
@@ -181,7 +181,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingStreet()
+    public function getShippingStreet(): string
     {
         return $this->shippingStreet;
     }
@@ -189,7 +189,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingCompany()
+    public function getShippingCompany(): string
     {
         return $this->shippingCompany;
     }
@@ -197,7 +197,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingCity()
+    public function getShippingCity(): string
     {
         return $this->shippingCity;
     }
@@ -205,7 +205,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingType()
+    public function getShippingType(): string
     {
         return $this->shippingType;
     }
@@ -213,7 +213,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingCountry()
+    public function getShippingCountry(): string
     {
         return $this->shippingCountry;
     }
@@ -221,7 +221,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingDistrict()
+    public function getShippingDistrict(): string
     {
         return $this->shippingDistrict;
     }
@@ -229,7 +229,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingTelephonenumber()
+    public function getShippingTelephonenumber(): string
     {
         return $this->shippingTelephonenumber;
     }
@@ -237,7 +237,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingState()
+    public function getShippingState(): string
     {
         return $this->shippingState;
     }
@@ -245,7 +245,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingFirstname()
+    public function getShippingFirstname(): string
     {
         return $this->shippingFirstname;
     }
@@ -253,7 +253,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getShippingLastname()
+    public function getShippingLastname(): string
     {
         return $this->shippingLastname;
     }
@@ -261,7 +261,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingZip()
+    public function getBillingZip(): string
     {
         return $this->billingZip;
     }
@@ -269,7 +269,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingStreet()
+    public function getBillingStreet(): string
     {
         return $this->billingStreet;
     }
@@ -277,7 +277,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingCompany()
+    public function getBillingCompany(): string
     {
         return $this->billingCompany;
     }
@@ -285,7 +285,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingCity()
+    public function getBillingCity(): string
     {
         return $this->billingCity;
     }
@@ -293,7 +293,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingType()
+    public function getBillingType(): string
     {
         return $this->billingType;
     }
@@ -301,7 +301,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingCountry()
+    public function getBillingCountry(): string
     {
         return $this->billingCountry;
     }
@@ -309,7 +309,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingFirstname()
+    public function getBillingFirstname(): string
     {
         return $this->billingFirstname;
     }
@@ -317,7 +317,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingLastname()
+    public function getBillingLastname(): string
     {
         return $this->billingLastname;
     }
@@ -325,7 +325,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingDistrict()
+    public function getBillingDistrict(): string
     {
         return $this->billingDistrict;
     }
@@ -333,7 +333,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingTelephonenumber()
+    public function getBillingTelephonenumber(): string
     {
         return $this->billingTelephonenumber;
     }
@@ -341,7 +341,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getBillingState()
+    public function getBillingState(): string
     {
         return $this->billingState;
     }
@@ -349,7 +349,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getStorename()
+    public function getStorename(): string
     {
         return $this->storename;
     }
@@ -357,7 +357,7 @@ class GetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     /**
      * @return string
      */
-    public function getWorkOrderId()
+    public function getWorkOrderId(): string
     {
         return $this->workOrderId;
     }

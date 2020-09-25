@@ -41,7 +41,7 @@ class ConfirmOrderReferenceResponse extends ResponseAbstract implements \JsonSer
     /**
      * @return string
      */
-    public function getWorkOrderId()
+    public function getWorkOrderId(): string
     {
         return $this->workOrderId;
     }

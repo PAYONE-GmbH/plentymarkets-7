@@ -10,7 +10,7 @@ use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Types;
 use PayoneApi\Request\WalletTypes;
 
-class GenericeRequestBase
+class GenericAmazonPayRequestBase
 {
     /**
      * @var string

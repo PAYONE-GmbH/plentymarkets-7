@@ -91,49 +91,49 @@ class SetOrderReferenceDetailsResponse extends ResponseAbstract implements \Json
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmazonAddressToken()
+    public function getAmazonAddressToken(): string
     {
         return $this->amazonAddressToken;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmazonReferenceId()
+    public function getAmazonReferenceId(): string
     {
         return $this->amazonReferenceId;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getStorename()
+    public function getStorename(): string
     {
         return $this->storename;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAmount()
+    public function getAmount(): string
     {
         return $this->amount;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         return $this->currency;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getWorkOrderId()
+    public function getWorkOrderId(): string
     {
         return $this->workOrderId;
     }

@@ -256,6 +256,26 @@ class PaymentCreation
         $payment->amount = $orderData['amounts'][0]['grossTotal'];
         $payment->receivedAt = date('Y-m-d H:i:s');
 
+        try {
+            /** @var CurrencyExchangeRepositoryContract $currencyService */
+            $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+            $defaultCurrency = $currencyService->getDefaultCurrency();
+
+            if ($payment->currency != $defaultCurrency) {
+                $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
+                $payment->amount = round(
+                    $currencyService->convertToDefaultCurrency(
+                        $payment->currency,
+                        $payment->amount,
+                        $payment->exchangeRatio
+                    ),
+                    2);
+            }
+        } catch (\Exception $cEx) {
+
+        }
+
         $payment = $this->paymentRepository->updatePayment($payment);
 
         return $payment;

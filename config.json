@@ -828,6 +828,75 @@
           }
         }
       }
+    },
+    "Config.AmazonPay": {
+      "label": "Config.AmazonPayTab",
+      "formFields": {
+        "PAYONE_PAYONE_AMAZON_PAY.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEAMAZONPAYActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEAMAZONPAYActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYNameLabel",
+          "options": {
+            "defaultValue": "Amazon Pay"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,FR,IT,ES,LU,NL,SE,PT,HU,DK"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.sandbox": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYSandboxLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        }
+      }
     }
   }
 }

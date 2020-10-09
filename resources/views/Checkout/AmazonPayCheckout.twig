@@ -1,0 +1,121 @@
+{% if services.template.isCurrentTemplate('tpl.checkout') %}
+    <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
+
+    {% if config('Payone.PAYONE_PAYONE_AMAZON_PAY.sandbox') == "true" %}
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
+    {% else %}
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
+    {% endif %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.checkIfWidgetsPlacesCorrect = function() {
+                if($('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label div#LoginWithAmazon').length === 0) {
+                    if (document.getElementById("LoginWithAmazon") !== null) {
+                        document.getElementById("LoginWithAmazon").remove();
+                    }
+                    $('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+
+                    if (document.getElementById("LogoutWithAmazon") !== null) {
+                        document.getElementById("LogoutWithAmazon").remove();
+                    }
+                    $('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label').append('<button onclick="amazonLogout()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;width:50%\'>Logout</button>');
+
+                    if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
+                        $('li.method-list-item[data-id="{{ amazonPayMopId }}"]').after(document.getElementById("walletWidgetDiv"));
+                        walletWidget.bind("walletWidgetDiv")
+                        document.getElementById("LogoutWithAmazon").style.display = "block";
+                    } else if(document.getElementById("walletWidgetDiv") === null) {
+                        $('li.method-list-item[data-id="{{ amazonPayMopId }}"]').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+                    } else if(document.getElementById("walletWidgetDiv") !== null) {
+                        document.getElementById("walletWidgetDiv").remove();
+                        $('li.method-list-item[data-id="{{ amazonPayMopId }}"]').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+
+                        if(document.getElementById("addressBookWidgetDiv") !== null) {
+                            document.getElementById("addressBookWidgetDiv").style.display = "none";
+                        }
+                    }
+                    window.amazonPayButtonLoaded = false;
+                }
+            }
+
+            window.loadAmazonPayButton = function() {
+                if(!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
+                    $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
+                        $("body").append(data);
+                    });
+                    window.amazonPayButtonLoaded = true;
+                }
+                document.getElementById("LoginWithAmazon").style.display = "block";
+            }
+
+            window.unloadAmazonPayButton = function() {
+                if(document.getElementById("LoginWithAmazon") !== null) {
+                    document.getElementById("LoginWithAmazon").style.display = "none";
+                    document.getElementById("LogoutWithAmazon").style.display = "none";
+                }
+                if (document.getElementById("walletWidgetDiv") !== null && document.getElementById("addressBookWidgetDiv") !== null) {
+                    document.getElementById("walletWidgetDiv").style.display = "none";
+                    document.getElementById("addressBookWidgetDiv").style.display = "none";
+                }
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
+                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                }
+                $('.shipping-addresses-select').prev('header').css("display", 'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
+            }
+
+            window.checkAmazonPayButton = function() {
+                checkIfWidgetsPlacesCorrect();
+
+                if(window.ceresStore.state.checkout.payment.methodOfPaymentId == {{ amazonPayMopId }}) {
+                    if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
+                        loadAmazonPayButton();
+                    } else if(document.getElementById("walletWidgetDiv") === null) {
+                        loadAmazonPayButton();
+                    }
+                } else {
+                    unloadAmazonPayButton();
+                }
+            }
+
+            window.amazonLogout = function() {
+                amazon.Login.logout();
+                document.getElementById("LoginWithAmazon").style.display = "block";
+                document.getElementById("LogoutWithAmazon").style.display = "none";
+                document.getElementById("addressBookWidgetDiv").style.display = "none";
+                document.getElementById("walletWidgetDiv").style.display = "none";
+
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
+                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                }
+                $('.shipping-addresses-select').prev('header').css("display", 'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
+
+                checkAmazonPayButton();
+            };
+
+            [
+                'onSetMethodOfPaymentList',
+                'afterPaymentMethodChanged',
+                'afterBasketItemQuantityUpdated',
+                'afterBasketItemRemoved',
+                'afterBasketItemAdded',
+                'afterShippingCountryChanged',
+                'afterShippingProfileChanged',
+                'onSetCouponCode',
+                'billingAddressChanged'
+            ].forEach(event =>
+                document.addEventListener(event, function (e) {
+                    checkAmazonPayButton();
+                })
+            );
+
+            checkAmazonPayButton()
+        });
+    </script>
+{% endif %}

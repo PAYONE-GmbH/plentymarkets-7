@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
@@ -51,6 +52,10 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
             $requestParams['sepaMandate'] = $this->getSepaMandateData();
         }
+        if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
+            $requestParams['amazonPayAuth'] = $this->getAmazonPayData($basket->id, $basket->basketAmount, $basket->currency);
+        }
+
         $requestParams['referenceId'] = $requestReference;
         $requestParams['shippingProvider'] = $this->getShippingProvider($basket->shippingProfileId);
         $this->validator->validate($requestParams);

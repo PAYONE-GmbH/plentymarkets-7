@@ -12,11 +12,16 @@ use PayoneApi\Request\Parts\Cart;
  */
 class InvoiceSecure extends AuthorizationRequestAbstract
 {
-    const PAYONE_INVOICE_CLEARING_TYPE = 'POV';
-
+    /**
+     * @var string
+     */
     protected $clearingtype = ClearingTypes::REC;
 
-    protected $clearingsubtype = self::PAYONE_INVOICE_CLEARING_TYPE;
+    /**
+     * @var string
+     */
+    protected $clearingsubtype = 'POV';
+
     /**
      * @var Cart
      */

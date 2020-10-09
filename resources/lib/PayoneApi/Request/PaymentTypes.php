@@ -17,7 +17,7 @@ class PaymentTypes
     const PAYONE_PAYDIREKT = 'Paydirekt';
     const PAYONE_INVOICE_SECURE = 'InvoiceSecure';
     const PAYONE_ON_LINE_BANK_TRANSFER = 'OnlineBankTransfer';
-    const PAYONE_AMAZON_PAY = 'Amazon Pay';
+    const PAYONE_AMAZON_PAY = 'AmazonPay';
 
     /**
      * @return mixed

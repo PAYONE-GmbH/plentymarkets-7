@@ -7,22 +7,29 @@ use PayoneApi\Request\Parts\Cart;
 
 class Debit
 {
-    private $txid;
+    /**
+     * @var string
+     */
+    protected $txid;
+
     /**
      * @var GenericRequest
      */
-    private $request;
-    /** @var Cart */
-    private $cart;
+    protected $request;
+
+    /**
+     * @var Cart
+     */
+    protected $cart;
 
     /**
      * Debit constructor.
      *
      * @param GenericRequest $request
-     * @param $txid
-     * @param Cart $cart
+     * @param string $txid
+     * @param Cart|null $cart
      */
-    public function __construct(GenericRequest $request, $txid, Cart $cart = null)
+    public function __construct(GenericRequest $request, string $txid, Cart $cart = null)
     {
         $this->txid = $txid;
         $this->request = $request;

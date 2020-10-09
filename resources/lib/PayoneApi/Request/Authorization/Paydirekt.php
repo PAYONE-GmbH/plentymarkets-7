@@ -7,28 +7,32 @@ use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\RedirectUrls;
 use PayoneApi\Request\Parts\ShippingAddress;
+use PayoneApi\Request\WalletTypes;
 
 /**
  * Class Paydirekt
  */
 class Paydirekt extends AuthorizationRequestAbstract
 {
-    const WALLET_TYPE = 'PDT';
-
-    protected $clearingtype = ClearingTypes::WALLET;
     /**
      * @var string
      */
-    private $wallettype = self::WALLET_TYPE;
+    protected $clearingtype = ClearingTypes::WALLET;
+
+    /**
+     * @var string
+     */
+    protected $wallettype = WalletTypes::PAYDIREKT;
+
     /**
      * @var RedirectUrls
      */
-    private $urls;
+    protected $urls;
 
     /**
      * @var ShippingAddress
      */
-    private $shippingAddress;
+    protected $shippingAddress;
 
     /**
      * Paydirekt constructor.

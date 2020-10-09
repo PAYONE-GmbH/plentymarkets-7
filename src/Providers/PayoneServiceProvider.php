@@ -2,7 +2,9 @@
 
 namespace Payone\Providers;
 
+use Ceres\Helper\LayoutContainer;
 use Payone\Adapter\Logger;
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
@@ -21,35 +23,36 @@ use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayonePrePaymentPaymentMethod;
 use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
+use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
+use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
-use Payone\Services\Capture;
+use Payone\Services\AmazonPayService;
 use Payone\Services\OrderPdf;
 use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentService;
 use Payone\Views\ErrorMessageRenderer;
 use Payone\Views\PaymentRenderer;
-use Plenty\Log\Exceptions\ReferenceTypeException;
-use Plenty\Log\Services\ReferenceContainer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketChanged;
 use Plenty\Modules\Basket\Events\Basket\AfterBasketCreate;
 use Plenty\Modules\Basket\Events\BasketItem\AfterBasketItemAdd;
+use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Document\Models\Document;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Order\Events\OrderCreated;
-use Plenty\Modules\Order\Models\OrderType;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
+use Plenty\Plugin\Templates\Twig;
 
 class PayoneServiceProvider extends ServiceProvider
 {
@@ -66,21 +69,24 @@ class PayoneServiceProvider extends ServiceProvider
      * @param BasketRepositoryContract $basket
      * @param PaymentMethodContainer $payContainer
      * @param EventProceduresService $eventProceduresService
+     * @param ConfigRepository $configRepository
      */
     public function boot(
         Dispatcher $eventDispatcher,
         BasketRepositoryContract $basket,
         PaymentMethodContainer $payContainer,
-        EventProceduresService $eventProceduresService
+        EventProceduresService $eventProceduresService,
+        ConfigRepository $configRepository
     ) {
         $this->registerPaymentMethods($payContainer);
 
         $this->registerPaymentRendering(
             $eventDispatcher,
-            $basket
+            $basket,
+            $configRepository
         );
 
-        $this->registerPaymentExecute($eventDispatcher);
+        $this->registerPaymentExecute($eventDispatcher, $basket);
 
         $captureProcedureTitle = [
             'de' => 'Versandbestätigung an ' . PluginConstants::NAME,
@@ -105,6 +111,35 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $this->registerInvoicePdfGeneration($eventDispatcher);
+
+        $amazonPayActive = $configRepository->get(PluginConstants::NAME . '.' . PayoneAmazonPayPaymentMethod::PAYMENT_CODE . '.active');
+        if (isset($amazonPayActive) && $amazonPayActive == 1) {
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
+            /** @var PaymentHelper $twig */
+            $paymentHelper = pluginApp(PaymentHelper::class);
+
+            $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+
+            $eventDispatcher->listen(
+                'IO.Resources.Import', function ($resourceContainer) use ($basket, $amazonPayMopId) {
+                $basketData = $basket->load();
+                /** @noinspection PhpUndefinedMethodInspection */
+                $resourceContainer->addScriptTemplate(
+                    PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
+                    'selectedPaymentId' => $basketData->methodOfPaymentId,
+                    'amazonPayMopId' => $amazonPayMopId
+                ]);
+            });
+
+            $eventDispatcher->listen(
+                "Ceres.LayoutContainer.Checkout.BeforeBillingAddress",
+                function (LayoutContainer $container) use ($twig) {
+                    $container->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayAddressBookWidget'));
+                }
+            );
+        }
+
     }
 
     /**
@@ -180,19 +215,17 @@ class PayoneServiceProvider extends ServiceProvider
 
     /**
      * @param Dispatcher $eventDispatcher
-     * @param PaymentHelper $paymentHelper
-     * @param PaymentService $paymentService
-     * @param PaymentRenderer $paymentRenderer
-     * @param PaymentMethodContent $content
-     * @param Logger $logger
+     * @param BasketRepositoryContract $basketRepository
+     * @param ConfigRepository $configRepository
      */
     protected function registerPaymentRendering(
         Dispatcher $eventDispatcher,
-        BasketRepositoryContract $basketRepository
+        BasketRepositoryContract $basketRepository,
+        ConfigRepository $configRepository
     ) {
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,
-            function (GetPaymentMethodContent $event) use ($basketRepository) {
+            function (GetPaymentMethodContent $event) use ($basketRepository, $configRepository) {
                 /** @var PaymentService $paymentService */
                 $paymentService = pluginApp(PaymentService::class);
                 /** @var Logger $logger */
@@ -200,16 +233,23 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var PaymentHelper $paymentHelper */
                 $paymentHelper = pluginApp(PaymentHelper::class);
 
+                $basket = $basketRepository->load();
+
                 $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
                 $selectedPaymentMopId = $event->getMop();
                 if (!$selectedPaymentMopId || !$paymentHelper->isPayonePayment($selectedPaymentMopId)) {
+                    return;
+                } elseif ($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                    $amazonPayActive = $configRepository->get(PluginConstants::NAME . '.' . PayoneAmazonPayPaymentMethod::PAYMENT_CODE . '.active');
+                    if (isset($amazonPayActive) && $amazonPayActive == 1) {
+                        return $this->registerAmazonPayIntegration($event, $basket);
+                    }
                     return;
                 }
                 $paymentCode = $paymentHelper->getPaymentCodeByMop($selectedPaymentMopId);
                 /** @var PaymentAbstract $payment */
                 $payment = PaymentMethodServiceFactory::create($paymentCode);
 
-                $basket = $basketRepository->load();
                 /** @var AddressHelper $addressHelper */
                 $addressHelper = pluginApp(AddressHelper::class);
                 $billingAddress = $addressHelper->getBasketBillingAddress($basket);
@@ -263,32 +303,60 @@ class PayoneServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerPaymentExecute(Dispatcher $dispatcher)
+    protected function registerPaymentExecute(Dispatcher $dispatcher, BasketRepositoryContract $basketRepository)
     {
-        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) {
+        $dispatcher->listen(ExecutePayment::class, function (ExecutePayment $event) use ($basketRepository){
             /** @var PaymentHelper $paymentHelper */
             $paymentHelper = pluginApp(PaymentHelper::class);
+            /** @var Logger $logger */
+            $logger = pluginApp(Logger::class);
+
             if($paymentHelper->isPayonePayment($event->getMop())) {
-                /** @var OrderRepositoryContract $orderRepository */
-                $orderRepository = pluginApp(OrderRepositoryContract::class);
-                /** @var PaymentCache $paymentCache */
-                $paymentCache = pluginApp(PaymentCache::class);
+                try{
+                    if($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                        /** @var PaymentService $paymentService */
+                        $paymentService = pluginApp(PaymentService::class);
+                        $basket = $basketRepository->load();
 
-                $order = $orderRepository->findOrderById($event->getOrderId());
-                $payment = $paymentCache->loadPayment($event->getMop());
-                if (!($payment instanceof Payment)) {
-                    $message = 'Payment could not be assigned to order.';
+                        $auth = $paymentService->openTransaction($basket);
+                        $logger
+                            ->setIdentifier(__METHOD__)
+                            ->debug('AmazonPay.paymentExecute', [
+                                "auth" => (array) $auth
+                            ]);
+                        /** @var SessionStorage $sessionStorage */
+                        $sessionStorage = pluginApp(SessionStorage::class);
+                        $sessionStorage->setSessionValue('clientId', null);
+                        $sessionStorage->setSessionValue('sellerId', null);
+                        $sessionStorage->setSessionValue('workOrderId', null);
+                        $sessionStorage->setSessionValue('accessToken', null);
+                    }
+                    /** @var OrderRepositoryContract $orderRepository */
+                    $orderRepository = pluginApp(OrderRepositoryContract::class);
+                    /** @var PaymentCache $paymentCache */
+                    $paymentCache = pluginApp(PaymentCache::class);
 
-                    /** @var Logger $logger */
-                    $logger = pluginApp(Logger::class);
-                    $logger->error($message, $payment);
-                    return;
+                    $order = $orderRepository->findOrderById($event->getOrderId());
+                    $payment = $paymentCache->loadPayment($event->getMop());
+                    if (!($payment instanceof Payment)) {
+                        $message = 'Payment could not be assigned to order.';
+
+                        /** @var Logger $logger */
+                        $logger = pluginApp(Logger::class);
+                        $logger->error($message, $payment);
+                        return;
+                    }
+
+                    /** @var PaymentCreation $paymentCreationService */
+                    $paymentCreationService = pluginApp(PaymentCreation::class);
+                    $paymentCreationService->assignPaymentToOrder($payment, $order);
+                    $paymentCache->deletePayment($event->getMop());
+
+                } catch (\Exception $exception){
+                    $logger
+                        ->setIdentifier(__METHOD__)
+                        ->error('Error in paymentExecute-Event', $exception);
                 }
-
-                /** @var PaymentCreation $paymentCreationService */
-                $paymentCreationService = pluginApp(PaymentCreation::class);
-                $paymentCreationService->assignPaymentToOrder($payment, $order);
-                $paymentCache->deletePayment($event->getMop());
             }
         });
 
@@ -355,5 +423,55 @@ class PayoneServiceProvider extends ServiceProvider
                 $event->addOrderPdfGeneration($orderPdfGenerationModel);
             }
         );
+    }
+
+    /**
+     * @param GetPaymentMethodContent $event
+     * @param Basket $basket
+     */
+    public function registerAmazonPayIntegration(GetPaymentMethodContent $event, Basket $basket)
+    {
+        /** @var AmazonPayService $amazonPayService */
+        $amazonPayService = pluginApp(AmazonPayService::class);
+        /** @var Logger $logger */
+        $logger = pluginApp(Logger::class);
+        /** @var Twig $twig */
+        $twig = pluginApp(Twig::class);
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        /** @var PaymentCache $paymentCache */
+        $paymentCache = pluginApp(PaymentCache::class);
+
+        try {
+            $paymentCache->setActiveBasketId($basket->id);
+
+            /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
+            $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
+            /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
+            $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
+
+            $event->setValue($twig->render(
+                PluginConstants::NAME . '::Checkout.Confirmation',
+                [
+                    'success' => $confirmOrderRefResponse->getSuccess(),
+                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                ]
+            ));
+            $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
+
+            $logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.paymentMethodContent', [
+                    "event" => (array)$event,
+                    "setOrderRefResponse" => (array)$setOrderRefResponse,
+                    "confirmOrderRefResponse" => (array)$confirmOrderRefResponse
+                ]);
+
+        } catch (\Exception $exception) {
+            $logger
+                ->setIdentifier(__METHOD__)
+                ->error('AmazonPay.paymentMethodContent', $exception);
+        }
     }
 }

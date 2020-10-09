@@ -7,6 +7,7 @@ namespace PayoneApi\Request\Parts;
 class CartFactory
 {
     /**
+     * @param array $requestData
      * @return Cart
      */
     static public function create(array $requestData)

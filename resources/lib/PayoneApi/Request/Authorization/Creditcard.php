@@ -21,6 +21,7 @@ class Creditcard extends AuthorizationRequestAbstract
      * @var string
      */
     private $pseudocardpan;
+
     /**
      * @var RedirectUrls
      */

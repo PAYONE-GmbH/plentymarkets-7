@@ -7,17 +7,33 @@ namespace PayoneApi\Response;
  */
 class ClientErrorResponse extends ResponseDataAbstract implements ResponseContract
 {
-    /** @var string */
-    private $errorMessage;
+    /**
+     * @var string
+     */
+    protected $errorMessage;
+
+    /**
+     * @var mixed
+     */
+    protected $requestData;
+
+    /**
+     * @var mixed
+     */
+    protected $responseData;
 
     /**
      * ClientErrorResponse constructor.
      *
      * @param string $errorMessage
+     * @param mixed $requestData
+     * @param mixed $responseData
      */
-    public function __construct($errorMessage)
+    public function __construct($errorMessage, $requestData = null, $responseData = null)
     {
         $this->errorMessage = $errorMessage;
+        $this->requestData = $requestData;
+        $this->responseData = $responseData;
     }
 
     /**
@@ -50,5 +66,21 @@ class ClientErrorResponse extends ResponseDataAbstract implements ResponseContra
     public function getTransactionID()
     {
         return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequestData()
+    {
+        return $this->requestData;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponseData()
+    {
+        return $this->responseData;
     }
 }

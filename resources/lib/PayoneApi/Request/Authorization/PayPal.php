@@ -6,24 +6,27 @@ use PayoneApi\Request\AuthorizationRequestAbstract;
 use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\RedirectUrls;
+use PayoneApi\Request\WalletTypes;
 
 /**
  * Class PayPal
  */
 class PayPal extends AuthorizationRequestAbstract
 {
-    const WALLET_TYPE = 'PPE';
-
-    protected $clearingtype = ClearingTypes::WALLET;
     /**
      * @var string
      */
-    private $wallettype = self::WALLET_TYPE;
+    protected $clearingtype = ClearingTypes::WALLET;
+
+    /**
+     * @var string
+     */
+    protected $wallettype = WalletTypes::PAYPAL;
 
     /**
      * @var RedirectUrls
      */
-    private $urls;
+    protected $urls;
 
     /**
      * PayPal constructor.

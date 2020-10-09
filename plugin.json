@@ -1,11 +1,14 @@
 {
-  "version": "1.1.14",
-  "license":"MIT",
-  "pluginIcon":"icon_plugin_xs.png",
-  "price":0.0,
-  "authorIcon":"icon_author_xs.png",
+  "version": "1.2.0",
+  "license": "MIT",
+  "pluginIcon": "icon_plugin_xs.png",
+  "price": 0.0,
+  "authorIcon": "icon_author_xs.png",
   "name": "Payone",
-  "marketplaceName" : {"de":"PAYONE","en":"PAYONE"},
+  "marketplaceName": {
+    "de": "PAYONE",
+    "en": "PAYONE"
+  },
   "shortDescription": {
     "de": "Das offizielle Payone plugin für plentymarkets Webshops. Das Payone Plugin setzt einen Checkout-Prozess auf Basis von Ceres voraus.",
     "en": "The official Payone plugin for plentymarkets online stores"
@@ -14,18 +17,28 @@
   "author": "plentysystems AG",
   "email": "sales@plentymarkets.com",
   "phone": "+49 561 98 681 100",
-  "keywords": ["Payone", "plentymarkets", "payment"],
-  "categories": [3519],
+  "keywords": [
+    "Payone",
+    "plentymarkets",
+    "payment"
+  ],
+  "categories": [
+    4083
+  ],
   "type": "payment",
   "namespace": "Payone",
   "javaScriptFiles": [],
   "containers": [],
-  "require": ["IO"],
-  "dependencies":{
+  "require": {
+    "IO": ">=5.0.4",
+    "Ceres":">=5.0.4"
+  },
+  "dependencies": {
     "guzzlehttp/guzzle": "6.*",
     "symfony/serializer": "3.2.7",
     "symfony/property-access": "3.2.7",
-    "doctrine/common": "2.7.2"
+    "doctrine/common": "2.7.2",
+    "viison/address-splitter": "0.3.4"
   },
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "runOnBuild": [
@@ -33,15 +46,15 @@
     "Payone\\Migrations\\CreateAmazonPayPaymentMethod"
   ],
   "dataProviders": [
-  {
-    "key":"Payone\\Providers\\DataProviders\\ConfirmationAdditionalPaymentData",
-    "name":"Payone Order Confirmation Page Payment Data",
-    "description": "Block to display additional payment data on order success page."
-  },
-  {
-    "key":"Payone\\Providers\\DataProviders\\Javascript",
-    "name":"Payone Checkout JS",
-    "description": "Block to integrate the payone payments into checkout"
-  }
-]
+    {
+      "key": "Payone\\Providers\\DataProviders\\ConfirmationAdditionalPaymentData",
+      "name": "Payone Order Confirmation Page Payment Data",
+      "description": "Block to display additional payment data on order success page."
+    },
+    {
+      "key": "Payone\\Providers\\DataProviders\\Javascript",
+      "name": "Payone Checkout JS",
+      "description": "Block to integrate the payone payments into checkout"
+    }
+  ]
 }

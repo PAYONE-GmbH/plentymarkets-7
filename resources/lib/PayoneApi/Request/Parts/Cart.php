@@ -6,8 +6,10 @@ namespace PayoneApi\Request\Parts;
 
 class Cart implements \JsonSerializable
 {
-    /** @var CartItem[] */
-    private $cartItems = [];
+    /**
+     * @var CartItem[]
+     */
+    protected $cartItems = [];
 
     /**
      * Getter for CartItems

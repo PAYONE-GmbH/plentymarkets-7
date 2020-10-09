@@ -10,42 +10,49 @@ class Clearing extends ResponseDataAbstract
     /**
      * @var string
      */
-    private $bankaccount;
+    protected $bankaccount;
+
     /**
      * @var string
      */
-    private $bankcode;
+    protected $bankcode;
+
     /**
      * @var string
      */
-    private $bankcountry;
+    protected $bankcountry;
+
     /**
      * @var string
      */
-    private $bankname;
+    protected $bankname;
+
     /**
      * @var string
      */
-    private $bankaccountholder;
+    protected $bankaccountholder;
+
     /**
      * @var string
      */
-    private $bankcity;
+    protected $bankcity;
+
     /**
      * @var string
      */
-    private $bankiban;
+    protected $bankiban;
+
     /**
      * @var string
      */
-    private $bankbic;
+    protected $bankbic;
 
     /**
      * Clearing constructor.
      *
      * @param array $responseData
      */
-    public function __construct($responseData)
+    public function __construct(array $responseData)
     {
         $this->bankaccount = $responseData['clearing_bankaccount'] ?? '';
         $this->bankcode = $responseData['clearing_bankcode'] ?? '';

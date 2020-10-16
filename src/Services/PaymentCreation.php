@@ -140,15 +140,11 @@ class PaymentCreation
 
         $defaultCurrency = $currencyService->getDefaultCurrency();
 
+        //when a payment is placed in a foreign currency, we save the foreign amount,
+        // foreign currency sign, exchange ratio and isSystemCurrency set to 0
         if ($payment->currency != $defaultCurrency) {
             $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
-            $payment->amount = round(
-                $currencyService->convertToDefaultCurrency(
-                    $payment->currency,
-                    $payment->amount,
-                    $payment->exchangeRatio
-                ),
-                2);
+            $payment->isSystemCurrency = 0;
         }
 
         $payment->type = 'credit';

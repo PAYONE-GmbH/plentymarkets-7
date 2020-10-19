@@ -254,8 +254,8 @@ class PaymentCreation
         $defaultCurrency = $currencyService->getDefaultCurrency();
 
         if ($payment->currency != $defaultCurrency) {
-            $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
-            $payment->isSystemCurrency = 0;
+            $payment->exchangeRatio = $order->amount->exchangeRate;
+            $payment->isSystemCurrency = $order->amount->isSystemCurrency;
         }
 
         $payment = $this->paymentRepository->updatePayment($payment);

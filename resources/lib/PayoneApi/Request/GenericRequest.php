@@ -25,10 +25,14 @@ class GenericRequest implements RequestDataContract
      */
     private $currency;
 
-    /** @var Config */
+    /**
+     * @var Config
+     */
     private $config;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     private $sequencenumber;
 
     /**

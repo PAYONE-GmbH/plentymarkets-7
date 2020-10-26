@@ -12,23 +12,45 @@ use PayoneApi\Request\Types;
 
 class ManageMandate implements RequestDataContract
 {
-    private $clearingtype = ClearingTypes::DEBIT_PAYMENT;
-    private $mandateIdentification;
-    private $currency;
-    private $bankAccount;
+    /**
+     * @var string
+     */
+    protected $clearingtype = ClearingTypes::DEBIT_PAYMENT;
+
+    /**
+     * @var string
+     */
+    protected $mandateIdentification;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var BankAccount
+     */
+    protected $bankAccount;
+
     /**
      * @var Customer
      */
-    private $customer;
-    private $request = Types::MANAGEMANDATE;
+    protected $customer;
+
+    /**
+     * @var string
+     */
+    protected $request = Types::MANAGEMANDATE;
+
     /**
      * @var Config
      */
-    private $config;
+    protected $config;
+
     /**
      * @var SystemInfo
      */
-    private $info;
+    protected $info;
 
     /**
      * ManageMandate constructor.
@@ -42,11 +64,11 @@ class ManageMandate implements RequestDataContract
      */
     public function __construct(
         Config $config,
-        $currency,
+        string $currency,
         Customer $customer,
         SystemInfo $info,
         BankAccount $bankAccount,
-        $mandateIdentification = ''
+        string $mandateIdentification = ''
     ) {
         $this->config = $config;
         $this->currency = $currency;
@@ -69,7 +91,7 @@ class ManageMandate implements RequestDataContract
     /**
      * Getter for MandateIdentification
      *
-     * @return mixed
+     * @return string
      */
     public function getMandateIdentification()
     {
@@ -79,7 +101,7 @@ class ManageMandate implements RequestDataContract
     /**
      * Getter for Currency
      *
-     * @return mixed
+     * @return string
      */
     public function getCurrency()
     {
@@ -138,6 +160,7 @@ class ManageMandate implements RequestDataContract
 
     /**
      * Getter for Sequencenumber
+     * @return null
      */
     public function getSequencenumber()
     {
@@ -147,7 +170,7 @@ class ManageMandate implements RequestDataContract
     /**
      * Getter for Amount
      *
-     * @return int
+     * @return null
      */
     public function getAmount()
     {

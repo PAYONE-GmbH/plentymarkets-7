@@ -7,6 +7,7 @@ use PayoneApi\Request\Parts\CartFactory;
 use PayoneApi\Request\PaymentTypes;
 use PayoneApi\Request\RequestFactoryContract;
 use PayoneApi\Request\Types;
+use PayoneApi\Request\RequestDataContract;
 
 class RequestFactory implements RequestFactoryContract
 {
@@ -15,9 +16,9 @@ class RequestFactory implements RequestFactoryContract
      * @param array $data
      * @param string|null $referenceId
      *
-     * @return \PayoneApi\Request\Capture\Capture|\Api\Request\RequestDataContract
+     * @return Capture|RequestDataContract
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $genericRequest = GenericRequestFactory::create(Types::CAPTURE, $data);
         $context = $data['context'];

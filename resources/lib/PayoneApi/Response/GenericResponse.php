@@ -12,14 +12,14 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     /**
      * @var array
      */
-    private $responseData = [];
+    protected $responseData = [];
 
     /**
      * XmlApiResponse constructor.
      *
      * @param array $responseData
      */
-    public function __construct($responseData)
+    public function __construct(array $responseData)
     {
         $this->responseData = $responseData;
     }

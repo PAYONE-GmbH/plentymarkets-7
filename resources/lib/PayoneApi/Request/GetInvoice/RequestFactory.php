@@ -13,11 +13,11 @@ class RequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param int|null $referenceId
+     * @param string|null $referenceId
      *
      * @return GetInvoice
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         if ($paymentMethod != PaymentTypes::PAYONE_INVOICE_SECURE) {
             throw new \Exception('Get invoice only for secure invoice');

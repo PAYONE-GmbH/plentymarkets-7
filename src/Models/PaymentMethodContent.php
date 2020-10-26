@@ -2,6 +2,7 @@
 
 namespace Payone\Models;
 
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
@@ -30,6 +31,8 @@ class PaymentMethodContent
             case PayonePaydirektPaymentMethod::PAYMENT_CODE:
             case PayoneSofortPaymentMethod::PAYMENT_CODE:
                 return GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL;
+            case PayoneAmazonPayPaymentMethod::PAYMENT_CODE:
+                return GetPaymentMethodContent::RETURN_TYPE_HTML;
         }
 
         return GetPaymentMethodContent::RETURN_TYPE_CONTINUE;

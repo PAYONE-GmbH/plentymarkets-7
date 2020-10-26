@@ -38,7 +38,7 @@ class PaymentMethodServiceFactory
             case PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE;
                 return pluginApp(PayoneInvoiceSecurePaymentMethod::class);
             case PayoneAmazonPayPaymentMethod::PAYMENT_CODE;
-                return pluginApp(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+                return pluginApp(PayoneAmazonPayPaymentMethod::class);
         }
         throw new \InvalidArgumentException('Unknown payment method ' . $paymentCode);
     }

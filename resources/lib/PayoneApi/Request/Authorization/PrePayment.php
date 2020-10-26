@@ -11,6 +11,9 @@ use PayoneApi\Request\GenericAuthorizationRequest;
  */
 class PrePayment extends AuthorizationRequestAbstract
 {
+    /**
+     * @var string
+     */
     protected $clearingtype = ClearingTypes::VOR;
 
     /**

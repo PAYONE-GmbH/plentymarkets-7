@@ -6,11 +6,15 @@ use PayoneApi\Request\GenericRequest;
 
 class Refund
 {
-    private $txid;
+    /**
+     * @var string
+     */
+    protected $txid;
+
     /**
      * @var GenericRequest
      */
-    private $request;
+    protected $request;
 
     /**
      * Refund constructor.
@@ -18,7 +22,7 @@ class Refund
      * @param GenericRequest $request
      * @param string $txid
      */
-    public function __construct(GenericRequest $request, $txid)
+    public function __construct(GenericRequest $request, string $txid)
     {
         $this->txid = $txid;
         $this->request = $request;

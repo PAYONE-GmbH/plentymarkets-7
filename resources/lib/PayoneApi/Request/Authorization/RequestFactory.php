@@ -21,13 +21,13 @@ class RequestFactory implements RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param bool $referenceId
+     * @param string|null $referenceId
      *
      * @throws \Exception
      *
      * @return AuthorizationRequestAbstract
      */
-    public static function create($paymentMethod, $data, $referenceId = null)
+    public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $genericAuthRequest = GenericAuthRequestFactory::create(static::$requestType, $data);
         switch ($paymentMethod) {
@@ -116,9 +116,15 @@ class RequestFactory implements RequestFactoryContract
                     $shippingAddress
                 );
             case PaymentTypes::PAYONE_AMAZON_PAY:
+                $amazonPayAuth = $data['amazonPayAuth'];
                 return new AmazonPay(
                     $genericAuthRequest,
-                    self::createUrls($data['redirect'])
+                    self::createUrls($data['redirect']),
+                    $amazonPayAuth['amount'],
+                    $amazonPayAuth['workOrderId'],
+                    $amazonPayAuth['reference'],
+                    $amazonPayAuth['currency'],
+                    $amazonPayAuth['amazonReferenceId']
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

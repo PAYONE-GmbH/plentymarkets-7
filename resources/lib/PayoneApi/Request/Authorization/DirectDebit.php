@@ -16,6 +16,7 @@ class DirectDebit extends AuthorizationRequestAbstract
      * @var string
      */
     protected $clearingtype = ClearingTypes::DEBIT_PAYMENT;
+
     /**
      * @var SepaMandate
      */

@@ -2,8 +2,10 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -467,6 +469,7 @@ abstract class DataProviderAbstract
                 PayonePayPalPaymentMethod::PAYMENT_CODE,
                 PayonePaydirektPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             ]
         )
         ) {
@@ -521,6 +524,28 @@ abstract class DataProviderAbstract
         }
 
         return $account->jsonSerialize();
+    }
+
+    /**
+     * @param string $basketId
+     * @param $basketAmount
+     * @param string $currency
+     * @return array
+     */
+    protected function getAmazonPayData(string $basketId, $basketAmount, string $currency): array
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amazonAuthConfig = [];
+        $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
+        $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amazonAuthConfig['reference'] = $basketId;
+
+        $amazonAuthConfig['currency'] = $currency;
+        // amount in smallest unit
+        $amazonAuthConfig['amount'] = $basketAmount * 100;
+
+        return $amazonAuthConfig;
     }
 
     /**

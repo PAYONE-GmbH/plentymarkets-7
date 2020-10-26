@@ -252,6 +252,7 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
+
         if(strlen($transactionBasketId)){
             $storedBasketId = $paymentCache->getActiveBasketId();
             if($storedBasketId === null){
@@ -260,8 +261,7 @@ class CheckoutController extends Controller
             if($storedBasketId != $transactionBasketId){
                 return $this->response->redirectTo('payone/error');
             }
-        }
-        else{
+        } else{
             return $this->response->redirectTo('payone/error');
         }
         $basket = $basketReopo->load();

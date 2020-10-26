@@ -1,5 +1,5 @@
 <?php
-require_once ('vendor/autoload.php');
+require_once (__DIR__.'/vendor/autoload.php');
 
 use PayoneApi\Api\Client;
 use PayoneApi\Api\PostApi;
@@ -27,6 +27,7 @@ try {
     $data['pseudocardpan'] = $sdkRestApi::getParam('pseudocardpan');
     $data['sepaMandate'] = $sdkRestApi::getParam('sepaMandate');
     $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');
+    $data['amazonPayAuth'] = $sdkRestApi::getParam('amazonPayAuth');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

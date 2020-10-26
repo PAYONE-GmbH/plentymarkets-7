@@ -6,56 +6,140 @@ use PayoneApi\Request\AuthorizationRequestAbstract;
 use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\RedirectUrls;
+use PayoneApi\Request\WalletTypes;
 
 /**
- * Class PayPal
+ * Class AmazonPay
  */
 class AmazonPay extends AuthorizationRequestAbstract
 {
-    const WALLET_TYPE = 'AMZ';
-
-    protected $clearingtype = ClearingTypes::WALLET;
     /**
      * @var string
      */
-    private $wallettype = self::WALLET_TYPE;
+    protected $clearingtype = ClearingTypes::WALLET;
+
+    /**
+     * @var string
+     */
+    protected $wallettype = WalletTypes::AMAZON_PAYMENTS;
+
+    /**
+     * @var string
+     */
+    protected $workorderid;
+
+    /**
+     * @var string
+     */
+    protected $reference;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var string
+     */
+    protected $amount;
+
+    /**
+     * @var string[]
+     */
+    protected $add_paydata = [
+        'amazon_reference_id' => '',
+    ];
 
     /**
      * @var RedirectUrls
      */
-    private $urls;
+    protected $urls;
 
     /**
      * PayPal constructor.
      *
      * @param GenericAuthorizationRequest $authorizationRequest
      * @param RedirectUrls $urls
+     * @param string $amount
+     * @param string $workOrderId
+     * @param string $reference
+     * @param string $currency
+     * @param string $amazonReferenceId
      */
     public function __construct(
         GenericAuthorizationRequest $authorizationRequest,
-        RedirectUrls $urls
-    ) {
+        RedirectUrls $urls,
+        string $amount,
+        string $workOrderId,
+        string $reference,
+        string $currency,
+        string $amazonReferenceId
+    )
+    {
         $this->authorizationRequest = $authorizationRequest;
         $this->urls = $urls;
+
+        $this->amount = $amount;
+        $this->workorderid = $workOrderId;
+        $this->reference = $reference;
+        $this->currency = $currency;
+        $this->add_paydata['amazon_reference_id'] = $amazonReferenceId;
     }
 
     /**
-     * Getter for Urls
-     *
+     * @return string
+     */
+    public function getWallettype(): string
+    {
+        return $this->wallettype;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkorderid(): string
+    {
+        return $this->workorderid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference(): string
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency(): string
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAddPaydata(): array
+    {
+        return $this->add_paydata;
+    }
+
+    /**
      * @return RedirectUrls
      */
-    public function getUrls()
+    public function getUrls(): RedirectUrls
     {
         return $this->urls;
     }
 
-    /**
-     * Getter for Wallettype
-     *
-     * @return string
-     */
-    public function getWallettype()
-    {
-        return $this->wallettype;
-    }
 }

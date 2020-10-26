@@ -7,9 +7,9 @@ interface RequestFactoryContract
     /**
      * @param string $paymentMethod
      * @param array $data
-     * @param string|bool $referenceId Reference to previous request
+     * @param string|bool $referenceId Reference to implements RequestFactoryContractprevious request
      *
      * @return RequestDataContract
      */
-    public static function create($paymentMethod, $data, $referenceId = null);
+    public static function create(string $paymentMethod, array $data, $referenceId = null);
 }

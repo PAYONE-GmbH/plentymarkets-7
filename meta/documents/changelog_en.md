@@ -1,9 +1,15 @@
 # Release Notes for PAYONE
 
-## 1.1.15 (2020-10-26)
+
+## 1.2.10 (2020-10-26)
 
 ### Fixed
 - Save payment amount in foreign currency if the system currency is not the same as the basket currency.
+
+## 1.2.0 (2020-09-30)
+
+### Added
+- Payment method "Amazon Pay" added
 
 ## 1.1.14 (2020-07-08)
 

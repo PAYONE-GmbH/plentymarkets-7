@@ -5,6 +5,8 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\AuthResponseFactory;
+use Payone\Models\Api\GenericPayment\GenericPaymentResponseFactory;
+use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GetInvoiceResponse;
 use Payone\Models\Api\GetInvoiceResponseFactory;
 use Payone\Models\Api\ManagemandateResponse;
@@ -14,6 +16,7 @@ use Payone\Models\Api\PreAuthResponseFactory;
 use Payone\Models\Api\Response;
 use Payone\Models\Api\ResponseFactory;
 use Payone\PluginConstants;
+use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
 
 /**
@@ -34,6 +37,7 @@ class Api
     const REQUEST_TYPE_DEBIT = 'Debit';
     const REQUEST_TYPE_MANAGEMANDATE = 'Managemandate';
     const REQUEST_TYPE_INVOICE = 'GetDocument';
+    const REQUEST_TYPE_GENERIC_PAYMENT = 'GenericPayment';
 
     /**
      * @var LibraryCallContract
@@ -224,6 +228,29 @@ class Api
         $responseObject = GetInvoiceResponseFactory::create($response);
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());
         $this->logger->debug('Api.' . $this->getCallAction(self::REQUEST_TYPE_INVOICE), $response);
+        return $responseObject;
+    }
+
+    /**
+     * @param string $actionType
+     * @param array $requestParams
+     * @return mixed
+     */
+    public function doGenericPayment(string $actionType, array $requestParams)
+    {
+        $response = $this->doLibCall(self::REQUEST_TYPE_GENERIC_PAYMENT, $requestParams);
+        $responseObject = GenericPaymentResponseFactory::create($actionType, $response);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->addReference('requestType', self::REQUEST_TYPE_GENERIC_PAYMENT)
+            ->debug('AmazonPay.apiCall', [
+                'actionType' => $actionType,
+                'requestParams' => $requestParams,
+                'response' => $response,
+                'responseObject' => $responseObject
+            ]);
+
         return $responseObject;
     }
 

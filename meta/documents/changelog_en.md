@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 1.1.15 (2020-10-26)
+
+### Fixed
+- Save payment amount in foreign currency if the system currency is not the same as the basket currency.
+
 ## 1.1.14 (2020-07-08)
 
 ### Added

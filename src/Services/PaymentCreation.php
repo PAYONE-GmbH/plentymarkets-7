@@ -12,6 +12,7 @@ use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\Frontend\Contracts\CurrencyExchangeRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -133,6 +134,19 @@ class PaymentCreation
             $payment->receivedAt = date('Y-m-d H:i:s');
         }
 
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        //when a payment is placed in a foreign currency, we save the foreign amount,
+        // foreign currency sign, exchange ratio and isSystemCurrency set to 0
+        if ($payment->currency != $defaultCurrency) {
+            $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
+            $payment->isSystemCurrency = 0;
+        }
+
         $payment->type = 'credit';
 
         $paymentProperties = [];
@@ -230,10 +244,19 @@ class PaymentCreation
         );
 
         $payment->updateOrderPaymentStatus = true;
-        $orderData = $order->toArray();
-        $payment->currency = $orderData['amounts'][0]['currency'];
-        $payment->amount = $orderData['amounts'][0]['grossTotal'];
+        $payment->currency = $order->amount->currency;
+        $payment->amount = $order->amount->invoiceTotal;
         $payment->receivedAt = date('Y-m-d H:i:s');
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        if ($payment->currency != $defaultCurrency) {
+            $payment->exchangeRatio = $order->amount->exchangeRate;
+            $payment->isSystemCurrency = $order->amount->isSystemCurrency;
+        }
 
         $payment = $this->paymentRepository->updatePayment($payment);
 

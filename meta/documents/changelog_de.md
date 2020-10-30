@@ -1,10 +1,10 @@
 # Release Notes für PAYONE
 
 
-## 1.2.10 (2020-10-26)
+## 1.2.1 (2020-10-30)
 
 ### Behoben
-- Speichern Sie den Zahlungsbetrag in Fremdwährung, wenn die Systemwährung nicht mit der Warenkorbwährung übereinstimmt.
+- Die Zahlung wird nun in der korrekten Fremdwährung gespeichert, wenn diese von der Systemwährung abweicht.
 
 ## 1.2.00 (2020-09-30)
 

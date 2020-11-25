@@ -1,5 +1,9 @@
 # Release Notes for PAYONE
 
+## 1.2.2 (2020-11-25)
+
+### Fixed
+- An error in the checkout process with the payment method "credit card" was fixed.
 
 ## 1.2.1 (2020-10-30)
 

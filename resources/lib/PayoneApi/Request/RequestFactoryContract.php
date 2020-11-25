@@ -11,5 +11,5 @@ interface RequestFactoryContract
      *
      * @return RequestDataContract
      */
-    public static function create(string $paymentMethod, array $data, $referenceId = null);
+    public static function create(string $paymentMethod, array $data, string $referenceId = null);
 }

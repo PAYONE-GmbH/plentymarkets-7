@@ -1,5 +1,9 @@
 # Release Notes für PAYONE
 
+## 1.2.2 (2020-11-25)
+
+### Behoben
+- Ein Fehler bei der Kaufabwicklung mit der Zahlungsart "Kreditkarte" wurde behoben.
 
 ## 1.2.1 (2020-10-30)
 

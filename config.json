@@ -124,11 +124,23 @@
           }
         },
         "PAYONE_PAYONE_INVOICE.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEINVOICEAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -197,11 +209,23 @@
           }
         },
         "PAYONE_PAYONE_INVOICE_SECURE.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEINVOICESECUREAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -258,11 +282,23 @@
           }
         },
         "PAYONE_PAYONE_PAYDIREKT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEPAYDIREKTAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -315,11 +351,23 @@
           }
         },
         "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -376,11 +424,23 @@
           }
         },
         "PAYONE_PAYONE_PAY_PAL.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEPAYPALAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -433,11 +493,23 @@
           }
         },
         "PAYONE_PAYONE_RATEPAY_INSTALLMENT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -494,11 +566,23 @@
           }
         },
         "PAYONE_PAYONE_SOFORT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONESOFORTAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -555,11 +639,23 @@
           }
         },
         "PAYONE_PAYONE_PRE_PAYMENT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEPREPAYMENTAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -648,11 +744,23 @@
           }
         },
         "PAYONE_PAYONE_CREDIT_CARD.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONECREDITCARDAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         },
         "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes": {
@@ -759,11 +867,23 @@
           }
         },
         "PAYONE_PAYONE_CASH_ON_DELIVERY.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONECASHONDELIVERYAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -820,11 +940,23 @@
           }
         },
         "PAYONE_PAYONE_DIRECT_DEBIT.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEDIRECTDEBITAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,AT,CH"
+            "defaultValue": "DE,AT,CH",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "AT",
+                "caption": "Config.austria"
+              }, {
+                "value": "CH",
+                "caption": "Config.switzerland"
+              }
+            ]
           }
         }
       }
@@ -881,11 +1013,44 @@
           }
         },
         "PAYONE_PAYONE_AMAZON_PAY.allowedCountries": {
-          "type": "inputText",
+          "type": "multiCheckBox",
           "required": false,
           "label": "Config.PAYONEPAYONEAMAZONPAYAllowedCountriesLabel",
           "options": {
-            "defaultValue": "DE,FR,IT,ES,LU,NL,SE,PT,HU,DK"
+            "defaultValue": "DE,FR,IT,ES,LU,NL,SE,PT,HU,DK",
+            "checkBoxValues": [
+              {
+                "value": "DE",
+                "caption": "Config.germany"
+              },{
+                "value": "FR",
+                "caption": "Config.france"
+              }, {
+                "value": "IT",
+                "caption": "Config.italy"
+              }, {
+                "value": "ES",
+                "caption": "Config.spain"
+              }, {
+                "value": "LU",
+                "caption": "Config.luxembourg"
+              }, {
+                "value": "NL",
+                "caption": "Config.netherlands"
+              }, {
+                "value": "SE",
+                "caption": "Config.sweden"
+              }, {
+                "value": "PT",
+                "caption": "Config.portugal"
+              }, {
+                "value": "HU",
+                "caption": "Config.hungary"
+              }, {
+                "value": "DK",
+                "caption": "Config.denmark"
+              }
+            ]
           }
         },
         "PAYONE_PAYONE_AMAZON_PAY.sandbox": {

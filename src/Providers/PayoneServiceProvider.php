@@ -42,7 +42,9 @@ use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Document\Models\Document;
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
+use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Modules\Order\Property\Models\OrderPropertyType;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
@@ -337,21 +339,34 @@ class PayoneServiceProvider extends ServiceProvider
                     $paymentCache = pluginApp(PaymentCache::class);
 
                     $order = $orderRepository->findOrderById($event->getOrderId());
-                    $payment = $paymentCache->loadPayment($event->getMop());
-                    if (!($payment instanceof Payment)) {
-                        $message = 'Payment could not be assigned to order.';
+                    if($order instanceof Order) {
+                        if($event->getMop() == $paymentHelper->getMopId(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE)) {
+                            //Block the invoice generation for secure invoice because there will be an external invoice
+                            $orderRepository->updateOrder([
+                                'properties' => [
+                                    [
+                                        'typeId' => OrderPropertyType::EXTERNAL_TAX_SERVICE,
+                                        'value' => 1
+                                    ]
+                                ]
+                            ], $order->id);
+                        }
 
-                        /** @var Logger $logger */
-                        $logger = pluginApp(Logger::class);
-                        $logger->error($message, $payment);
-                        return;
+                        $payment = $paymentCache->loadPayment($event->getMop());
+                        if (!($payment instanceof Payment)) {
+                            $message = 'Payment could not be assigned to order.';
+
+                            /** @var Logger $logger */
+                            $logger = pluginApp(Logger::class);
+                            $logger->error($message, $payment);
+                            return;
+                        }
+
+                        /** @var PaymentCreation $paymentCreationService */
+                        $paymentCreationService = pluginApp(PaymentCreation::class);
+                        $paymentCreationService->assignPaymentToOrder($payment, $order);
+                        $paymentCache->deletePayment($event->getMop());
                     }
-
-                    /** @var PaymentCreation $paymentCreationService */
-                    $paymentCreationService = pluginApp(PaymentCreation::class);
-                    $paymentCreationService->assignPaymentToOrder($payment, $order);
-                    $paymentCache->deletePayment($event->getMop());
-
                 } catch (\Exception $exception){
                     $logger
                         ->setIdentifier(__METHOD__)
@@ -377,7 +392,7 @@ class PayoneServiceProvider extends ServiceProvider
                 /** @var OrderHelper $orderHelper */
                 $orderHelper = pluginApp(OrderHelper::class);
 
-                /** @var \Order $order */
+                /** @var Order $order */
                 $order = $event->getOrder();
 
                 /** @var Logger $logger */

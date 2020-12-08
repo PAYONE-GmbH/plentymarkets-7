@@ -26,7 +26,7 @@ try {
     $data['redirect'] = $sdkRestApi::getParam('redirect');
     $data['pseudocardpan'] = $sdkRestApi::getParam('pseudocardpan');
     $data['sepaMandate'] = $sdkRestApi::getParam('sepaMandate');
-    $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');Danke
+    $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');
     $data['amazonPayAuth'] = $sdkRestApi::getParam('amazonPayAuth');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
@@ -36,7 +36,7 @@ try {
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     $errorResponse = new ClientErrorResponse(
         'SdkRestApi error: ' . $e->getMessage() . PHP_EOL .
         'Lib version: ' . Version::getVersion() . PHP_EOL .

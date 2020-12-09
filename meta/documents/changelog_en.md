@@ -1,5 +1,13 @@
 # Release Notes for PAYONE
 
+## 1.3.0 (2020-12-09)
+
+### Added
+- The allowed delivery countries can now be selected in the configuration of the plugin via checkbox.
+
+### Changed
+- No invoices can be created for orders paid with secure invoice.
+
 ## 1.2.2 (2020-11-25)
 
 ### Fixed

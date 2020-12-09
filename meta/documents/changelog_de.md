@@ -1,5 +1,13 @@
 # Release Notes für PAYONE
 
+## 1.3.0 (2020-12-09)
+
+### Hinzugefügt
+- Die erlaubten Lieferländer können in der Konfiguration des Plugins nun per Checkbox ausgewählt werden.
+
+### Geändert
+- Für Bestellungen mit gesichertem Rechnungskauf können keine Rechnungen erstellt werden.
+
 ## 1.2.2 (2020-11-25)
 
 ### Behoben
@@ -10,7 +18,7 @@
 ### Behoben
 - Die Zahlung wird nun in der korrekten Fremdwährung gespeichert, wenn diese von der Systemwährung abweicht.
 
-## 1.2.00 (2020-09-30)
+## 1.2.0 (2020-09-30)
 
 ### Hinzugefügt
 - Zahlungsart "Amazon Pay" hinzugefügt

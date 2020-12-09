@@ -346,7 +346,7 @@ class PayoneServiceProvider extends ServiceProvider
                                 'properties' => [
                                     [
                                         'typeId' => OrderPropertyType::EXTERNAL_TAX_SERVICE,
-                                        'value' => 1
+                                        'value' => "1"
                                     ]
                                 ]
                             ], $order->id);

@@ -4,7 +4,7 @@
   Wie du das Payone-Plugin in plentymarkets einrichtest, <a href="https://knowledge.plentymarkets.com/payment/payment-plugins/payone" target="_blank">ist im Handbuch beschrieben</a>.
 </div>
 
-## PAYONE Payment für plentymarkets
+## Payone
 
 <div class="alert alert-warning" role="alert">
    Das Payone-Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des Payone-Plugins müssen die Plugins IO und Ceres aktiviert sein.

@@ -8,7 +8,7 @@
    The Payone plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
 </div>
 
-## PAYONE Payment for plentymarkets
+## Payone
 
 The plentymarkets Payone plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
 

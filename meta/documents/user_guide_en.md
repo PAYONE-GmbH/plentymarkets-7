@@ -1,7 +1,7 @@
 # User Guide Payone
 
 <div class="alert alert-info" role="alert">
- To find out how to set up the Payone plugin, visit the <a href="https://knowledge.plentymarkets.com/payment/payment-plugins/payone" target="_blank">plentymarkets manual</a>.
+ To find out how to set up the Payone plugin, visit the <a href="https://knowledge.plentymarkets.com/en/payment/payment-plugins/payone" target="_blank">plentymarkets manual</a>.
 </div>
 
 <div class="alert alert-warning" role="alert">

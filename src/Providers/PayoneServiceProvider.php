@@ -5,6 +5,7 @@ namespace Payone\Providers;
 use Ceres\Helper\LayoutContainer;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
+use Payone\Assistants\PayoneAssistant;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
@@ -50,6 +51,7 @@ use Plenty\Modules\Payment\Events\Checkout\ExecutePayment;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodContainer;
 use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Modules\Wizard\Contracts\WizardContainerContract;
 use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Events\Dispatcher;
 use Plenty\Plugin\ServiceProvider;
@@ -141,6 +143,8 @@ class PayoneServiceProvider extends ServiceProvider
                 }
             );
         }
+
+        pluginApp(WizardContainerContract::class)->register('payment-payone-assistant', PayoneAssistant::class);
 
     }
 

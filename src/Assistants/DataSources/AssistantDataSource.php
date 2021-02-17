@@ -142,7 +142,7 @@ class AssistantDataSource extends BaseWizardDataSource
                     $assistant[$paymentCode . 'Toggle'] = (bool)$value['active'];
                     $assistant[$paymentCode . 'MinimumAmount'] = $value['MinimumAmount'] ?? 0;
                     $assistant[$paymentCode . 'MaximumAmount'] = $value['MaximumAmount'] ?? 2000;
-                    $assistant[$paymentCode . 'AllowedDeliveryCountries'] = $value['AllowedDeliveryCountries'];
+                    $assistant[$paymentCode . 'AllowedDeliveryCountries'] = is_array($value['AllowedDeliveryCountries']) ? $value['AllowedDeliveryCountries'] : [];
 
                     switch ($paymentCode) {
                         case 'PAYONE_PAYONE_INVOICE_SECURE':
@@ -154,10 +154,10 @@ class AssistantDataSource extends BaseWizardDataSource
                             $assistant[$paymentCode]['defaultStyle'] = $value['defaultStyle'] ?? 'font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; height:100%';
                             $assistant[$paymentCode]['defaultHeightInPx'] = (int)$value['defaultHeightInPx'] ?? 44;
                             $assistant[$paymentCode]['defaultWidthInPx'] = (int)$value['defaultWidthInPx'] ?? 644;
-                            $assistant[$paymentCode]['AllowedCardTypes'] = is_array($value['AllowedCardTypes']) ?? [];
+                            $assistant[$paymentCode]['AllowedCardTypes'] = is_array($value['AllowedCardTypes']) ? $value['AllowedCardTypes'] : [];
                             break;
                         case 'PAYONE_PAYONE_AMAZON_PAY':
-                            $assistant[$paymentCode]['Sandbox'] = (int)$value['Sandbox'] ?? 0;
+                            $assistant[$paymentCode]['Sandbox'] = (int)$value['Sandbox'] ?? 1;
                             break;
                     }
                 }

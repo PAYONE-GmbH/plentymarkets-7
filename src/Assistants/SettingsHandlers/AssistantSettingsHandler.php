@@ -55,7 +55,7 @@ class AssistantSettingsHandler implements WizardSettingsHandler
                         $payoneMethods[$paymentCode]['defaultStyle'] = $data[$paymentCode.'defaultStyle'] ?? 'font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; height:100%';
                         $payoneMethods[$paymentCode]['defaultHeightInPx'] = (int)$data[$paymentCode.'defaultHeightInPx'] ?? 44;
                         $payoneMethods[$paymentCode]['defaultWidthInPx'] = (int)$data[$paymentCode.'defaultWidthInPx'] ?? 644;
-                        $payoneMethods[$paymentCode]['AllowedCardTypes'] = is_array($data[$paymentCode.'AllowedCardTypes']) ?? [];
+                        $payoneMethods[$paymentCode]['AllowedCardTypes'] = is_array($data[$paymentCode.'AllowedCardTypes']) ? $data[$paymentCode.'AllowedCardTypes'] : [];
                         break;
                     case 'PAYONE_PAYONE_AMAZON_PAY':
                         $payoneMethods[$paymentCode]['Sandbox'] = (int)$data[$paymentCode.'Sandbox'] ?? 0;
@@ -64,7 +64,7 @@ class AssistantSettingsHandler implements WizardSettingsHandler
 
                 $payoneMethods[$paymentCode]['MinimumAmount'] = (int)$data[$paymentCode.'MinimumAmount'] ?? 0;
                 $payoneMethods[$paymentCode]['MaximumAmount'] = (int)$data[$paymentCode.'MaximumAmount'] ?? 0;
-                $payoneMethods[$paymentCode]['AllowedDeliveryCountries'] = is_array($data[$paymentCode.'AllowedDeliveryCountries']) ?? [];
+                $payoneMethods[$paymentCode]['AllowedDeliveryCountries'] = is_array($data[$paymentCode.'AllowedDeliveryCountries']) ? $data[$paymentCode.'AllowedDeliveryCountries'] : [];
             }
         }
 

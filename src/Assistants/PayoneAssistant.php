@@ -114,11 +114,11 @@ class PayoneAssistant extends WizardProvider
                                 'listBoxValues' => [
                                     [
                                         "caption" => 'Assistant.modeProductiveOption',
-                                        "value" => 0
+                                        "value" => 1
                                     ],
                                     [
                                         "caption" => 'Assistant.modeTestingOption',
-                                        "value" => 1
+                                        "value" => 0
                                     ]
                                 ]
                             ]
@@ -366,17 +366,17 @@ class PayoneAssistant extends WizardProvider
                         ],
                         $paymentCode.'Sandbox' => [
                             'type' => 'select',
-                            "defaultValue" => 0,
+                            "defaultValue" => 1,
                             'options' => [
                                 'name' => 'Assistant.Sandbox',
                                 'listBoxValues' => [
                                     [
                                         "caption" => 'Assistant.sandboxProductiveOption',
-                                        "value" => 0
+                                        "value" => 1
                                     ],
                                     [
                                         "caption" => 'Assistant.sandboxTestingOption',
-                                        "value" => 1
+                                        "value" => 0
                                     ]
                                 ]
                             ]

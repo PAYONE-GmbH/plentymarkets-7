@@ -10,11 +10,17 @@ use Plenty\Modules\Order\Models\Order;
 class RefundDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Order $order
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
+    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
         $requestParams['context']['sequencenumber'] = $this->getSequenceNumber($order);
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
         $requestParams['order'] = $this->getOrderData($order);
@@ -31,12 +37,13 @@ class RefundDataProvider extends DataProviderAbstract implements DataProviderOrd
      * @param Order $order
      * @param Order $refund
      * @param $preAuthUniqueId
-     *
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId)
+    public function getPartialRefundData($paymentCode, Order $order, Order $refund, $preAuthUniqueId, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
+        $requestParams = $this->getDataFromOrder($paymentCode, $order, $preAuthUniqueId, $clientId, $pluginSetId);
 
         $requestParams['order'] = $this->getOrderData($refund);
 

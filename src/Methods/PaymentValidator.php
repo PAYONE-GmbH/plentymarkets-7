@@ -4,9 +4,9 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Logger;
 use Payone\Helpers\AddressHelper;
+use Payone\Services\SettingsService;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
-use Payone\Adapter\Config as ConfigAdapter;
 
 class PaymentValidator
 {
@@ -43,7 +43,7 @@ class PaymentValidator
      *
      * @return bool
      */
-    public function validate(PaymentAbstract $payment, ConfigAdapter $configRepo)
+    public function validate(PaymentAbstract $payment, SettingsService $settingsService)
     {
         $basketAmount = $this->basket->basketAmount;
         if ($payment->getMinCartAmount() && $basketAmount < $payment->getMinCartAmount()) {
@@ -76,7 +76,7 @@ class PaymentValidator
             return false;
         }
         
-        if (!$payment->validateSettings($configRepo)) {
+        if (!$payment->validateSettings($settingsService)) {
             return false;
         }
         

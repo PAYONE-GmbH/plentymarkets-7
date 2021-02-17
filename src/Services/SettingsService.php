@@ -88,6 +88,24 @@ class SettingsService
     }
 
     /**
+     * @param string $settingsKey
+     * @param string $paymentKey
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return mixed|null
+     */
+    public function getPaymentSettingsValue(string $settingsKey, string $paymentKey, int $clientId = null, int $pluginSetId = null)
+    {
+        $settings = $this->getSettingsValue('payoneMethods', $clientId, $pluginSetId);
+        if(!is_null($settings)) {
+            if(isset($settings[$paymentKey][$settingsKey])) {
+                return $settings[$paymentKey][$settingsKey];
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return array
      */
     public function getAllAccountSettings(): array

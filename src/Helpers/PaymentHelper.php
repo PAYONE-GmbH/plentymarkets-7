@@ -158,10 +158,9 @@ class PaymentHelper
     /**
      * @param Payment $payment
      * @param int $propertyTypeConstant
-     *
      * @return string
      */
-    public function getPaymentPropertyValue($payment, $propertyTypeConstant)
+    public function getPaymentPropertyValue(Payment $payment, $propertyTypeConstant): string
     {
         $properties = $payment->properties;
         if (!$properties) {

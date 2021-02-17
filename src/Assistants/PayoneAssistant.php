@@ -5,6 +5,7 @@ namespace Payone\Assistants;
 use Payone\Assistants\DataSources\AssistantDataSource;
 use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
+use Payone\Models\CreditcardTypes;
 use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
 use Plenty\Modules\System\Models\Webstore;
 use Plenty\Modules\User\Contracts\UserRepositoryContract;
@@ -543,8 +544,11 @@ class PayoneAssistant extends WizardProvider
      */
     protected function getAllowedCreditCardTypes(): array
     {
+        /** @var CreditcardTypes $creditCardTypes */
+        $creditCardTypes = pluginApp(CreditcardTypes::class);
+
         $allowedCreditCards = [];
-        $cards = ['V', 'M', 'A', 'O', 'U', 'D', 'B', 'C', 'J', 'P'];
+        $cards = $creditCardTypes->getCreditCardTypes();
         foreach($cards as $card) {
             $allowedCreditCards[] = [
                 'caption' => 'Assistant.creditCardType'.$card,

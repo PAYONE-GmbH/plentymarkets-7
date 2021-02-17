@@ -15,11 +15,17 @@ use Plenty\Modules\Order\Models\Order;
 class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder, DataProviderBasket
 {
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Basket $basket
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null)
+    public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
 
         $requestParams['basket'] = $this->getBasketData($basket);
 
@@ -64,11 +70,17 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Order $order
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
+    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
 

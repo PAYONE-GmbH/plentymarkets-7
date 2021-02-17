@@ -2,8 +2,8 @@
 
 namespace Payone\Models;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Services\SettingsService;
 
 class CreditcardTypes
 {
@@ -18,43 +18,28 @@ class CreditcardTypes
     const JCB = 'J';
     const CHINA_UNION_PAY = 'P';
 
-    /** @var ConfigAdapter */
-    private $configRepo;
+    /**
+     * @var SettingsService
+     */
+    protected $settingsService;
 
     /**
      * Api constructor.
      *
-     * @param $paymentCode
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      */
-    public function __construct(
-        ConfigAdapter $configRepo
-    ) {
-        $this->configRepo = $configRepo;
+    public function __construct(SettingsService $settingsService)
+    {
+        $this->settingsService = $settingsService;
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getAllowedTypes(): array
     {
-        $allowedTypesFromConfigString = $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.allowedCardTypes');
-        if ($allowedTypesFromConfigString == ConfigAdapter::MULTI_SELECT_ALL) {
-            return $this->getCreditCardTypes();
-        }
-
-        $allowedTypesFromConfigString = str_replace(
-            'PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.',
-            '',
-            $allowedTypesFromConfigString
-        );
-
-        $allowedTypesFromConfig = explode(', ', $allowedTypesFromConfigString);
-
+        $allowedTypesFromConfig = $this->settingsService->getPaymentSettingsValue('AllowedCardTypes',PayoneCCPaymentMethod::PAYMENT_CODE);
         return $allowedTypesFromConfig;
-
-        //do not intersect this, it will break the cardtype selection (visa, maestro)
-        //return array_intersect($this->getCreditCardTypes(), $allowedTypesFromConfig);
     }
 
     /**

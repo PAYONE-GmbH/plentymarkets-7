@@ -2,19 +2,21 @@
 
 namespace Payone\Methods;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
+use Payone\Services\SettingsService;
 use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
+use Plenty\Plugin\Translation\Translator;
 
 abstract class PaymentAbstract extends PaymentMethodBaseService
 {
     const PAYMENT_CODE = 'Payone';
 
     /**
-     * @var ConfigAdapter
+     * @var SettingsService
      */
-    private $configRepo;
+    protected $settingsService;
+
     /**
      * @var PaymentValidator
      */
@@ -30,16 +32,16 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      *
      * @param Application $application
      * @param PaymentValidator $paymentValidator
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      */
     public function __construct(
         Application $application,
         PaymentValidator $paymentValidator,
-        ConfigAdapter $configRepo
+        SettingsService $settingsService
     ) {
         $this->paymentValidator = $paymentValidator;
-        $this->configRepo = $configRepo;
         $this->app = $app = $application;
+        $this->settingsService = $settingsService;
     }
 
     /**
@@ -47,8 +49,8 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isActive(): bool
     {
-        return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
-            && $this->paymentValidator->validate($this, $this->configRepo);
+        return (bool)$this->settingsService->getPaymentSettingsValue('active', $this::PAYMENT_CODE)
+            && $this->paymentValidator->validate($this, $this->settingsService);
     }
 
     /**
@@ -59,9 +61,9 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getName(string $lang = 'de'): string
     {
-        $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
-
-        return $name ? (string) $name : '';
+        /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        return $translator->trans('Payone::PaymentMethods.'.$this::PAYMENT_CODE, [], $lang);
     }
 
     /**
@@ -89,9 +91,9 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getDescription(string $lang = 'de'): string
     {
-        $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
-
-        return $description ? $description : '';
+        /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        return $translator->trans('Payone::PaymentMethods.'.$this::PAYMENT_CODE.'_DESCRIPTION', [], $lang);
     }
 
     /**
@@ -107,7 +109,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getMaxCartAmount()
     {
-        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.maxCartAmount');
+        $amount = $this->settingsService->getPaymentSettingsValue('maxCartAmount',$this::PAYMENT_CODE);
 
         return $amount ? (float) $amount : 0.;
     }
@@ -117,7 +119,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getMinCartAmount()
     {
-        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.minCartAmount');
+        $amount = $this->settingsService->getPaymentSettingsValue('minCartAmount',$this::PAYMENT_CODE);
 
         return $amount ? (float) $amount : 0.;
     }
@@ -127,12 +129,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getAllowedCountries()
     {
-        $countries = explode(
-            ',',
-            $this->configRepo->get($this::PAYMENT_CODE . '.allowedCountries')
-        );
-
-        return $countries;
+        return $this->settingsService->getPaymentSettingsValue('AllowedDeliveryCountries',$this::PAYMENT_CODE);
     }
 
     /**
@@ -201,10 +198,10 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     /**
      * Check if all settings for the payment method are set.
      * 
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      * @return bool
      */
-    public function validateSettings(ConfigAdapter $configRepo): bool
+    public function validateSettings(SettingsService $settingsService): bool
     {
         return true;
     }

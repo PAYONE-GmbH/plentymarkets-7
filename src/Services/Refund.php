@@ -267,12 +267,11 @@ class Refund
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// not captured yet?
-                return $this->reverseAuth($refund, $payment, $preAuthUniqueId);
+                return $this->reverseAuth($refund, $payment, $preAuthUniqueId, $refund->plentyId);
             }
         }
 
-        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $refund, $preAuthUniqueId);
-
+        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $refund, $preAuthUniqueId, $refund->plentyId);
         return $this->api->doDebit($requestData);
     }
 
@@ -300,12 +299,11 @@ class Refund
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// already captured?
-                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
+                return $this->reverseAuth($order, $payment, $preAuthUniqueId, $order->plentyId);
             }
         }
 
-        $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId);
-
+        $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId, $order->plentyId);
         return $this->api->doDebit($requestData);
     }
 
@@ -395,12 +393,12 @@ class Refund
      * @param Order $order
      * @param Payment $payment
      * @param $authTransactionId
-     *
-     * @throws \Exception
-     *
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return Response
+     * @throws \Exception
      */
-    private function reverseAuth(Order $order, Payment $payment, $authTransactionId)
+    private function reverseAuth(Order $order, Payment $payment, $authTransactionId, int $clientId = null, int $pluginSetId = null)
     {
         $amount = $order->amounts[0];
         $originalAmount = $amount->invoiceTotal;
@@ -408,7 +406,7 @@ class Refund
 
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
 
-        $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId);
+        $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId, $clientId, $pluginSetId);
         $amount->invoiceTotal = $originalAmount;
 
         return $this->api->doCapture($requestData);

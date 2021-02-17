@@ -11,11 +11,13 @@ class GenericPaymentDataProvider extends DataProviderAbstract
 
     /**
      * @param string $paymentCode
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    private function getDefaultPaymentRequestData(string $paymentCode): array
+    private function getDefaultPaymentRequestData(string $paymentCode, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
         $requestParams['request'] = GenericPayment::REQUEST_TYPE;
 
         if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
@@ -29,12 +31,14 @@ class GenericPaymentDataProvider extends DataProviderAbstract
     /**
      * @param string $paymentCode
      * @param string $currency
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      * @throws \Exception
      */
-    public function getGetConfigRequestData(string $paymentCode, string $currency): array
+    public function getGetConfigRequestData(string $paymentCode, string $currency, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
 
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = $currency;
@@ -52,17 +56,22 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $amazonReferenceId
      * @param string $currency
      * @param string $amount
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      * @throws \Exception
      */
-    public function getGetOrderReferenceDetailsRequestData(string $paymentCode,
-                                                           string $workOrderId,
-                                                           string $amazonAddressToken,
-                                                           string $amazonReferenceId,
-                                                           string $currency,
-                                                           string $amount): array
-    {
-        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+    public function getGetOrderReferenceDetailsRequestData(
+        string $paymentCode,
+        string $workOrderId,
+        string $amazonAddressToken,
+        string $amazonReferenceId,
+        string $currency,
+        string $amount,
+        int $clientId = null,
+        int $pluginSetId = null
+    ): array {
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
 
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = $currency;
@@ -85,16 +94,21 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $amazonReferenceId
      * @param string $currency
      * @param string $amount
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      * @throws \Exception
      */
-    public function getSetOrderReferenceDetailsRequestData(string $paymentCode,
-                                                           string $workOrderId,
-                                                           string $amazonReferenceId,
-                                                           string $currency,
-                                                           string $amount): array
-    {
-        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+    public function getSetOrderReferenceDetailsRequestData(
+        string $paymentCode,
+        string $workOrderId,
+        string $amazonReferenceId,
+        string $currency,
+        string $amount,
+        int $clientId = null,
+        int $pluginSetId = null
+    ): array {
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
 
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = $currency;
@@ -118,18 +132,23 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $amount
      * @param string $currency
      * @param string $basketId
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      * @throws \Exception
      */
-    public function getConfirmOrderReferenceRequestData(string $paymentCode,
-                                                        string $workOrderId,
-                                                        string $reference,
-                                                        string $amazonReferenceId,
-                                                        string $amount,
-                                                        string $currency,
-                                                        string $basketId): array
-    {
-        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+    public function getConfirmOrderReferenceRequestData(
+        string $paymentCode,
+        string $workOrderId,
+        string $reference,
+        string $amazonReferenceId,
+        string $amount,
+        string $currency,
+        string $basketId,
+        int $clientId = null,
+        int $pluginSetId = null
+    ): array {
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
 
         // Currency not mentioned in API-Doc of Payone
         $requestParams['currency'] = $currency;

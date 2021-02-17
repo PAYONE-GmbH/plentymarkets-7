@@ -6,6 +6,7 @@ use Payone\Assistants\DataSources\AssistantDataSource;
 use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\CreditcardTypes;
+use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
 use Plenty\Modules\System\Models\Webstore;
 use Plenty\Modules\User\Contracts\UserRepositoryContract;
@@ -20,6 +21,15 @@ class PayoneAssistant extends WizardProvider
      */
     protected $paymentHelper;
 
+    /**
+     * @var array
+     */
+    protected $activeCountries;
+
+    /**
+     * PayoneAssistant constructor.
+     * @param PaymentHelper $paymentHelper
+     */
     public function __construct(PaymentHelper $paymentHelper)
     {
         $this->paymentHelper = $paymentHelper;
@@ -357,7 +367,7 @@ class PayoneAssistant extends WizardProvider
                         + [
                         $paymentCode.'AllowedDeliveryCountries' => [
                             'type' => 'checkboxGroup',
-                            'defaultValue' => ['DE', 'FR', 'IT', 'ES', 'LU', 'NL', 'SE', 'PT', 'HU', 'DK'],
+                            'defaultValue' => $this->getActiveCountriesValues(),
                             'options' => [
                                 'name' => 'Assistant.allowedDeliveryCountries',
                                 'required' => true,
@@ -431,7 +441,7 @@ class PayoneAssistant extends WizardProvider
         return [
             $paymentCode.'AllowedDeliveryCountries' => [
                 'type' => 'checkboxGroup',
-                'defaultValue' => ['DE', 'AT', 'CH'],
+                'defaultValue' => $this->getActiveCountriesValues(),
                 'options' => [
                     'name' => 'Assistant.allowedDeliveryCountries',
                     'required' => true,
@@ -537,6 +547,22 @@ class PayoneAssistant extends WizardProvider
         }
 
         return $deliveryCountries;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getActiveCountriesValues(): array
+    {
+        if ($this->activeCountries === null) {
+            /** @var CountryRepositoryContract $countryRepository */
+            $countryRepository = pluginApp(CountryRepositoryContract::class);
+            $activeCountries = $countryRepository->getActiveCountriesList();
+            foreach($activeCountries as $country){
+                $this->activeCountries[] = $country->id;
+            }
+        }
+        return $this->activeCountries;
     }
 
     /**

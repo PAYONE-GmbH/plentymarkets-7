@@ -238,7 +238,7 @@ class PayoneAssistant extends WizardProvider
             'sections' => [
                 [
                     'title' => 'Assistant.titlePayonePaymentSection',
-                    'description' => 'Assistant.descriptionPayonePaymentSection',
+                    'description' => 'Assistant.descriptionPayonePaymentSectionSecureInvoice',
                     'form' =>
                         $this->getMinMaxAmountConfig($paymentCode)
                         +

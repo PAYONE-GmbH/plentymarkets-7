@@ -180,7 +180,7 @@ class PayoneAssistant extends WizardProvider
                         'type' => 'toggle',
                         'defaultValue' => false,
                         'options' => [
-                            'name' => 'Assistant.titlePayoneProductsStep'.$paymentCode,
+                            'name' => 'Assistant.title'.$paymentCode.'_Toggle',
                             'required' => false
                         ]
                     ]

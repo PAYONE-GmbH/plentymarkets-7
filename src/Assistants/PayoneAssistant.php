@@ -7,6 +7,7 @@ use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\CreditcardTypes;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
+use Plenty\Modules\Order\Shipping\Countries\Models\Country;
 use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
 use Plenty\Modules\System\Models\Webstore;
 use Plenty\Modules\User\Contracts\UserRepositoryContract;
@@ -558,8 +559,9 @@ class PayoneAssistant extends WizardProvider
             /** @var CountryRepositoryContract $countryRepository */
             $countryRepository = pluginApp(CountryRepositoryContract::class);
             $activeCountries = $countryRepository->getActiveCountriesList();
+            /** @var Country $country */
             foreach($activeCountries as $country){
-                $this->activeCountries[] = $country->id;
+                $this->activeCountries[] = $country->isoCode2;
             }
         }
         return $this->activeCountries;

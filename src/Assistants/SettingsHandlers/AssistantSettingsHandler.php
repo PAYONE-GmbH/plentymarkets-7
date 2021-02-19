@@ -65,6 +65,7 @@ class AssistantSettingsHandler implements WizardSettingsHandler
                 $payoneMethods[$paymentCode]['MinimumAmount'] = (int)$data[$paymentCode.'MinimumAmount'] ?? 0;
                 $payoneMethods[$paymentCode]['MaximumAmount'] = (int)$data[$paymentCode.'MaximumAmount'] ?? 0;
                 $payoneMethods[$paymentCode]['AllowedDeliveryCountries'] = is_array($data[$paymentCode.'AllowedDeliveryCountries']) ? $data[$paymentCode.'AllowedDeliveryCountries'] : [];
+                $payoneMethods[$paymentCode]['AuthType'] = (int)$data[$paymentCode.'AuthType'] ?? -1;
             }
         }
 

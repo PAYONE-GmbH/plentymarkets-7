@@ -72,12 +72,15 @@ class PaymentService
      */
     public function openTransaction(Basket $basket)
     {
-        $authType = $this->settingsService->getSettingsValue('authType');
         $selectedPaymentMopId = $basket->methodOfPaymentId;
         if (!$selectedPaymentMopId || !$this->paymentHelper->isPayonePayment($selectedPaymentMopId)) {
             throw new \Exception(
                 'Can no initialize payment. Not a Payone payment method'
             );
+        }
+        $authType = $this->settingsService->getPaymentSettingsValue('authType', $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId));
+        if(!isset($authType) || $authType == -1) {
+            $authType = $this->settingsService->getSettingsValue('authType');
         }
         if ($authType == self::AUTH_TYPE_AUTH) {
             $authResponse = $this->authService->executeAuth($basket);

@@ -223,8 +223,10 @@ class PayoneAssistant extends WizardProvider
                             'description' => 'Assistant.descriptionPayonePaymentSection',
                             'form' =>
                                 $this->getMinMaxAmountConfig($paymentCode)
-                                +
+                                    +
                                 $this->getDeliveryCountriesConfig($paymentCode)
+                                    +
+                                $this->getAuthorizationConfig($paymentCode)
                         ]
                     ]
                 ];
@@ -252,9 +254,11 @@ class PayoneAssistant extends WizardProvider
                     'description' => 'Assistant.descriptionPayonePaymentSectionSecureInvoice',
                     'form' =>
                         $this->getMinMaxAmountConfig($paymentCode)
-                        +
+                            +
                         $this->getDeliveryCountriesConfig($paymentCode)
-                        + [
+                            +
+                        $this->getAuthorizationConfig($paymentCode)
+                            + [
                         $paymentCode.'portalId' => [
                             'type' => 'text',
                             'options' => [
@@ -297,6 +301,8 @@ class PayoneAssistant extends WizardProvider
                         $this->getMinMaxAmountConfig($paymentCode)
                             +
                         $this->getDeliveryCountriesConfig($paymentCode)
+                            +
+                        $this->getAuthorizationConfig($paymentCode)
                             + [
                         $paymentCode.'minExpireTime' => [
                             'type' => 'text',
@@ -366,33 +372,36 @@ class PayoneAssistant extends WizardProvider
                     'form' =>
                         $this->getMinMaxAmountConfig($paymentCode)
                         + [
-                        $paymentCode.'AllowedDeliveryCountries' => [
-                            'type' => 'checkboxGroup',
-                            'defaultValue' => $this->getActiveCountriesValues(),
-                            'options' => [
-                                'name' => 'Assistant.allowedDeliveryCountries',
-                                'required' => true,
-                                'checkboxValues' => $this->getDeliveryCountries4AmazonPay()
-                            ]
-                        ],
-                        $paymentCode.'Sandbox' => [
-                            'type' => 'select',
-                            "defaultValue" => 1,
-                            'options' => [
-                                'name' => 'Assistant.Sandbox',
-                                'listBoxValues' => [
-                                    [
-                                        "caption" => 'Assistant.sandboxProductiveOption',
-                                        "value" => 1
-                                    ],
-                                    [
-                                        "caption" => 'Assistant.sandboxTestingOption',
-                                        "value" => 0
+                            $paymentCode.'AllowedDeliveryCountries' => [
+                                'type' => 'checkboxGroup',
+                                'defaultValue' => $this->getActiveCountriesValues(),
+                                'options' => [
+                                    'name' => 'Assistant.allowedDeliveryCountries',
+                                    'required' => true,
+                                    'checkboxValues' => $this->getDeliveryCountries4AmazonPay()
+                                ]
+                            ],
+                        ]
+                        + $this->getAuthorizationConfig($paymentCode) +
+                        [
+                            $paymentCode.'Sandbox' => [
+                                'type' => 'select',
+                                "defaultValue" => 1,
+                                'options' => [
+                                    'name' => 'Assistant.Sandbox',
+                                    'listBoxValues' => [
+                                        [
+                                            "caption" => 'Assistant.sandboxProductiveOption',
+                                            "value" => 1
+                                        ],
+                                        [
+                                            "caption" => 'Assistant.sandboxTestingOption',
+                                            "value" => 0
+                                        ]
                                     ]
                                 ]
                             ]
                         ]
-                    ]
                 ]
             ]
         ];
@@ -409,24 +418,20 @@ class PayoneAssistant extends WizardProvider
     {
         return [
             $paymentCode.'MinimumAmount' => [
-                'type' => 'slider',
+                'type' => 'double',
                 'defaultValue' => 0,
                 'options' => [
-                    'min' => 0,
-                    'max' => 500000,
-                    'precision' => 0,
-                    'interval' => 1,
+                    'isPriceInput' => true,
+                    'decimalCount' => 2,
                     'name' => 'Assistant.MinimumAmount'
                 ]
             ],
             $paymentCode.'MaximumAmount' => [
-                'type' => 'slider',
-                'defaultValue' => 2000,
+                'type' => 'double',
+                'defaultValue' => 0,
                 'options' => [
-                    'min' => 0,
-                    'max' => 500000,
-                    'precision' => 0,
-                    'interval' => 1,
+                    'isPriceInput' => true,
+                    'decimalCount' => 2,
                     'name' => 'Assistant.MaximumAmount'
                 ]
             ]
@@ -447,6 +452,37 @@ class PayoneAssistant extends WizardProvider
                     'name' => 'Assistant.allowedDeliveryCountries',
                     'required' => true,
                     'checkboxValues' => $this->getDeliveryCountries()
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $paymentCode
+     * @return array
+     */
+    protected function getAuthorizationConfig(string $paymentCode): array
+    {
+        return [
+            $paymentCode.'AuthType' => [
+                'type' => 'select',
+                "defaultValue" => -1,
+                'options' => [
+                    'name' => 'Assistant.authType',
+                    'listBoxValues' => [
+                        [
+                            "caption" => 'Assistant.authTypeDefault',
+                            "value" => -1
+                        ],
+                        [
+                            "caption" => 'Assistant.authTypeAuthorization',
+                            "value" => 0
+                        ],
+                        [
+                            "caption" => 'Assistant.authTypePreAuthorization',
+                            "value" => 1
+                        ]
+                    ]
                 ]
             ]
         ];

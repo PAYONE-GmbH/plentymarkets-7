@@ -142,11 +142,11 @@ class PayoneAssistant extends WizardProvider
                                 'listBoxValues' => [
                                     [
                                         "caption" => 'Assistant.authTypeAuthorization',
-                                        "value" => 0
+                                        "value" => 1
                                     ],
                                     [
                                         "caption" => 'Assistant.authTypePreAuthorization',
-                                        "value" => 1
+                                        "value" => 0
                                     ]
                                 ]
                             ]
@@ -476,11 +476,11 @@ class PayoneAssistant extends WizardProvider
                         ],
                         [
                             "caption" => 'Assistant.authTypeAuthorization',
-                            "value" => 0
+                            "value" => 1
                         ],
                         [
                             "caption" => 'Assistant.authTypePreAuthorization',
-                            "value" => 1
+                            "value" => 0
                         ]
                     ]
                 ]

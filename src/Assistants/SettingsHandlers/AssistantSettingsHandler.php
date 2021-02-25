@@ -51,21 +51,21 @@ class AssistantSettingsHandler implements WizardSettingsHandler
                         $payoneMethods[$paymentCode]['key'] = $data[$paymentCode.'key'] ?? '';
                         break;
                     case 'PAYONE_PAYONE_CREDIT_CARD':
-                        $payoneMethods[$paymentCode]['minExpireTime'] = (int)$data[$paymentCode.'minExpireTime'] ?? 30;
+                        $payoneMethods[$paymentCode]['minExpireTime'] = (int)($data[$paymentCode.'minExpireTime'] ?? 30);
                         $payoneMethods[$paymentCode]['defaultStyle'] = $data[$paymentCode.'defaultStyle'] ?? 'font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; height:100%';
-                        $payoneMethods[$paymentCode]['defaultHeightInPx'] = (int)$data[$paymentCode.'defaultHeightInPx'] ?? 44;
-                        $payoneMethods[$paymentCode]['defaultWidthInPx'] = (int)$data[$paymentCode.'defaultWidthInPx'] ?? 644;
+                        $payoneMethods[$paymentCode]['defaultHeightInPx'] = (int)($data[$paymentCode.'defaultHeightInPx'] ?? 44);
+                        $payoneMethods[$paymentCode]['defaultWidthInPx'] = (int)($data[$paymentCode.'defaultWidthInPx'] ?? 644);
                         $payoneMethods[$paymentCode]['AllowedCardTypes'] = is_array($data[$paymentCode.'AllowedCardTypes']) ? $data[$paymentCode.'AllowedCardTypes'] : [];
                         break;
                     case 'PAYONE_PAYONE_AMAZON_PAY':
-                        $payoneMethods[$paymentCode]['Sandbox'] = (int)$data[$paymentCode.'Sandbox'] ?? 0;
+                        $payoneMethods[$paymentCode]['Sandbox'] = (int)($data[$paymentCode.'Sandbox'] ?? 0);
                         break;
                 }
 
-                $payoneMethods[$paymentCode]['MinimumAmount'] = (int)$data[$paymentCode.'MinimumAmount'] ?? 0;
-                $payoneMethods[$paymentCode]['MaximumAmount'] = (int)$data[$paymentCode.'MaximumAmount'] ?? 0;
+                $payoneMethods[$paymentCode]['MinimumAmount'] = (int)($data[$paymentCode.'MinimumAmount'] ?? 0);
+                $payoneMethods[$paymentCode]['MaximumAmount'] = (int)($data[$paymentCode.'MaximumAmount'] ?? 0);
                 $payoneMethods[$paymentCode]['AllowedDeliveryCountries'] = is_array($data[$paymentCode.'AllowedDeliveryCountries']) ? $data[$paymentCode.'AllowedDeliveryCountries'] : [];
-                $payoneMethods[$paymentCode]['AuthType'] = (int)$data[$paymentCode.'AuthType'] ?? -1;
+                $payoneMethods[$paymentCode]['AuthType'] = (int)($data[$paymentCode.'AuthType'] ?? -1);
             }
         }
 

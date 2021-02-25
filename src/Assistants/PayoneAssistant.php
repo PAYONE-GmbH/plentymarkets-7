@@ -28,6 +28,11 @@ class PayoneAssistant extends WizardProvider
     protected $activeCountries;
 
     /**
+     * @var array
+     */
+    protected $activeCountries4AmazonPay;
+
+    /**
      * PayoneAssistant constructor.
      * @param PaymentHelper $paymentHelper
      */
@@ -374,7 +379,7 @@ class PayoneAssistant extends WizardProvider
                         + [
                             $paymentCode.'AllowedDeliveryCountries' => [
                                 'type' => 'checkboxGroup',
-                                'defaultValue' => $this->getActiveCountriesValues(),
+                                'defaultValue' => $this->activeCountries4AmazonPay,
                                 'options' => [
                                     'name' => 'Assistant.allowedDeliveryCountries',
                                     'required' => true,
@@ -447,7 +452,7 @@ class PayoneAssistant extends WizardProvider
         return [
             $paymentCode.'AllowedDeliveryCountries' => [
                 'type' => 'checkboxGroup',
-                'defaultValue' => $this->getActiveCountriesValues(),
+                'defaultValue' => $this->activeCountries,
                 'options' => [
                     'name' => 'Assistant.allowedDeliveryCountries',
                     'required' => true,
@@ -587,20 +592,27 @@ class PayoneAssistant extends WizardProvider
     }
 
     /**
-     * @return array
+     * Load the active country values
      */
-    protected function getActiveCountriesValues(): array
+    protected function loadActiveCountriesValues()
     {
-        if ($this->activeCountries === null) {
+        if ($this->activeCountries === null || $this->activeCountries4AmazonPay) {
             /** @var CountryRepositoryContract $countryRepository */
             $countryRepository = pluginApp(CountryRepositoryContract::class);
             $activeCountries = $countryRepository->getActiveCountriesList();
             /** @var Country $country */
             foreach($activeCountries as $country){
-                $this->activeCountries[] = $country->isoCode2;
+                // All Payone payment methods
+                if(in_array($country->isoCode2, ['DE', 'AT', 'CH'])) {
+                    $this->activeCountries[] = $country->isoCode2;
+                }
+
+                // Amazon Pay over Payone
+                if(in_array($country->isoCode2, ['DE', 'FR', 'IT', 'ES', 'LU', 'NL', 'SE', 'PT', 'HU', 'DK'])) {
+                    $this->activeCountries4AmazonPay[] = $country->isoCode2;
+                }
             }
         }
-        return $this->activeCountries;
     }
 
     /**

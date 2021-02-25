@@ -3,10 +3,10 @@
 ## 2.0.0
 
 ### TODO
-- It is necessary to go through the assistant in each linked set to configure the plugin.
+- To configure the plugin, it is necessary to complete the assistant in each linked plugin set.
 
 ### Hinzugefügt
-- The settings for the Payone plugin have been transferred to an assistant. It is now possible to configure the plugin per set and per client.
+- The settings for the Payone plugin have been transferred to an assistant. It is now possible to configure the plugin per plugin set and per client.
 
 ## 1.3.0
 
@@ -61,7 +61,7 @@
 ## 1.1.9
 
 ### Fixed
-- Partial refunds can now be executed more than once. Under certain constellations an error came up. 
+- Partial refunds can now be executed more than once. Under certain constellations an error came up.
 
 ## 1.1.8
 
@@ -85,7 +85,7 @@
 ## 1.1.5
 
 ### Fixed
-- External orders will be created correct without skipping by the plugin. 
+- External orders will be created correct without skipping by the plugin.
 
 ## 1.1.4
 
@@ -118,7 +118,7 @@
 - An error causing the creation of duplicate orders during payment processing has been fixed
 - An error with the credit card type selection was fixed
 
-## 1.1.0 
+## 1.1.0
 
 ### Changed
 - Support is now within the responsibility of plentysystems

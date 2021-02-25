@@ -3,10 +3,10 @@
 ## 2.0.0
 
 ### TODO
-- Es muss der Assistent in jedem verknüpften Set durchlaufen werden um das Plugin zu konfigurieren.
+- Der Assistent muss in jedem verknüpften Plugin-Set durchlaufen werden, um das Plugin zu konfigurieren.
 
 ### Hinzugefügt
-- Die Einstellungen für das Payone-Plugin wurden in einen Assistenten überführt. Es ist nun Möglich das Plugin pro Set und pro Mandanten zu konfigurieren.
+- Die Einstellungen für das Payone-Plugin wurden in einen Assistenten überführt. Es ist nun möglich das Plugin pro Plugin-Set und pro Mandant zu konfigurieren.
 
 ## 1.3.0
 
@@ -107,7 +107,7 @@
 ## 1.1.2
 
 ### Geändert
-- Die Eingabe des Geburtsdatums ist nun im Bestellprozess ein Pflichtfeld. Dieses Feld muss in den Einstellungen von Ceres für den Bestellprozess aktiviert werden. 
+- Die Eingabe des Geburtsdatums ist nun im Bestellprozess ein Pflichtfeld. Dieses Feld muss in den Einstellungen von Ceres für den Bestellprozess aktiviert werden.
 
 ### Hinzugefügt
 - Netto Bestellungen können nun durchgeführt werden.

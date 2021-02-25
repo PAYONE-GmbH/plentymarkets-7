@@ -485,8 +485,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $basketData = $basket->load();
                 $resourceContainer->addScriptTemplate(
                     PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
-                    'selectedPaymentId' => $basketData->methodOfPaymentId,
-                    'amazonPayMopId' => $amazonPayMopId
+                        'selectedPaymentId' => $basketData->methodOfPaymentId,
+                        'amazonPayMopId' => $amazonPayMopId,
+                        'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
                 ]);
             }
         });

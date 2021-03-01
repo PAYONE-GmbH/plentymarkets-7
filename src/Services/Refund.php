@@ -191,8 +191,7 @@ class Refund
                         'errorMessage' => $refundPaymentResult->getErrorMessage(),
                     ]
                 );
-                $text = 'Refund von event procedure fehlgeschlagen. Meldung: ' . $refundPaymentResult->getErrorMessage();
-                $orderNote = $text . ' Meldung: ' . $refundPaymentResult->getErrorMessage() . ' Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
+                $orderNote = 'Refund fehlgeschlagen. Fehler im Log';
                 continue;
             }
 

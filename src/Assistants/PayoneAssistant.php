@@ -395,17 +395,17 @@ class PayoneAssistant extends WizardProvider
                         [
                             $paymentCode.'Sandbox' => [
                                 'type' => 'select',
-                                "defaultValue" => 1,
+                                "defaultValue" => 0,
                                 'options' => [
                                     'name' => 'Assistant.Sandbox',
                                     'listBoxValues' => [
                                         [
                                             "caption" => 'Assistant.sandboxProductiveOption',
-                                            "value" => 1
+                                            "value" => 0
                                         ],
                                         [
                                             "caption" => 'Assistant.sandboxTestingOption',
-                                            "value" => 0
+                                            "value" => 1
                                         ]
                                     ]
                                 ]

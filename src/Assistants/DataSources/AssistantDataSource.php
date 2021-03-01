@@ -158,7 +158,7 @@ class AssistantDataSource extends BaseWizardDataSource
                             $assistant[$paymentCode.'AllowedCardTypes'] = is_array($value['AllowedCardTypes']) ? $value['AllowedCardTypes'] : [];
                             break;
                         case 'PAYONE_PAYONE_AMAZON_PAY':
-                            $assistant[$paymentCode.'Sandbox'] = (int)($value['Sandbox'] ?? 1);
+                            $assistant[$paymentCode.'Sandbox'] = (int)($value['Sandbox'] ?? 0);
                             break;
                     }
                 }

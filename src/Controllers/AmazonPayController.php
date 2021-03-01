@@ -107,7 +107,9 @@ class AmazonPayController extends Controller
 
         $this->logger
             ->setIdentifier(__METHOD__)
-            ->debug('AmazonPay.configLoginButton', (array)$configResponse);
+            ->debug('AmazonPay.configLoginButton', [
+                'configResponse' => $configResponse
+            ]);
 
         /** @var LocalizationRepositoryContract $localizationRepositoryContract */
         $localizationRepositoryContract = pluginApp(LocalizationRepositoryContract::class);

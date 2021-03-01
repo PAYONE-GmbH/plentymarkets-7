@@ -92,8 +92,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $paymentCode
      * @param string $workOrderId
      * @param string $amazonReferenceId
-     * @param string $currency
      * @param string $amount
+     * @param string|null $currency
      * @param int|null $clientId
      * @param int|null $pluginSetId
      * @return array

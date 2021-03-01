@@ -5,6 +5,9 @@ namespace Payone\Assistants;
 use Payone\Assistants\DataSources\AssistantDataSource;
 use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
+use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\CreditcardTypes;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
@@ -204,16 +207,16 @@ class PayoneAssistant extends WizardProvider
                 ]
             ];
 
-            if(in_array($paymentCode, ['PAYONE_PAYONE_INVOICE_SECURE', 'PAYONE_PAYONE_CREDIT_CARD', 'PAYONE_PAYONE_AMAZON_PAY'])) {
+            if(in_array($paymentCode, [PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE, PayoneCCPaymentMethod::PAYMENT_CODE, PayoneAmazonPayPaymentMethod::PAYMENT_CODE])) {
                 // We need some special configurations for this methods.
                 switch ($paymentCode) {
-                    case 'PAYONE_PAYONE_INVOICE_SECURE':
+                    case PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE:
                         $config = $this->createSecureInvoiceStep($config, $paymentCode);
                         break;
-                    case 'PAYONE_PAYONE_CREDIT_CARD':
+                    case PayoneCCPaymentMethod::PAYMENT_CODE:
                         $config = $this->createCreditCardStep($config, $paymentCode);
                         break;
-                    case 'PAYONE_PAYONE_AMAZON_PAY':
+                    case PayoneAmazonPayPaymentMethod::PAYMENT_CODE:
                         $config = $this->createAmazonPayStep($config, $paymentCode);
                         break;
                 }

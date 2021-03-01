@@ -612,7 +612,7 @@ class PayoneAssistant extends WizardProvider
      */
     protected function loadActiveCountriesValues()
     {
-        if ($this->activeCountries === null || $this->activeCountries4AmazonPay) {
+        if ($this->activeCountries === null || $this->activeCountries4AmazonPay === null) {
             /** @var CountryRepositoryContract $countryRepository */
             $countryRepository = pluginApp(CountryRepositoryContract::class);
             $activeCountries = $countryRepository->getActiveCountriesList();

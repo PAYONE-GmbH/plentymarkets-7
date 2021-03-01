@@ -2,7 +2,6 @@
 
 namespace Payone\Services;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
 use Payone\Adapter\PaymentHistory;
 use Payone\Helpers\PaymentHelper;
@@ -17,36 +16,37 @@ class Capture
     /**
      * @var PaymentRepositoryContract
      */
-    private $paymentRepository;
+    protected $paymentRepository;
+
     /**
      * @var PaymentHelper
      */
-    private $paymentHelper;
+    protected $paymentHelper;
+
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
+
     /**
      * @var PaymentHistory
      */
-    private $paymentHistory;
+    protected $paymentHistory;
 
-    /**
-     * @var ConfigAdapter
-     */
-    private $config;
     /**
      * @var CaptureDataProvider
      */
-    private $captureDataProvider;
+    protected $captureDataProvider;
+
     /**
      * @var Api
      */
-    private $api;
+    protected $api;
+
     /**
      * @var PaymentCreation
      */
-    private $paymentCreation;
+    protected $paymentCreation;
 
     /**
      * Capture constructor.
@@ -55,7 +55,6 @@ class Capture
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
      * @param PaymentHistory $paymentHistory
-     * @param ConfigAdapter $config
      * @param CaptureDataProvider $captureDataProvider
      * @param Api $api
      * @param PaymentCreation $paymentCreation
@@ -65,7 +64,6 @@ class Capture
         PaymentHelper $paymentHelper,
         Logger $logger,
         PaymentHistory $paymentHistory,
-        ConfigAdapter $config,
         CaptureDataProvider $captureDataProvider,
         Api $api,
         PaymentCreation $paymentCreation
@@ -74,7 +72,6 @@ class Capture
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
         $this->paymentHistory = $paymentHistory;
-        $this->config = $config;
         $this->captureDataProvider = $captureDataProvider;
         $this->api = $api;
         $this->paymentCreation = $paymentCreation;
@@ -122,7 +119,7 @@ class Capture
             }
 
             $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
-            $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $preAuthReference);
+            $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $preAuthReference, $order->plentyId);
 
             $captureOrderResult = $this->api->doCapture($requestData);
             $text = 'Capture done. Transaction Id: ' . $captureOrderResult->getTransactionID();

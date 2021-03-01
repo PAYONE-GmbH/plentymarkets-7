@@ -2,7 +2,6 @@
 
 namespace Payone\Services;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Translator;
 use Payone\Helpers\PaymentHelper;
 use Plenty\Modules\Order\Pdf\Models\OrderPdfGeneration;
@@ -16,16 +15,12 @@ class OrderPdf
     /**
      * @var PaymentHelper
      */
-    private $paymentHelper;
+    protected $paymentHelper;
 
-    /**
-     * @var ConfigAdapter
-     */
-    private $configRepo;
     /**
      * @var Translator
      */
-    private $translator;
+    protected $translator;
 
     /**
      * OrderPdf constructor.
@@ -42,7 +37,6 @@ class OrderPdf
     /**
      * @param Payment $payment
      * @param string $lang
-     *
      * @return OrderPdfGeneration|void
      */
     public function createPdfNote(Payment $payment, $lang = 'de')
@@ -66,12 +60,10 @@ class OrderPdf
     }
 
     /**
-     * @param string $currency
-     * @param string $lang
-     *
+     * @param Payment $payment
      * @return string
      */
-    private function getPayoneBankAccount(Payment $payment)
+    private function getPayoneBankAccount(Payment $payment): string
     {
 
         $iban = $this->paymentHelper->getPaymentPropertyValue($payment, PaymentProperty::TYPE_IBAN_OF_RECEIVER);;
@@ -90,11 +82,10 @@ class OrderPdf
 
 
     /**
-     * @param $payment
-     *
+     * @param Payment $payment
      * @return string
      */
-    private function getPaymentReferenceText($payment): string
+    private function getPaymentReferenceText(Payment $payment): string
     {
         $referenceNumber = $this->paymentHelper->getPaymentPropertyValue(
             $payment,

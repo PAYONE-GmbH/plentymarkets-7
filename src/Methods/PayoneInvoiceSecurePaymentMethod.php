@@ -4,7 +4,8 @@
 
 namespace Payone\Methods;
 
-use Payone\Adapter\Config as ConfigAdapter;
+
+use Payone\Services\SettingsService;
 
 /**
  * Class PayoneInvoiceSecurePaymentMethod
@@ -26,13 +27,13 @@ class PayoneInvoiceSecurePaymentMethod extends PaymentAbstract
     /**
      * Check if all settings for the payment method are set.
      *
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      * @return bool
      */
-    public function validateSettings(ConfigAdapter $configRepo): bool
+    public function validateSettings(SettingsService $settingsService): bool
     {
-        $portalId = $configRepo->get(self::PAYMENT_CODE . '.portalid');
-        $key = $configRepo->get(self::PAYMENT_CODE . '.key');
+        $portalId = $settingsService->getPaymentSettingsValue('portalId', self::PAYMENT_CODE);
+        $key = $settingsService->getPaymentSettingsValue('key', self::PAYMENT_CODE);
         
         // A separate portal ID and key must be set for this payment method
         return (!empty($portalId) && !empty($key));

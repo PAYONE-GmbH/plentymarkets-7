@@ -2,30 +2,31 @@
 
 namespace Payone\Models\PaymentConfig;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Services\SettingsService;
 
 class CreditCardExpiration
 {
-    /** @var ConfigAdapter */
-    private $configRepo;
+    /**
+     * @var SettingsService
+     */
+    protected $settingsService;
 
     /**
      * Api constructor.
      *
-     * @param $paymentCode
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      */
-    public function __construct(ConfigAdapter $configRepo)
+    public function __construct(SettingsService $settingsService)
     {
-        $this->configRepo = $configRepo;
+        $this->settingsService = $settingsService;
     }
 
     /**
      * @return int
      */
-    public function getMinExpireTimeInDays()
+    public function getMinExpireTimeInDays(): int
     {
-        return (int) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.minExpireTime');
+        return (int) $this->settingsService->getPaymentSettingsValue('minExpireTime', PayoneCCPaymentMethod::PAYMENT_CODE);
     }
 }

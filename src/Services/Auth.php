@@ -2,15 +2,12 @@
 
 namespace Payone\Services;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
-use Payone\Models\Api\Response;
 use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 
 class Auth
@@ -18,50 +15,52 @@ class Auth
     /**
      * @var PaymentHelper
      */
-    private $paymentHelper;
+    protected $paymentHelper;
+
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
      * @var PaymentCreation
      */
-    private $paymentCreationService;
+    protected $paymentCreationService;
 
     /**
-     * @var ConfigAdapter
+     * @var SettingsService
      */
-    private $config;
+    protected $settingsService;
+
     /**
      * @var PaymentCache
      */
-    private $paymentCache;
+    protected $paymentCache;
 
     /**
      * @var AuthDataProvider
      */
-    private $authDataProvider;
+    protected $authDataProvider;
+
     /**
      * @var Api
      */
-    private $api;
+    protected $api;
 
     /**
-     * ReAuth constructor.
+     * Auth constructor.
      *
      * @param PaymentHelper $paymentHelper
      * @param Logger $logger
      * @param PaymentCreation $paymentCreation
-     * @param OrderRepositoryContract $orderRepositoryContract
-     * @param ConfigAdapter $config
      * @param PaymentCache $paymentCache
+     * @param Api $api
+     * @param AuthDataProvider $authDataProvider
      */
     public function __construct(
         PaymentHelper $paymentHelper,
         Logger $logger,
         PaymentCreation $paymentCreation,
-        ConfigAdapter $config,
         PaymentCache $paymentCache,
         Api $api,
         AuthDataProvider $authDataProvider
@@ -69,7 +68,6 @@ class Auth
         $this->paymentHelper = $paymentHelper;
         $this->logger = $logger;
         $this->paymentCreationService = $paymentCreation;
-        $this->config = $config;
         $this->paymentCache = $paymentCache;
         $this->api = $api;
         $this->authDataProvider = $authDataProvider;
@@ -77,10 +75,10 @@ class Auth
 
     /**
      * @param Basket $basket
-     *
      * @return AuthResponse
+     * @throws \Exception
      */
-    public function executeAuth(Basket $basket)
+    public function executeAuth(Basket $basket): AuthResponse
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
 
@@ -100,10 +98,7 @@ class Auth
     /**
      * @param $selectedPaymentId
      * @param AuthResponse $authResponse
-     * @param $orderId
-     *
      * @throws \Exception
-     *
      * @return Payment
      */
     private function createPayment($selectedPaymentId, $authResponse, $basket): Payment
@@ -128,12 +123,10 @@ class Auth
 
     /**
      * @param Basket $basket
-     *
      * @throws \Exception
-     *
      * @return AuthResponse
      */
-    private function doAuthFromBasket(Basket $basket)
+    private function doAuthFromBasket(Basket $basket): AuthResponse
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentId);

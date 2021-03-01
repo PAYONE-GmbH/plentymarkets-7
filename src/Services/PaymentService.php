@@ -1,10 +1,8 @@
 <?php
 
-//strict
-
 namespace Payone\Services;
 
-use Payone\Adapter\Config as ConfigAdapter;
+
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\AuthResponse;
 use Payone\Models\Api\PreAuthResponse;
@@ -22,25 +20,27 @@ class PaymentService
     /**
      * @var PaymentHelper
      */
-    private $paymentHelper;
-
-    /**
-     * @var ConfigAdapter
-     */
-    private $config;
+    protected $paymentHelper;
 
     /**
      * @var AuthService
      */
-    private $authService;
+    protected $authService;
+
     /**
      * @var PreAuth
      */
-    private $preAuthService;
+    protected $preAuthService;
+
     /**
      * @var ApiResponseCache
      */
-    private $responseCache;
+    protected $responseCache;
+
+    /**
+     * @var SettingsService
+     */
+    protected $settingsService;
 
     /**
      * PaymentService constructor.
@@ -48,38 +48,39 @@ class PaymentService
      * @param Auth $authService
      * @param PreAuth $preAuthService
      * @param ApiResponseCache $responseCache
-     * @param ConfigAdapter $config
+     * @param SettingsService $settingsService
      * @param PaymentHelper $paymentHelper
      */
     public function __construct(
         AuthService $authService,
         PreAuth $preAuthService,
         ApiResponseCache $responseCache,
-        ConfigAdapter $config,
+        SettingsService $settingsService,
         PaymentHelper $paymentHelper
     ) {
         $this->authService = $authService;
         $this->preAuthService = $preAuthService;
         $this->responseCache = $responseCache;
-        $this->config = $config;
+        $this->settingsService = $settingsService;
         $this->paymentHelper = $paymentHelper;
     }
 
     /**
      * @param Basket $basket
-     *
      * @throws \Exception
-     *
      * @return AuthResponse|PreAuthResponse
      */
     public function openTransaction(Basket $basket)
     {
-        $authType = $this->config->get('authType');
         $selectedPaymentMopId = $basket->methodOfPaymentId;
         if (!$selectedPaymentMopId || !$this->paymentHelper->isPayonePayment($selectedPaymentMopId)) {
             throw new \Exception(
                 'Can no initialize payment. Not a Payone payment method'
             );
+        }
+        $authType = $this->settingsService->getPaymentSettingsValue('authType', $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId));
+        if(!isset($authType) || $authType == -1) {
+            $authType = $this->settingsService->getSettingsValue('authType');
         }
         if ($authType == self::AUTH_TYPE_AUTH) {
             $authResponse = $this->authService->executeAuth($basket);

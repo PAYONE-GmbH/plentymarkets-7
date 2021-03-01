@@ -2,12 +2,12 @@
 
 namespace Payone\Controllers;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Adapter\Logger;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Migrations\CreatePaymentMethods;
 use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentDocuments;
+use Payone\Services\SettingsService;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 
@@ -19,37 +19,38 @@ class StatusController extends Controller
     /**
      * @var Request
      */
-    private $request;
+    protected $request;
 
     /**
-     * @var ConfigAdapter
+     * @var SettingsService
      */
-    private $config;
+    protected $settingsService;
 
     /**
      * @var PaymentCreation
      */
-    private $paymentCreation;
+    protected $paymentCreation;
+
     /**
      * @var CreatePaymentMethods
      */
-    private $paymentMigration;
+    protected $paymentMigration;
 
     /**
      * @var PaymentDocuments
      */
-    private $paymentDocument;
+    protected $paymentDocument;
 
     /**
      * @var Logger
      */
-    private $logger;
+    protected $logger;
 
     /**
      * StatusController constructor.
      *
      * @param Request $request
-     * @param ConfigAdapter $config
+     * @param SettingsService $settingsService
      * @param PaymentCreation $paymentCreation
      * @param PaymentDocuments $paymentDocument
      * @param CreatePaymentMethods $paymentMigration
@@ -57,7 +58,7 @@ class StatusController extends Controller
      */
     public function __construct(
         Request $request,
-        ConfigAdapter $config,
+        SettingsService $settingsService,
         PaymentCreation $paymentCreation,
         PaymentDocuments $paymentDocument,
         CreatePaymentMethods $paymentMigration,
@@ -65,13 +66,17 @@ class StatusController extends Controller
     )
     {
         $this->request = $request;
-        $this->config = $config;
+        $this->settingsService = $settingsService;
         $this->paymentCreation = $paymentCreation;
         $this->paymentDocument = $paymentDocument;
         $this->paymentMigration = $paymentMigration;
         $this->logger = $logger;
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function index()
     {
         $txid = $this->request->get('txid');
@@ -86,9 +91,9 @@ class StatusController extends Controller
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $txid);
         $this->logger->debug('Controller.Status', $this->request->all());
 
-        if ($this->request->get('key') != md5($this->config->get(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE . '.key')) &&
-            $this->request->get('key') != md5($this->config->get('key'))) {
-            return;
+        if ($this->request->get('key') != md5($this->settingsService->getPaymentSettingsValue('key', PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE)) &&
+            $this->request->get('key') != md5($this->settingsService->getSettingsValue('key'))) {
+            return 'ERROR';
         }
 
         if ($txaction === 'invoice') {

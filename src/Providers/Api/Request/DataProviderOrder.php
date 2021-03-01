@@ -10,8 +10,9 @@ interface DataProviderOrder
      * @param string $paymentCode
      * @param Order $order
      * @param string|null $requestReference
-     *
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null);
+    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null);
 }

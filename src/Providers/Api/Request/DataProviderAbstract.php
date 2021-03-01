@@ -263,26 +263,29 @@ abstract class DataProviderAbstract
     }
 
     /**
-     * @param $paymentCode
-     *
+     * @param string $paymentCode
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    protected function getDefaultRequestData($paymentCode)
+    protected function getDefaultRequestData(string $paymentCode, int $clientId = null, int $pluginSetId = null): array
     {
         return [
             'paymentMethod' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
-            'context' => $this->getApiContextParams($paymentCode),
+            'context' => $this->getApiContextParams($paymentCode, $clientId, $pluginSetId),
         ];
     }
 
     /**
-     * @param int $paymentCode
+     * @param string $paymentCode
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    protected function getApiContextParams($paymentCode)
+    protected function getApiContextParams(string $paymentCode, int $clientId = null, int $pluginSetId = null)
     {
-        return $this->config->getApiCredentials($paymentCode);
+        return $this->config->getApiCredentials($paymentCode, $clientId, $pluginSetId);
     }
 
     /**

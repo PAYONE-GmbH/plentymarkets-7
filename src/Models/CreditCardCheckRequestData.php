@@ -14,9 +14,8 @@ class CreditCardCheckRequestData implements \JsonSerializable
      *
      * @param ApiCredentials $configRepo
      */
-    public function __construct(
-        ApiCredentials $configRepo
-    ) {
+    public function __construct(ApiCredentials $configRepo)
+    {
         $this->configRepo = $configRepo;
     }
 

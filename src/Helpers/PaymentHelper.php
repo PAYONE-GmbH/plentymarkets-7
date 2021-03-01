@@ -120,18 +120,18 @@ class PaymentHelper
     public function getPaymentCodes()
     {
         return [
-            PayoneInvoicePaymentMethod::PAYMENT_CODE,
-            PayonePaydirektPaymentMethod::PAYMENT_CODE,
-            PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
             PayonePayPalPaymentMethod::PAYMENT_CODE,
-            PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
-            PayoneSofortPaymentMethod::PAYMENT_CODE,
-            PayoneCODPaymentMethod::PAYMENT_CODE,
-            PayonePrePaymentPaymentMethod::PAYMENT_CODE,
             PayoneCCPaymentMethod::PAYMENT_CODE,
-            PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneInvoicePaymentMethod::PAYMENT_CODE,
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
-            PayoneAmazonPayPaymentMethod::PAYMENT_CODE
+            PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayonePrePaymentPaymentMethod::PAYMENT_CODE,
+            PayoneSofortPaymentMethod::PAYMENT_CODE,
+            PayonePaydirektPaymentMethod::PAYMENT_CODE,
+            PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
+            PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
+            PayoneCODPaymentMethod::PAYMENT_CODE
         ];
     }
 
@@ -158,10 +158,9 @@ class PaymentHelper
     /**
      * @param Payment $payment
      * @param int $propertyTypeConstant
-     *
      * @return string
      */
-    public function getPaymentPropertyValue($payment, $propertyTypeConstant)
+    public function getPaymentPropertyValue(Payment $payment, $propertyTypeConstant): string
     {
         $properties = $payment->properties;
         if (!$properties) {

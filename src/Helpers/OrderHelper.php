@@ -2,24 +2,23 @@
 
 namespace Payone\Helpers;
 
-use Payone\PluginConstants;
+use Payone\Services\SettingsService;
 use Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Property\Models\OrderProperty;
 use Plenty\Modules\Order\Property\Models\OrderPropertyType;
-use Plenty\Plugin\ConfigRepository;
 use Plenty\Plugin\Log\Loggable;
 
 class OrderHelper
 {
     use Loggable;
+
     /**
      * @param Order $order
-     *
      * @return string
      */
-    public function getLang(Order $order)
+    public function getLang(Order $order): string
     {
         /** @var OrderProperty $property */
         foreach ($order->properties as $property) {
@@ -42,9 +41,9 @@ class OrderHelper
      */
     public function addOrderComment($refValue, $msg)
     {
-        /** @var ConfigRepository $configRepository */
-        $configRepository = pluginApp(ConfigRepository::class);
-        $backendUserId = $configRepository->get(PluginConstants::NAME . '.userId', null);
+        /** @var SettingsService $settingsService */
+        $settingsService = pluginApp(SettingsService::class);
+        $backendUserId = $settingsService->getSettingsValue('userId');
 
         if (isset($backendUserId))
         {

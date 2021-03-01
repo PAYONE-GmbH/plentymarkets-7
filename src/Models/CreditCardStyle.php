@@ -2,24 +2,24 @@
 
 namespace Payone\Models;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Services\SettingsService;
 
 class CreditCardStyle
 {
-    /** @var ConfigAdapter */
-    private $configRepo;
+    /**
+     * @var SettingsService
+     */
+    protected $settingsService;
 
     /**
      * Api constructor.
      *
-     * @param $paymentCode
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      */
-    public function __construct(
-        ConfigAdapter $configRepo
-    ) {
-        $this->configRepo = $configRepo;
+    public function __construct(SettingsService $settingsService)
+    {
+        $this->settingsService = $settingsService;
     }
 
     /**
@@ -27,7 +27,7 @@ class CreditCardStyle
      */
     public function getDefaultWidthInPx()
     {
-        return (float) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultWidthInPx');
+        return (float)$this->settingsService->getPaymentSettingsValue('defaultWidthInPx',PayoneCCPaymentMethod::PAYMENT_CODE);
     }
 
     /**
@@ -35,7 +35,7 @@ class CreditCardStyle
      */
     public function getDefaultHeightInPx()
     {
-        return (float) $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultHeightInPx');
+        return (float)$this->settingsService->getPaymentSettingsValue('defaultHeightInPx',PayoneCCPaymentMethod::PAYMENT_CODE);
     }
 
     /**
@@ -43,6 +43,7 @@ class CreditCardStyle
      */
     public function getDefaultStyle(): string
     {
-        return $this->configRepo->get(PayoneCCPaymentMethod::PAYMENT_CODE . '.defaultStyle');
+        return (string)$this->settingsService->getPaymentSettingsValue('defaultStyle',PayoneCCPaymentMethod::PAYMENT_CODE);
     }
+
 }

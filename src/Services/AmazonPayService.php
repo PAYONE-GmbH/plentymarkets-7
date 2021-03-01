@@ -180,8 +180,8 @@ class AmazonPayService
             PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $amazonReferenceId,
-            $basket->currency,
-            $basket->basketAmount
+            $basket->basketAmount,
+            $basket->currency
         );
 
         /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */

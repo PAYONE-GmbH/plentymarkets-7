@@ -103,18 +103,19 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         string $paymentCode,
         string $workOrderId,
         string $amazonReferenceId,
-        string $currency,
         string $amount,
+        string $currency = null,
         int $clientId = null,
         int $pluginSetId = null
     ): array {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
 
-        // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = $currency;
+        if(!is_null($currency)) {
+            // Currency not mentioned in API-Doc of Payone
+            $requestParams['currency'] = $currency;
+        }
         // amount in smallest unit
         $requestParams['amount'] = $amount * 100;
-
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS;
         $requestParams['add_paydata']['amazon_reference_id'] = $amazonReferenceId;

@@ -5,6 +5,7 @@ namespace Payone\Assistants;
 use Payone\Assistants\DataSources\AssistantDataSource;
 use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
+use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\CreditcardTypes;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
@@ -468,26 +469,38 @@ class PayoneAssistant extends WizardProvider
      */
     protected function getAuthorizationConfig(string $paymentCode): array
     {
+        $listBoxValues = [
+            [
+                "caption" => 'Assistant.authTypeDefault',
+                "value" => -1
+            ],
+            [
+                "caption" => 'Assistant.authTypeAuthorization',
+                "value" => 1
+            ],
+            [
+                "caption" => 'Assistant.authTypePreAuthorization',
+                "value" => 0
+            ]
+        ];
+
+        if($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            // Only this auth method available for SOFORT
+            $listBoxValues = [
+                [
+                    "caption" => 'Assistant.authTypeAuthorization',
+                    "value" => 1
+                ]
+            ];
+        }
+
         return [
             $paymentCode.'AuthType' => [
                 'type' => 'select',
                 "defaultValue" => -1,
                 'options' => [
                     'name' => 'Assistant.authType',
-                    'listBoxValues' => [
-                        [
-                            "caption" => 'Assistant.authTypeDefault',
-                            "value" => -1
-                        ],
-                        [
-                            "caption" => 'Assistant.authTypeAuthorization',
-                            "value" => 1
-                        ],
-                        [
-                            "caption" => 'Assistant.authTypePreAuthorization',
-                            "value" => 0
-                        ]
-                    ]
+                    'listBoxValues' => $listBoxValues
                 ]
             ]
         ];

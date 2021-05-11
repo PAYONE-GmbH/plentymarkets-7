@@ -3,7 +3,7 @@
 ## 2.1.0
 
 ### Hinzugefügt
-- Bestellmerkmale können nun korrekt verarbeitet werden.
+- Bestelleigenschaften können nun korrekt verarbeitet werden.
 
 ## 2.0.0
 

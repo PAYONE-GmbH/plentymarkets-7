@@ -3,7 +3,7 @@
 ## 2.1.0
 
 ### Added
-- Order item properties can now be processed correctly.
+- Order item order properties can now be processed correctly.
 
 ## 2.0.0
 

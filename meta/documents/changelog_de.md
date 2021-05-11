@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.1.0
+
+### Hinzugefügt
+- Bestellmerkmale können nun korrekt verarbeitet werden.
+
 ## 2.0.0
 
 ### TODO

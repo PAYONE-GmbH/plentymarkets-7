@@ -230,8 +230,6 @@ abstract class DataProviderAbstract
                     foreach ($itemProperties as $itemProperty) {
                         $basketItemArr = [];
                         $basketItemArr['name'] = $basketItem->variationId . '_' . $itemProperty->id;
-                        $basketItemArr['price'] = (int)round($basketItemVariationProperty->price * 100);
-                        $basketItemArr['vat'] = (int)$basketItemVariationProperty->vat;
 
                         $price = $itemProperty->surcharge;
                         $property = $itemProperty->property;

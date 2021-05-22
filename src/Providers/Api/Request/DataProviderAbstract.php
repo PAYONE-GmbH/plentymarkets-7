@@ -25,6 +25,8 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
+use Plenty\Modules\Item\Variation\Contracts\VariationRepositoryContract;
+use Plenty\Modules\Item\Variation\Models\Variation;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
 use Plenty\Modules\Order\Models\OrderItemType;
@@ -33,6 +35,9 @@ use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
+use Plenty\Modules\Webshop\Contracts\WebstoreConfigurationRepositoryContract;
+use Plenty\Modules\Item\Property\Models\Property;
 
 /**
  * Class DataProviderAbstract
@@ -167,19 +172,91 @@ abstract class DataProviderAbstract
         if (!$basket->basketItems) {
             return $items;
         }
+
+        /** @var VariationRepositoryContract $variationContract */
+        $variationContract = pluginApp(VariationRepositoryContract::class);
+        /** @var WebstoreConfigurationRepositoryContract $webstoreConfigurationRepository */
+        $webstoreConfigurationRepository = pluginApp(WebstoreConfigurationRepositoryContract::class);
+        $webstoreConfiguration = $webstoreConfigurationRepository->getWebstoreConfiguration();
+
+        /** @var LocalizationRepositoryContract $localizationRepository */
+        $localizationRepository = pluginApp(LocalizationRepositoryContract::class);
+        $language         = $localizationRepository->getLanguage();
+
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
-            /** @var Item $item */
-            $item = $this->itemRepo->show($basketItem->itemId);
-            /** @var ItemText $itemText */
-            $itemText = $item->texts;
 
-            $basketItemArr = $basketItem->toArray();
-            $basketItemArr['name'] = $itemText->first()->name1;
-            $basketItemArr['price'] = (int)round($basketItem->price * 100);
-            $basketItemArr['vat'] = (int)$basketItem->vat;
+            if($basketItem->itemType != BasketItem::BASKET_ITEM_TYPE_VARIATION_ORDER_PROPERTY) {
+                /** @var Item $item */
+                $item = $this->itemRepo->show($basketItem->itemId);
+                /** @var ItemText $itemText */
+                $itemText = $item->texts;
 
-            $items[] = $basketItemArr;
+                $basketItemArr = $basketItem->toArray();
+                $basketItemArr['name'] = $itemText->first()->name1;
+                $basketItemArr['price'] = (int)round($basketItem->price * 100);
+                $basketItemArr['vat'] = (int)$basketItem->vat;
+
+                $items[] = $basketItemArr;
+            }
+
+            if($webstoreConfiguration->useVariationOrderProperties) {
+                foreach ($basketItem->basketItemVariationProperties as $basketItemVariationProperty) {
+                    if($basketItemVariationProperty instanceof BasketItem) {
+                        $basketItemArr = [];
+                        $reference = $basketItem->variationId;
+                        $name = $itemText->first()->name1;
+                        foreach ($basketItemVariationProperty->basketItemOrderParams as $basketItemOrderParam) {
+                            $reference .= '_'.$basketItemOrderParam->basketItemId;
+                            $name .= ' '.$basketItemOrderParam->value;
+                        }
+
+                        $basketItemArr['name'] = $name;
+                        $basketItemArr['price'] = (int)round($basketItemVariationProperty->price * 100);
+                        $basketItemArr['vat'] = (int)$basketItemVariationProperty->vat;
+                        $items[] = $basketItemArr;
+                    }
+                }
+            } else {
+                /**
+                 * Item property handling for surcharges
+                 * For example "Pfand"
+                 */
+                /** @var Variation $variation */
+                $variation = $variationContract->findById($basketItem->variationId);
+
+                $itemProperties = $variation->item->itemProperties;
+                if ($itemProperties && count($itemProperties) > 0) {
+                    foreach ($itemProperties as $itemProperty) {
+                        $basketItemArr = [];
+                        $basketItemArr['name'] = $basketItem->variationId . '_' . $itemProperty->id;
+
+                        $price = $itemProperty->surcharge;
+                        $property = $itemProperty->property;
+                        if ($property instanceof Property) {
+                            if(!$property->isOderProperty && $property->isShownAsAdditionalCosts) {
+                                $name = $property->names->first()->name;
+                                foreach ($property->names as $propertyName) {
+                                    if ($propertyName->lang == $language) {
+                                        $name = $propertyName->name;
+                                    }
+                                }
+                                $basketItemArr['name'] = $name;
+
+                                $markup = $property->surcharge;
+                                if($property->propertyGroupId > 0 && $property->group->first()->isSurchargePercental) {
+                                    $markup = $price / 100 * $property->surcharge;
+                                }
+                                $price += $markup;
+
+                                $basketItemArr['price'] = (int)round($price * 100);
+                                $basketItemArr['vat'] = (int)$basketItem->vat;
+                            }
+                        }
+                        $items[] = $basketItemArr;
+                    }
+                }
+            }
         }
 
         return $items;

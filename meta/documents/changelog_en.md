@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.1.0
+
+### Added
+- Order item order properties can now be processed correctly.
+
 ## 2.0.0
 
 ### TODO

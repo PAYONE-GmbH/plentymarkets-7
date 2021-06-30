@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.2.1
+
+### Fixed
+- Due to a faulty configuration of the plugin there could be errors in the webshop, this has been fixed.
+
 ## 2.1.0
 
 ### Added

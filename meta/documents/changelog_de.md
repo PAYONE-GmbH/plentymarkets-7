@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.2.1
+
+### Behoben
+- Durch eine fehlerhafte Konfiguration des Plugins konnte es Fehler im Webshop geben, dies wurde behoben.  
+
 ## 2.1.0
 
 ### Hinzugefügt

@@ -21,22 +21,29 @@ The plugin currently offers the following payment methods:
 * giropay - online bank transfer Germany
 * Sofortüberweisung - Online bank transfer international
 * Transfer - Cash in advance & Invoice & Cash on Delivery
+* Paydirekt
 * PayPal - Integration of your PayPal account
 * Amazon Pay - Integration of your Amazon Pay account
 
-### PAYONE Account
+### How to get a PAYONE Account?
 
-The use requires a Payone account as well as Payone access data. If you are not a Payone customer yet and thus do not have a Payone account, please contact:
+The use requires a Payone account as well as Payone access data. If you are not a Payone customer yet and thus do not have a Payone account, you have to applied a service agreement first. PSG Projektmanagement GmbH is your contact person:
 
 PSG Projektmanagement GmbH <br>
 Meergässle 4 <br>
 89180 Berghülen <br>
-Phone: 07344-9592588 <br>
-E-mail: plenty@psg-projektmanagement.de <br>
-Website: http://www.psg-projektmanagement.de <br>
-Or use the following registration form: <br>
+Telefon: 07344-9592588 <br>
+E-Mail: plenty@psg-projektmanagement.de <br>
+Internet: http://www.psg-projektmanagement.de
+
+Please use our Registration form to get in contact, or make an appointment directly in the calendar for more information.
+
+Registration form:<br>
 https://www.psg-projektmanagement.de/payone-plentymarkets/
 
-<div class="alert alert-warning" role="alert">
-   You can only get a Payone account via the partner mentioned above. In order not to compromise a smooth process, please do not contact Payone directly.
-</div>
+Make an appointment:
+<a href="https://calendly.com/payone-plentymarkets/payone-plentymarkets">click here</a>
+
+PSG Projektmanagement GmbH is a long-term partner of PAYONE, as well as a long-term partner of plentymarkets and is therefore your central contact who is optimally networked with all partners. Please do not contact PAYONE directly in order not to endanger the smooth process.<br>
+Here is the official link to the partnership with PAYONE:
+https://payone.com/DE-de/plentymarkets-payone-plugin

@@ -47,7 +47,7 @@ class PaymentOrderValidator
         /** @var Order $order */
         $order = $authHelper->processUnguarded(
             function () use ($orderRepositoryContract, $orderId) {
-                return $orderRepositoryContract->findOrderById($orderId);
+                return $orderRepositoryContract->findById($orderId, ['amounts', 'addresses']);
             }
         );
 

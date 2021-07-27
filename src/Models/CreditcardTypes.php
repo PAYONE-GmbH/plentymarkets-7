@@ -39,7 +39,7 @@ class CreditcardTypes
     public function getAllowedTypes(): array
     {
         $allowedTypesFromConfig = $this->settingsService->getPaymentSettingsValue('AllowedCardTypes',PayoneCCPaymentMethod::PAYMENT_CODE);
-        if(!is_array($allowedTypesFromConfig)) {
+        if(is_array($allowedTypesFromConfig)) {
             return $allowedTypesFromConfig;
         }
         return [];

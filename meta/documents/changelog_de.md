@@ -1,6 +1,11 @@
 # Release Notes für PAYONE
 
-## 2.2.1
+## 2.1.2
+
+### Behoben
+- Die erlaubten Arten von Kreditkarten wurden nicht korrekt dargestellt. Dies wurde nun behoben.
+
+## 2.1.1
 
 ### Behoben
 - Durch eine fehlerhafte Konfiguration des Plugins konnte es Fehler im Webshop geben, dies wurde behoben.  

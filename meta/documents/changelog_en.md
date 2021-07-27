@@ -1,6 +1,11 @@
 # Release Notes for PAYONE
 
-## 2.2.1
+## 2.1.2
+
+### Fixed
+- The allowed types of credit cards were not displayed correctly. This has now been fixed.
+
+## 2.1.1
 
 ### Fixed
 - Due to a faulty configuration of the plugin there could be errors in the webshop, this has been fixed.

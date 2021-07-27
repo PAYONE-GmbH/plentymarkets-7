@@ -1,9 +1,14 @@
 # Release Notes für PAYONE
 
-## 2.1.2
+## 2.1.X
 
 ### Behoben
 - Bei der Prüfung, ob eine Zahlungsart für die nachträgliche Bezahlung zur Verfügung steht, werden die entsprechenden Regeln angewendet, die auch für den Checkout gelten.
+
+## 2.1.2
+
+### Behoben
+- Die erlaubten Arten von Kreditkarten wurden nicht korrekt dargestellt. Dies wurde nun behoben.
 
 ## 2.1.1
 

@@ -100,8 +100,6 @@ class PaymentOrderValidator
         $logger->debug(
             $code,
             [
-                'basketID' => $this->basket->id,
-                'customer' => $this->basket->customerId,
                 'payment' => $payment,
                 'value' => $value,
             ]

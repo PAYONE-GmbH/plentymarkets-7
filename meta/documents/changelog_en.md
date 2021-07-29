@@ -1,9 +1,10 @@
 # Release Notes for PAYONE
 
-## 2.1.X
+## 2.1.3
 
 ### Fixed
 - When checking whether a payment method is available for subsequent payment, the same rules that are applied to the checkout als apply here.
+- Trailing slash setting from the backend is now processed correctly.
 
 ## 2.1.2
 

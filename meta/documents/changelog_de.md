@@ -1,9 +1,10 @@
 # Release Notes für PAYONE
 
-## 2.1.X
+## 2.1.3
 
 ### Behoben
 - Bei der Prüfung, ob eine Zahlungsart für die nachträgliche Bezahlung zur Verfügung steht, werden die entsprechenden Regeln angewendet, die auch für den Checkout gelten.
+- Trailing Slash Einstellung aus dem Backend wird nun korrekt verarbeitet.
 
 ## 2.1.2
 

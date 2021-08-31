@@ -69,7 +69,7 @@ class Settings extends Model
             'PAYONE_PAYONE_AMAZON_PAY' => $data['PAYONE_PAYONE_AMAZON_PAY']
         ];
 
-        return $this->save($this);
+        return $this->save();
     }
 
     /**
@@ -152,20 +152,20 @@ class Settings extends Model
             $this->value['payoneMethods'] = $data['payoneMethods'];
         }
 
-        return $this->save($this);
+        return $this->save();
     }
 
     /**
      * @param Settings $newModel
      * @return Model
      */
-    private function save(Settings $newModel): Model
+    public function save(): Model
     {
         /** @var DataBase $database */
         $database = pluginApp(DataBase::class);
-        $newModel->updatedAt = (string)Carbon::now();
+        $this->updatedAt = (string)Carbon::now();
 
-        return $database->save($newModel);
+        return $database->save($this);
     }
 
     /**

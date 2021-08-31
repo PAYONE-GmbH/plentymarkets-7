@@ -162,4 +162,13 @@ class SettingsService
 
         return false;
     }
+
+    /**
+     * @param int $pluginSetId
+     * @return Settings[]|array|\Plenty\Modules\Plugin\DataBase\Contracts\Model[]
+     */
+    public function getAllSettingsForPluginSetId(int $pluginSetId)
+    {
+        return $this->database->query(Settings::class)->where('pluginSetId', $pluginSetId)->get();
+    }
 }

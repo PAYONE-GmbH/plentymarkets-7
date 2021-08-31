@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Payone\Events;
+namespace Payone\Hooks;
 
 
 use Payone\Models\Settings;

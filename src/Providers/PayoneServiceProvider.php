@@ -6,7 +6,7 @@ use Ceres\Helper\LayoutContainer;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Assistants\PayoneAssistant;
-use Payone\Events\CopyPluginSetHook;
+use Payone\Hooks\CopyPluginSetHook;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;

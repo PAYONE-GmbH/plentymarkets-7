@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.2.0
+
+### Hinzugefügt
+- Beim Kopieren eines Plugin Sets werden nun auch die Einstellungen des Assistenten mit kopiert.
+
 ## 2.1.3
 
 ### Behoben

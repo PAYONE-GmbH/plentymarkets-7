@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.2.0
+
+### Added
+- When copying a plugin set, the settings of the assistant are now also copied.
+
 ## 2.1.3
 
 ### Fixed

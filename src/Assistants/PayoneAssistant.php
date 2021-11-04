@@ -41,9 +41,9 @@ class PayoneAssistant extends WizardProvider
     protected $activeCountries;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $activeCountries4AmazonPay;
+    protected $language;
 
     /**
      * PayoneAssistant constructor.

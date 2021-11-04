@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.3.0
+
+### Hinzugefügt
+- Die Auswahl der verfügbaren Lieferländer wurde erweitert.
+
 ## 2.2.0
 
 ### Hinzugefügt

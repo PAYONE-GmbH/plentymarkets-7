@@ -31,7 +31,7 @@ class CreatePaymentMethods2
      */
     public function __construct(
         PaymentMethodRepositoryContract $paymentMethodRepo,
-        PaymentHelper $paymentHelper,
+        PaymentHelper $paymentHelper
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentHelper = $paymentHelper;

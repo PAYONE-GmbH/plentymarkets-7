@@ -5,7 +5,7 @@ namespace PayoneApi\Request\Parts;
 class CartItem implements \JsonSerializable
 {
     const TYPE_GOODS = 'goods';
-    const TYPE_SHIPMENt = 'shipment';
+    const TYPE_SHIPMENT = 'shipment';
     const TYPE_HANDLING = 'handling';
     /**
      * 0..n

@@ -185,7 +185,6 @@ abstract class DataProviderAbstract
 
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
-
             if($basketItem->itemType != BasketItem::BASKET_ITEM_TYPE_VARIATION_ORDER_PROPERTY) {
                 /** @var Item $item */
                 $item = $this->itemRepo->show($basketItem->itemId);
@@ -211,6 +210,8 @@ abstract class DataProviderAbstract
                             $name .= ' '.$basketItemOrderParam->value;
                         }
 
+                        $basketItemArr['itemId'] = $basketItem->variationId .'_'. $basketItemVariationProperty->id;
+                        $basketItemArr['quantity'] = 1;
                         $basketItemArr['name'] = $name;
                         $basketItemArr['price'] = (int)round($basketItemVariationProperty->price * 100);
                         $basketItemArr['vat'] = (int)$basketItemVariationProperty->vat;
@@ -229,6 +230,8 @@ abstract class DataProviderAbstract
                 if ($itemProperties && count($itemProperties) > 0) {
                     foreach ($itemProperties as $itemProperty) {
                         $basketItemArr = [];
+                        $basketItemArr['itemId'] = $basketItem->variationId . '_' . $itemProperty->id;
+                        $basketItemArr['quantity'] = 1;
                         $basketItemArr['name'] = $basketItem->variationId . '_' . $itemProperty->id;
 
                         $price = $itemProperty->surcharge;

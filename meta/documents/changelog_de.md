@@ -5,6 +5,9 @@
 ### Hinzugefügt
 - Die Auswahl der verfügbaren Lieferländer wurde erweitert.
 
+### Behoben
+- Beim gesicherten Rechnungskauf werden die Artikeldaten nun korrekt übergeben.
+
 ## 2.2.0
 
 ### Hinzugefügt

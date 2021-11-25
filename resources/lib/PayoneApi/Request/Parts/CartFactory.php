@@ -14,16 +14,18 @@ class CartFactory
     {
         $cart = new Cart();
         foreach ($requestData['basketItems'] as $i => $cartItemData) {
-            $cartItem = new CartItem(
-                ($i+1),
-                $cartItemData['itemId'],
-                CartItem::TYPE_GOODS,
-                $cartItemData['quantity'] ?? '',
-                $cartItemData['price'],
-                $cartItemData['vat'],
-                $cartItemData['name'] ?? ''
-            );
-            $cart->add($cartItem);
+            if(isset($cartItemData['itemId'])) {
+                $cartItem = new CartItem(
+                    ($i+1),
+                    $cartItemData['itemId'],
+                    CartItem::TYPE_GOODS,
+                    $cartItemData['quantity'] ?? '',
+                    $cartItemData['price'],
+                    $cartItemData['vat'],
+                    $cartItemData['name'] ?? ''
+                );
+                $cart->add($cartItem);
+            }
         }
         $cart->add(self::calculateShipping($requestData, $cart));
         return $cart;
@@ -44,7 +46,7 @@ class CartFactory
         $shippingCost = new CartItem(
             (count($cart->getCartItems())+1),
             '-',
-            CartItem::TYPE_SHIPMENt,
+            CartItem::TYPE_SHIPMENT,
             1,
             $basket['shippingAmount'],
             $taxRate,

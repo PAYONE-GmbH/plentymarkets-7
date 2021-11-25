@@ -1,5 +1,13 @@
 # Release Notes for PAYONE
 
+## 2.3.0
+
+### Added
+- The selection of available delivery countries has been extended.
+
+### Fixed
+- The item data is now transferred correctly when using the secure invoice method.
+
 ## 2.2.0
 
 ### Added

@@ -4,7 +4,6 @@ namespace Payone\Controllers;
 
 use Payone\Adapter\Logger;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
-use Payone\Migrations\CreatePaymentMethods;
 use Payone\Services\PaymentCreation;
 use Payone\Services\PaymentDocuments;
 use Payone\Services\SettingsService;
@@ -32,11 +31,6 @@ class StatusController extends Controller
     protected $paymentCreation;
 
     /**
-     * @var CreatePaymentMethods
-     */
-    protected $paymentMigration;
-
-    /**
      * @var PaymentDocuments
      */
     protected $paymentDocument;
@@ -53,7 +47,6 @@ class StatusController extends Controller
      * @param SettingsService $settingsService
      * @param PaymentCreation $paymentCreation
      * @param PaymentDocuments $paymentDocument
-     * @param CreatePaymentMethods $paymentMigration
      * @param Logger $logger
      */
     public function __construct(
@@ -61,15 +54,12 @@ class StatusController extends Controller
         SettingsService $settingsService,
         PaymentCreation $paymentCreation,
         PaymentDocuments $paymentDocument,
-        CreatePaymentMethods $paymentMigration,
         Logger $logger
-    )
-    {
+    ) {
         $this->request = $request;
         $this->settingsService = $settingsService;
         $this->paymentCreation = $paymentCreation;
         $this->paymentDocument = $paymentDocument;
-        $this->paymentMigration = $paymentMigration;
         $this->logger = $logger;
     }
 

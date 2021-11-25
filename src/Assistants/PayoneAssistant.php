@@ -7,11 +7,20 @@ use Payone\Assistants\SettingsHandlers\AssistantSettingsHandler;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Methods\PayoneCODPaymentMethod;
+use Payone\Methods\PayoneDirectDebitPaymentMethod;
+use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
+use Payone\Methods\PayonePaydirektPaymentMethod;
+use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
+use Payone\Methods\PayonePayPalPaymentMethod;
+use Payone\Methods\PayonePrePaymentPaymentMethod;
+use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\CreditcardTypes;
 use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
+use Plenty\Modules\System\Contracts\SystemInformationRepositoryContract;
 use Plenty\Modules\System\Contracts\WebstoreRepositoryContract;
 use Plenty\Modules\System\Models\Webstore;
 use Plenty\Modules\User\Contracts\UserRepositoryContract;
@@ -32,9 +41,9 @@ class PayoneAssistant extends WizardProvider
     protected $activeCountries;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $activeCountries4AmazonPay;
+    protected $language;
 
     /**
      * PayoneAssistant constructor.
@@ -207,7 +216,11 @@ class PayoneAssistant extends WizardProvider
                 ]
             ];
 
-            if(in_array($paymentCode, [PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE, PayoneCCPaymentMethod::PAYMENT_CODE, PayoneAmazonPayPaymentMethod::PAYMENT_CODE])) {
+            if(in_array($paymentCode, [
+                PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
+                PayoneCCPaymentMethod::PAYMENT_CODE,
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE
+            ])) {
                 // We need some special configurations for this methods.
                 switch ($paymentCode) {
                     case PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE:
@@ -380,18 +393,11 @@ class PayoneAssistant extends WizardProvider
                     'description' => 'Assistant.descriptionPayonePaymentSectionAmazonPay',
                     'form' =>
                         $this->getMinMaxAmountConfig($paymentCode)
-                        + [
-                            $paymentCode.'AllowedDeliveryCountries' => [
-                                'type' => 'checkboxGroup',
-                                'defaultValue' => $this->activeCountries4AmazonPay,
-                                'options' => [
-                                    'name' => 'Assistant.allowedDeliveryCountries',
-                                    'required' => true,
-                                    'checkboxValues' => $this->getDeliveryCountries4AmazonPay()
-                                ]
-                            ],
-                        ]
-                        + $this->getAuthorizationConfig($paymentCode) +
+                        +
+                        $this->getDeliveryCountriesConfig($paymentCode)
+                        +
+                        $this->getAuthorizationConfig($paymentCode)
+                        +
                         [
                             $paymentCode.'Sandbox' => [
                                 'type' => 'select',
@@ -453,14 +459,15 @@ class PayoneAssistant extends WizardProvider
      */
     protected function getDeliveryCountriesConfig(string $paymentCode): array
     {
+        $deliveryCountries = $this->getSpecificDeliveryCountries($paymentCode);
         return [
             $paymentCode.'AllowedDeliveryCountries' => [
                 'type' => 'checkboxGroup',
-                'defaultValue' => $this->activeCountries,
+                'defaultValue' => $this->getDefaultCountries($deliveryCountries),
                 'options' => [
                     'name' => 'Assistant.allowedDeliveryCountries',
                     'required' => true,
-                    'checkboxValues' => $this->getDeliveryCountries()
+                    'checkboxValues' => array_values($deliveryCountries)
                 ]
             ]
         ];
@@ -576,32 +583,76 @@ class PayoneAssistant extends WizardProvider
     /**
      * @return array
      */
-    protected function getDeliveryCountries(): array
+    protected function getSpecificDeliveryCountries($paymentMethod): array
     {
         $deliveryCountries = [];
-        $countries = ['DE', 'AT', 'CH'];
-        foreach($countries as $country) {
-            $deliveryCountries[] = [
-                'caption' => 'Assistant.deliveryCountry'.$country,
-                'value' => $country
-            ];
+        switch ($paymentMethod) {
+            case PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE:
+            case PayoneSofortPaymentMethod::PAYMENT_CODE:
+                $allowedCountries = [
+                    1, // DE
+                    2, // AT
+                    4  // CH
+                ];
+                break;
+            case PayoneDirectDebitPaymentMethod::PAYMENT_CODE:
+                $allowedCountries = [
+                    1, //'DE',
+                    2, //'AT',
+                    3, // 'BE',
+                    5, //'CY',
+                    8, //'ES',
+                    9, //'EE',
+                    10, //'FR',
+                    11, //'FI',
+                    13, //'GR',
+                    15, //'IT',
+                    16, //'IE',
+                    17, //'LU',
+                    18, //'LV',
+                    19, //'MT',
+                    21, //'NL',
+                    22, //'PT',
+                    26, //'SK',
+                    27, //'SI'
+                    33, //'LT',
+                    35, //'MC',
+                    71, //'AD',
+                    131, //'GI',
+                    212, //'SM',
+                ];
+                break;
+            case PayonePaydirektPaymentMethod::PAYMENT_CODE:
+                $allowedCountries = [
+                    1, //DE
+                ];
+                break;
+            case PayoneCCPaymentMethod::PAYMENT_CODE:
+            case PayoneCODPaymentMethod::PAYMENT_CODE:
+            case PayoneInvoicePaymentMethod::PAYMENT_CODE:
+            case PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE:
+            case PayonePayPalPaymentMethod::PAYMENT_CODE:
+            case PayonePrePaymentPaymentMethod::PAYMENT_CODE:
+            case PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE:
+            case PayoneAmazonPayPaymentMethod::PAYMENT_CODE:
+            default:
+                $allowedCountries = [];
+                break;
         }
 
-        return $deliveryCountries;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDeliveryCountries4AmazonPay(): array
-    {
-        $deliveryCountries = [];
-        $countries = ['DE', 'FR', 'IT', 'ES', 'LU', 'NL', 'SE', 'PT', 'HU', 'DK'];
+        /** @var CountryRepositoryContract $countryRepository */
+        $countryRepository = pluginApp(CountryRepositoryContract::class);
+        $systemLanguage = $this->getLanguage();
+        $countries = $countryRepository->getCountriesList(null, ['names']);
+        /** @var Country $country */
         foreach($countries as $country) {
-            $deliveryCountries[] = [
-                'caption' => 'Assistant.deliveryCountry'.$country,
-                'value' => $country
-            ];
+            if(count($allowedCountries) <= 0 || array_search($country->id, $allowedCountries) !== false ) {
+                $name = $country->names->where('lang', $systemLanguage)->first()->name;
+                $deliveryCountries[$country->id] = [
+                    'caption' => $name ?? $country->name,
+                    'value' => $country->id
+                ];
+            }
         }
 
         return $deliveryCountries;
@@ -610,25 +661,19 @@ class PayoneAssistant extends WizardProvider
     /**
      * Load the active country values
      */
-    protected function loadActiveCountriesValues()
+    protected function getDefaultCountries($availableCountries = array())
     {
-        if ($this->activeCountries === null || $this->activeCountries4AmazonPay === null) {
+        if ($this->activeCountries === null) {
             /** @var CountryRepositoryContract $countryRepository */
             $countryRepository = pluginApp(CountryRepositoryContract::class);
             $activeCountries = $countryRepository->getActiveCountriesList();
             /** @var Country $country */
             foreach($activeCountries as $country){
-                // All Payone payment methods
-                if(in_array($country->isoCode2, ['DE', 'AT', 'CH'])) {
-                    $this->activeCountries[] = $country->isoCode2;
-                }
-
-                // Amazon Pay over Payone
-                if(in_array($country->isoCode2, ['DE', 'FR', 'IT', 'ES', 'LU', 'NL', 'SE', 'PT', 'HU', 'DK'])) {
-                    $this->activeCountries4AmazonPay[] = $country->isoCode2;
-                }
+                $this->activeCountries[$country->id] = $country->isoCode2;
             }
         }
+
+        return array_column(array_intersect_key($availableCountries, $this->activeCountries), 'value');
     }
 
     /**
@@ -649,5 +694,20 @@ class PayoneAssistant extends WizardProvider
         }
 
         return $allowedCreditCards;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getLanguage()
+    {
+        if ($this->language === null) {
+            /** @var SystemInformationRepositoryContract $systemInformationRepository */
+            $systemInformationRepository = pluginApp(SystemInformationRepositoryContract::class);
+            // TODO: this seems not be the log-in language. Where to get it?
+            $this->language = $systemInformationRepository->loadValue('systemLang');
+        }
+
+        return $this->language;
     }
 }

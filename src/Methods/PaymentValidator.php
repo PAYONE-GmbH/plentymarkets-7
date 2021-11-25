@@ -65,9 +65,8 @@ class PaymentValidator
             return true;
         }
 
-        $country = $billingAddress->country->isoCode2;
-        if (!in_array($country, $payment->getAllowedCountries())) {
-            $this->log($payment->getName(), 'Payment.countryNotAllowed', $country);
+        if (!in_array($billingAddress->countryId, $payment->getAllowedCountries())) {
+            $this->log($payment->getName(), 'Payment.countryNotAllowed', $billingAddress->countryId);
 
             return false;
         }

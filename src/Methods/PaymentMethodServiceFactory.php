@@ -39,6 +39,15 @@ class PaymentMethodServiceFactory
                 return pluginApp(PayoneInvoiceSecurePaymentMethod::class);
             case PayoneAmazonPayPaymentMethod::PAYMENT_CODE;
                 return pluginApp(PayoneAmazonPayPaymentMethod::class);
+            case PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE;
+                return pluginApp(PayoneKlarnaDirectBankTransferPaymentMethod::class);
+            case PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE;
+                return pluginApp(PayoneKlarnaDirectDebitPaymentMethod::class);
+            case PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE;
+                return pluginApp(PayoneKlarnaInvoicePaymentMethod::class);
+            case PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE;
+                return pluginApp(PayoneKlarnaInstallmentsPaymentMethod::class);
+
         }
         throw new \InvalidArgumentException('Unknown payment method ' . $paymentCode);
     }

@@ -1,0 +1,1085 @@
+{
+  "formatVersion": 1,
+  "menu": {
+    "Config.GrundeinstellungenTab": {
+      "label": "Config.GrundeinstellungenTab",
+      "formFields": {
+        "mid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.midLabel",
+          "options": {}
+        },
+        "portalid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.portalidLabel",
+          "options": {}
+        },
+        "aid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.aidLabel",
+          "options": {}
+        },
+        "key": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.keyLabel",
+          "options": {}
+        },
+        "mode": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.modeLabel",
+          "options": {
+            "defaultValue": "0",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.modePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.modePossibleValue1"
+              }
+            ]
+          }
+        },
+        "authType": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.authTypeLabel",
+          "options": {
+            "defaultValue": "0",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.authTypePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.authTypePossibleValue1"
+              }
+            ]
+          }
+        },
+        "userId": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.userId",
+          "options": {}
+        }
+      }
+    },
+    "Config.RechnungTab": {
+      "label": "Config.RechnungTab",
+      "formFields": {
+        "PAYONE_PAYONE_INVOICE.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICEActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEINVOICEActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEINVOICEActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_INVOICE.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICENameLabel",
+          "options": {
+            "defaultValue": "Rechnung"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICEDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICEMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICEMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICEAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.GesicherteRechnungTab": {
+      "label": "Config.GesicherteRechnungTab",
+      "formFields": {
+        "PAYONE_PAYONE_INVOICE_SECURE.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECUREActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEINVOICESECUREActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEINVOICESECUREActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECURENameLabel",
+          "options": {
+            "defaultValue": "Rechnung"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECUREDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.portalid": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.portalidLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.key": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.keyLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECUREMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECUREMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_INVOICE_SECURE.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEINVOICESECUREAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.PaydirektTab": {
+      "label": "Config.PaydirektTab",
+      "formFields": {
+        "PAYONE_PAYONE_PAYDIREKT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEPAYDIREKTActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEPAYDIREKTActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_PAYDIREKT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTNameLabel",
+          "options": {
+            "defaultValue": "Paydirekt"
+          }
+        },
+        "PAYONE_PAYONE_PAYDIREKT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_PAYDIREKT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_PAYDIREKT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_PAYDIREKT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYDIREKTAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.PayolutionRatenzahlungTab": {
+      "label": "Config.PayolutionRatenzahlungTab",
+      "formFields": {
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTActiveLabel",
+          "options": {
+            "defaultValue": "0",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTActivePossibleValue0"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTNameLabel",
+          "options": {
+            "defaultValue": "Payolution Ratenzahlung"
+          }
+        },
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_PAYOLUTION_INSTALLMENT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYOLUTIONINSTALLMENTAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.PayPalTab": {
+      "label": "Config.PayPalTab",
+      "formFields": {
+        "PAYONE_PAYONE_PAY_PAL.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEPAYPALActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEPAYPALActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_PAY_PAL.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALNameLabel",
+          "options": {
+            "defaultValue": "Payone PAY_PAL"
+          }
+        },
+        "PAYONE_PAYONE_PAY_PAL.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_PAY_PAL.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_PAY_PAL.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_PAY_PAL.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPAYPALAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.RatePayRatenzahlungTab": {
+      "label": "Config.RatePayRatenzahlungTab",
+      "formFields": {
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTActiveLabel",
+          "options": {
+            "defaultValue": "0",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONERATEPAYINSTALLMENTActivePossibleValue0"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTNameLabel",
+          "options": {
+            "defaultValue": "RatePay Ratenzahlung"
+          }
+        },
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_RATEPAY_INSTALLMENT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONERATEPAYINSTALLMENTAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.SofortberweisungTab": {
+      "label": "Config.SofortberweisungTab",
+      "formFields": {
+        "PAYONE_PAYONE_SOFORT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONESOFORTActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONESOFORTActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_SOFORT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTNameLabel",
+          "options": {
+            "defaultValue": "Sofortüberweisung"
+          }
+        },
+        "PAYONE_PAYONE_SOFORT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_SOFORT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_SOFORT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_SOFORT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONESOFORTAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.VorkasseTab": {
+      "label": "Config.VorkasseTab",
+      "formFields": {
+        "PAYONE_PAYONE_PRE_PAYMENT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEPREPAYMENTActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEPREPAYMENTActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_PRE_PAYMENT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTNameLabel",
+          "options": {
+            "defaultValue": "Vorkasse"
+          }
+        },
+        "PAYONE_PAYONE_PRE_PAYMENT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_PRE_PAYMENT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_PRE_PAYMENT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_PRE_PAYMENT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEPREPAYMENTAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.KreditkarteTab": {
+      "label": "Config.KreditkarteTab",
+      "formFields": {
+        "PAYONE_PAYONE_CREDIT_CARD.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONECREDITCARDActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONECREDITCARDActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDNameLabel",
+          "options": {
+            "defaultValue": "Kreditkarte"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.minExpireTime": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDMinExpireTimeLabel",
+          "options": {
+            "defaultValue": "30"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.defaultStyle": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDDefaultStyleLabel",
+          "options": {
+            "defaultValue": "font-family: Helvetica; padding: 10.5px 21px; color: #7a7f7f; font-size: 17.5px; height:100%"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.defaultHeightInPx": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDDefaultHeightInPxLabel",
+          "options": {
+            "defaultValue": "44"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.defaultWidthInPx": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDDefaultWidthInPxLabel",
+          "options": {
+            "defaultValue": "644"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        },
+        "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes": {
+          "type": "multiCheckBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesLabel",
+          "options": {
+            "defaultValue": "all",
+            "checkBoxValues": [
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.V",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesV"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.M",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesM"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.A",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesA"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.O",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesO"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.U",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesU"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.D",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesD"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.B",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesB"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.C",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesC"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.J",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesJ"
+              },
+              {
+                "value": "PAYONE_PAYONE_CREDIT_CARD.allowedCardTypes.P",
+                "caption": "Config.PAYONEPAYONECREDITCARDAllowedCardTypesPossibleValuePAYONEPAYONECREDITCARDAllowedCardTypesP"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Config.NachnahmeTab": {
+      "label": "Config.NachnahmeTab",
+      "formFields": {
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONECASHONDELIVERYActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONECASHONDELIVERYActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYNameLabel",
+          "options": {
+            "defaultValue": "Nachnahme"
+          }
+        },
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_CASH_ON_DELIVERY.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONECASHONDELIVERYAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.LastschriftTab": {
+      "label": "Config.LastschriftTab",
+      "formFields": {
+        "PAYONE_PAYONE_DIRECT_DEBIT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEDIRECTDEBITActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEDIRECTDEBITActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_DIRECT_DEBIT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITNameLabel",
+          "options": {
+            "defaultValue": "Lastschrift"
+          }
+        },
+        "PAYONE_PAYONE_DIRECT_DEBIT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_DIRECT_DEBIT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_DIRECT_DEBIT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_DIRECT_DEBIT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEDIRECTDEBITAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,AT,CH"
+          }
+        }
+      }
+    },
+    "Config.AmazonPay": {
+      "label": "Config.AmazonPayTab",
+      "formFields": {
+        "PAYONE_PAYONE_AMAZON_PAY.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEAMAZONPAYActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEAMAZONPAYActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYNameLabel",
+          "options": {
+            "defaultValue": "Amazon Pay"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "DE,FR,IT,ES,LU,NL,SE,PT,HU,DK"
+          }
+        },
+        "PAYONE_PAYONE_AMAZON_PAY.sandbox": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEAMAZONPAYSandboxLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        }
+      }
+    },
+    "Config.KlarnaDirectDebit": {
+      "label": "Config.KlarnaDirectDebitTab",
+      "formFields": {
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEKLARNADIRECTDEBITActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEKLARNADIRECTDEBITActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITNameLabel",
+          "options": {
+            "defaultValue": "Klarna Pay now"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_DIRECT_DEBIT.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNADIRECTDEBITAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "AT,DK,FI,DE,NL,NO,SE,CH"
+          }
+        }
+      }
+    },
+    "Config.KlarnaInstallments": {
+      "label": "Config.KlarnaInstallmentsTab",
+      "formFields": {
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEKLARNAINSTALLMENTSActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEKLARNAINSTALLMENTSActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSNameLabel",
+          "options": {
+            "defaultValue": "Klarna Slice it"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INSTALLMENTS.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINSTALLMENTSAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "AT,DK,FI,DE,NL,NO,SE,CH"
+          }
+        }
+      }
+    },
+    "Config.KlarnaInvoice": {
+      "label": "Config.KlarnaInvoiceTab",
+      "formFields": {
+        "PAYONE_PAYONE_KLARNA_INVOICE.active": {
+          "type": "selectBox",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICEActiveLabel",
+          "options": {
+            "defaultValue": "1",
+            "selectBoxValues": [
+              {
+                "value": "0",
+                "caption": "Config.PAYONEPAYONEKLARNAINVOICEActivePossibleValue0"
+              },
+              {
+                "value": "1",
+                "caption": "Config.PAYONEPAYONEKLARNAINVOICEActivePossibleValue1"
+              }
+            ]
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INVOICE.name": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICENameLabel",
+          "options": {
+            "defaultValue": "Klarna Pay later"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INVOICE.description": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICEDescriptionLabel",
+          "options": {}
+        },
+        "PAYONE_PAYONE_KLARNA_INVOICE.minCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICEMinCartAmountLabel",
+          "options": {
+            "defaultValue": "0"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INVOICE.maxCartAmount": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICEMaxCartAmountLabel",
+          "options": {
+            "defaultValue": "2000"
+          }
+        },
+        "PAYONE_PAYONE_KLARNA_INVOICE.allowedCountries": {
+          "type": "inputText",
+          "required": false,
+          "label": "Config.PAYONEPAYONEKLARNAINVOICEAllowedCountriesLabel",
+          "options": {
+            "defaultValue": "AT,DK,FI,DE,NL,NO,SE,CH"
+          }
+        }
+      }
+    }
+  }
+}

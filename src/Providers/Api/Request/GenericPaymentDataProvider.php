@@ -175,4 +175,25 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $this->validator->validate($requestParams);
         return $requestParams;
     }
+    /**
+     * @param string $paymentCode
+     * @param string $currency
+     * @param float $amount
+     * @return array
+     * @throws \Exception
+     */
+    public function getStartSessionRequestData(string $paymentCode, string $currency, float $amount)
+    {
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+
+        // Currency not mentioned in API-Doc of Payone
+        $requestParams['currency'] = $currency;
+        // amount in smallest unit
+        $requestParams['amount'] = $amount * 100;
+
+        $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_STARTSESSION;
+
+        $this->validator->validate($requestParams);
+        return $requestParams;
+    }
 }

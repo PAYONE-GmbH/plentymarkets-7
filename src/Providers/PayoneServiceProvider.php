@@ -19,6 +19,10 @@ use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -60,6 +64,7 @@ use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\Translation\Translator;
+use Payone\Services\KlarnaService;
 
 class PayoneServiceProvider extends ServiceProvider
 {
@@ -189,6 +194,30 @@ class PayoneServiceProvider extends ServiceProvider
             PayoneAmazonPayPaymentMethod::class,
             $events
         );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectBankTransferPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneDirectDebitPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInstallmentsPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInvoicePaymentMethod::class,
+            $events
+        );
     }
 
     /**
@@ -244,6 +273,20 @@ class PayoneServiceProvider extends ServiceProvider
 
                     $event->setValue($dateOfBirthMissingMessage);
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+                    return;
+                }elseif ($paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
+                    $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||
+                    $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE) {
+
+                    /** @var KlarnaService $klarnaService */
+                    $klarnaService = pluginApp(KlarnaService::class);
+                    $response = $klarnaService->startSession($paymentCode, $basket);
+
+                    // in renderingType auslagern
+
+                    // twig einbauen
+                    $event->setValue(null);
+                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
                     return;
                 }
 

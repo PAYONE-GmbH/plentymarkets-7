@@ -77,7 +77,7 @@ class GenericPaymentRequestFactory
                         $systemInfo,
                         $data['currency'],
                         $data['amount'],
-                        $data['paymentMethod'],
+                        $paymentMethod,
                         $data['address']);
             }
         }

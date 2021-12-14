@@ -463,7 +463,9 @@ abstract class DataProviderAbstract
         foreach ($words as $word) {
             $paymentCodeLib .= ucfirst(strtolower($word));
         }
-
+       if($paymentCodeLib == 'KlarnaDirectBank') {
+           return 'KBT';
+       }
         return $paymentCodeLib;
     }
 

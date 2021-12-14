@@ -11,7 +11,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
     /**
      * @var string
      */
-    protected $paymentMethod;
+    protected $financingtype;
 
     /**
      * @var ShippingAddress
@@ -23,7 +23,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
      * @param SystemInfo $info
      * @param string $currency
      * @param string $amount
-     * @param string $paymentMethod
+     * @param string $financingtype
      * @param ShippingAddress $shippingAddress
      */
    public function __construct(
@@ -31,7 +31,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         SystemInfo $info,
         string $currency,
         string $amount,
-        string $paymentMethod,
+        string $financingtype,
         ShippingAddress $shippingAddress
     )
     {
@@ -45,7 +45,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
             $amount
         );
 
-        $this->paymentMethod = $paymentMethod;
+        $this->financingtype = $financingtype;
         $this->shippingAddress = $shippingAddress;
 
     }
@@ -53,9 +53,9 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
     /**
      * @return string
      */
-    public function getPaymentMethod(): string
+    public function getFinancingtype(): string
     {
-        return $this->paymentMethod;
+        return $this->financingtype;
     }
 
     /**

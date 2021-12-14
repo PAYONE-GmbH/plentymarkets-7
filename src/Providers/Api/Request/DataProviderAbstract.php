@@ -466,6 +466,16 @@ abstract class DataProviderAbstract
        if($paymentCodeLib == 'KlarnaDirectBank') {
            return 'KBT';
        }
+        if($paymentCodeLib == 'KlarnaDirectDebit') {
+            return 'KDD';
+        }
+        if($paymentCodeLib == 'KlarnaInstallments') {
+            return 'KIS';
+        }
+        if($paymentCodeLib == 'KlarnaInvoice') {
+            return 'KIV';
+        }
+
         return $paymentCodeLib;
     }
 

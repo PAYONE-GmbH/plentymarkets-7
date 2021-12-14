@@ -71,6 +71,14 @@ class GenericPaymentRequestFactory
                         $data['currency'],
                         $data['successurl'],
                         $data['errorurl']);
+                case 'start_session':
+                    return new KlarnaStartSessionRequest(
+                        $config,
+                        $systemInfo,
+                        $data['currency'],
+                        $data['amount'],
+                        $data['paymentMethod'],
+                        $data['address']);
             }
         }
 

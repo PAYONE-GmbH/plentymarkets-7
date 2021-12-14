@@ -3,6 +3,7 @@
 namespace PayoneApi\Request\GenericPayment;
 
 use PayoneApi\Lib\Version;
+use PayoneApi\Request\Parts\ShippingAddress;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\RequestFactoryContract;
@@ -25,6 +26,19 @@ class GenericPaymentRequestFactory
                 $context['portalid'],
                 $context['key'],
                 $context['mode']
+            );
+        }
+
+        if($data['address']) {
+            $shippingAddressData = $data['address'];
+            $shippingAddress = new ShippingAddress(
+                $shippingAddressData['firstname'],
+                $shippingAddressData['lastname'],
+                $shippingAddressData['street'],
+                '',
+                $shippingAddressData['zip'],
+                $shippingAddressData['city'],
+                $shippingAddressData['country']
             );
         }
 
@@ -78,7 +92,7 @@ class GenericPaymentRequestFactory
                         $data['currency'],
                         $data['amount'],
                         $paymentMethod,
-                        $data['address']);
+                        $shippingAddress);
             }
         }
 

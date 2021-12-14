@@ -30,6 +30,7 @@ try {
 
     $data['context'] = $sdkRestApi::getParam('context');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
+    $data['address'] = $sdkRestApi::getParam('address');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

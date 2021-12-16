@@ -56,9 +56,7 @@ class KlarnaService
 
         $requestParams = $this->dataProvider->getStartSessionRequestData(
             $paymentCode,
-            $basket->currency,
-            $basket->basketAmount,
-            $basket->id
+            $basket
         );
 
         $requestParams['address'] = $this->createAddressData($billingAddress, $shippingAddress);

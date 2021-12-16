@@ -28,6 +28,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->get('payment/payone/checkout/amazonPay/placeOrder/', 'Payone\Controllers\AmazonPayController@placeOrder');
 
         $router->get('payment/payone/error/', 'Payone\Controllers\CheckoutController@redirectWithNotice');
+        $router->get('payment/payone/back/', 'Payone\Controllers\CheckoutController@backRedirect');
         $router->get('payment/payone/checkoutSuccess/', 'Payone\Controllers\CheckoutController@checkoutSuccess');
         $router->get('payment/payone/checkout/getSepaMandateStep/', 'Payone\Controllers\CheckoutController@getSepaMandateStep');
     }

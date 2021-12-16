@@ -5,6 +5,7 @@ namespace Payone\Providers\Api\Request;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Providers\Api\Request\Models\GenericPayment;
+use Plenty\Modules\Basket\Models\Basket;
 
 class GenericPaymentDataProvider extends DataProviderAbstract
 {
@@ -175,33 +176,39 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $this->validator->validate($requestParams);
         return $requestParams;
     }
+
     /**
      * @param string $paymentCode
-     * @param string $currency
-     * @param float $amount
+     * @param Basket $basket
      * @return array
      * @throws \Exception
      */
-    public function getStartSessionRequestData(string $paymentCode, string $currency, float $amount, string $basketId)
+    public function getStartSessionRequestData(string $paymentCode, Basket $basket)
     {
+
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = $currency;
+        $requestParams['currency'] = $basket->currency;
         // amount in smallest unit
-        $requestParams['amount'] = $amount * 100;
+        $requestParams['amount'] = ($basket->basketAmount) * 100;
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_STARTSESSION;
         /** @var ShopHelper $shopHelper */
         $shopHelper = pluginApp(ShopHelper::class);
 
         $successParam = '';
+        $basketId = $basket->id;
         if (strlen($basketId)) {
             $successParam = '?transactionBasketId=' . $basketId;
         }
 
+        $requestParams['basket'] = $this->getBasketData($basket);
+        $requestParams['basketItems'] = $this->getCartItemData($basket);
+
         $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
         $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
+        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back';
         $this->validator->validate($requestParams);
         return $requestParams;
     }

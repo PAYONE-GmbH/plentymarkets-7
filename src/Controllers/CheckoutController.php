@@ -315,4 +315,18 @@ class CheckoutController extends Controller
 
         return $this->response->json($data, Response::HTTP_BAD_REQUEST);
     }
+
+    /**
+     * @param BasketRepositoryContract $basketReopo
+     * @param PaymentHelper $helper
+     *
+     * @return string
+     */
+    public function backRedirect(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
+    {
+        $this->logger->setIdentifier(__METHOD__);
+
+        $paymentCache->resetActiveBasketId();
+        return $this->response->redirectTo('place-order');
+    }
 }

@@ -7,6 +7,9 @@ use PayoneApi\Request\Parts\ShippingAddress;
 use PayoneApi\Request\Parts\SystemInfo;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\RequestFactoryContract;
+use PayoneApi\Request\Parts\CartFactory;
+use PayoneApi\Request\Parts\Customer;
+use PayoneApi\Request\Parts\CustomerAddress;
 
 class GenericPaymentRequestFactory
 {
@@ -41,6 +44,30 @@ class GenericPaymentRequestFactory
                 $shippingAddressData['country']
             );
         }
+        $customerAddressData = $data['address'];
+        $customerAddress = new CustomerAddress(
+            $customerAddressData['street'] ,
+            $customerAddressData['addressaddition']??'',
+            $customerAddressData['postalCode']??'',
+            $customerAddressData['town']??'',
+            $customerAddressData['country']??''
+        );
+
+        $customerData = $data['address'];
+
+        $customer = new Customer(
+            $customerData['title']??'',
+            $customerData['firstname'],
+            $customerData['lastname'],
+            $customerAddress,
+            $customerData['email'],
+            $customerData['telephonenumber']??'',
+            $customerData['birthday']??'',
+            $customerData['language']??'',
+            $customerData['gender']??'',
+            $customerData['ip']??'',
+            $customerData['businessrelation'] ?? 'b2c'
+        );
 
         if($data['systemInfo']) {
             $systemInfoData = $data['systemInfo'];
@@ -86,13 +113,23 @@ class GenericPaymentRequestFactory
                         $data['successurl'],
                         $data['errorurl']);
                 case 'start_session':
+
+                    $cart = null;
+                    $cart = CartFactory::create($data);
+
                     return new KlarnaStartSessionRequest(
                         $config,
                         $systemInfo,
                         $data['currency'],
                         $data['amount'],
                         $paymentMethod,
-                        $shippingAddress);
+                        $shippingAddress,
+                        $data['successurl'],
+                        $data['errorurl'],
+                        $data['backurl'],
+                        $cart,
+                        $customer
+                    );
             }
         }
 

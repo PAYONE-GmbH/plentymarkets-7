@@ -182,7 +182,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @return array
      * @throws \Exception
      */
-    public function getStartSessionRequestData(string $paymentCode, string $currency, float $amount)
+    public function getStartSessionRequestData(string $paymentCode, string $currency, float $amount, string $basketId)
     {
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
@@ -192,7 +192,16 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $requestParams['amount'] = $amount * 100;
 
         $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_STARTSESSION;
+        /** @var ShopHelper $shopHelper */
+        $shopHelper = pluginApp(ShopHelper::class);
 
+        $successParam = '';
+        if (strlen($basketId)) {
+            $successParam = '?transactionBasketId=' . $basketId;
+        }
+
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
         $this->validator->validate($requestParams);
         return $requestParams;
     }

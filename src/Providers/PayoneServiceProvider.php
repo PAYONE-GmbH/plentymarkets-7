@@ -202,8 +202,8 @@ class PayoneServiceProvider extends ServiceProvider
         );
 
         $payContainer->register(
-            'Payone::' . PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
-            PayoneDirectDebitPaymentMethod::class,
+            'Payone::' . PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectDebitPaymentMethod::class,
             $events
         );
 
@@ -276,8 +276,8 @@ class PayoneServiceProvider extends ServiceProvider
                     return;
                 }elseif ($paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
                     $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||
-                    $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE
-                ||  $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE) {
+                    $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
+                    $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE) {
 
                     /** @var KlarnaService $klarnaService */
                     $klarnaService = pluginApp(KlarnaService::class);

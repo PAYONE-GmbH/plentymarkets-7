@@ -22,6 +22,10 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
 
 /**
  * Class PaymentHelper
@@ -131,7 +135,11 @@ class PaymentHelper
             PayonePaydirektPaymentMethod::PAYMENT_CODE,
             PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
             PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
-            PayoneCODPaymentMethod::PAYMENT_CODE
+            PayoneCODPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE
         ];
     }
 

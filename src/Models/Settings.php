@@ -66,7 +66,10 @@ class Settings extends Model
             'PAYONE_PAYONE_CREDIT_CARD' => $data['PAYONE_PAYONE_CREDIT_CARD'],
             'PAYONE_PAYONE_DIRECT_DEBIT' => $data['PAYONE_PAYONE_DIRECT_DEBIT'],
             'PAYONE_PAYONE_INVOICE_SECURE' => $data['PAYONE_PAYONE_INVOICE_SECURE'],
-            'PAYONE_PAYONE_AMAZON_PAY' => $data['PAYONE_PAYONE_AMAZON_PAY']
+            'PAYONE_PAYONE_KLARNA_DIRECT_BANK' => $data['PAYONE_PAYONE_KLARNA_DIRECT_BANK'],
+            'PAYONE_PAYONE_KLARNA_DIRECT_DEBIT' => $data['PAYONE_PAYONE_KLARNA_DIRECT_DEBIT'],
+            'PAYONE_PAYONE_KLARNA_INSTALLMENTS' => $data['PAYONE_PAYONE_KLARNA_INSTALLMENTS'],
+            'PAYONE_PAYONE_KLARNA_INVOICE' => $data['PAYONE_PAYONE_KLARNA_INVOICE']
         ];
 
         return $this->save();
@@ -147,6 +150,18 @@ class Settings extends Model
         }
         if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
             $this->value['PAYONE_PAYONE_AMAZON_PAY'] = $data['PAYONE_PAYONE_AMAZON_PAY'];
+        }
+        if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
+            $this->value['PAYONE_PAYONE_KLARNA_DIRECT_BANK'] = $data['PAYONE_PAYONE_KLARNA_DIRECT_BANK'];
+        }
+        if (isset($data['PAYONE_PAYONE_KLARNA_DIRECT_DEBIT'])) {
+            $this->value['PAYONE_PAYONE_KLARNA_DIRECT_DEBIT'] = $data['PAYONE_PAYONE_KLARNA_DIRECT_DEBIT'];
+        }
+        if (isset($data['PAYONE_PAYONE_KLARNA_INSTALLMENTS'])) {
+            $this->value['PAYONE_PAYONE_KLARNA_INSTALLMENTS'] = $data['PAYONE_PAYONE_KLARNA_INSTALLMENTS'];
+        }
+        if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
+            $this->value['PAYONE_PAYONE_KLARNA_INVOICE'] = $data['PAYONE_PAYONE_KLARNA_INVOICE'];
         }
         if (isset($data['payoneMethods'])) {
             $this->value['payoneMethods'] = $data['payoneMethods'];

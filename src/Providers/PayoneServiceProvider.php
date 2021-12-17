@@ -31,6 +31,7 @@ use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
+use Payone\Models\Api\GenericPayment\StartSessionResponse;
 use Payone\Models\PaymentCache;
 use Payone\Models\PaymentMethodContent;
 use Payone\PluginConstants;
@@ -281,6 +282,8 @@ class PayoneServiceProvider extends ServiceProvider
 
                     /** @var KlarnaService $klarnaService */
                     $klarnaService = pluginApp(KlarnaService::class);
+
+                    /** @var StartSessionResponse $response */
                     $response = $klarnaService->startSession($paymentCode, $basket);
 
                     /** @var Twig $twig */
@@ -288,7 +291,7 @@ class PayoneServiceProvider extends ServiceProvider
                     $event->setValue($twig->render(
                         PluginConstants::NAME . '::Checkout.KlarnaWidget',
                         [
-                            'client_token' => $response['klarnaClientToken'],
+                            'client_token' => $response->getKlarnaClientToken(),
                         ]
                     ));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);

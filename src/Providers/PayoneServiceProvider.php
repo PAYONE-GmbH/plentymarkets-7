@@ -283,10 +283,14 @@ class PayoneServiceProvider extends ServiceProvider
                     $klarnaService = pluginApp(KlarnaService::class);
                     $response = $klarnaService->startSession($paymentCode, $basket);
 
-                    // in renderingType auslagern
-
-                    // twig einbauen
-                    $event->setValue(null);
+                    /** @var Twig $twig */
+                    $twig = pluginApp(Twig::class);
+                    $event->setValue($twig->render(
+                        PluginConstants::NAME . '::Checkout.KlarnaWidget',
+                        [
+                            'client_token' => $response['klarnaClientToken'],
+                        ]
+                    ));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
                     return;
                 }

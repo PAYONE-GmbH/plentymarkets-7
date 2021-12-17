@@ -62,6 +62,9 @@ class KlarnaService
         $requestParams['address'] = $this->createAddressData($billingAddress, $shippingAddress);
 
         $startSessionResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_STARTSESSION, $requestParams);
+
+
+
         $this->logger
             ->setIdentifier(__METHOD__)
             ->debug('AmazonPay.confirmOrderReference', [

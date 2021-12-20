@@ -2,8 +2,10 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -23,6 +25,8 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Item\Item\Contracts\ItemRepositoryContract;
 use Plenty\Modules\Item\Item\Models\Item;
 use Plenty\Modules\Item\Item\Models\ItemText;
+use Plenty\Modules\Item\Variation\Contracts\VariationRepositoryContract;
+use Plenty\Modules\Item\Variation\Models\Variation;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Models\OrderItem;
 use Plenty\Modules\Order\Models\OrderItemType;
@@ -31,6 +35,9 @@ use Plenty\Modules\Order\Shipping\ParcelService\Models\ParcelServicePreset;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
+use Plenty\Modules\Webshop\Contracts\WebstoreConfigurationRepositoryContract;
+use Plenty\Modules\Item\Property\Models\Property;
 
 /**
  * Class DataProviderAbstract
@@ -165,17 +172,94 @@ abstract class DataProviderAbstract
         if (!$basket->basketItems) {
             return $items;
         }
+
+        /** @var VariationRepositoryContract $variationContract */
+        $variationContract = pluginApp(VariationRepositoryContract::class);
+        /** @var WebstoreConfigurationRepositoryContract $webstoreConfigurationRepository */
+        $webstoreConfigurationRepository = pluginApp(WebstoreConfigurationRepositoryContract::class);
+        $webstoreConfiguration = $webstoreConfigurationRepository->getWebstoreConfiguration();
+
+        /** @var LocalizationRepositoryContract $localizationRepository */
+        $localizationRepository = pluginApp(LocalizationRepositoryContract::class);
+        $language         = $localizationRepository->getLanguage();
+
         /** @var BasketItem $basketItem */
         foreach ($basket->basketItems as $basketItem) {
-            /** @var Item $item */
-            $item = $this->itemRepo->show($basketItem->itemId);
-            /** @var ItemText $itemText */
-            $itemText = $item->texts;
+            if($basketItem->itemType != BasketItem::BASKET_ITEM_TYPE_VARIATION_ORDER_PROPERTY) {
+                /** @var Item $item */
+                $item = $this->itemRepo->show($basketItem->itemId);
+                /** @var ItemText $itemText */
+                $itemText = $item->texts;
 
-            $basketItem = $basketItem->toArray();
-            $basketItem['name'] = $itemText->first()->name1;
+                $basketItemArr = $basketItem->toArray();
+                $basketItemArr['name'] = $itemText->first()->name1;
+                $basketItemArr['price'] = (int)round($basketItem->price * 100);
+                $basketItemArr['vat'] = (int)$basketItem->vat;
 
-            $items[] = $basketItem;
+                $items[] = $basketItemArr;
+            }
+
+            if($webstoreConfiguration->useVariationOrderProperties) {
+                foreach ($basketItem->basketItemVariationProperties as $basketItemVariationProperty) {
+                    if($basketItemVariationProperty instanceof BasketItem) {
+                        $basketItemArr = [];
+                        $reference = $basketItem->variationId;
+                        $name = $itemText->first()->name1;
+                        foreach ($basketItemVariationProperty->basketItemOrderParams as $basketItemOrderParam) {
+                            $reference .= '_'.$basketItemOrderParam->basketItemId;
+                            $name .= ' '.$basketItemOrderParam->value;
+                        }
+
+                        $basketItemArr['itemId'] = $basketItem->variationId .'_'. $basketItemVariationProperty->id;
+                        $basketItemArr['quantity'] = 1;
+                        $basketItemArr['name'] = $name;
+                        $basketItemArr['price'] = (int)round($basketItemVariationProperty->price * 100);
+                        $basketItemArr['vat'] = (int)$basketItemVariationProperty->vat;
+                        $items[] = $basketItemArr;
+                    }
+                }
+            } else {
+                /**
+                 * Item property handling for surcharges
+                 * For example "Pfand"
+                 */
+                /** @var Variation $variation */
+                $variation = $variationContract->findById($basketItem->variationId);
+
+                $itemProperties = $variation->item->itemProperties;
+                if ($itemProperties && count($itemProperties) > 0) {
+                    foreach ($itemProperties as $itemProperty) {
+                        $basketItemArr = [];
+                        $basketItemArr['itemId'] = $basketItem->variationId . '_' . $itemProperty->id;
+                        $basketItemArr['quantity'] = 1;
+                        $basketItemArr['name'] = $basketItem->variationId . '_' . $itemProperty->id;
+
+                        $price = $itemProperty->surcharge;
+                        $property = $itemProperty->property;
+                        if ($property instanceof Property) {
+                            if(!$property->isOderProperty && $property->isShownAsAdditionalCosts) {
+                                $name = $property->names->first()->name;
+                                foreach ($property->names as $propertyName) {
+                                    if ($propertyName->lang == $language) {
+                                        $name = $propertyName->name;
+                                    }
+                                }
+                                $basketItemArr['name'] = $name;
+
+                                $markup = $property->surcharge;
+                                if($property->propertyGroupId > 0 && $property->group->first()->isSurchargePercental) {
+                                    $markup = $price / 100 * $property->surcharge;
+                                }
+                                $price += $markup;
+
+                                $basketItemArr['price'] = (int)round($price * 100);
+                                $basketItemArr['vat'] = (int)$basketItem->vat;
+                            }
+                        }
+                        $items[] = $basketItemArr;
+                    }
+                }
+            }
         }
 
         return $items;
@@ -200,7 +284,7 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $orderItemData['vat'] = $orderItemData['vatRate'];
+            $orderItemData['vat'] = (int)$orderItemData['vatRate'];
             $orderItemData['price'] = (int)round($amount['priceGross'] * 100);
             $orderItemData['name'] = $orderItemData['orderItemName'];
             $orderItemData['itemId'] = $orderItemData['id'];
@@ -228,55 +312,73 @@ abstract class DataProviderAbstract
             'firstname' => (string)$addressObj->firstName,
             'lastname' => (string)$addressObj->lastName,
             'title' => '', // (string)$addressObj->title: '',
-            'birthday' => $this->getBirthDay($addressObj),
             'ip' => (string)$this->shopHelper->getIpAddress(),
             'customerId' => (string)$customerId,
-            'registrationDate' => '1970-01-01',
+            //'registrationDate' => '1970-01-01', // what the ... is this?
             'group' => 'default',
             'company' => (string)$addressObj->companyName,
             'telephonenumber' => (string)$addressObj->phone,
             'language' => $this->shopHelper->getCurrentLanguage(),
         ];
-        //TODO: Check format
+
+        $dateOfBirth = $this->getBirthDay($addressObj);
+        $customerData['birthday'] = '';
+        if(isset($dateOfBirth)) {
+            $customerData['birthday'] = $dateOfBirth;
+        }
+
         $customerData['gender'] = 'm';
+        if($addressObj->gender == 'female') {
+            $customerData['gender'] = 'f';
+        }
+
+        $taxIdNumber = $addressObj->taxIdNumber;
+        if (!empty($taxIdNumber)) {
+            $customerData['businessrelation'] = 'b2b';
+        } else {
+            $customerData['businessrelation'] = 'b2c';
+        }
 
         return $customerData;
     }
 
     /**
-     * @param $paymentCode
-     *
+     * @param string $paymentCode
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    protected function getDefaultRequestData($paymentCode)
+    protected function getDefaultRequestData(string $paymentCode, int $clientId = null, int $pluginSetId = null): array
     {
         return [
             'paymentMethod' => $this->mapPaymentCode($paymentCode),
             'systemInfo' => $this->getSystemInfo(),
-            'context' => $this->getApiContextParams(),
+            'context' => $this->getApiContextParams($paymentCode, $clientId, $pluginSetId),
         ];
     }
 
     /**
+     * @param string $paymentCode
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return array
      */
-    protected function getApiContextParams()
+    protected function getApiContextParams(string $paymentCode, int $clientId = null, int $pluginSetId = null)
     {
-        return $this->config->getApiCredentials();
+        return $this->config->getApiCredentials($paymentCode, $clientId, $pluginSetId);
     }
 
     /**
      * @param Address $addressObj
-     *
-     * @return string
+     * @return false|string|null
      */
-    protected function getBirthDay(Address $addressObj): string
+    protected function getBirthDay(Address $addressObj)
     {
-        if (!$addressObj->birthday) {
-            return '1970-01-01';
+        if(!isset($addressObj->birthday) || !strlen($addressObj->birthday)) {
+            return null;
         }
-
-        return date('Y-m-d', $addressObj->birthday);
+        $dateOfBirth = strtotime($addressObj->birthday);
+        return date('Y-m-d', $dateOfBirth);
     }
 
     /**
@@ -299,6 +401,16 @@ abstract class DataProviderAbstract
      */
     protected function getBasketData(Basket $basket)
     {
+        /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
+        $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
+
+        //we have to manipulate the basket because its stupid and doesnt know if its netto or gross
+        if(!count($vatService->getCurrentTotalVats())) {
+            $basket->itemSum = $basket->itemSumNet;
+            $basket->shippingAmount = $basket->shippingAmountNet;
+            $basket->basketAmount = $basket->basketAmountNet;
+        }
+
         $requestParams = $basket->toArray();
         $requestParams['currency'] = (bool)$basket->currency ? $basket->currency : ShopHelper::DEFAULT_CURRENCY;
         $requestParams['grandTotal'] = (int)round($basket->basketAmount * 100);
@@ -329,6 +441,11 @@ abstract class DataProviderAbstract
         $requestParams['shippingAmountNet'] = (int)round($this->getShippingAmountNetFromOrder($order) * 100);
         $requestParams['currency'] = $requestParams['amounts'][0]['currency'];
 
+        if($order->amount->isNet){
+            $requestParams['basketAmount'] = $requestParams['basketAmountNet'];
+            $requestParams['shippingAmount'] = $requestParams['shippingAmountNet'];
+        }
+
         return $requestParams;
     }
 
@@ -356,7 +473,7 @@ abstract class DataProviderAbstract
     protected function getSystemInfo()
     {
         return [
-            'vendor' => 'arvatis media GmbH',
+            'vendor' => 'plentysystems AG',
             'version' => 7,
             'type' => 'Webshop',
             'url' => $this->shopHelper->getPlentyDomain(),
@@ -435,6 +552,7 @@ abstract class DataProviderAbstract
                 PayonePayPalPaymentMethod::PAYMENT_CODE,
                 PayonePaydirektPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             ]
         )
         ) {
@@ -447,10 +565,14 @@ abstract class DataProviderAbstract
     /**
      * @return array
      */
-    protected function getRedirectUrls()
+    protected function getRedirectUrls($transactionBasketId = "")
     {
+        $successParam = '';
+        if(strlen($transactionBasketId)){
+            $successParam = '?transactionBasketId='.$transactionBasketId;
+        }
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess',
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess'.$successParam,
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
             'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
         ];
@@ -488,6 +610,28 @@ abstract class DataProviderAbstract
     }
 
     /**
+     * @param string $basketId
+     * @param $basketAmount
+     * @param string $currency
+     * @return array
+     */
+    protected function getAmazonPayData(string $basketId, $basketAmount, string $currency): array
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amazonAuthConfig = [];
+        $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
+        $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amazonAuthConfig['reference'] = $basketId;
+
+        $amazonAuthConfig['currency'] = $currency;
+        // amount in smallest unit
+        $amazonAuthConfig['amount'] = $basketAmount * 100;
+
+        return $amazonAuthConfig;
+    }
+
+    /**
      * @param Order $order
      * @return float
      */
@@ -520,11 +664,10 @@ abstract class DataProviderAbstract
             }
             $orderItemData = $orderItem->toArray();
             $amount = $orderItemData['amounts'][0];
-            $priceGross = $amount['priceGross'];
 
-            return $priceGross * 100 / ($orderItem['vatRate'] + 100.);
+            return $amount['priceNet'];
         }
 
-        return 0.;
+        return 0;
     }
 }

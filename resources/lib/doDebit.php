@@ -1,11 +1,12 @@
 <?php
+require_once (__DIR__.'/vendor/autoload.php');
 
-use ArvPayoneApi\Api\Client;
-use ArvPayoneApi\Api\PostApi;
-use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\ArraySerializer;
-use ArvPayoneApi\Request\Debit\RequestFactory;
-use ArvPayoneApi\Response\ClientErrorResponse;
+use PayoneApi\Api\Client;
+use PayoneApi\Api\PostApi;
+use PayoneApi\Lib\Version;
+use PayoneApi\Request\ArraySerializer;
+use PayoneApi\Request\Debit\RequestFactory;
+use PayoneApi\Response\ClientErrorResponse;
 
 try {
     if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {
@@ -13,7 +14,6 @@ try {
     } else {
         $sdkRestApi = \SdkRestApi::class;
     }
-
     $data = [];
     $data['context'] = $sdkRestApi::getParam('context');
     $data['order'] = $sdkRestApi::getParam('order');

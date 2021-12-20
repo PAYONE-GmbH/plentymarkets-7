@@ -1,0 +1,26 @@
+{
+  "sections":
+  [
+    {
+      "name": "MultilingualismConfig.paymentMethod",
+      "prefix": "paymentMethod"
+    },
+    {
+      "name": "MultilingualismConfig.template",
+      "prefix": "template"
+    }
+  ],
+  "ignoredTranslationFiles":
+  [
+    "AmazonPay.properties",
+    "Api.properties",
+    "Assistant.properties",
+    "Controller.properties",
+    "Event.properties",
+    "EventProcedure.properties",
+    "General.properties",
+    "Invoice.properties",
+    "Payment.properties",
+    "MultilingualismConfig.properties"
+  ]
+}

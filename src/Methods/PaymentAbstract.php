@@ -2,19 +2,21 @@
 
 namespace Payone\Methods;
 
-use Payone\Adapter\Config as ConfigAdapter;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Method\Contracts\PaymentMethodService;
+use Payone\Services\SettingsService;
+use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
+use Plenty\Plugin\Translation\Translator;
 
-abstract class PaymentAbstract extends PaymentMethodService
+abstract class PaymentAbstract extends PaymentMethodBaseService
 {
     const PAYMENT_CODE = 'Payone';
 
     /**
-     * @var ConfigAdapter
+     * @var SettingsService
      */
-    private $configRepo;
+    protected $settingsService;
+
     /**
      * @var PaymentValidator
      */
@@ -30,37 +32,39 @@ abstract class PaymentAbstract extends PaymentMethodService
      *
      * @param Application $application
      * @param PaymentValidator $paymentValidator
-     * @param ConfigAdapter $configRepo
+     * @param SettingsService $settingsService
      */
     public function __construct(
         Application $application,
         PaymentValidator $paymentValidator,
-        ConfigAdapter $configRepo
-    ) {
+        SettingsService $settingsService
+    )
+    {
         $this->paymentValidator = $paymentValidator;
-        $this->configRepo = $configRepo;
         $this->app = $app = $application;
+        $this->settingsService = $settingsService;
     }
 
     /**
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
-        return (bool) $this->configRepo->get($this::PAYMENT_CODE . '.active')
-            && $this->paymentValidator->validate($this);
+        return (bool)$this->settingsService->getPaymentSettingsValue('active', $this::PAYMENT_CODE)
+            && $this->paymentValidator->validate($this, $this->settingsService);
     }
 
     /**
      * Get shown name
      *
+     * @param string $lang
      * @return string
      */
-    public function getName(): string
+    public function getName(string $lang = 'de'): string
     {
-        $name = $this->configRepo->get($this::PAYMENT_CODE . '.name');
-
-        return $name ? (string) $name : '';
+        /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        return $translator->trans('Payone::PaymentMethods.' . $this::PAYMENT_CODE, [], $lang);
     }
 
     /**
@@ -72,9 +76,10 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getIcon(): string
+    public function getIcon(string $lang = 'de'): string
     {
         $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
 
@@ -82,19 +87,20 @@ abstract class PaymentAbstract extends PaymentMethodService
     }
 
     /**
+     * @param string $lang
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(string $lang = 'de'): string
     {
-        $description = $this->configRepo->get($this::PAYMENT_CODE . '.description');
-
-        return $description ? $description : '';
+        /** @var Translator $translator */
+        $translator = pluginApp(Translator::class);
+        return $translator->trans('Payone::PaymentMethods.' . $this::PAYMENT_CODE . '_DESCRIPTION', [], $lang);
     }
 
     /**
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this::PAYMENT_CODE;
     }
@@ -102,33 +108,130 @@ abstract class PaymentAbstract extends PaymentMethodService
     /**
      * @return float
      */
-    public function getMaxCartAmount()
+    public function getMaxCartAmount(): float
     {
-        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.maxCartAmount');
+        $amount = $this->settingsService->getPaymentSettingsValue('MaximumAmount', $this::PAYMENT_CODE);
 
-        return $amount ? (float) $amount : 0.;
+        return $amount ? (float)$amount : 0.;
     }
 
     /**
      * @return float
      */
-    public function getMinCartAmount()
+    public function getMinCartAmount(): float
     {
-        $amount = $this->configRepo->get($this::PAYMENT_CODE . '.minCartAmount');
+        $amount = $this->settingsService->getPaymentSettingsValue('MinimumAmount', $this::PAYMENT_CODE);
 
-        return $amount ? (float) $amount : 0.;
+        return $amount ? (float)$amount : 0.;
     }
 
     /**
      * @return array
      */
-    public function getAllowedCountries()
+    public function getAllowedCountries(): array
     {
-        $countries = explode(
-            ',',
-            $this->configRepo->get($this::PAYMENT_CODE . '.allowedCountries')
-        );
+        return (array)$this->settingsService->getPaymentSettingsValue('AllowedDeliveryCountries', $this::PAYMENT_CODE);
+    }
 
-        return $countries;
+    /**
+     * Check if this payment method should be searchable in the backend
+     *
+     * @return bool
+     */
+    public function isBackendSearchable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if this payment method should be active in the backend
+     *
+     * @return bool
+     */
+    public function isBackendActive(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get name for the backend
+     *
+     * @param string $lang
+     * @return string
+     */
+    public function getBackendName(string $lang = 'de'): string
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Check if this payment method can handle subscriptions
+     *
+     * @return bool
+     */
+    public function canHandleSubscriptions(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the url for the backend icon
+     *
+     * @return string
+     */
+    public function getBackendIcon(): string
+    {
+        $app = pluginApp(Application::class);
+        $icon = $app->getUrlPath(PluginConstants::NAME) . '/images/logos/' . strtolower($this::PAYMENT_CODE) . '_backend_icon.svg';
+        return $icon;
+    }
+
+    /**
+     * Can the delivery address be different from the invoice address?
+     *
+     * @return bool
+     */
+    public function canHandleDifferingDeliveryAddress(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Check if all settings for the payment method are set.
+     *
+     * @param SettingsService $settingsService
+     * @return bool
+     */
+    public function validateSettings(SettingsService $settingsService): bool
+    {
+        return true;
+    }
+
+    /**
+     * Is the payment method active for the given currency?
+     *
+     * @param $currency
+     * @return bool
+     */
+    public function isActiveForCurrency($currency): bool
+    {
+        return true;
+    }
+
+    /**
+     * @param int|null $orderId
+     * @return bool
+     */
+    public function isSwitchableTo($orderId = null): bool
+    {
+        if($orderId > 0) {
+            /** @var PaymentOrderValidator $paymentOrderValidator */
+            $paymentOrderValidator = pluginApp(PaymentOrderValidator::class);
+
+            return (bool)$this->settingsService->getPaymentSettingsValue('active', $this::PAYMENT_CODE)
+                && $paymentOrderValidator->validate($this, $this->settingsService, $orderId);
+        }
+
+        return false;
     }
 }

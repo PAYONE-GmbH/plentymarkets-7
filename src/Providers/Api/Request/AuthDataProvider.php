@@ -2,6 +2,7 @@
 
 namespace Payone\Providers\Api\Request;
 
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
@@ -14,11 +15,17 @@ use Plenty\Modules\Order\Models\Order;
 class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder, DataProviderBasket
 {
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Basket $basket
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null)
+    public function getDataFromBasket(string $paymentCode, Basket $basket, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
 
         $requestParams['basket'] = $this->getBasketData($basket);
 
@@ -42,7 +49,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         }
 
         if ($this->paymentHasRedirect($paymentCode)) {
-            $requestParams['redirect'] = $this->getRedirectUrls();
+            $requestParams['redirect'] = $this->getRedirectUrls($basket->id);
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
@@ -51,6 +58,10 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
             $requestParams['sepaMandate'] = $this->getSepaMandateData();
         }
+        if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
+            $requestParams['amazonPayAuth'] = $this->getAmazonPayData($basket->id, $basket->basketAmount, $basket->currency);
+        }
+
         $requestParams['referenceId'] = $requestReference;
         $requestParams['shippingProvider'] = $this->getShippingProvider($basket->shippingProfileId);
         $this->validator->validate($requestParams);
@@ -59,11 +70,17 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Order $order
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
+    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
 

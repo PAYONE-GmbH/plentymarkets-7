@@ -15,11 +15,17 @@ use Plenty\Modules\Order\Models\Order;
 class CaptureDataProvider extends DataProviderAbstract implements DataProviderOrder
 {
     /**
-     * {@inheritdoc}
+     * @param string $paymentCode
+     * @param Order $order
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
      */
-    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null)
+    public function getDataFromOrder(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
     {
-        $requestParams = $this->getDefaultRequestData($paymentCode);
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
 
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
         $requestParams['basketItems'] = $this->getOrderItemData($order);
@@ -66,12 +72,10 @@ class CaptureDataProvider extends DataProviderAbstract implements DataProviderOr
         in_array(
             $paymentCode,
             [
-                PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
                 PayoneInvoicePaymentMethod::PAYMENT_CODE,
                 PayonePrePaymentPaymentMethod::PAYMENT_CODE,
                 PayoneSofortPaymentMethod::PAYMENT_CODE,
                 PayoneCODPaymentMethod::PAYMENT_CODE,
-
             ]
         )
         ) {

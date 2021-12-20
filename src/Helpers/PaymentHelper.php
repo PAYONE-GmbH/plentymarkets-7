@@ -4,6 +4,7 @@
 
 namespace Payone\Helpers;
 
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
@@ -21,6 +22,10 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
 
 /**
  * Class PaymentHelper
@@ -119,17 +124,22 @@ class PaymentHelper
     public function getPaymentCodes()
     {
         return [
-            PayoneInvoicePaymentMethod::PAYMENT_CODE,
-            PayonePaydirektPaymentMethod::PAYMENT_CODE,
-            PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
             PayonePayPalPaymentMethod::PAYMENT_CODE,
-            PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
-            PayoneSofortPaymentMethod::PAYMENT_CODE,
-            PayoneCODPaymentMethod::PAYMENT_CODE,
-            PayonePrePaymentPaymentMethod::PAYMENT_CODE,
             PayoneCCPaymentMethod::PAYMENT_CODE,
-            PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneInvoicePaymentMethod::PAYMENT_CODE,
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
+            PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayonePrePaymentPaymentMethod::PAYMENT_CODE,
+            PayoneSofortPaymentMethod::PAYMENT_CODE,
+            PayonePaydirektPaymentMethod::PAYMENT_CODE,
+            PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
+            PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
+            PayoneCODPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE
         ];
     }
 
@@ -156,10 +166,9 @@ class PaymentHelper
     /**
      * @param Payment $payment
      * @param int $propertyTypeConstant
-     *
      * @return string
      */
-    public function getPaymentPropertyValue($payment, $propertyTypeConstant)
+    public function getPaymentPropertyValue(Payment $payment, $propertyTypeConstant): string
     {
         $properties = $payment->properties;
         if (!$properties) {
@@ -176,5 +185,66 @@ class PaymentHelper
         }
 
         return '';
+    }
+
+    public function raiseSequenceNumber(Payment $payment)
+    {
+        foreach ($payment->properties as $property) {
+            if($property->typeId == PaymentProperty::TYPE_TRANSACTION_CODE) {
+                $property->value++;
+                return $payment;
+            }
+        }
+
+        $properties = $payment->properties;
+        $properties[] = $this->createPaymentProperty(PaymentProperty::TYPE_TRANSACTION_CODE, 1);
+        $payment->properties = $properties;
+
+        return $payment;
+    }
+
+
+    /**
+     * @param Payment $payment
+     * @param int $pamentPropertyTypeId
+     * @param string $value
+     *
+     * @return Payment
+     */
+    public function createOrUpdatePaymentProperty($payment, $pamentPropertyTypeId, $value)
+    {
+        foreach ($payment->properties as $property) {
+            if (!($property instanceof PaymentProperty)) {
+                continue;
+            }
+            if ($property->typeId === $pamentPropertyTypeId) {
+                $property->value = $value;
+                return $payment;
+            }
+        }
+
+        $paymentProperties = $payment->properties;
+        $paymentProperties[] = $this->createPaymentProperty($pamentPropertyTypeId, $value);
+
+        return $payment;
+    }
+
+    /**
+     * Returns a PaymentProperty with the given params
+     *
+     * @param int $typeId
+     * @param string $value
+     *
+     * @return PaymentProperty
+     */
+    protected function createPaymentProperty($typeId, $value)
+    {
+        /** @var PaymentProperty $paymentProperty */
+        $paymentProperty = pluginApp(PaymentProperty::class);
+
+        $paymentProperty->typeId = $typeId;
+        $paymentProperty->value = $value . '';
+
+        return $paymentProperty;
     }
 }

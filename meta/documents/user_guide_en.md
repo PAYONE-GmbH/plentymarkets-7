@@ -1,35 +1,49 @@
-# BS PAYONE Payment for plentymarkets 7
+# User Guide Payone
 
-**Hinweis: The Distribution in Plentymarkets system is controlled by PSG Projektmanagement GmbH. [Click here for Registration](https://www.psg-projektmanagement.de/bs-payone/)**
+<div class="alert alert-info" role="alert">
+ To find out how to set up the Payone plugin, visit the <a href="https://knowledge.plentymarkets.com/en/payment/payment-plugins/payone" target="_blank">plentymarkets manual</a>.
+</div>
 
-Payment with BS PAYONE convinces
+<div class="alert alert-warning" role="alert">
+   The Payone plugin has been developed for use with the online store Ceres and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
+</div>
 
-One solution, one partner, one contract: simple & efficient. Technical handling and financial services from a single 
-source.
+## Payone
 
-* International payment processing: access to international and local payment methods on demand.
+The plentymarkets Payone plugin offers you access to international as well as local payment methods. In addition, the plugin offers the advantages of an integrated risk management system, automated refunds and swift processing of returns.
 
-* Integrated risk management: minimizing defaults and fraud. For more profitability.
+The plugin currently offers the following payment methods:
 
-* Automatic Debtor Management: Effectively relieving the bookkeeping through transaction assignment and account reconciliation.
-
-* Multi-payment refunds: Fast returns management. With automated refunds.
-
-* Best references, many years of experience: proven experts. Personal customer service. For every e-commerce project.
-
-## Currently supported payment methods
-
-* invoice
-* pre payment
-* cash on delivery
-* debit payment
-* credit card
-* credit card 3DS
-* invoice secure
-* PayPal
+* Secure Invoice
+* Visa & MasterCard (incl. Maestro)
+* American Express - Integration of your existing acceptance contract
+* SEPA direct debit
+* giropay - online bank transfer Germany
+* Sofortüberweisung - Online bank transfer international
+* Transfer - Cash in advance & Invoice & Cash on Delivery
 * Paydirekt
-* Sofortüberweisung
+* PayPal - Integration of your PayPal account
+* Amazon Pay - Integration of your Amazon Pay account
 
-## Installation guide
+### How to get a PAYONE Account?
 
-[Information for installation and setup](https://github.com/PAYONE-GmbH/plentymarkets-7/blob/master/README.md)
+The use requires a Payone account as well as Payone access data. If you are not a Payone customer yet and thus do not have a Payone account, you have to applied a service agreement first. PSG Projektmanagement GmbH is your contact person:
+
+PSG Projektmanagement GmbH <br>
+Meergässle 4 <br>
+89180 Berghülen <br>
+Telefon: 07344-9592588 <br>
+E-Mail: plenty@psg-projektmanagement.de <br>
+Internet: http://www.psg-projektmanagement.de
+
+Please use our Registration form to get in contact, or make an appointment directly in the calendar for more information.
+
+Registration form:<br>
+https://www.psg-projektmanagement.de/payone-plentymarkets/
+
+Make an appointment:
+<a href="https://calendly.com/payone-plentymarkets/payone-plentymarkets">click here</a>
+
+PSG Projektmanagement GmbH is a long-term partner of PAYONE, as well as a long-term partner of plentymarkets and is therefore your central contact who is optimally networked with all partners. Please do not contact PAYONE directly in order not to endanger the smooth process.<br>
+Here is the official link to the partnership with PAYONE:
+https://payone.com/DE-de/plentymarkets-payone-plugin

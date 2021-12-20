@@ -4,6 +4,7 @@ namespace Payone\Methods;
 
 use Payone\Adapter\Logger;
 use Payone\Helpers\AddressHelper;
+use Payone\Services\SettingsService;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Basket\Models\Basket;
 
@@ -42,7 +43,7 @@ class PaymentValidator
      *
      * @return bool
      */
-    public function validate(PaymentAbstract $payment)
+    public function validate(PaymentAbstract $payment, SettingsService $settingsService)
     {
         $basketAmount = $this->basket->basketAmount;
         if ($payment->getMinCartAmount() && $basketAmount < $payment->getMinCartAmount()) {
@@ -58,15 +59,27 @@ class PaymentValidator
         }
 
         $billingAddress = $this->addressHelper->getBasketBillingAddress($this->basket);
-        $shippingAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
+        $deliveryAddress = $this->addressHelper->getBasketShippingAddress($this->basket);
         if (!$billingAddress) {
+            // TODO: shouldn't this be 'return false'?
             return true;
         }
 
-        $country = $billingAddress->country->isoCode2;
-        if (!in_array($country, $payment->getAllowedCountries())) {
-            $this->log($payment->getName(), 'Payment.countryNotAllowed', $country);
+        if (!in_array($billingAddress->countryId, $payment->getAllowedCountries())) {
+            $this->log($payment->getName(), 'Payment.countryNotAllowed', $billingAddress->countryId);
 
+            return false;
+        }
+        
+        if (!$payment->canHandleDifferingDeliveryAddress() && $deliveryAddress && $billingAddress->id != $deliveryAddress->id) {
+            return false;
+        }
+        
+        if (!$payment->validateSettings($settingsService)) {
+            return false;
+        }
+        
+        if (!$payment->isActiveForCurrency($this->basket->currency)) {
             return false;
         }
 

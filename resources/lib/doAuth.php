@@ -1,11 +1,12 @@
 <?php
+require_once (__DIR__.'/vendor/autoload.php');
 
-use ArvPayoneApi\Api\Client;
-use ArvPayoneApi\Api\PostApi;
-use ArvPayoneApi\Lib\Version;
-use ArvPayoneApi\Request\ArraySerializer;
-use ArvPayoneApi\Request\Authorization\RequestFactory;
-use ArvPayoneApi\Response\ClientErrorResponse;
+use PayoneApi\Api\Client;
+use PayoneApi\Api\PostApi;
+use PayoneApi\Lib\Version;
+use PayoneApi\Request\ArraySerializer;
+use PayoneApi\Request\Authorization\RequestFactory;
+use PayoneApi\Response\ClientErrorResponse;
 
 try {
     if (class_exists('Payone\Tests\Integration\Mock\SdkRestApi')) {
@@ -26,10 +27,12 @@ try {
     $data['pseudocardpan'] = $sdkRestApi::getParam('pseudocardpan');
     $data['sepaMandate'] = $sdkRestApi::getParam('sepaMandate');
     $data['bankAccount'] = $sdkRestApi::getParam('bankAccount');
+    $data['amazonPayAuth'] = $sdkRestApi::getParam('amazonPayAuth');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 
     $request = RequestFactory::create($paymentMethod, $data);
+
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);

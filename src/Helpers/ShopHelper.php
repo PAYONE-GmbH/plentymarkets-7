@@ -1,14 +1,12 @@
 <?php
 
-//strict
-
 namespace Payone\Helpers;
 
-use Payone\PluginConstants;
+
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Models\LocaleSettings;
 use Plenty\Modules\Helper\Services\WebstoreHelper;
-use Plenty\Plugin\ConfigRepository;
+use Plenty\Modules\System\Models\WebstoreConfiguration;
 
 /**
  * Class ShopHelper
@@ -17,18 +15,21 @@ class ShopHelper
 {
     const DEFAULT_LANGUAGE = 'de';
     const DEFAULT_CURRENCY = 'EUR';
+
     /**
      * @var FrontendSessionStorageFactoryContract
      */
-    private $sessionStorage;
+    protected $sessionStorage;
+
     /**
      * @var LocaleSettings
      */
-    private $localeSettings;
+    protected $localeSettings;
+
     /**
      * @var WebstoreHelper
      */
-    private $webstoreHelper;
+    protected $webstoreHelper;
 
     /**
      * @param FrontendSessionStorageFactoryContract $sessionStorage
@@ -48,12 +49,11 @@ class ShopHelper
     /**
      * @return string
      */
-    public function getPlentyDomain()
+    public function getPlentyDomain(): string
     {
-        /** @var \Plenty\Modules\Helper\Services\WebstoreHelper $webstoreHelper */
-        $webstoreHelper = pluginApp(\Plenty\Modules\Helper\Services\WebstoreHelper::class);
-
-        /** @var \Plenty\Modules\System\Models\WebstoreConfiguration $webstoreConfig */
+        /** @var WebstoreHelper $webstoreHelper */
+        $webstoreHelper = pluginApp(WebstoreHelper::class);
+        /** @var WebstoreConfiguration $webstoreConfig */
         $webstoreConfig = $webstoreHelper->getCurrentWebstoreConfiguration();
 
         return $webstoreConfig->domainSsl;
@@ -62,38 +62,25 @@ class ShopHelper
     /**
      * @return string
      */
-    public function getCurrentLanguage()
+    public function getCurrentLanguage(): string
     {
         $config = $this->localeSettings->toArray();
-
         return $config['language'] ?? $this->getDefaultLanguage();
     }
 
     /**
      * @return string
      */
-    public function getCurrentCurrency()
+    public function getCurrentCurrency(): string
     {
         $config = $this->localeSettings->toArray();
-
         return $config['currency'] ?? $this->getDefaultCurrency();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDebugModeActive()
-    {
-        /** @var ConfigRepository $config */
-        $config = pluginApp(ConfigRepository::class);
-
-        return (bool) $config->get(PluginConstants::NAME . '.debugging.active');
     }
 
     /**
      * @return string
      */
-    public function getIpAddress()
+    public function getIpAddress(): string
     {
         $ipKeys = [
             'HTTP_CLIENT_IP',
@@ -122,7 +109,7 @@ class ShopHelper
     /**
      * @return string
      */
-    public function getCurrentLocale()
+    public function getCurrentLocale(): string
     {
         return strtolower($this->getCurrentLanguage()) . '-' . strtoupper($this->getCurrentLanguage());
     }
@@ -131,11 +118,10 @@ class ShopHelper
      * Ensures an ip address is both a valid IP and does not fall within
      * a private network range.
      *
-     * @param $ip
-     *
+     * @param string $ip
      * @return bool
      */
-    private function isIpValid($ip)
+    protected function isIpValid(string $ip): bool
     {
         if (
             filter_var(
@@ -152,20 +138,18 @@ class ShopHelper
     /**
      * @return string
      */
-    private function getDefaultLanguage(): string
+    protected function getDefaultLanguage(): string
     {
         $config = $this->webstoreHelper->getCurrentWebstoreConfiguration()->toArray();
-
         return $config['defaultLanguage'] ?? self::DEFAULT_LANGUAGE;
     }
 
     /**
      * @return string
      */
-    private function getDefaultCurrency(): string
+    protected function getDefaultCurrency(): string
     {
         $config = $this->webstoreHelper->getCurrentWebstoreConfiguration()->toArray();
-
         return $config['defaultCurrency'] ?? self::DEFAULT_CURRENCY;
     }
 }

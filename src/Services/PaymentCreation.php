@@ -12,6 +12,7 @@ use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PayonePaymentStatus;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\Frontend\Contracts\CurrencyExchangeRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -90,8 +91,18 @@ class PaymentCreation
      */
     public function createPayment($mopId, ResponseAbstract $response, Basket $basket, ClearingAbstract $account = null)
     {
+        /** @var \Plenty\Modules\Frontend\Services\VatService $vatService */
+        $vatService = pluginApp(\Plenty\Modules\Frontend\Services\VatService::class);
+
+        //we have to manipulate the basket because its stupid and doesnt know if its netto or gross
+        if(!count($vatService->getCurrentTotalVats())) {
+            $basket->itemSum = $basket->itemSumNet;
+            $basket->shippingAmount = $basket->shippingAmountNet;
+            $basket->basketAmount = $basket->basketAmountNet;
+        }
+
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.createPayment',
+            'Payment.createPayment',
             [
                 'paymentId' => $mopId,
                 'response' => $response,
@@ -123,6 +134,19 @@ class PaymentCreation
             $payment->receivedAt = date('Y-m-d H:i:s');
         }
 
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        //when a payment is placed in a foreign currency, we save the foreign amount,
+        // foreign currency sign, exchange ratio and isSystemCurrency set to 0
+        if ($payment->currency != $defaultCurrency) {
+            $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
+            $payment->isSystemCurrency = 0;
+        }
+
         $payment->type = 'credit';
 
         $paymentProperties = [];
@@ -132,10 +156,15 @@ class PaymentCreation
             $transactionID
         );
 
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_CODE,
+            0
+        );
+
         $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
         $paymentProperties[] = $this->createPaymentProperty(
-            PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
-            $basket->customerId);
+            PaymentProperty::TYPE_INVOICE_ADDRESS_ID,
+            $basket->customerInvoiceAddressId);
 
         $paymentText = [
             'Request type' => 'PreAuth',
@@ -147,22 +176,30 @@ class PaymentCreation
             'TransactionID ' . $transactionID
         );
         if ($account instanceof Bank) {
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_NAME_OF_RECEIVER,
-                json_encode($account->getAccountholder())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_IBAN_OF_RECEIVER,
-                json_encode($account->getIban())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_BIC_OF_RECEIVER,
-                json_encode($account->getIban())
-            );
-            $paymentProperties[] = $this->createPaymentProperty(
-                PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
-                json_encode($account->getAccount())
-            );
+            if(strlen(json_encode($account->getAccountholder()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_NAME_OF_RECEIVER,
+                    json_encode($account->getAccountholder())
+                );
+            }
+            if(strlen(json_encode($account->getIban()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_IBAN_OF_RECEIVER,
+                    json_encode($account->getIban())
+                );
+            }
+            if(strlen(json_encode($account->getBic()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_BIC_OF_RECEIVER,
+                    json_encode($account->getBic())
+                );
+            }
+            if(strlen(json_encode($account->getAccount()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
+                    json_encode($account->getAccount())
+                );
+            }
 
             $paymentText['accountHolder'] = $account->getAccountholder();
             $paymentText['iban'] = $account->getIban();
@@ -199,7 +236,7 @@ class PaymentCreation
     public function capturePayment(Payment $payment, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatePayment',
+            'Payment.updatePayment',
             [
                 'payment' => $payment,
                 'order' => $order,
@@ -207,10 +244,19 @@ class PaymentCreation
         );
 
         $payment->updateOrderPaymentStatus = true;
-        $orderData = $order->toArray();
-        $payment->currency = $orderData['amounts'][0]['currency'];
-        $payment->amount = $orderData['amounts'][0]['grossTotal'];
+        $payment->currency = $order->amount->currency;
+        $payment->amount = $order->amount->invoiceTotal;
         $payment->receivedAt = date('Y-m-d H:i:s');
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        if ($payment->currency != $defaultCurrency) {
+            $payment->exchangeRatio = $order->amount->exchangeRate;
+            $payment->isSystemCurrency = $order->amount->isSystemCurrency;
+        }
 
         $payment = $this->paymentRepository->updatePayment($payment);
 
@@ -227,7 +273,7 @@ class PaymentCreation
     public function reAuthorizePayment(Payment $payment, Response $response, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatePayment',
+            'Payment.updatePayment',
             [
                 'payment' => $payment,
                 'response' => $response,
@@ -274,10 +320,10 @@ class PaymentCreation
      *
      * @return Payment
      */
-    public function createRefundPayment($paymentId, $response, $currency, $grandTotal, $parentPaymentId)
+    public function createRefundPayment($paymentId, $response, $currency, $grandTotal, $parentPaymentId, $refundId=0)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.createRefundPayment',
+            'Payment.createRefundPayment',
             [
                 'paymentId' => $paymentId,
                 'response' => $response,
@@ -287,7 +333,7 @@ class PaymentCreation
             ]
         );
 
-        $transactionID = $response->getTransactionID();
+        $transactionID = $response->getTransactionID() . '_' . $refundId;
 
         /** @var Payment $payment */
         $payment = pluginApp(Payment::class);
@@ -300,13 +346,21 @@ class PaymentCreation
         $payment->receivedAt = date('Y-m-d H:i:s');
         $payment->type = 'debit';
         $payment->parentId = $parentPaymentId;
-        $payment->regenerateHash = true;
         $payment->unaccountable = 0;
         $paymentProperties = [];
 
         $paymentProperties[] = $this->createPaymentProperty(
             PaymentProperty::TYPE_TRANSACTION_ID,
             $transactionID
+        );
+
+        /*
+         * Sequence Number
+         * First number have to be 0
+         */
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_CODE,
+            0
         );
 
         $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
@@ -321,11 +375,17 @@ class PaymentCreation
             json_encode($paymentText)
         );
 
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_BOOKING_TEXT,
+            'Refund ('.$refundId.') Transaction: ('.$transactionID.')'
+        );
+
         $payment->properties = $paymentProperties;
 
         try {
             $payment = $this->paymentRepository->createPayment($payment);
         } catch (\Exception $e) {
+            $this->logger->logException($e);
             $storedPayment = $this->paymentRepository->getPaymentById($payment->id);
             if ($storedPayment) {
                 return $storedPayment;
@@ -344,7 +404,7 @@ class PaymentCreation
     public function assignPaymentToOrder(Payment $payment, Order $order)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.assignPaymentToOrder',
+            'Payment.assignPaymentToOrder',
             [
                 'payment' => $payment,
                 'orderId' => $order->id,
@@ -395,7 +455,7 @@ class PaymentCreation
     public function updatePaymentStatus($txid, $txaction, $sequenceNumber)
     {
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'PaymentCreation.updatingPayment',
+            'Payment.updatingPayment',
             [
                 'txid' => $txid,
                 'txaction' => $txaction,
@@ -411,7 +471,7 @@ class PaymentCreation
         $this->logger->debug('PaymentCreation.updatingPayment', ['payments' => $payments]);
         if (!count($payments)) {
             $this->logger->debug(
-                'PaymentCreation.updatingPayment',
+                'Payment.updatingPayment',
                 'No payments found for txid'
             );
 
@@ -421,7 +481,7 @@ class PaymentCreation
         foreach ($payments as $payment) {
             $newStatus = PayonePaymentStatus::getPlentyStatus($txaction);
             $this->logger->debug(
-                'PaymentCreation.updatingPayment',
+                'Payment.updatingPayment',
                 [
                     'payment' => $payment,
                     'oldStatus' => $payment->status,
@@ -474,7 +534,7 @@ class PaymentCreation
             }
             if ($property->typeId === $pamentPropertyTypeId) {
                 $this->logger->debug(
-                    'PaymentCreation.updatingPayment',
+                    'Payment.updatingPayment',
                     [
                         'property' => $pamentPropertyTypeId,
                         'oldValue' => $property->value,
@@ -487,7 +547,7 @@ class PaymentCreation
         }
 
         $this->logger->debug(
-            'PaymentCreation.updatingPayment',
+            'Payment.updatingPayment',
             [
                 'property' => $pamentPropertyTypeId,
                 'newValue' => $value,

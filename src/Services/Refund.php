@@ -4,6 +4,7 @@ namespace Payone\Services;
 
 use Payone\Adapter\Logger;
 use Payone\Adapter\PaymentHistory;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Models\Api\Response;
@@ -58,6 +59,11 @@ class Refund
     private $captureDataProvider;
 
     /**
+     * @var OrderHelper
+     */
+    protected $orderHelper;
+
+    /**
      * Refund constructor.
      *
      * @param PaymentRepositoryContract $paymentRepository
@@ -69,6 +75,7 @@ class Refund
      * @param DebitDataProvider $refundDataProvider
      * @param Api $api
      * @param CaptureDataProvider $captureDataProvider
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         PaymentRepositoryContract $paymentRepository,
@@ -79,7 +86,8 @@ class Refund
         OrderRepositoryContract $orderRepo,
         DebitDataProvider $refundDataProvider,
         Api $api,
-        CaptureDataProvider $captureDataProvider
+        CaptureDataProvider $captureDataProvider,
+        OrderHelper $orderHelper
     ) {
         $this->paymentRepository = $paymentRepository;
         $this->paymentHelper = $paymentHelper;
@@ -90,36 +98,41 @@ class Refund
         $this->refundDataProvider = $refundDataProvider;
         $this->api = $api;
         $this->captureDataProvider = $captureDataProvider;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
-     * @param Order $order
+     * @param Order $refund
      */
-    public function executeRefund(Order $order)
+    public function executeRefund(Order $refund)
     {
-        $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $order->id]);
-        if (!in_array($order->typeId, $this->getAllowedOrderTypes())) {
-            $this->logger->error('Invalid order type ' . $order->typeId . ' for order ' . $order->id);
+        $orderNote = '';
+
+        $this->logger->setIdentifier(__METHOD__)->info('EventProcedure.triggerFunction', ['order' => $refund->id]);
+        if (!in_array($refund->typeId, $this->getAllowedOrderTypes())) {
+            $this->logger->error('Invalid order type ' . $refund->typeId . ' for order ' . $refund->id);
 
             return;
         }
         try {
-            $originalOrder = $this->getOriginalOrder($order);
+            $originalOrder = $this->getOriginalOrder($refund);
         } catch (\Exception $e) {
-            $this->logger->error('Error loading original order for order ' . $order->id, $e->getMessage());
+            $this->logger->error('Error loading original order for order ' . $refund->id, $e->getMessage());
 
             return;
         }
         if (!$originalOrder) {
             $this->logger->error('Refunding payment failed! The given order is invalid!');
-
+            $orderNote = 'Refunding payment failed! The given order is invalid!';
+            $this->orderHelper->addOrderComment($refund->id, $orderNote);
             return;
         }
         try {
             $payments = $this->paymentRepository->getPaymentsByOrderId($originalOrder->id);
         } catch (\Exception $e) {
             $this->logger->error('Error loading payment', $e->getMessage());
-
+            $orderNote = 'Error loading payment';
+            $this->orderHelper->addOrderComment($refund->id, $orderNote);
             return;
         }
         $this->logger->debug(
@@ -137,24 +150,25 @@ class Refund
                 $text = 'No Auth reference found in payment.';
                 $this->logger->error('Api.doRefund',
                     [
-                        'order' => $order->id,
+                        'order' => $refund->id,
                         'payment' => $payment,
                         'errorMessage' => $text,
                     ]
                 );
+                $orderNote = $text . ' Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
                 $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
                 continue;
             }
 
-            if ($order->typeId != OrderType::TYPE_SALES_ORDER) {
+            if ($refund->typeId != OrderType::TYPE_SALES_ORDER) {
                 $refundPaymentResult = $this->refundCreditMemo(
                     $payment,
                     $originalOrder,
-                    $order,
+                    $refund,
                     $preAuth
                 );
             } else {
-                $refundPaymentResult = $this->refundOrder($payment, $order, $preAuth);
+                $refundPaymentResult = $this->refundOrder($payment, $refund, $preAuth);
             }
 
             $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
@@ -168,33 +182,36 @@ class Refund
                 }
             }
 
-            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $originalOrder,
-                $refundPaymentResult);
-
             if (!$refundPaymentResult->getSuccess()) {
                 $this->logger->error('Api.doRefund',
                     [
-                        'order' => $order->id,
+                        'order' => $refund->id,
                         'payment' => $payment,
                         'authReference' => $preAuth,
                         'errorMessage' => $refundPaymentResult->getErrorMessage(),
                     ]
                 );
-                $text = 'Refund von event procedure fehlgeschlagen. Meldung: ' . $refundPaymentResult->getErrorMessage();
-                $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
+                $orderNote = 'Refund fehlgeschlagen. Fehler im Log';
                 continue;
             }
 
+            $refundPayment = $this->createRefundPayment($payment->mopId, $payment, $refund,
+                $refundPaymentResult);
+
             $payment->status = $this->getNewPaymentStatus($payment, $refundPayment);
-            $payment->updateOrderPaymentStatus = true;
+            $payment = $this->paymentHelper->raiseSequenceNumber($payment);
+            $orderNote ='Refund Successful Order-ID: ' . $refund->id .' Payment-ID: '.$payment->id;
             $this->paymentRepository->updatePayment($payment);
+            $this->paymentHistory->addPaymentHistoryEntry($payment, $orderNote);
         }
+
+        $this->orderHelper->addOrderComment($refund->id, $orderNote);
     }
 
     /**
      * @param $mopId
      * @param $payment
-     * @param $order
+     * @param $refund
      * @param Response $transaction
      *
      * @return Payment
@@ -202,7 +219,7 @@ class Refund
     private function createRefundPayment(
         $mopId,
         $payment,
-        Order $order,
+        Order $refund,
         $transaction
     ) {
         /* @var Payment $debitPayment */
@@ -210,17 +227,18 @@ class Refund
             $mopId,
             $transaction,
             $payment->currency,
-            $this->getOrderAmount($order, $payment),
-            $payment->id
+            $this->getOrderAmount($refund, $payment),
+            $payment->id,
+            $refund->id
         );
 
         if (isset($debitPayment) && $debitPayment instanceof Payment) {
-            $this->paymentCreation->assignPaymentToOrder($debitPayment, $order);
+            $this->paymentCreation->assignPaymentToOrder($debitPayment, $refund);
         }
 
         $this->logger->debug(
             'General.createRefundPayment',
-            ['orderId' => $order->id, 'payment' => $debitPayment]
+            ['orderId' => $refund->id, 'payment' => $debitPayment]
         );
 
         return $debitPayment;
@@ -228,12 +246,12 @@ class Refund
 
     /**
      * @param Payment $payment
-     * @param Order $order
+     * @param Order $refund
      * @param $preAuthUniqueId
      *
      * @return Response
      */
-    private function refundOrder($payment, Order $order, $preAuthUniqueId)
+    private function refundOrder($payment, Order $refund, $preAuthUniqueId)
     {
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
 
@@ -241,19 +259,18 @@ class Refund
             'Api.doRefund',
             [
                 'paymentCode' => $paymentCode,
-                'order' => $order->toArray(),
+                'order' => $refund->toArray(),
                 'authUniqueId' => $preAuthUniqueId,
             ]
         );
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// not captured yet?
-                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
+                return $this->reverseAuth($refund, $payment, $preAuthUniqueId, $refund->plentyId);
             }
         }
 
-        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $order, $preAuthUniqueId);
-
+        $requestData = $this->refundDataProvider->getDataFromOrder($paymentCode, $refund, $preAuthUniqueId, $refund->plentyId);
         return $this->api->doDebit($requestData);
     }
 
@@ -281,12 +298,11 @@ class Refund
 
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             if (!$payment->amount) {// already captured?
-                return $this->reverseAuth($order, $payment, $preAuthUniqueId);
+                return $this->reverseAuth($order, $payment, $preAuthUniqueId, $order->plentyId);
             }
         }
 
-        $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId);
-
+        $requestData = $this->refundDataProvider->getPartialRefundData($paymentCode, $order, $refund, $preAuthUniqueId, $order->plentyId);
         return $this->api->doDebit($requestData);
     }
 
@@ -376,12 +392,12 @@ class Refund
      * @param Order $order
      * @param Payment $payment
      * @param $authTransactionId
-     *
-     * @throws \Exception
-     *
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
      * @return Response
+     * @throws \Exception
      */
-    private function reverseAuth(Order $order, Payment $payment, $authTransactionId)
+    private function reverseAuth(Order $order, Payment $payment, $authTransactionId, int $clientId = null, int $pluginSetId = null)
     {
         $amount = $order->amounts[0];
         $originalAmount = $amount->invoiceTotal;
@@ -389,7 +405,7 @@ class Refund
 
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($payment->mopId);
 
-        $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId);
+        $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $authTransactionId, $clientId, $pluginSetId);
         $amount->invoiceTotal = $originalAmount;
 
         return $this->api->doCapture($requestData);

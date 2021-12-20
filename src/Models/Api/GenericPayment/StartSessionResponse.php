@@ -10,6 +10,8 @@ class StartSessionResponse extends ResponseAbstract implements \JsonSerializable
     protected $klarnaClientToken;
     protected $klarnaSessionId;
     protected $klarnaWorkOrderId;
+    protected $klarnaMethodName;
+    protected $klarnaMethodIdentifier;
 
     /**
      * @param bool $success
@@ -27,7 +29,9 @@ class StartSessionResponse extends ResponseAbstract implements \JsonSerializable
         string $errorMessage = '',
         string $klarnaClientToken = '',
         string $klarnaSessionId = '',
-        string $klarnaWorkOrderId = ''
+        string $klarnaWorkOrderId = '',
+        string $klarnaMethodName = '',
+        string $klarnaMethodIdentifier=''
     )
     {
         $this->success = $success;
@@ -35,6 +39,8 @@ class StartSessionResponse extends ResponseAbstract implements \JsonSerializable
         $this->klarnaClientToken = $klarnaClientToken;
         $this->klarnaSessionId = $klarnaSessionId;
         $this->klarnaWorkOrderId = $klarnaWorkOrderId;
+        $this->klarnaMethodName = $klarnaMethodName;
+        $this->klarnaMethodIdentifier = $klarnaMethodIdentifier;
 
 
         return $this;
@@ -101,6 +107,19 @@ class StartSessionResponse extends ResponseAbstract implements \JsonSerializable
         return $this->klarnaWorkOrderId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getKlarnaMethodName()
+    {
+        return $this->klarnaMethodName;
+    }
 
-
+    /**
+     * @return mixed
+     */
+    public function getKlarnaMethodIdentifier()
+    {
+        return $this->klarnaMethodIdentifier;
+    }
 }

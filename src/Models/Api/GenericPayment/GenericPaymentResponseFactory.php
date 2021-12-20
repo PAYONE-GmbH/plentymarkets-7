@@ -194,7 +194,9 @@ class GenericPaymentResponseFactory
             $responseData['errormessage'] ?? '',
             $responseData['responseData']['add_paydata[client_token]'] ?? '',
             $responseData['responseData']['add_paydata[session_id]'] ?? '',
-            $responseData['responseData']['workorderid'] ?? ''
+            $responseData['responseData']['workorderid'] ?? '',
+            $responseData['responseData']['add_paydata[payment_method_category_name]'],
+            $responseData['responseData']['add_paydata[payment_method_category_identifier]']
         );
     }
 }

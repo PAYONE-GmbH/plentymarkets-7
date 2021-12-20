@@ -41,15 +41,16 @@ class GenericPaymentRequestFactory
                 '',
                 $shippingAddressData['zip'],
                 $shippingAddressData['city'],
-                $shippingAddressData['country']
+                $shippingAddressData['country'],
+                $shippingAddressData['email']
             );
         }
         $customerAddressData = $data['address'];
         $customerAddress = new CustomerAddress(
             $customerAddressData['street'] ,
             $customerAddressData['addressaddition']??'',
-            $customerAddressData['postalCode']??'',
-            $customerAddressData['town']??'',
+            $customerAddressData['zip']??'',
+            $customerAddressData['city']??'',
             $customerAddressData['country']??''
         );
 

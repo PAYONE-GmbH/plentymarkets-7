@@ -2,6 +2,10 @@
 
     <script type="text/javascript">
 
+        var payment = '{{payment_method}}'
+        var containerPaymentMethod = payment.replace(/_/g,'-')
+        console.log(containerPaymentMethod)
+
         window.klarnaAsyncCallback = function () {
             Klarna.Payments.init({
                 client_token: '{{ client_token }}'
@@ -9,8 +13,8 @@
             console.log("Payments initialized");
             //The following method loads the payment_method_category in the container with the id of 'klarna_container'
             Klarna.Payments.load({
-                container: '#klarna-pay-later-container',
-                payment_method_category: 'pay_now'
+                container: "#klarna-"+this.containerPaymentMethod+"-container",
+                payment_method_category: '{{ payment_method }}'
             }, function (res) {
                 console.log("Load function called");
                 console.log(res);
@@ -23,23 +27,27 @@
                 }
             });
         };
-        /*The following is the authorize function, which triggers Klarna to perform a risk assessment of the purchase
-          The successful response of this risk assessment is an authorization token, which in this example is logged in the console
-          https://developers.klarna.com/documentation/klarna-payments/single-call-descriptions/authorize-the-purchase/
-        */
+
         $(function(){
             $("button.authorize").on('click', function(){
                 Klarna.Payments.authorize({
-                    payment_method_category: 'pay_now'
+                    payment_method_category: '{{ payment_method }}'
+                },{
+                    shipping_address: {
+                        email: "cosmin.manciu@plentymarkets.com",
+                        city: "Craiova",
+                        country: "DE",
+                        family_name: "Manciu",
+                        given_name: "Cosmin",
+                        postal_code: "200667",
+                        street_address: "Str. Razboieni Nr. 3 Bl. B17 Ap. 4 34"
+                    }
                 }, function(res) {
                     console.log("Response from the authorize call:");
                     console.log(res);
                     if(res.authorization_token)
                     {
-                        console.log('succesfull order go to charge');
-                        setTimeout(function(){
-                            window.location.replace("http://localhost:8080/charge/{{sourceId}}" );
-                        },10000);
+
                     }
                     if( (res.show_form === false ) && (res.approved === false )){
                         console.log('Disable Klarna’s widget and pre-select another payment method');
@@ -48,9 +56,8 @@
                         console.log(res.error)
                     }else if ((res.show_form === true ) && (res.approved === true )) {
                         console.log('Authorization token received. Create order and redirect customer with authorization_token: ' + res.authorization_token );
-                        console.log('charge: http://localhost:8080/charge/{{sourceId}}');
                         setTimeout(function(){
-                            window.location.replace("http://localhost:8080/charge/{{sourceId}}" );
+                            window.location.replace("http://master.plentymarkets.com/confirmation" );
                         },10000);
                     }else{
                         console.log( 'unexpected error');
@@ -72,9 +79,11 @@
 
     <!--Klarna container-->
     <div id="klarna-pay-later-container" style="width: 500px; margin: auto;"></div>
+    <div id="klarna-pay-now-container" style="width: 500px; margin: auto;"></div>
+    <div id="klarna-pay-over-time-container" style="width: 500px; margin: auto;"></div>
     <div style="width: 500px; margin: auto;">
         <!--Button to trigger authorize call-->
-        <button class="authorize" style="width: 500px; height: 50px; margin: auto;">Your Buy Button</button>
+        <button class="authorize" style="width: 500px; height: 50px; margin: auto;">Kaufen</button>
     </div>
 
 {% endblock %}

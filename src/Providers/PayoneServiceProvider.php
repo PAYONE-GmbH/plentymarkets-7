@@ -292,6 +292,7 @@ class PayoneServiceProvider extends ServiceProvider
                         PluginConstants::NAME . '::Checkout.KlarnaWidget',
                         [
                             'client_token' => $response->getKlarnaClientToken(),
+                            'payment_method' => $response->getKlarnaMethodIdentifier()
                         ]
                     ));
                     $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);

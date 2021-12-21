@@ -23,6 +23,7 @@ use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Templates\Twig;
+use Payone\Adapter\SessionStorage;
 
 /**
  * Class CheckoutController
@@ -81,6 +82,38 @@ class CheckoutController extends Controller
         PaymentService $paymentService,
         BasketRepositoryContract $basket
     ) {
+        $this->logger->setIdentifier(__METHOD__)
+            ->debug('Controller.Checkout', $this->request->all());
+        if (!$this->sessionHelper->isLoggedIn()) {
+            return $this->getJsonErrors([
+                'message' => 'Your session expired. Please login and start a new purchase.',
+            ]);
+        }
+        try {
+            $auth = $paymentService->openTransaction($basket->load());
+        } catch (\Exception $e) {
+            return $this->getJsonErrors(['message' => $e->getMessage()]);
+        }
+
+        return $this->getJsonSuccess($auth);
+    }
+
+    /**
+     * @param PaymentService $paymentService
+     * @param BasketRepositoryContract $basket
+     *
+     * @return string
+     */
+    public function doKlarnaAuth(
+        PaymentService $paymentService,
+        BasketRepositoryContract $basket
+    ) {
+        $klarnaAuthToken = $this->request->get('authToken');
+
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $sessionStorage->setSessionValue('klarnaAuthToken', $klarnaAuthToken);
+
         $this->logger->setIdentifier(__METHOD__)
             ->debug('Controller.Checkout', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {

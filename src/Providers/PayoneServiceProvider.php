@@ -283,8 +283,14 @@ class PayoneServiceProvider extends ServiceProvider
                     /** @var KlarnaService $klarnaService */
                     $klarnaService = pluginApp(KlarnaService::class);
 
+
                     /** @var StartSessionResponse $response */
                     $response = $klarnaService->startSession($paymentCode, $basket);
+
+                    /** @var SessionStorage $sessionStorage */
+                    $sessionStorage = pluginApp(SessionStorage::class);
+
+                    $sessionStorage->setSessionValue('klarnaWorkOrderId', $response->getKlarnaWorkOrderId());
 
                     /** @var Twig $twig */
                     $twig = pluginApp(Twig::class);

@@ -33,15 +33,7 @@
                 Klarna.Payments.authorize({
                     payment_method_category: '{{ payment_method }}'
                 },{
-                    shipping_address: {
-                        email: "cosmin.manciu@plentymarkets.com",
-                        city: "Craiova",
-                        country: "DE",
-                        family_name: "Manciu",
-                        given_name: "Cosmin",
-                        postal_code: "200667",
-                        street_address: "Str. Razboieni Nr. 3 Bl. B17 Ap. 4 34"
-                    }
+
                 }, function(res) {
                     console.log("Response from the authorize call:");
                     console.log(res);
@@ -56,9 +48,26 @@
                         console.log(res.error)
                     }else if ((res.show_form === true ) && (res.approved === true )) {
                         console.log('Authorization token received. Create order and redirect customer with authorization_token: ' + res.authorization_token );
-                        setTimeout(function(){
-                            window.location.replace("http://master.plentymarkets.com/confirmation" );
-                        },10000);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/payment/payone/checkout/doKlarnaAuth',
+                            authToken: res.authorization_token,
+                            dataType: 'json',
+                            async: true
+                        }).done(function (data) {
+                            if (data.data.redirecturl) {
+                                window.location.replace(data.data.redirecturl);
+                            }
+                            console.log('done');
+                            console.log(data);
+                        }).fail(function (data) {
+                            var data = data.responseJSON;
+                            if (data.errors && data.errors.message) {
+                                $.payonePayment.showErrorMessage(data.errors.message);
+                            }
+                            console.log(data);
+                            console.log(data);
+                        });
                     }else{
                         console.log( 'unexpected error');
                     }
@@ -68,6 +77,7 @@
                 })
             })
         })
+
     </script>
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 

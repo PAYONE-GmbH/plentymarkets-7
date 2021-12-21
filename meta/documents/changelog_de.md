@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.3.1
+
+### Behoben
+- Beim gesichteren Rechnungskauf in Verbindung mit Merkmalen/Bestellmerkmalen/Bestelleigenschaften konnte es zu einem Fehler kommen. Dieser wurde behoben. 
+
 ## 2.3.0
 
 ### Hinzugefügt

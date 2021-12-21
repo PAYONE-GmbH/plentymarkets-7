@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.3.1
+
+### Fixed
+- An error could occur in the case of secure invoice purchase in connection with order item properties or item properties. This has been fixed.
+
 ## 2.3.0
 
 ### Added

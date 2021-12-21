@@ -233,6 +233,8 @@ abstract class DataProviderAbstract
                         $basketItemArr['itemId'] = $basketItem->variationId . '_' . $itemProperty->id;
                         $basketItemArr['quantity'] = 1;
                         $basketItemArr['name'] = $basketItem->variationId . '_' . $itemProperty->id;
+                        $basketItemArr['price'] = 0;
+                        $basketItemArr['vat'] = 0;
 
                         $price = $itemProperty->surcharge;
                         $property = $itemProperty->property;

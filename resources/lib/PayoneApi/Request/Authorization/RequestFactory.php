@@ -126,15 +126,19 @@ class RequestFactory implements RequestFactoryContract
                     $amazonPayAuth['currency'],
                     $amazonPayAuth['amazonReferenceId']
                 );
-            case PaymentTypes::PAYONE_KLARNA:
+            case PaymentTypes::PAYONE_KLARNA_INVOICE:
                 $klarnaAuthToken= $data['klarnaAuthToken'];
                 $klarnaWorkOrderId = $data['klarnaWorkOrderId'];
+                $cart = null;
+                $cart = CartFactory::create($data);
+
                 return new Klarna(
                     $genericAuthRequest,
                     self::createUrls($data['redirect']),
                     $klarnaWorkOrderId,
                     $klarnaAuthToken,
-                    $paymentMethod
+                    $paymentMethod,
+                    $cart
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

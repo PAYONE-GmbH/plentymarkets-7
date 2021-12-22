@@ -5,8 +5,8 @@ namespace PayoneApi\Request\Authorization;
 use PayoneApi\Request\AuthorizationRequestAbstract;
 use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
+use PayoneApi\Request\Parts\Cart;
 use PayoneApi\Request\Parts\RedirectUrls;
-use PayoneApi\Request\WalletTypes;
 
 /**
  * Class Klarna
@@ -46,6 +46,10 @@ class Klarna extends AuthorizationRequestAbstract
      * @var RedirectUrls
      */
     protected $urls;
+    /**
+     * @var Cart
+     */
+    protected $cart;
 
     /**
      * @param GenericAuthorizationRequest $authorizationRequest
@@ -53,13 +57,15 @@ class Klarna extends AuthorizationRequestAbstract
      * @param string $workOrderId
      * @param string $authorisationToken
      * @param string $financingtype
+     * @param Cart $cart
      */
     public function  __construct(
         GenericAuthorizationRequest $authorizationRequest,
         RedirectUrls $urls,
         string $workOrderId,
         string $authorisationToken,
-        string $financingtype
+        string $financingtype,
+        Cart $cart
 
     )
     {
@@ -68,6 +74,7 @@ class Klarna extends AuthorizationRequestAbstract
         $this->workorderid = $workOrderId;
         $this->add_paydata['authorisation_token'] = $authorisationToken;
         $this->financingtype = $financingtype;
+        $this->cart = $cart;
     }
 
     /**
@@ -101,6 +108,14 @@ class Klarna extends AuthorizationRequestAbstract
     public function getUrls(): RedirectUrls
     {
         return $this->urls;
+    }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): Cart
+    {
+        return $this->cart;
     }
 
 }

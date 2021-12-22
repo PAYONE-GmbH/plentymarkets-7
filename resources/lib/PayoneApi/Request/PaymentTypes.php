@@ -18,7 +18,10 @@ class PaymentTypes
     const PAYONE_INVOICE_SECURE = 'InvoiceSecure';
     const PAYONE_ON_LINE_BANK_TRANSFER = 'OnlineBankTransfer';
     const PAYONE_AMAZON_PAY = 'AmazonPay';
-    const PAYONE_KLARNA = 'Klarna';
+    const PAYONE_KLARNA_INVOICE = 'KIV';
+    const PAYONE_KLARNA_INSTALLMENTS = 'KIS';
+    const PAYONE_KLARNA_DIRECT_DEBIT = 'KDD';
+    const PAYONE_KLARNA_DIRECT_BANK = 'KBT';
 
     /**
      * @return mixed

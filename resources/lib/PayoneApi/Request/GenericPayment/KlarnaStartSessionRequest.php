@@ -15,10 +15,10 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
      */
     protected $financingtype;
 
-    /**
-     * @var ShippingAddress
-     */
-    protected $shippingAddress;
+//    /**
+//     * @var ShippingAddress
+//     */
+//    protected $shippingAddress;
 
     /**
      * @var string
@@ -63,7 +63,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         string $currency,
         string $amount,
         string $financingtype,
-        ShippingAddress $shippingAddress,
+        // ShippingAddress $shippingAddress,
         string $successurl,
         string $errorurl,
         string  $backurl,
@@ -83,7 +83,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         );
 
         $this->financingtype = $financingtype;
-        $this->shippingAddress = $shippingAddress;
+        // $this->shippingAddress = $shippingAddress;
         $this->successurl = $successurl;
         $this->errorurl = $errorurl;
         $this->backurl = $backurl;
@@ -100,13 +100,13 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         return $this->financingtype;
     }
 
-    /**
-     * @return ShippingAddress
-     */
-    public function getShippingAddress(): ShippingAddress
-    {
-        return $this->shippingAddress;
-    }
+//    /**
+//     * @return ShippingAddress
+//     */
+//    public function getShippingAddress(): ShippingAddress
+//    {
+//        return $this->shippingAddress;
+//    }
 
     /**
      * @return string

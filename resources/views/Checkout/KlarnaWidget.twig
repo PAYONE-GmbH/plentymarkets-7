@@ -33,15 +33,6 @@
                 Klarna.Payments.authorize({
                     payment_method_category: '{{ payment_method }}'
                 },{
-                    shipping_address: {
-                        email: "cosmin.manciu@plentymarkets.com",
-                        city: "Craiova",
-                        country: "DE",
-                        family_name: "Manciu",
-                        given_name: "Cosmin",
-                        postal_code: "200667",
-                        street_address: "Str. Razboieni Nr. 3 Bl. B17 Ap. 4 34"
-                    }
                 }, function(res) {
                     console.log("Response from the authorize call:");
                     console.log(res);
@@ -61,6 +52,8 @@
                             },
                             function (data, status) {
                                 console.log("Payment Successful\n");
+                                console.log(data)
+                                console.log(data.data)
                                 window.location.replace(data.data.redirecturl);
                             });
                     }else{

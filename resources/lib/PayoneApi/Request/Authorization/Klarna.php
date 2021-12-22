@@ -7,6 +7,7 @@ use PayoneApi\Request\ClearingTypes;
 use PayoneApi\Request\GenericAuthorizationRequest;
 use PayoneApi\Request\Parts\Cart;
 use PayoneApi\Request\Parts\RedirectUrls;
+use PayoneApi\Request\Parts\ShippingAddress;
 
 /**
  * Class Klarna
@@ -39,7 +40,7 @@ class Klarna extends AuthorizationRequestAbstract
      * @var string[]
      */
     protected $add_paydata = [
-        'authorisation_token' => '',
+        'authorization_token' => '',
     ];
 
     /**
@@ -52,12 +53,18 @@ class Klarna extends AuthorizationRequestAbstract
     protected $cart;
 
     /**
+     * @var ShippingAddress
+     */
+    protected $shippingAddress;
+
+    /**
      * @param GenericAuthorizationRequest $authorizationRequest
      * @param RedirectUrls $urls
      * @param string $workOrderId
      * @param string $authorisationToken
      * @param string $financingtype
      * @param Cart $cart
+     * @param ShippingAddress $shippingAddress
      */
     public function  __construct(
         GenericAuthorizationRequest $authorizationRequest,
@@ -66,15 +73,17 @@ class Klarna extends AuthorizationRequestAbstract
         string $authorisationToken,
         string $financingtype,
         Cart $cart
+        //  ShippingAddress $shippingAddress
 
     )
     {
         $this->authorizationRequest = $authorizationRequest;
         $this->urls = $urls;
         $this->workorderid = $workOrderId;
-        $this->add_paydata['authorisation_token'] = $authorisationToken;
+        $this->add_paydata['authorization_token'] = $authorisationToken;
         $this->financingtype = $financingtype;
         $this->cart = $cart;
+        //$this->shippingAddress = $shippingAddress;
     }
 
     /**
@@ -117,5 +126,13 @@ class Klarna extends AuthorizationRequestAbstract
     {
         return $this->cart;
     }
+
+//    /**
+//     * @return ShippingAddress
+//     */
+//    public function getShippingAddress(): ShippingAddress
+//    {
+//        return $this->shippingAddress;
+//    }
 
 }

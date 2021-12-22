@@ -18,6 +18,10 @@ class Klarna extends AuthorizationRequestAbstract
      */
     protected $clearingtype = ClearingTypes::FINANCING;
 
+    /**
+     * @var string
+     */
+    protected $financingtype;
 
     /**
      * @var string
@@ -48,20 +52,31 @@ class Klarna extends AuthorizationRequestAbstract
      * @param RedirectUrls $urls
      * @param string $workOrderId
      * @param string $authorisationToken
+     * @param string $financingtype
      */
-    public function __construct(
+    public function  __construct(
         GenericAuthorizationRequest $authorizationRequest,
         RedirectUrls $urls,
         string $workOrderId,
-        string $authorisationToken
+        string $authorisationToken,
+        string $financingtype
+
     )
     {
         $this->authorizationRequest = $authorizationRequest;
         $this->urls = $urls;
         $this->workorderid = $workOrderId;
         $this->add_paydata['authorisation_token'] = $authorisationToken;
+        $this->financingtype = $financingtype;
     }
 
+    /**
+     * @return string
+     */
+    public function getFinancingtype(): string
+    {
+        return $this->financingtype;
+    }
 
     /**
      * @return string

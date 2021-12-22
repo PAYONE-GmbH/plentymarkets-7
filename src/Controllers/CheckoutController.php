@@ -108,8 +108,7 @@ class CheckoutController extends Controller
         PaymentService $paymentService,
         BasketRepositoryContract $basket
     ) {
-        $klarnaAuthToken = $this->request->get('authToken');
-
+        $klarnaAuthToken = $this->request->get('authorization_token');
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
         $sessionStorage->setSessionValue('klarnaAuthToken', $klarnaAuthToken);

@@ -132,8 +132,9 @@ class RequestFactory implements RequestFactoryContract
                 return new Klarna(
                     $genericAuthRequest,
                     self::createUrls($data['redirect']),
-                   $klarnaWorkOrderId,
-                    $klarnaAuthToken
+                    $klarnaWorkOrderId,
+                    $klarnaAuthToken,
+                    $paymentMethod
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

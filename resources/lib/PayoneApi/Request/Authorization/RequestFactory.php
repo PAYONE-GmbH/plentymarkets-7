@@ -126,7 +126,8 @@ class RequestFactory implements RequestFactoryContract
                     $amazonPayAuth['currency'],
                     $amazonPayAuth['amazonReferenceId']
                 );
-            case PaymentTypes::PAYONE_KLARNA_INVOICE:
+            case PaymentTypes::PAYONE_KLARNA_INVOICE || PaymentTypes::PAYONE_KLARNA_DIRECT_BANK ||
+                 PaymentTypes::PAYONE_KLARNA_INSTALLMENTS || PaymentTypes::PAYONE_KLARNA_DIRECT_DEBIT :
                 $klarnaAuthToken= $data['klarnaAuthToken'];
                 $klarnaWorkOrderId = $data['klarnaWorkOrderId'];
                 $cart = null;

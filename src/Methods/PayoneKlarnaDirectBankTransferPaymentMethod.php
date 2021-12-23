@@ -1,5 +1,4 @@
 <?php
-
 namespace Payone\Methods;
 
 class PayoneKlarnaDirectBankTransferPaymentMethod extends PaymentAbstract

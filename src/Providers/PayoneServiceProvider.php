@@ -19,10 +19,6 @@ use Payone\Methods\PayoneCODPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
 use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
-use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
-use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
-use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
-use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
@@ -65,6 +61,10 @@ use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\Translation\Translator;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Services\KlarnaService;
 
 class PayoneServiceProvider extends ServiceProvider
@@ -195,7 +195,6 @@ class PayoneServiceProvider extends ServiceProvider
             PayoneAmazonPayPaymentMethod::class,
             $events
         );
-
         $payContainer->register(
             'Payone::' . PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
             PayoneKlarnaDirectBankTransferPaymentMethod::class,

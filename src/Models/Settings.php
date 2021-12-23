@@ -151,7 +151,7 @@ class Settings extends Model
         if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
             $this->value['PAYONE_PAYONE_AMAZON_PAY'] = $data['PAYONE_PAYONE_AMAZON_PAY'];
         }
-        if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
+        if (isset($data['PAYONE_PAYONE_KLARNA_DIRECT_BANK'])) {
             $this->value['PAYONE_PAYONE_KLARNA_DIRECT_BANK'] = $data['PAYONE_PAYONE_KLARNA_DIRECT_BANK'];
         }
         if (isset($data['PAYONE_PAYONE_KLARNA_DIRECT_DEBIT'])) {
@@ -160,7 +160,7 @@ class Settings extends Model
         if (isset($data['PAYONE_PAYONE_KLARNA_INSTALLMENTS'])) {
             $this->value['PAYONE_PAYONE_KLARNA_INSTALLMENTS'] = $data['PAYONE_PAYONE_KLARNA_INSTALLMENTS'];
         }
-        if (isset($data['PAYONE_PAYONE_AMAZON_PAY'])) {
+        if (isset($data['PAYONE_PAYONE_KLARNA_INVOICE'])) {
             $this->value['PAYONE_PAYONE_KLARNA_INVOICE'] = $data['PAYONE_PAYONE_KLARNA_INVOICE'];
         }
         if (isset($data['payoneMethods'])) {

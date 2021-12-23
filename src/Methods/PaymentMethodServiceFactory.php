@@ -47,7 +47,6 @@ class PaymentMethodServiceFactory
                 return pluginApp(PayoneKlarnaInvoicePaymentMethod::class);
             case PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE;
                 return pluginApp(PayoneKlarnaInstallmentsPaymentMethod::class);
-
         }
         throw new \InvalidArgumentException('Unknown payment method ' . $paymentCode);
     }

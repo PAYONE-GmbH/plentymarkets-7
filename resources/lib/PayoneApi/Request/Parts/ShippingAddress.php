@@ -11,7 +11,6 @@ class ShippingAddress
     private $zip;
     private $city;
     private $country;
-    private $email;
 
     /**
      * ShippingAddress constructor.
@@ -23,9 +22,8 @@ class ShippingAddress
      * @param string $zip
      * @param string $city
      * @param string $country
-     * @param string $email
      */
-    public function __construct($firstname, $lastname, $street, $addressaddition, $zip, $city, $country, $email)
+    public function __construct($firstname, $lastname, $street, $addressaddition, $zip, $city, $country)
     {
         $this->firstname = $firstname;
         $this->lastname = $lastname;
@@ -34,7 +32,6 @@ class ShippingAddress
         $this->zip = $zip;
         $this->city = $city;
         $this->country = $country;
-        $this->email = $email;
     }
 
     /**
@@ -93,11 +90,4 @@ class ShippingAddress
         return $this->country;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getShippingEmail()
-    {
-        return $this->email;
-    }
 }

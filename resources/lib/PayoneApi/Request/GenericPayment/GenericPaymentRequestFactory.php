@@ -116,7 +116,7 @@ class GenericPaymentRequestFactory
 
                     $cart = null;
                     $cart = CartFactory::create($data);
-
+                    $shippingInfoData = $data['address'];
                     return new KlarnaStartSessionRequest(
                         $config,
                         $systemInfo,
@@ -129,9 +129,9 @@ class GenericPaymentRequestFactory
                         $data['backurl'],
                         $cart,
                         $customer,
-                        $data['address']['email'],
-                        $data['address']['title'],
-                        $data['address']['telephonenumber']
+                        $shippingInfoData['email'],
+                        $shippingInfoData['title']??'',
+                        $shippingInfoData['telephonenumber']
                     );
             }
         }

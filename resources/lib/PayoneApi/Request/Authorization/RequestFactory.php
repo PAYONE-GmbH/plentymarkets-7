@@ -128,33 +128,33 @@ class RequestFactory implements RequestFactoryContract
                     $amazonPayAuth['amazonReferenceId']
                 );
             case PaymentTypes::PAYONE_KLARNA_INVOICE || PaymentTypes::PAYONE_KLARNA_INSTALLMENTS
-            || PaymentTypes::PAYONE_KLARNA_DIRECT_DEBIT || PaymentTypes::PAYONE_KLARNA_DIRECT_BANK :
+                || PaymentTypes::PAYONE_KLARNA_DIRECT_DEBIT || PaymentTypes::PAYONE_KLARNA_DIRECT_BANK :
                 $klarnaAuthToken= $data['klarnaAuthToken'];
                 $klarnaWorkOrderId = $data['klarnaWorkOrderId'];
                 $cart = null;
                 $cart = CartFactory::create($data);
                 $customerAddressData = $data['shippingAddress'];
-//                $shippingAddress = new ShippingAddress(
-//                    $customerAddressData['firstname'],
-//                    $customerAddressData['lastname'],
-//                    $customerAddressData['street'],
-//                    $customerAddressData['addressaddition'],
-//                    $customerAddressData['postalCode'],
-//                    $customerAddressData['town'],
-//                    $customerAddressData['country'],
-//                    'cosmin.manciu@plentymarkets.com',
-//                    '+4930901820',
-//                    'Herr'
-//
-//                );
+                $shippingAddress = new ShippingAddress(
+                    $customerAddressData['firstname'],
+                    $customerAddressData['lastname'],
+                    $customerAddressData['street'],
+                    $customerAddressData['addressaddition'],
+                    $customerAddressData['postalCode'],
+                    $customerAddressData['town'],
+                    $customerAddressData['country']
+                );
                 return new Klarna(
                     $genericAuthRequest,
                     self::createUrls($data['redirect']),
                     $klarnaWorkOrderId,
                     $klarnaAuthToken,
                     $paymentMethod,
-                    $cart
-                //  $shippingAddress
+                    $cart,
+                    $shippingAddress,
+                    'cosmin.manciu@plentymarkets.com',
+                    'Herr',
+                    '+4930901820'
+
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

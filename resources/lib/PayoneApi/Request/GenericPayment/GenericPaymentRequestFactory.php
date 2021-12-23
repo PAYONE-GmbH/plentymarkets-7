@@ -41,10 +41,7 @@ class GenericPaymentRequestFactory
                 '',
                 $shippingAddressData['zip'],
                 $shippingAddressData['city'],
-                $shippingAddressData['country'],
-                $shippingAddressData['email'],
-                $shippingAddressData['telephonenumber'],
-                'Herr'
+                $shippingAddressData['country']
             );
         }
         $customerAddressData = $data['address'];
@@ -126,12 +123,15 @@ class GenericPaymentRequestFactory
                         $data['currency'],
                         $data['amount'],
                         $paymentMethod,
-                        //  $shippingAddress,
+                        $shippingAddress,
                         $data['successurl'],
                         $data['errorurl'],
                         $data['backurl'],
                         $cart,
-                        $customer
+                        $customer,
+                        'cosmin.manciu@plentymarkets.com',
+                        'herr',
+                        '4930901820'
                     );
             }
         }

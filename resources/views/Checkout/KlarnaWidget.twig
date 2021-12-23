@@ -28,8 +28,13 @@
             });
         };
 
+        function confirmCancel () {
+            document.querySelector(".modal-content").style = 'display: none';
+            location.reload()
+        }
+
         $(function(){
-            $("button.authorize").on('click', function(){
+            $("btn btn-primary").on('click', function(){
                 Klarna.Payments.authorize({
                     payment_method_category: '{{ payment_method }}'
                 },{
@@ -70,10 +75,6 @@
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
 
 
-    <div style="width: 500px; margin: auto; padding-top: 150px; padding-bottom: 30px;">
-        <img src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg"
-             style="width: 500px; margin: auto;">
-    </div>
 
     <!--Klarna container-->
     <div id="klarna-pay-later-container" style="width: 500px; margin: auto;"></div>
@@ -81,7 +82,11 @@
     <div id="klarna-pay-over-time-container" style="width: 500px; margin: auto;"></div>
     <div style="width: 500px; margin: auto;">
         <!--Button to trigger authorize call-->
-        <button class="authorize" style="width: 500px; height: 50px; margin: auto;">Kaufen</button>
+        <div class="button-container">
+
+            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value="Pay" id="submit"/>
+            <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value="Cancel" id="cancel"/>
+        </div>
     </div>
 
 {% endblock %}

@@ -65,6 +65,9 @@ class Klarna extends AuthorizationRequestAbstract
      * @param string $financingtype
      * @param Cart $cart
      * @param ShippingAddress $shippingAddress
+     * @param string $shippingEmail
+     * @param string $shippingTitle
+     * @param string $shippingTelephonenumber
      */
     public function  __construct(
         GenericAuthorizationRequest $authorizationRequest,
@@ -72,8 +75,11 @@ class Klarna extends AuthorizationRequestAbstract
         string $workOrderId,
         string $authorisationToken,
         string $financingtype,
-        Cart $cart
-        //  ShippingAddress $shippingAddress
+        Cart $cart,
+        ShippingAddress $shippingAddress,
+                                    $shippingEmail,
+                                    $shippingTitle,
+                                    $shippingTelephonenumber
 
     )
     {
@@ -83,7 +89,10 @@ class Klarna extends AuthorizationRequestAbstract
         $this->add_paydata['authorization_token'] = $authorisationToken;
         $this->financingtype = $financingtype;
         $this->cart = $cart;
-        //$this->shippingAddress = $shippingAddress;
+        $this->shippingAddress = $shippingAddress;
+        $this->add_paydata['shipping_email'] = $shippingEmail;
+        $this->add_paydata['shipping_title'] = $shippingTitle;
+        $this->add_paydata['shipping_telephonenumber'] = $shippingTelephonenumber;
     }
 
     /**
@@ -127,12 +136,12 @@ class Klarna extends AuthorizationRequestAbstract
         return $this->cart;
     }
 
-//    /**
-//     * @return ShippingAddress
-//     */
-//    public function getShippingAddress(): ShippingAddress
-//    {
-//        return $this->shippingAddress;
-//    }
+    /**
+     * @return ShippingAddress
+     */
+    public function getShippingAddress(): ShippingAddress
+    {
+        return $this->shippingAddress;
+    }
 
 }

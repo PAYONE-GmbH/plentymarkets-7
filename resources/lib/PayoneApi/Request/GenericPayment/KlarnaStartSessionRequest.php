@@ -15,10 +15,10 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
      */
     protected $financingtype;
 
-//    /**
-//     * @var ShippingAddress
-//     */
-//    protected $shippingAddress;
+    /**
+     * @var ShippingAddress
+     */
+    protected $shippingAddress;
 
     /**
      * @var string
@@ -44,6 +44,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
      */
     private $customer;
 
+
     /**
      * @param Config $config
      * @param SystemInfo $info
@@ -56,6 +57,9 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
      * @param Cart $cart
      * @param ShippingAddress $shippingAddress
      * @param Customer $customer
+     * @param string $shippingEmail
+     * @param string $shippingTitle
+     * @param string $shippingTelephonenumber
      */
     public function __construct(
         Config $config,
@@ -63,18 +67,24 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         string $currency,
         string $amount,
         string $financingtype,
-        // ShippingAddress $shippingAddress,
+        ShippingAddress $shippingAddress,
         string $successurl,
         string $errorurl,
         string  $backurl,
         Cart $cart,
-        Customer $customer
+        Customer $customer,
+        $shippingEmail,
+        $shippingTitle,
+        $shippingTelephonenumber
 
     )
     {
         parent::__construct(
             [
                 'action' => 'start_session',
+                'shipping_email' => $shippingEmail,
+                'shipping_title' => $shippingTitle,
+                'shipping_telephonenumber' => $shippingTelephonenumber
             ],
             $config,
             $info,
@@ -83,7 +93,7 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         );
 
         $this->financingtype = $financingtype;
-        // $this->shippingAddress = $shippingAddress;
+        $this->shippingAddress = $shippingAddress;
         $this->successurl = $successurl;
         $this->errorurl = $errorurl;
         $this->backurl = $backurl;
@@ -100,13 +110,13 @@ class KlarnaStartSessionRequest extends GenericKlarnaPayRequestBase
         return $this->financingtype;
     }
 
-//    /**
-//     * @return ShippingAddress
-//     */
-//    public function getShippingAddress(): ShippingAddress
-//    {
-//        return $this->shippingAddress;
-//    }
+    /**
+     * @return ShippingAddress
+     */
+    public function getShippingAddress(): ShippingAddress
+    {
+        return $this->shippingAddress;
+    }
 
     /**
      * @return string

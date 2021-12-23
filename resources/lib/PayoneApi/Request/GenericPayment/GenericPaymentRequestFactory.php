@@ -129,9 +129,9 @@ class GenericPaymentRequestFactory
                         $data['backurl'],
                         $cart,
                         $customer,
-                        'cosmin.manciu@plentymarkets.com',
-                        'herr',
-                        '4930901820'
+                        $data['address']['email'],
+                        $data['address']['title'],
+                        $data['address']['telephonenumber']
                     );
             }
         }

@@ -151,9 +151,9 @@ class RequestFactory implements RequestFactoryContract
                     $paymentMethod,
                     $cart,
                     $shippingAddress,
-                    'cosmin.manciu@plentymarkets.com',
-                    'Herr',
-                    '+4930901820'
+                    $data['customer']['email'],
+                    $data['customer']['title'],
+                    $data['customer']['telephonenumber']
 
                 );
         }

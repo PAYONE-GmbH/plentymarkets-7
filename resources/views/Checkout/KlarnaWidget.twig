@@ -34,7 +34,7 @@
         }
 
         $(function(){
-            $("btn btn-primary").on('click', function(){
+            $("#pay").on('click', function(){
                 Klarna.Payments.authorize({
                     payment_method_category: '{{ payment_method }}'
                 },{
@@ -84,7 +84,7 @@
         <!--Button to trigger authorize call-->
         <div class="button-container">
 
-            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value="Pay" id="submit"/>
+            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value="Pay" id="pay"/>
             <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value="Cancel" id="cancel"/>
         </div>
     </div>

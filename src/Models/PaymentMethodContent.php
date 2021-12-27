@@ -22,6 +22,7 @@ class PaymentMethodContent
      */
     public function getPaymentContentType($paymentCode)
     {
+
         switch ($paymentCode) {
             case 'none':
             case PayoneDirectDebitPaymentMethod::PAYMENT_CODE:

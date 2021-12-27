@@ -42,7 +42,7 @@
   },
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "runOnBuild": [
-    "Payone\\Migrations\\CreatePaymentMethods2",
+    "Payone\\Migrations\\CreatePaymentMethods3",
     "Payone\\Migrations\\CreateSettingsTable"
   ],
   "dataProviders": [

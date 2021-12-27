@@ -60,6 +60,10 @@ use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\Translation\Translator;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 
 class PayoneServiceProvider extends ServiceProvider
 {
@@ -187,6 +191,29 @@ class PayoneServiceProvider extends ServiceProvider
         $payContainer->register(
             'Payone::' . PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             PayoneAmazonPayPaymentMethod::class,
+            $events
+        );
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectBankTransferPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectDebitPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInstallmentsPaymentMethod::class,
+            $events
+        );
+
+        $payContainer->register(
+            'Payone::' . PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInvoicePaymentMethod::class,
             $events
         );
     }

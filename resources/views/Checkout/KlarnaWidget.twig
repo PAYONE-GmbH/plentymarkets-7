@@ -1,30 +1,16 @@
 {% block body %}
-
     <script type="text/javascript">
-
         var payment = '{{payment_method}}'
         var containerPaymentMethod = payment.replace(/_/g,'-')
-        console.log(containerPaymentMethod)
-
         window.klarnaAsyncCallback = function () {
             Klarna.Payments.init({
                 client_token: '{{ client_token }}'
             });
-            console.log("Payments initialized");
             //The following method loads the payment_method_category in the container with the id of 'klarna_container'
             Klarna.Payments.load({
                 container: "#klarna-"+this.containerPaymentMethod+"-container",
                 payment_method_category: '{{ payment_method }}'
             }, function (res) {
-                console.log("Load function called");
-                console.log(res);
-                if(res.show_form === true)
-                {
-                    console.log('valid request - continue');
-                }
-                if(res.show_form === false){
-                    console.log('invalid request - display error');
-                }
             });
         };
 
@@ -39,33 +25,16 @@
                     payment_method_category: '{{ payment_method }}'
                 },{
                 }, function(res) {
-                    console.log("Response from the authorize call:");
-                    console.log(res);
-                    if(res.authorization_token)
-                    {
-
-                    }
-                    if( (res.show_form === false ) && (res.approved === false )){
-                        console.log('Disable Klarna’s widget and pre-select another payment method');
-                    }else if ( (res.show_form === true ) && (res.approved === false ) ) {
-                        console.log('Disable Klarna’s widget and pre-select another payment method');
-                        console.log(res.error)
-                    }else if ((res.show_form === true ) && (res.approved === true )) {
-                        console.log('Authorization token received. Create order and redirect customer with authorization_token: ' + res.authorization_token );
+                    if(res.authorization_token) { }
+                    if( (res.show_form === false ) && (res.approved === false )) {
+                    } else if ( (res.show_form === true ) && (res.approved === false ) ) {
+                    } else if ((res.show_form === true ) && (res.approved === true )) {
                         $.post('/payment/payone/checkout/doKlarnaAuth', {
                                 authorization_token: res.authorization_token
                             },
                             function (data, status) {
-                                console.log("Payment Successful\n");
-                                console.log(data)
-                                console.log(data.data)
                                 window.location.replace(data.data.redirecturl);
                             });
-                    }else{
-                        console.log( 'unexpected error');
-                    }
-                    if(res.show_form === false){
-                        console.log('invalid request - display error');
                     }
                 })
             })
@@ -73,8 +42,6 @@
 
     </script>
     <script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>
-
-
 
     <!--Klarna container-->
     <div id="klarna-pay-later-container" style="width: 500px; margin: auto;"></div>
@@ -88,5 +55,4 @@
             <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value="Cancel" id="cancel"/>
         </div>
     </div>
-
 {% endblock %}

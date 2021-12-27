@@ -14,17 +14,7 @@ use Payone\Helpers\ShopHelper;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PaymentMethodServiceFactory;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
-use Payone\Methods\PayoneCCPaymentMethod;
-use Payone\Methods\PayoneCODPaymentMethod;
-use Payone\Methods\PayoneDirectDebitPaymentMethod;
-use Payone\Methods\PayoneInvoicePaymentMethod;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
-use Payone\Methods\PayonePaydirektPaymentMethod;
-use Payone\Methods\PayonePayolutionInstallmentPaymentMethod;
-use Payone\Methods\PayonePayPalPaymentMethod;
-use Payone\Methods\PayonePrePaymentPaymentMethod;
-use Payone\Methods\PayoneRatePayInstallmentPaymentMethod;
-use Payone\Methods\PayoneSofortPaymentMethod;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 use Payone\Models\Api\GenericPayment\StartSessionResponse;
@@ -131,93 +121,17 @@ class PayoneServiceProvider extends ServiceProvider
      */
     protected function registerPaymentMethods(PaymentMethodContainer $payContainer)
     {
-        $events = [AfterBasketChanged::class, AfterBasketItemAdd::class, AfterBasketCreate::class];
-
-        $payContainer->register(
-            'Payone::' . PayoneInvoicePaymentMethod::PAYMENT_CODE,
-            PayoneInvoicePaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayonePaydirektPaymentMethod::PAYMENT_CODE,
-            PayonePaydirektPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
-            PayonePayolutionInstallmentPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayonePayPalPaymentMethod::PAYMENT_CODE,
-            PayonePayPalPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
-            PayoneRatePayInstallmentPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneSofortPaymentMethod::PAYMENT_CODE,
-            PayoneSofortPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayonePrePaymentPaymentMethod::PAYMENT_CODE,
-            PayonePrePaymentPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneCODPaymentMethod::PAYMENT_CODE,
-            PayoneCODPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneCCPaymentMethod::PAYMENT_CODE,
-            PayoneCCPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneDirectDebitPaymentMethod::PAYMENT_CODE,
-            PayoneDirectDebitPaymentMethod::class,
-            $events
-        );
-
-        $payContainer->register(
-            'Payone::' . PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE,
-            PayoneInvoiceSecurePaymentMethod::class,
-            $events
-        );
-
-        $payContainer->register(
-            'Payone::' . PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
-            PayoneAmazonPayPaymentMethod::class,
-            $events
-        );
-        $payContainer->register(
-            'Payone::' . PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
-            PayoneKlarnaDirectBankTransferPaymentMethod::class,
-            $events
-        );
-
-        $payContainer->register(
-            'Payone::' . PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
-            PayoneKlarnaDirectDebitPaymentMethod::class,
-            $events
-        );
-
-        $payContainer->register(
-            'Payone::' . PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
-            PayoneKlarnaInstallmentsPaymentMethod::class,
-            $events
-        );
-
-        $payContainer->register(
-            'Payone::' . PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE,
-            PayoneKlarnaInvoicePaymentMethod::class,
-            $events
-        );
+        foreach (PaymentHelper::getPaymentMethods() as $paymentMethod => $paymentMethodClass) {
+            $payContainer->register(
+                'Payone::' . $paymentMethod,
+                $paymentMethodClass,
+                [
+                    AfterBasketChanged::class,
+                    AfterBasketItemAdd::class,
+                    AfterBasketCreate::class
+                ]
+            );
+        }
     }
 
     /**
@@ -231,108 +145,107 @@ class PayoneServiceProvider extends ServiceProvider
         $eventDispatcher->listen(
             GetPaymentMethodContent::class,
             function (GetPaymentMethodContent $event) use ($basketRepository) {
-                /** @var SettingsService $settingsService */
-                $settingsService = pluginApp(SettingsService::class);
-                /** @var Logger $logger */
-                $logger = pluginApp(Logger::class);
                 /** @var PaymentHelper $paymentHelper */
                 $paymentHelper = pluginApp(PaymentHelper::class);
+                if($paymentHelper->isPayonePayment($event->getMop())) {
+                    /** @var SettingsService $settingsService */
+                    $settingsService = pluginApp(SettingsService::class);
+                    /** @var Logger $logger */
+                    $logger = pluginApp(Logger::class);
+                    $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
 
-                $basket = $basketRepository->load();
-
-                $logger->setIdentifier(__METHOD__)->info('Event.getPaymentMethodContent');
-                if (!$event->getMop() || !$paymentHelper->isPayonePayment($event->getMop())) {
-                    return;
-                } elseif ($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
-                    $amazonPayActive = $settingsService->getPaymentSettingsValue('active', PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
-                    if (isset($amazonPayActive) && $amazonPayActive == 1) {
-                        $this->registerAmazonPayIntegration($event, $basket);
+                    $basket = $basketRepository->load();
+                    if ($event->getMop() == $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE)) {
+                        $amazonPayActive = $settingsService->getPaymentSettingsValue('active', PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+                        if (isset($amazonPayActive) && $amazonPayActive == 1) {
+                            $this->registerAmazonPayIntegration($event, $basket);
+                        }
+                        return;
                     }
-                    return;
-                }
 
-                /** @var PaymentService $paymentService */
-                $paymentService = pluginApp(PaymentService::class);
-                $paymentCode = $paymentHelper->getPaymentCodeByMop($event->getMop());
-                /** @var PaymentAbstract $payment */
-                $payment = PaymentMethodServiceFactory::create($paymentCode);
-                /** @var AddressHelper $addressHelper */
-                $addressHelper = pluginApp(AddressHelper::class);
+                    /** @var PaymentService $paymentService */
+                    $paymentService = pluginApp(PaymentService::class);
+                    $paymentCode = $paymentHelper->getPaymentCodeByMop($event->getMop());
+                    /** @var PaymentAbstract $payment */
+                    $payment = PaymentMethodServiceFactory::create($paymentCode);
+                    /** @var AddressHelper $addressHelper */
+                    $addressHelper = pluginApp(AddressHelper::class);
 
-                $billingAddress = $addressHelper->getBasketBillingAddress($basket);
-                if( $paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
-                    (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)) ) {
+                    $billingAddress = $addressHelper->getBasketBillingAddress($basket);
+                    if( $paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
+                        (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday)) ) {
 
-                    /** @var Translator $translator */
-                    $translator = pluginApp(Translator::class);
-                    /** @var ShopHelper $shopHelper */
-                    $shopHelper = pluginApp(ShopHelper::class);
-                    $lang = $shopHelper->getCurrentLanguage();
+                        /** @var Translator $translator */
+                        $translator = pluginApp(Translator::class);
+                        /** @var ShopHelper $shopHelper */
+                        $shopHelper = pluginApp(ShopHelper::class);
+                        $lang = $shopHelper->getCurrentLanguage();
 
-                    $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
+                        $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
 
-                    $event->setValue($dateOfBirthMissingMessage);
-                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
-                    return;
-                }elseif ($paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
-                    $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||
-                    $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
-                    $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE) {
+                        $event->setValue($dateOfBirthMissingMessage);
+                        $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+                        return;
+                    } elseif (
+                        $paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
+                        $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||
+                        $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
+                        $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE
+                    ) {
+                        /** @var KlarnaService $klarnaService */
+                        $klarnaService = pluginApp(KlarnaService::class);
 
-                    /** @var KlarnaService $klarnaService */
-                    $klarnaService = pluginApp(KlarnaService::class);
+                        /** @var StartSessionResponse $response */
+                        $response = $klarnaService->startSession($paymentCode, $basket);
 
+                        /** @var SessionStorage $sessionStorage */
+                        $sessionStorage = pluginApp(SessionStorage::class);
 
-                    /** @var StartSessionResponse $response */
-                    $response = $klarnaService->startSession($paymentCode, $basket);
+                        $sessionStorage->setSessionValue('klarnaWorkOrderId', $response->getKlarnaWorkOrderId());
 
-                    /** @var SessionStorage $sessionStorage */
-                    $sessionStorage = pluginApp(SessionStorage::class);
-
-                    $sessionStorage->setSessionValue('klarnaWorkOrderId', $response->getKlarnaWorkOrderId());
-
-                    /** @var Twig $twig */
-                    $twig = pluginApp(Twig::class);
-                    $event->setValue($twig->render(
-                        PluginConstants::NAME . '::Checkout.KlarnaWidget',
-                        [
-                            'client_token' => $response->getKlarnaClientToken(),
-                            'payment_method' => $response->getKlarnaMethodIdentifier()
-                        ]
-                    ));
-                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
-                    return;
-                }
-
-                try {
-                    /** @var PaymentMethodContent $content */
-                    $content = pluginApp(PaymentMethodContent::class);
-                    $renderingType = $content->getPaymentContentType($paymentCode);
-
-                    /** @var PaymentRenderer $paymentRenderer */
-                    $paymentRenderer = pluginApp(PaymentRenderer::class);
-
-                    $event->setType($renderingType);
-                    switch ($renderingType) {
-                        case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
-                            $auth = $paymentService->openTransaction($basket);
-                            $event->setValue($auth->getRedirecturl());
-                            break;
-                        case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
-                            $paymentService->openTransaction($basket);
-                            break;
-                        case  GetPaymentMethodContent::RETURN_TYPE_HTML:
-                            $event->setValue($paymentRenderer->render($payment, ''));
-                            break;
+                        /** @var Twig $twig */
+                        $twig = pluginApp(Twig::class);
+                        $event->setValue($twig->render(
+                            PluginConstants::NAME . '::Checkout.KlarnaWidget',
+                            [
+                                'client_token' => $response->getKlarnaClientToken(),
+                                'payment_method' => $response->getKlarnaMethodIdentifier()
+                            ]
+                        ));
+                        $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
+                        return;
                     }
-                } catch (\Exception $e) {
-                    $errorMessage = $e->getMessage();
-                    $logger->logException($e);
 
-                    /** @var ErrorMessageRenderer $errorMessageRenderer */
-                    $errorMessageRenderer = pluginApp(ErrorMessageRenderer::class);
-                    $event->setValue($errorMessageRenderer->render($errorMessage));
-                    $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+                    try {
+                        /** @var PaymentMethodContent $content */
+                        $content = pluginApp(PaymentMethodContent::class);
+                        $renderingType = $content->getPaymentContentType($paymentCode);
+
+                        /** @var PaymentRenderer $paymentRenderer */
+                        $paymentRenderer = pluginApp(PaymentRenderer::class);
+
+                        $event->setType($renderingType);
+                        switch ($renderingType) {
+                            case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
+                                $auth = $paymentService->openTransaction($basket);
+                                $event->setValue($auth->getRedirecturl());
+                                break;
+                            case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
+                                $paymentService->openTransaction($basket);
+                                break;
+                            case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+                                $event->setValue($paymentRenderer->render($payment, ''));
+                                break;
+                        }
+                    } catch (\Exception $e) {
+                        $errorMessage = $e->getMessage();
+                        $logger->logException($e);
+
+                        /** @var ErrorMessageRenderer $errorMessageRenderer */
+                        $errorMessageRenderer = pluginApp(ErrorMessageRenderer::class);
+                        $event->setValue($errorMessageRenderer->render($errorMessage));
+                        $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+                    }
                 }
             }
         );
@@ -422,10 +335,6 @@ class PayoneServiceProvider extends ServiceProvider
         // Listen for the document generation event
         $eventDispatcher->listen(OrderPdfGenerationEvent::class,
             function (OrderPdfGenerationEvent $event) {
-
-                /** @var PaymentHelper $paymentHelper */
-                $paymentHelper = pluginApp(PaymentHelper::class);
-
                 /** @var OrderHelper $orderHelper */
                 $orderHelper = pluginApp(OrderHelper::class);
 

@@ -1,0 +1,60 @@
+<!-- PLUGIN BUTTON -->
+{% set paymentId = 0 %}
+{% set paidStatus = '' %}
+{% set paymentStatusIsAwaitingForConfirmation = payment.status is defined and payment.status is same as (1) %}
+
+{% set properties = order.properties %}
+
+{% for property in properties %}
+    {% if property.typeId == 3 %}
+        {% set paymentId = property.value %}
+    {% endif %}
+    {% if property.typeId == 4 %}
+        {% set paidStatus = property.value %}
+    {% endif %}
+{% endfor %}
+{% if (paymentId == paymentMethodId) and (paidStatus != 'fullyPaid') %}
+    {% set display = "block" %}
+{% else %}
+    {% set display = "none" %}
+{% endif %}
+
+{% if isMyAccount and not paymentStatusIsAwaitingForConfirmation %}
+    <button id="reinitPayPal-{{order.id}}" class="btn btn-primary btn-appearance btn-block" style="display: {{ display }}; margin-top: 0.5rem;">
+        {{ trans("PayPal::Multilang.buttonsmyAccountReinitPayment") }}
+    </button>
+
+{% elseif isOrderConfirmation and not paymentStatusIsAwaitingForConfirmation %}
+    <div id="reinitPayPal-{{order.id}}" class="row con-reinit" style="display: {{ display }};">
+        <strong class="col-xs-6 col-sm-5"></strong>
+        <span class="col-xs-6 col-sm-7">
+                <a class="payment-confirmation-btn">
+                    <span>{{ trans("PayPal::Multilang.buttonsmyAccountReinitPayment") }}</span>
+                </a>
+        </span>
+    </div>
+{% endif %}
+{% block Myscript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').on('click', "[id^='reinitPayPal-']", function () {
+                $(this).prop('disabled', true);
+                var orderId = $(this).attr('id').split('-')[1];
+                $.get("/rest/payment/payPal/payOrderNow/{{ order.id }}" , function (data) {
+                    window.location = data;
+                });
+            });
+        });
+        document.addEventListener('historyPaymentMethodChanged', function (e) {
+            for (let property in e.detail.newOrder.order.properties) {
+                if (e.detail.newOrder.order.properties[property].typeId === 3) {
+                    if (e.detail.newOrder.order.properties[property].value === "{{ paymentMethodId }}") {
+                        document.getElementById("reinitPayPal-" + e.detail.oldOrder.id).style.display = "block";
+                    } else {
+                        document.getElementById("reinitPayPal-" + e.detail.oldOrder.id).style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

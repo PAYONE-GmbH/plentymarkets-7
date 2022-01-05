@@ -117,6 +117,10 @@ class PayoneServiceProvider extends ServiceProvider
 
         $eventDispatcher->listen(CopyPluginSet::class, CopyPluginSetHook::class);
 
+        $eventDispatcher->listen('Ceres.LayoutContainer.MyAccount.OrderHistoryPaymentInformation', ReInitPaymentHook::class);
+        $eventDispatcher->listen('Ceres.LayoutContainer.OrderConfirmation.AdditionalPaymentInformation', ReInitPaymentHook::class);
+
+
         pluginApp(WizardContainerContract::class)->register('payment-payone-assistant', PayoneAssistant::class);
     }
 

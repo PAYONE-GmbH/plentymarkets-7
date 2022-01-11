@@ -2,6 +2,7 @@
     <script type="text/javascript">
         var payment = '{{payment_method}}'
         var containerPaymentMethod = payment.replace(/_/g,'-')
+        console.log(containerPaymentMethod)
         window.klarnaAsyncCallback = function () {
             Klarna.Payments.init({
                 client_token: '{{ client_token }}'
@@ -47,6 +48,7 @@
     <div id="klarna-pay-later-container" style="width: 500px; margin: auto;"></div>
     <div id="klarna-pay-now-container" style="width: 500px; margin: auto;"></div>
     <div id="klarna-pay-over-time-container" style="width: 500px; margin: auto;"></div>
+    <div id="klarna-direct-debit-container" style="width: 500px; margin: auto;"></div>
     <div style="width: 500px; margin: auto;">
         <!--Button to trigger authorize call-->
         <div class="button-container">

@@ -60,6 +60,7 @@ use Plenty\Plugin\ServiceProvider;
 use Plenty\Modules\Order\Pdf\Events\OrderPdfGenerationEvent;
 use Plenty\Plugin\Templates\Twig;
 use Plenty\Plugin\Translation\Translator;
+use Payone\Hooks\ReInitPaymentHook;
 
 class PayoneServiceProvider extends ServiceProvider
 {

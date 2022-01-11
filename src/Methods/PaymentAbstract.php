@@ -234,4 +234,12 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
 
         return false;
     }
+    /**
+     * Check if it is allowed to switch from this payment method
+     * @return bool
+     */
+    public function isSwitchableFrom($orderId = null): bool
+    {
+        return true;
+    }
 }

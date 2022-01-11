@@ -23,6 +23,20 @@ use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Templates\Twig;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
+use Plenty\Modules\Authorization\Services\AuthHelper;
+use PayPal\Services\Database\SettingsService;
+use Payone\Methods\PaymentMethodServiceFactory;
+use Payone\Helpers\AddressHelper;
+use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
+use Payone\Adapter\Translator;
+use Payone\Models\PaymentMethodContent;
+use Payone\Views\PaymentRenderer;
+use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
+use Plenty\Modules\Order\Models\OrderItemAmount;
+use Plenty\Modules\Order\Models\OrderItemType;
+use Plenty\Modules\Basket\Models\Basket;
+
 
 /**
  * Class CheckoutController
@@ -58,17 +72,113 @@ class CheckoutController extends Controller
      * @param Response $response
      */
     public function __construct(
-        SessionHelper $sessionHelper,
+        SessionHelper        $sessionHelper,
         ErrorMessageRenderer $renderer,
-        Request $request,
-        Logger $logger,
-        Response $response
-    ) {
+        Request              $request,
+        Logger               $logger,
+        Response             $response
+    )
+    {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
         $this->request = $request;
         $this->logger = $logger;
         $this->response = $response;
+    }
+
+
+    public function reinitPayment(
+        $orderId
+    )
+    {
+
+        /** @var OrderRepositoryContract $orderContract */
+        $orderContract = pluginApp(OrderRepositoryContract::class);
+
+        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+        $authHelper = pluginApp(AuthHelper::class);
+
+        //guarded
+        $order = $authHelper->processUnguarded(
+            function () use ($orderContract, $orderId) {
+                //unguarded
+                return $orderContract->findOrderById($orderId);
+            }
+        );
+        /** @var OrderRepositoryContract $orderRepository */
+        $orderRepository = pluginApp(OrderRepositoryContract::class);
+        $plentyOrder = $orderRepository->findOrderById($orderId);
+        // Get the payment method from order if not delivered
+
+        $mopId = $plentyOrder->methodOfPaymentId;
+
+
+        /** @var SettingsService $settingsService */
+        $settingsService = pluginApp(SettingsService::class);
+        /** @var Logger $logger */
+        $logger = pluginApp(Logger::class);
+        /** @var PaymentHelper $paymentHelper */
+        $paymentHelper = pluginApp(PaymentHelper::class);
+
+
+        /** @var PaymentService $paymentService */
+        $paymentService = pluginApp(PaymentService::class);
+        $paymentCode = $paymentHelper->getPaymentCodeByMop($mopId);
+
+        /** @var PaymentAbstract $payment */
+        $payment = PaymentMethodServiceFactory::create($paymentCode);
+
+
+        /** @var AddressHelper $addressHelper */
+        $addressHelper = pluginApp(AddressHelper::class);
+
+        // $billingAddress = $addressHelper->getBasketBillingAddress($basket);
+        $billingAddress = $order->billingAddress;
+
+
+        if ($paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
+            (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday))) {
+
+            /** @var Translator $translator */
+            $translator = pluginApp(Translator::class);
+            /** @var ShopHelper $shopHelper */
+            $shopHelper = pluginApp(ShopHelper::class);
+            $lang = $shopHelper->getCurrentLanguage();
+
+            $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
+
+//            $event->setValue($dateOfBirthMissingMessage);
+//            $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+            return;
+        }
+
+        try {
+            /** @var PaymentMethodContent $content */
+            $content = pluginApp(PaymentMethodContent::class);
+            $renderingType = $content->getPaymentContentType($paymentCode);
+
+
+            switch ($renderingType) {
+                case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
+
+                    $auth = $paymentService->openTransactionFromOrder($plentyOrder);
+                    break;
+                case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
+                    // $paymentService->openTransaction($basket);
+                    break;
+                case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+
+                    break;
+            }
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+            $logger->logException($e);
+
+            /** @var ErrorMessageRenderer $errorMessageRenderer */
+            $errorMessageRenderer = pluginApp(ErrorMessageRenderer::class);
+            // $event->setValue($errorMessageRenderer->render($errorMessage));
+            //   $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
+        }
     }
 
     /**

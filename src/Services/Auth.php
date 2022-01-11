@@ -10,6 +10,7 @@ use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Models\Payment;
 
+
 class Auth
 {
     /**
@@ -78,6 +79,66 @@ class Auth
      * @return AuthResponse
      * @throws \Exception
      */
+    public function executeAuthFromOrder($order): AuthResponse
+    {
+        $mopId = $order->methodOfPaymentId;
+
+        $selectedPaymentId = $mopId;
+
+        if (!$selectedPaymentId || !$this->paymentHelper->isPayonePayment($selectedPaymentId)) {
+            throw new \Exception('No Payone payment method');
+        }
+
+        $authResponse = $this->doAuthFromOrder( $order);
+        $data = $this->authDataProvider->getDataFromOrder($selectedPaymentId, $order);
+
+        $basketData = $data['basket'];
+
+
+        $payment = $this->createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData);
+        $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
+        $this->paymentCache->setActiveBasketId($basketData['id']);
+
+        return $authResponse;
+    }
+
+
+    private function doAuthFromOrder($order): AuthResponse
+    {
+        $mopId = $order->methodOfPaymentId;
+
+        $selectedPaymentId = $mopId;
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentId);
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'Api.doAuth',
+            ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
+        );
+
+        //$requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
+        $requestData = $this->authDataProvider->getDataFromOrder($paymentCode, $order, '');
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'Api.doAuth',
+            ['requestData' => $requestData]
+        );
+        try {
+            $authResponse = $this->api->doAuth($requestData);
+
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            throw $e;
+        }
+        if (!($authResponse instanceof AuthResponse) || !$authResponse->getSuccess()) {
+            throw new \Exception('The payment could not be executed! Auth request failed.');
+        }
+
+        return $authResponse;
+    }
+
+    /**
+     * @param Basket $basket
+     * @return AuthResponse
+     * @throws \Exception
+     */
     public function executeAuth(Basket $basket): AuthResponse
     {
         $selectedPaymentId = $basket->methodOfPaymentId;
@@ -108,6 +169,33 @@ class Auth
                 $selectedPaymentId,
                 $authResponse,
                 $basket,
+                $authResponse->getClearing()
+            );
+            dd($plentyPayment);
+            if (!$plentyPayment instanceof Payment) {
+                throw new \Exception('Not an instance of Payment');
+            }
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            throw new \Exception('The payment could not be created: ' . PHP_EOL . $e->getMessage());
+        }
+
+        return $plentyPayment;
+    }
+
+    /**
+     * @param $selectedPaymentId
+     * @param AuthResponse $authResponse
+     * @throws \Exception
+     * @return Payment
+     */
+    private function createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData): Payment
+    {
+        try {
+            $plentyPayment = $this->paymentCreationService->createPaymentFromOrder(
+                $selectedPaymentId,
+                $authResponse,
+                $basketData,
                 $authResponse->getClearing()
             );
             if (!$plentyPayment instanceof Payment) {

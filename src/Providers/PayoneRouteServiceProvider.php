@@ -30,5 +30,6 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->get('payment/payone/error/', 'Payone\Controllers\CheckoutController@redirectWithNotice');
         $router->get('payment/payone/checkoutSuccess/', 'Payone\Controllers\CheckoutController@checkoutSuccess');
         $router->get('payment/payone/checkout/getSepaMandateStep/', 'Payone\Controllers\CheckoutController@getSepaMandateStep');
+        $router->get('payment/payone/reinit/{orderId}/', 'Payone\Controllers\CheckoutController@reinitPayment');
     }
 }

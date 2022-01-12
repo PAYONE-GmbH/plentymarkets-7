@@ -75,6 +75,7 @@ class PreAuthDataProvider extends DataProviderAbstract implements DataProviderOr
 
 
             $requestParams['klarnaAuthToken'] =$sessionStorage->getSessionValue('klarnaAuthToken');
+            $requestParams['klarnaWorkOrderId'] =$sessionStorage->getSessionValue('klarnaWorkOrderId');
         }
 
         $requestParams['referenceId'] = $requestReference;

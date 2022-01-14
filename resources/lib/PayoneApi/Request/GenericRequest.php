@@ -4,6 +4,7 @@ namespace PayoneApi\Request;
 
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
+use PayoneApi\Request\Parts\Cart;
 
 /**
  * Class GenericRequest
@@ -41,6 +42,11 @@ class GenericRequest implements RequestDataContract
     private $info;
 
     /**
+     * @var Cart
+     */
+    private $cart;
+
+    /**
      * GenericRequest constructor.
      *
      * @param Config $config
@@ -49,14 +55,17 @@ class GenericRequest implements RequestDataContract
      * @param string $currency
      * @param string|null $sequencenumber
      * @param SystemInfo $info
+     * @param Cart $cart
      */
     public function __construct(
         Config $config,
-        $request,
+               $request,
         int $amount,
-        $currency,
+               $currency,
         SystemInfo $info,
+        Cart $cart,
         $sequencenumber = null
+
     ) {
         $this->config = $config;
         $this->request = $request;
@@ -64,6 +73,7 @@ class GenericRequest implements RequestDataContract
         $this->currency = $currency;
         $this->sequencenumber = $sequencenumber;
         $this->info = $info;
+        $this->cart = $cart;
     }
 
     /**
@@ -121,4 +131,14 @@ class GenericRequest implements RequestDataContract
     {
         return $this->info;
     }
+
+    /**
+     * @return Cart
+     */
+    public function getCart(): Cart
+    {
+        return $this->cart;
+    }
+
+
 }

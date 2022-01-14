@@ -5,6 +5,7 @@ namespace PayoneApi\Request;
 use PayoneApi\Lib\Version;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
+use PayoneApi\Request\Parts\CartFactory;
 
 class GenericRequestFactory
 {
@@ -34,6 +35,9 @@ class GenericRequestFactory
             $systemInfoData['module'],
             $systemInfoData['module_version']
         );
+        $cart = null;
+        $cart = CartFactory::create($data);
+
 
         return new GenericRequest(
             $config,
@@ -41,7 +45,9 @@ class GenericRequestFactory
             $basket['basketAmount'],
             $basket['currency'],
             $systemInfo,
+            $cart,
             $context['sequencenumber'] ?? null
+
         );
     }
 }

@@ -67,7 +67,7 @@ class CartFactory
         $basket = $requestData['basket'];
         $voucherValue = $basket['couponDiscount'] * 100;
         $voucher = new CartItem(
-            (count($cart->getCartItems()) + 2),
+            (count($cart->getCartItems()) + 1),
             '-',
             CartItem::TYPE_VOUCHER,
             1,

@@ -39,11 +39,12 @@ class GenericRequestFactory
 
         $cart = null;
 
-        if($requestType === Types::PREAUTHORIZATION || $requestType===Types::AUTHORIZATION) {
+        if($requestType === Types::PREAUTHORIZATION || $requestType===Types::AUTHORIZATION
+            || $requestType === Types::CAPTURE ) {
             $cart = CartFactory::create($data);
         }
 
-        if($requestType === Types::DEBIT || $requestType === Types::REFUND || $requestType === Types::CAPTURE ) {
+        if($requestType === Types::DEBIT || $requestType === Types::REFUND ) {
             $cart = CartFactory::createForRefund($data);
         }
         return new GenericRequest(

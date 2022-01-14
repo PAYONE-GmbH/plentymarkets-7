@@ -28,6 +28,9 @@ class CartFactory
             }
         }
         $cart->add(self::calculateShipping($requestData, $cart));
+        if(isset($requestData['basket']['couponDiscount'])) {
+            $cart->add(self::calculateVoucher($requestData, $cart));
+        }
         return $cart;
     }
 
@@ -53,5 +56,26 @@ class CartFactory
             'Porto & Versand'
         );
         return $shippingCost;
+    }
+    /**
+     * @param array $requestData
+     * @param $cart
+     * @return CartItem
+     */
+    private static function calculateVoucher(array $requestData, Cart $cart)
+    {
+        $basket = $requestData['basket'];
+        $voucherValue = $basket['couponDiscount'] * 100;
+        $voucher = new CartItem(
+            (count($cart->getCartItems()) + 1),
+            '-',
+            CartItem::TYPE_VOUCHER,
+            1,
+            $voucherValue,
+            '19',
+            '-'
+        );
+
+        return $voucher;
     }
 }

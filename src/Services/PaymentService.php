@@ -78,7 +78,7 @@ class PaymentService
                 'Can no initialize payment. Not a Payone payment method'
             );
         }
-        $authType = $this->settingsService->getPaymentSettingsValue('authType', $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId));
+        $authType = $this->settingsService->getPaymentSettingsValue('AuthType', $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId));
         if(!isset($authType) || $authType == -1) {
             $authType = $this->settingsService->getSettingsValue('authType');
         }

@@ -122,6 +122,7 @@ class Capture
             $requestData = $this->captureDataProvider->getDataFromOrder($paymentCode, $order, $preAuthReference, $order->plentyId);
 
             $captureOrderResult = $this->api->doCapture($requestData);
+            $payment = $this->paymentHelper->raiseSequenceNumber($payment);
             $text = 'Capture done. Transaction Id: ' . $captureOrderResult->getTransactionID();
             $this->paymentHistory->addPaymentHistoryEntry($payment, $text);
 

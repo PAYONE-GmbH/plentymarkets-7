@@ -17,6 +17,7 @@ class GenericRequestFactory
      */
     public static function create($requestType, $data)
     {
+
         $context = $data['context'];
         $config = new Config(
             $context['aid'],
@@ -35,11 +36,13 @@ class GenericRequestFactory
             $systemInfoData['module'],
             $systemInfoData['module_version']
         );
-        $cart = null;
-        if(isset($data['order'])) {
-            $cart = CartFactory::createForRefund($data);
-        }else {
+
+        if($requestType === Types::CAPTURE) {
             $cart = CartFactory::create($data);
+        }
+
+        if($requestType === Types::DEBIT || $requestType === Types::REFUND ) {
+            $cart = CartFactory::createForRefund($data);
         }
         return new GenericRequest(
             $config,

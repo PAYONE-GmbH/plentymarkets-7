@@ -36,9 +36,11 @@ class GenericRequestFactory
             $systemInfoData['module_version']
         );
         $cart = null;
-        $cart = CartFactory::create($data);
-
-
+        if(isset($data['order'])) {
+            $cart = CartFactory::createForRefund($data);
+        }else {
+            $cart = CartFactory::create($data);
+        }
         return new GenericRequest(
             $config,
             $requestType,

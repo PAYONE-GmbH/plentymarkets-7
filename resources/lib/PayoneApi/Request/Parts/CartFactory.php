@@ -10,6 +10,47 @@ class CartFactory
      * @param array $requestData
      * @return Cart
      */
+    static public function createForRefund(array $requestData)
+    {
+        $cart = new Cart();
+        foreach ($requestData['basketItems'] as $i => $basketItem) {
+
+            if($basketItem['price'] > 0) {
+                $basketItem = new CartItem(
+                    ($i + 1),
+                    $basketItem['id'],
+                    CartItem::TYPE_GOODS,
+                    $basketItem['quantity'] ?? '',
+                    $basketItem['price'],
+                    $basketItem['vat'],
+                    $basketItem['name'] ?? ''
+                );
+                $cart->add($basketItem);
+            }
+        }
+        $cart->add(self::calculateShipping($requestData, $cart));
+
+        foreach ($requestData['basketItems'] as $i => $basketItem) {
+
+            if($basketItem['price'] < 0) {
+                $basketItem = new CartItem(
+                    ($i + 1),
+                    $basketItem['id'],
+                    CartItem::TYPE_VOUCHER,
+                    $basketItem['quantity'] ?? '',
+                    $basketItem['price'],
+                    $basketItem['vat'],
+                    $basketItem['name'] ?? ''
+                );
+                $cart->add($basketItem);
+            }
+        }
+        return $cart;
+    }
+    /**
+     * @param array $requestData
+     * @return Cart
+     */
     static public function create(array $requestData)
     {
         $cart = new Cart();

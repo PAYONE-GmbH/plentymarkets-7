@@ -13,11 +13,12 @@ class CartFactory
     static public function createForRefund(array $requestData)
     {
         $cart = new Cart();
-        foreach ($requestData['basketItems'] as $i => $basketItem) {
+        $i=1;
+        foreach ($requestData['basketItems'] as  $basketItem) {
 
             if($basketItem['price'] > 0) {
                 $basketItem = new CartItem(
-                    ($i + 1),
+                    $i,
                     $basketItem['id'],
                     CartItem::TYPE_GOODS,
                     $basketItem['quantity'] ?? '',
@@ -26,15 +27,32 @@ class CartFactory
                     $basketItem['name'] ?? ''
                 );
                 $cart->add($basketItem);
+                $i++;
             }
         }
-        $cart->add(self::calculateShipping($requestData, $cart));
+        //$cart->add(self::calculateShipping($requestData, $cart));
 
-        foreach ($requestData['basketItems'] as $i => $basketItem) {
+        $taxRate = 0;
+        $basket = $requestData['basket'];
+        if ($basket['shippingAmountNet'] > 0) {
+            $taxRate = (int)round((($basket['shippingAmount'] / $basket['shippingAmountNet']) - 1) * 100);
+        }
+        $shippingCost = new CartItem(
+            $i,
+            '-',
+            CartItem::TYPE_SHIPMENT,
+            1,
+            $basket['shippingAmount'],
+            $taxRate,
+            'Porto & Versand'
+        );
+        $cart->add($shippingCost);
+        $j=$i+1;
+        foreach ($requestData['basketItems'] as  $basketItem) {
 
             if($basketItem['price'] < 0) {
                 $basketItem = new CartItem(
-                    ($i + 1),
+                    $j,
                     $basketItem['id'],
                     CartItem::TYPE_VOUCHER,
                     $basketItem['quantity'] ?? '',
@@ -43,6 +61,7 @@ class CartFactory
                     $basketItem['name'] ?? ''
                 );
                 $cart->add($basketItem);
+                $j++;
             }
         }
         return $cart;

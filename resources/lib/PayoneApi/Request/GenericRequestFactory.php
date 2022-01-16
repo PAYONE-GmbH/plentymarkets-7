@@ -45,7 +45,11 @@ class GenericRequestFactory
             $cart = CartFactory::create($data);
         }
 
-        if($requestType === Types::DEBIT || $requestType === Types::REFUND || $requestType === Types::CAPTURE ) {
+        if( $requestType === Types::CAPTURE ) {
+            $cart = CartFactory::createForCapture($data);
+        }
+
+        if($requestType === Types::DEBIT || $requestType === Types::REFUND ) {
             $cart = CartFactory::createForRefund($data);
         }
 

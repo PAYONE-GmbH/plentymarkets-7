@@ -6,6 +6,7 @@ namespace PayoneApi\Request\Parts;
 
 class CartFactory
 {
+
     /**
      * @param array $requestData
      * @return Cart
@@ -30,7 +31,34 @@ class CartFactory
                 $i++;
             }
         }
-        //$cart->add(self::calculateShipping($requestData, $cart));
+    }
+
+
+
+    /**
+     * @param array $requestData
+     * @return Cart
+     */
+    static public function createForCapture(array $requestData)
+    {
+        $cart = new Cart();
+        $i=1;
+        foreach ($requestData['basketItems'] as  $basketItem) {
+
+            if($basketItem['price'] > 0) {
+                $basketItem = new CartItem(
+                    $i,
+                    $basketItem['id'],
+                    CartItem::TYPE_GOODS,
+                    $basketItem['quantity'] ?? '',
+                    $basketItem['price'],
+                    $basketItem['vat'],
+                    $basketItem['name'] ?? ''
+                );
+                $cart->add($basketItem);
+                $i++;
+            }
+        }
 
         $taxRate = 0;
         $basket = $requestData['basket'];
@@ -66,6 +94,7 @@ class CartFactory
         }
         return $cart;
     }
+
     /**
      * @param array $requestData
      * @return Cart

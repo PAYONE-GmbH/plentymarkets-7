@@ -64,7 +64,6 @@ class GenericRequest implements RequestDataContract
         $this->currency = $currency;
         $this->sequencenumber = $sequencenumber;
         $this->info = $info;
-        $this->cart = $cart;
     }
 
     /**

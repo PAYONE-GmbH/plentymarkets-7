@@ -5,7 +5,6 @@ namespace PayoneApi\Request;
 use PayoneApi\Lib\Version;
 use PayoneApi\Request\Parts\Config;
 use PayoneApi\Request\Parts\SystemInfo;
-use PayoneApi\Request\Parts\CartFactory;
 
 class GenericRequestFactory
 {
@@ -17,7 +16,6 @@ class GenericRequestFactory
      */
     public static function create($requestType, $data)
     {
-
         $context = $data['context'];
         $config = new Config(
             $context['aid'],
@@ -37,31 +35,13 @@ class GenericRequestFactory
             $systemInfoData['module_version']
         );
 
-        $cart = null;
-
-        if($requestType === Types::PREAUTHORIZATION ||
-            $requestType===Types::AUTHORIZATION || $requestType===Types::MANAGEMANDATE
-        ) {
-            $cart = CartFactory::create($data);
-        }
-
-        if( $requestType === Types::CAPTURE ) {
-            $cart = CartFactory::createForCapture($data);
-        }
-
-        if($requestType === Types::DEBIT || $requestType === Types::REFUND ) {
-            $cart = CartFactory::createForRefund($data);
-        }
-
         return new GenericRequest(
             $config,
             $requestType,
             $basket['basketAmount'],
             $basket['currency'],
             $systemInfo,
-            $cart,
             $context['sequencenumber'] ?? null
-
         );
     }
 }

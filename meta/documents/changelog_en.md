@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## X.X.X
+
+### Added
+- In the assistant, an individual icon for each payment method can now be stored for the webshop.
+
 ## 2.3.1
 
 ### Fixed

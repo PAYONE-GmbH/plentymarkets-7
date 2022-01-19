@@ -249,7 +249,8 @@ class PayoneAssistant extends WizardProvider
                                 $this->getDeliveryCountriesConfig($paymentCode)
                                     +
                                 $this->getAuthorizationConfig($paymentCode)
-                        ]
+                        ],
+                        $this->getPaymentIconConfig($paymentCode)
                     ]
                 ];
             }
@@ -296,7 +297,8 @@ class PayoneAssistant extends WizardProvider
                             ]
                         ]
                     ]
-                ]
+                ],
+                $this->getPaymentIconConfig($paymentCode)
             ]
         ];
 
@@ -368,7 +370,8 @@ class PayoneAssistant extends WizardProvider
                             ]
                         ]
                     ]
-                ]
+                ],
+                $this->getPaymentIconConfig($paymentCode)
             ]
         ];
 
@@ -417,7 +420,8 @@ class PayoneAssistant extends WizardProvider
                                 ]
                             ]
                         ]
-                ]
+                ],
+                $this->getPaymentIconConfig($paymentCode)
             ]
         ];
 
@@ -511,6 +515,30 @@ class PayoneAssistant extends WizardProvider
                 'options' => [
                     'name' => 'Assistant.authType',
                     'listBoxValues' => $listBoxValues
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @param string $paymentCode
+     * @return array
+     */
+    protected function getPaymentIconConfig(string $paymentCode): array
+    {
+        return [
+            'description' => 'Assistant.paymentIcon',
+            'form'        => [
+                $paymentCode . "paymentIcon" => [
+                    'type' => 'file',
+                    'options' => [
+                        'name' => 'Assistant.paymentIconDescription',
+                        'showPreview' => true,
+                        'allowedExtensions' => [
+                            'svg', 'png', 'jpg', 'jpeg'
+                        ],
+                        'allowFolders' => false
+                    ]
                 ]
             ]
         ];

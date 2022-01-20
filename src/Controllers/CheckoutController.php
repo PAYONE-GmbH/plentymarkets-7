@@ -36,6 +36,8 @@ use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
 use Plenty\Modules\Order\Models\OrderItemAmount;
 use Plenty\Modules\Order\Models\OrderItemType;
 use Plenty\Modules\Basket\Models\Basket;
+use Payone\Methods\PaymentAbstract;
+
 
 
 /**
@@ -105,6 +107,7 @@ class CheckoutController extends Controller
                 return $orderContract->findOrderById($orderId);
             }
         );
+
         /** @var OrderRepositoryContract $orderRepository */
         $orderRepository = pluginApp(OrderRepositoryContract::class);
         $plentyOrder = $orderRepository->findOrderById($orderId);
@@ -113,8 +116,8 @@ class CheckoutController extends Controller
         $mopId = $plentyOrder->methodOfPaymentId;
 
 
-        /** @var SettingsService $settingsService */
-        $settingsService = pluginApp(SettingsService::class);
+//        /** @var SettingsService $settingsService */
+//        $settingsService = pluginApp(SettingsService::class);
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         /** @var PaymentHelper $paymentHelper */
@@ -157,18 +160,25 @@ class CheckoutController extends Controller
             $content = pluginApp(PaymentMethodContent::class);
             $renderingType = $content->getPaymentContentType($paymentCode);
 
-
             switch ($renderingType) {
                 case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
 
                     $auth = $paymentService->openTransactionFromOrder($plentyOrder);
-                    break;
+                    return $auth->getRedirecturl();
+
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     // $paymentService->openTransaction($basket);
                     break;
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+                    /** @var PaymentRenderer $paymentRenderer */
+                    $paymentRenderer = pluginApp(PaymentRenderer::class);
+                    $html = $paymentRenderer->render($payment, '');
 
-                    break;
+                    return $this->getJsonSuccess(
+                        [
+                            'html' => $html,
+                        ]
+                    );
             }
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();

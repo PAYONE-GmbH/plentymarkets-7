@@ -171,7 +171,6 @@ class Auth
                 $basket,
                 $authResponse->getClearing()
             );
-            dd($plentyPayment);
             if (!$plentyPayment instanceof Payment) {
                 throw new \Exception('Not an instance of Payment');
             }

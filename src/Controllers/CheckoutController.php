@@ -174,11 +174,7 @@ class CheckoutController extends Controller
                     $paymentRenderer = pluginApp(PaymentRenderer::class);
                     $html = $paymentRenderer->render($payment, '');
 
-                    return $this->getJsonSuccess(
-                        [
-                            'html' => $html,
-                        ]
-                    );
+                    return $html;
             }
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();

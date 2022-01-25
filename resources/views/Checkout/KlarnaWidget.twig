@@ -78,6 +78,8 @@
                     if(res.authorization_token) { }
                     if( (res.show_form === false ) && (res.approved === false )) {
                     } else if ( (res.show_form === true ) && (res.approved === false ) ) {
+                        document.querySelector(".modal-content").style = 'display: none';
+                        location.reload()
                     } else if ((res.show_form === true ) && (res.approved === true )) {
                         $.post('/payment/payone/checkout/doKlarnaAuth', {
                                 authorization_token: res.authorization_token
@@ -85,6 +87,8 @@
                             function (data, status) {
                                 $('.loading').css('display','none');
                                 window.location.replace(data.data.redirecturl);
+                                $('#pay').css('display','none');
+                                $('#cancel').css('display','none');
                             });
                     }
                 })
@@ -104,8 +108,8 @@
         <!--Button to trigger authorize call-->
         <div class="button-container">
 
-            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value="Pay" id="pay"/>
-            <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value="Cancel" id="cancel"/>
+            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value=""{{trans("Payone::General.pay")}}"" id="pay"/>
+            <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value=""{{trans("Payone::General.cancel")}}"" id="cancel"/>
         </div>
     </div>
     <div class="loading" style="display: none">

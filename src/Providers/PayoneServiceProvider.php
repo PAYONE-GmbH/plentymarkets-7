@@ -429,6 +429,49 @@ class PayoneServiceProvider extends ServiceProvider
      * @param GetPaymentMethodContent $event
      * @param Basket $basket
      */
+    public function registerAmazonPayIntegrationFromOrder( Basket $basket)
+    {
+        /** @var AmazonPayService $amazonPayService */
+        $amazonPayService = pluginApp(AmazonPayService::class);
+        /** @var Logger $logger */
+        $logger = pluginApp(Logger::class);
+        /** @var Twig $twig */
+        $twig = pluginApp(Twig::class);
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        /** @var PaymentCache $paymentCache */
+        $paymentCache = pluginApp(PaymentCache::class);
+
+        try {
+            $paymentCache->setActiveBasketId($basket->id);
+
+            /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
+            $setOrderRefResponse = $amazonPayService->setOrderReference($basket);
+            /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
+            $confirmOrderRefResponse = $amazonPayService->confirmOrderReference($basket);
+
+            return $twig->render(
+                PluginConstants::NAME . '::Checkout.Confirmation',
+                [
+                    'success' => $confirmOrderRefResponse->getSuccess(),
+                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                ]
+            );
+            // $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
+
+
+        } catch (\Exception $exception) {
+            $logger
+                ->setIdentifier(__METHOD__)
+                ->error('AmazonPay.paymentMethodContent', $exception);
+        }
+    }
+
+    /**
+     * @param GetPaymentMethodContent $event
+     * @param Basket $basket
+     */
     protected function registerAmazonPayIntegration(GetPaymentMethodContent $event, Basket $basket)
     {
         /** @var AmazonPayService $amazonPayService */
@@ -492,9 +535,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $basketData = $basket->load();
                 $resourceContainer->addScriptTemplate(
                     PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
-                        'selectedPaymentId' => $basketData->methodOfPaymentId,
-                        'amazonPayMopId' => $amazonPayMopId,
-                        'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
+                    'selectedPaymentId' => $basketData->methodOfPaymentId,
+                    'amazonPayMopId' => $amazonPayMopId,
+                    'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
                 ]);
             }
         });

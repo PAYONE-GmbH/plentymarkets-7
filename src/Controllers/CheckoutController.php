@@ -14,6 +14,8 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
+use Payone\Providers\Api\Request\AuthDataProvider;
+use Payone\Providers\PayoneServiceProvider;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
@@ -90,7 +92,9 @@ class CheckoutController extends Controller
 
 
     public function reinitPayment(
-        $orderId
+        $orderId,
+        Twig $twig,
+        Response $response
     )
     {
 
@@ -163,18 +167,47 @@ class CheckoutController extends Controller
             switch ($renderingType) {
                 case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
 
+
+                    $selectedPaymentId = $mopId;
+
+                    if (!$selectedPaymentId || !$paymentHelper->isPayonePayment($selectedPaymentId)) {
+                        throw new \Exception('No Payone payment method');
+                    }
+                    /** @var AuthDataProvider $authDataProvider */
+                    $authDataProvider = pluginApp(AuthDataProvider::class);
+                    $data = $authDataProvider->getDataFromOrder($selectedPaymentId, $order);
+
+                    $basketData = $data['basket'];
+
+                    /** @var PayoneServiceProvider $payoneServiceProvider */
+                    $payoneServiceProvider = pluginApp(PayoneServiceProvider::class);
+                    $payoneServiceProvider->registerAmazonPayIntegrationFromOrder($basketData);
+
+
+
                     $auth = $paymentService->openTransactionFromOrder($plentyOrder);
-                    return $auth->getRedirecturl();
+
+                    return $response->json([
+                        'data' => $auth->getRedirecturl(),
+                        'mop' => $mopId
+                    ], 200); ;
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     // $paymentService->openTransaction($basket);
                     break;
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
+
+
                     /** @var PaymentRenderer $paymentRenderer */
                     $paymentRenderer = pluginApp(PaymentRenderer::class);
+
                     $html = $paymentRenderer->render($payment, '');
 
-                    return $html;
+
+                    return $response->json([
+                        'data' => $html,
+                        'mop' => $mopId
+                    ], 200); ;
             }
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();

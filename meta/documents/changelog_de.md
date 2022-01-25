@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## X.X.X
+
+### Hinzugefügt
+- Im Assistenten kann nun für jede Zahlungsart ein individuelles Icon für den Webshop hinterlegt werden.
+
 ## 2.3.1
 
 ### Behoben

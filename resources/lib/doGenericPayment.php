@@ -27,9 +27,14 @@ try {
 
     $data['successurl'] = $sdkRestApi::getParam('successurl');
     $data['errorurl'] = $sdkRestApi::getParam('errorurl');
+    $data['backurl'] = $sdkRestApi::getParam('backurl');
 
     $data['context'] = $sdkRestApi::getParam('context');
     $data['systemInfo'] = $sdkRestApi::getParam('systemInfo');
+    $data['address'] = $sdkRestApi::getParam('address');
+
+    $data['basket'] = $sdkRestApi::getParam('basket');
+    $data['basketItems'] = $sdkRestApi::getParam('basketItems');
 
     $paymentMethod = $sdkRestApi::getParam('paymentMethod');
 

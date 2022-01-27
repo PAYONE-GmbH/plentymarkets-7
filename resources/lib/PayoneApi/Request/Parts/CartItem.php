@@ -7,6 +7,7 @@ class CartItem implements \JsonSerializable
     const TYPE_GOODS = 'goods';
     const TYPE_SHIPMENT = 'shipment';
     const TYPE_HANDLING = 'handling';
+    const TYPE_VOUCHER = 'voucher';
     /**
      * 0..n
      *

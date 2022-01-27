@@ -25,6 +25,8 @@ class GenericPaymentResponseFactory
                 return self::makeSetOrderReferenceDetailsResponse($responseData);
             case GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE:
                 return self::makeConfirmOrderReferenceResponse($responseData);
+            case GenericPayment::ACTIONTYPE_STARTSESSION:
+                return self::makeStartSessionReferenceResponse($responseData);
         }
     }
 
@@ -165,6 +167,36 @@ class GenericPaymentResponseFactory
             $responseData['success'] ?? false,
             $responseData['errormessage'] ?? '',
             $responseData['responseData']['workorderid'] ?? ''
+        );
+    }
+    /**
+     * @param array $responseData
+     * @return StartSessionResponse
+     */
+    private static function makeStartSessionReferenceResponse(array $responseData)
+    {
+        /** @var StartSessionResponse $response */
+        $response = pluginApp(StartSessionResponse::class);
+
+        if(!$responseData['success']) {
+            $customerErrorMessage = '';
+            if($responseData['responseData'] && $responseData['responseData']['responseData'] && $responseData['responseData']['responseData']['customermessage']) {
+                $customerErrorMessage = $responseData['responseData']['responseData']['customermessage'];
+            }
+            return $response->init(
+                false,
+                $customerErrorMessage
+            );
+        }
+
+        return $response->init(
+            $responseData['success'] ?? false,
+            $responseData['errormessage'] ?? '',
+            $responseData['responseData']['add_paydata[client_token]'] ?? '',
+            $responseData['responseData']['add_paydata[session_id]'] ?? '',
+            $responseData['responseData']['workorderid'] ?? '',
+            $responseData['responseData']['add_paydata[payment_method_category_name]'],
+            $responseData['responseData']['add_paydata[payment_method_category_identifier]']
         );
     }
 }

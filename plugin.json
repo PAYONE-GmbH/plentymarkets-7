@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.4.0",
   "license": "MIT",
   "pluginIcon": "icon_plugin_xs.png",
   "price": 0.0,
@@ -42,7 +42,7 @@
   },
   "serviceProvider": "Payone\\Providers\\PayoneServiceProvider",
   "runOnBuild": [
-    "Payone\\Migrations\\CreatePaymentMethods2",
+    "Payone\\Migrations\\CreatePaymentMethods3",
     "Payone\\Migrations\\CreateSettingsTable"
   ],
   "dataProviders": [

@@ -7,6 +7,10 @@ use Payone\Helpers\AddressHelper;
 use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Methods\PayonePaydirektPaymentMethod;
 use Payone\Methods\PayonePayPalPaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
@@ -465,6 +469,18 @@ abstract class DataProviderAbstract
         foreach ($words as $word) {
             $paymentCodeLib .= ucfirst(strtolower($word));
         }
+       if($paymentCodeLib == 'KlarnaDirectBank') {
+           return 'KBT';
+       }
+        if($paymentCodeLib == 'KlarnaDirectDebit') {
+            return 'KDD';
+        }
+        if($paymentCodeLib == 'KlarnaInstallments') {
+            return 'KIS';
+        }
+        if($paymentCodeLib == 'KlarnaInvoice') {
+            return 'KIV';
+        }
 
         return $paymentCodeLib;
     }
@@ -547,16 +563,21 @@ abstract class DataProviderAbstract
     {
         // URLs might be necessary since some cards require REDIRECT for 3d secure
         if (
-        in_array(
-            $paymentCode,
-            [
-                PayoneCCPaymentMethod::PAYMENT_CODE,
-                PayonePayPalPaymentMethod::PAYMENT_CODE,
-                PayonePaydirektPaymentMethod::PAYMENT_CODE,
-                PayoneSofortPaymentMethod::PAYMENT_CODE,
-                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
-            ]
-        )
+            in_array(
+                $paymentCode,
+                [
+                    PayoneCCPaymentMethod::PAYMENT_CODE,
+                    PayonePayPalPaymentMethod::PAYMENT_CODE,
+                    PayonePaydirektPaymentMethod::PAYMENT_CODE,
+                    PayoneSofortPaymentMethod::PAYMENT_CODE,
+                    PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+                    PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE,
+                    PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+                    PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+                    PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE
+
+                ]
+            )
         ) {
             return true;
         }

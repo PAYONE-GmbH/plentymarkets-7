@@ -30,6 +30,7 @@ class RequestFactory implements RequestFactoryContract
     public static function create(string $paymentMethod, array $data, string $referenceId = null)
     {
         $genericAuthRequest = GenericAuthRequestFactory::create(static::$requestType, $data);
+
         switch ($paymentMethod) {
             case PaymentTypes::PAYONE_INVOICE:
                 return new Invoice($genericAuthRequest);
@@ -125,6 +126,35 @@ class RequestFactory implements RequestFactoryContract
                     $amazonPayAuth['reference'],
                     $amazonPayAuth['currency'],
                     $amazonPayAuth['amazonReferenceId']
+                );
+            case PaymentTypes::PAYONE_KLARNA_INVOICE || PaymentTypes::PAYONE_KLARNA_INSTALLMENTS
+                || PaymentTypes::PAYONE_KLARNA_DIRECT_DEBIT || PaymentTypes::PAYONE_KLARNA_DIRECT_BANK :
+                $klarnaAuthToken= $data['klarnaAuthToken'];
+                $klarnaWorkOrderId = $data['klarnaWorkOrderId'];
+                $cart = null;
+                $cart = CartFactory::create($data);
+                $customerAddressData = $data['shippingAddress'];
+                $shippingAddress = new ShippingAddress(
+                    $customerAddressData['firstname'],
+                    $customerAddressData['lastname'],
+                    $customerAddressData['street'],
+                    $customerAddressData['addressaddition'],
+                    $customerAddressData['postalCode'],
+                    $customerAddressData['town'],
+                    $customerAddressData['country']
+                );
+                return new Klarna(
+                    $genericAuthRequest,
+                    self::createUrls($data['redirect']),
+                    $klarnaWorkOrderId,
+                    $klarnaAuthToken,
+                    $paymentMethod,
+                    $cart,
+                    $shippingAddress,
+                    $data['customer']['email'],
+                    $data['customer']['title'],
+                    $data['customer']['telephonenumber']
+
                 );
         }
         throw new \Exception('Unimplemented payment method ' . $paymentMethod);

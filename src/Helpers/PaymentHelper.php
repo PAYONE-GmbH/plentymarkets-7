@@ -22,6 +22,10 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Modules\Payment\Models\Payment;
 use Plenty\Modules\Payment\Models\PaymentProperty;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
 
 /**
  * Class PaymentHelper
@@ -52,6 +56,28 @@ class PaymentHelper
     ) {
         $this->paymentMethodRepo = $paymentMethodRepo;
         $this->paymentOrderRelationRepo = $paymentOrderRelationRepo;
+    }
+
+    public static function getPaymentMethods(): array
+    {
+        return [
+            PayonePayPalPaymentMethod::PAYMENT_CODE => PayonePayPalPaymentMethod::class,
+            PayoneCCPaymentMethod::PAYMENT_CODE => PayoneCCPaymentMethod::class,
+            PayoneInvoicePaymentMethod::PAYMENT_CODE => PayoneInvoicePaymentMethod::class,
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE => PayoneAmazonPayPaymentMethod::class,
+            PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE => PayoneInvoiceSecurePaymentMethod::class,
+            PayoneDirectDebitPaymentMethod::PAYMENT_CODE => PayoneDirectDebitPaymentMethod::class,
+            PayonePrePaymentPaymentMethod::PAYMENT_CODE => PayonePrePaymentPaymentMethod::class,
+            PayoneSofortPaymentMethod::PAYMENT_CODE => PayoneSofortPaymentMethod::class,
+            PayonePaydirektPaymentMethod::PAYMENT_CODE => PayonePaydirektPaymentMethod::class,
+            PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE => PayoneRatePayInstallmentPaymentMethod::class,
+            PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE => PayonePayolutionInstallmentPaymentMethod::class,
+            PayoneCODPaymentMethod::PAYMENT_CODE => PayoneCODPaymentMethod::class,
+            PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE => PayoneKlarnaDirectBankTransferPaymentMethod::class,
+            PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE => PayoneKlarnaDirectDebitPaymentMethod::class,
+            PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE => PayoneKlarnaInstallmentsPaymentMethod::class,
+            PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE => PayoneKlarnaInvoicePaymentMethod::class
+        ];
     }
 
     /**
@@ -131,7 +157,11 @@ class PaymentHelper
             PayonePaydirektPaymentMethod::PAYMENT_CODE,
             PayoneRatePayInstallmentPaymentMethod::PAYMENT_CODE,
             PayonePayolutionInstallmentPaymentMethod::PAYMENT_CODE,
-            PayoneCODPaymentMethod::PAYMENT_CODE
+            PayoneCODPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE,
+            PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE
         ];
     }
 

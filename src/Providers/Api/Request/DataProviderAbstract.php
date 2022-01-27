@@ -561,6 +561,18 @@ abstract class DataProviderAbstract
 
         return false;
     }
+    /**
+     * @return array
+     */
+    protected function getRedirectUrlsForReinit()
+    {
+
+        return [
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit',
+            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+        ];
+    }
 
     /**
      * @return array

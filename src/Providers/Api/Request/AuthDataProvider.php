@@ -152,7 +152,7 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($this->paymentHasRedirect($paymentCode)) {
-            $requestParams['redirect'] = $this->getRedirectUrls($requestParams['basket']['id']);
+            $requestParams['redirect'] = $this->getRedirectUrls();
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();

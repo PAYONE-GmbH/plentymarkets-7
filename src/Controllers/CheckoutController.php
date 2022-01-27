@@ -417,6 +417,21 @@ class CheckoutController extends Controller
     }
 
     /**
+     * @param BasketRepositoryContract $basketReopo
+     * @param PaymentHelper $helper
+     *
+     * @return string
+     */
+    public function checkoutSuccessForReinit(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
+    {
+
+        $this->logger->setIdentifier(__METHOD__);
+        $this->logger->debug('Controller.Success', $this->request->all());
+
+        return $this->response->redirectTo('place-order');
+    }
+
+    /**
      * @param NotificationService $notificationService
      * @param ErrorMessageRenderer $messageRenderer
      *

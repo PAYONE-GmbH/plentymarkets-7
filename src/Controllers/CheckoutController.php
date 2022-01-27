@@ -42,6 +42,7 @@ use Payone\Methods\PaymentAbstract;
 
 
 
+
 /**
  * Class CheckoutController
  */
@@ -189,9 +190,10 @@ class CheckoutController extends Controller
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     $paymentService->openTransactionFromOrder($plentyOrder);
 
-
+                    /** @var ShopHelper $shopHelper */
+                    $shopHelper = pluginApp(ShopHelper::class);
                     return $response->json([
-                        'data' => 'place-order',
+                        'data' => $shopHelper->getPlentyDomain() . '/place-order',
                         'paymentCode' => $paymentCode
                     ], 200); ;
 

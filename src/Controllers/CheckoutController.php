@@ -98,6 +98,7 @@ class CheckoutController extends Controller
     )
     {
 
+
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
 
@@ -163,26 +164,19 @@ class CheckoutController extends Controller
             /** @var PaymentMethodContent $content */
             $content = pluginApp(PaymentMethodContent::class);
             $renderingType = $content->getPaymentContentType($paymentCode);
+            // rechnung -- continue
+            // payolution -- continue
+            // paydirect -- redirectUrl - ok
+            // paypal -- redirectUrl
+            // ratepay -- continue
+            // sofortuber -- redirectUrl
+            // vorkasse -- continue
+            // nachname -- continue
+            // kreditcarte -- htmlContent
+            // lastschrift -- htmlContent
 
             switch ($renderingType) {
                 case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
-
-
-                    $selectedPaymentId = $mopId;
-
-                    if (!$selectedPaymentId || !$paymentHelper->isPayonePayment($selectedPaymentId)) {
-                        throw new \Exception('No Payone payment method');
-                    }
-                    /** @var AuthDataProvider $authDataProvider */
-                    $authDataProvider = pluginApp(AuthDataProvider::class);
-                    $data = $authDataProvider->getDataFromOrder($selectedPaymentId, $order);
-
-                    $basketData = $data['basket'];
-
-                    /** @var PayoneServiceProvider $payoneServiceProvider */
-                    $payoneServiceProvider = pluginApp(PayoneServiceProvider::class);
-                    $payoneServiceProvider->registerAmazonPayIntegrationFromOrder($basketData);
-
 
 
                     $auth = $paymentService->openTransactionFromOrder($plentyOrder);

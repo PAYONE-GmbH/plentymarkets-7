@@ -260,7 +260,7 @@ class PaymentCreation
 
         if ($response instanceof AuthResponse) {
             $payment->currency = $basketData['currency'];
-            $payment->amount = $basketData['basketAmount'];
+            $payment->amount = $basketData['basketAmount']/100;
             $payment->receivedAt = date('Y-m-d H:i:s');
         }
 

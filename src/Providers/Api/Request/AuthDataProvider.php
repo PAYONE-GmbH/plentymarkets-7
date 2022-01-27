@@ -119,4 +119,54 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
 
         return $requestParams;
     }
+    /**
+     * @param string $paymentCode
+     * @param Order $order
+     * @param string|null $requestReference
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
+     */
+    public function getDataFromOrderForReinit(string $paymentCode, Order $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
+    {
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
+
+        $requestParams['basket'] = $this->getBasketDataFromOrder($order);
+
+        $requestParams['basketItems'] = $this->getOrderItemData($order);
+        $requestParams['shippingAddress'] = $this->addressHelper->getAddressData(
+            $this->addressHelper->getOrderShippingAddress($order)
+        );
+        $billingAddress = $this->addressHelper->getOrderBillingAddress($order);
+        $requestParams['billingAddress'] = $this->addressHelper->getAddressData(
+            $billingAddress
+        );
+        $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
+
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
+        }
+        if ($paymentCode == PayoneSofortPaymentMethod::PAYMENT_CODE) {
+            $requestParams['bankAccount'] = $this->getBankAccount();
+            $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
+        }
+        if ($this->paymentHasRedirect($paymentCode)) {
+            $requestParams['redirect'] = $this->getRedirectUrls($requestParams['basket']['id']);
+        }
+        if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
+            $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
+            $requestParams['pseudocardpan'] = $requestParams['ccCheck']['pseudocardpan'];
+        }
+        if ($paymentCode == PayoneDirectDebitPaymentMethod::PAYMENT_CODE) {
+            $requestParams['sepaMandate'] = $this->getSepaMandateData();
+        }
+
+        $requestParams['referenceId'] = $requestReference;
+        $requestParams['shippingProvider'] = $this->getShippingProvider($order->shippingProfileId);
+
+        $this->validator->validate($requestParams);
+
+        return $requestParams;
+    }
 }

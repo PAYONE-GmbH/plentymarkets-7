@@ -11,6 +11,7 @@ use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Models\Payment;
 
 
+
 class Auth
 {
     /**
@@ -90,14 +91,19 @@ class Auth
         }
 
         $authResponse = $this->doAuthFromOrder( $order);
-        $data = $this->authDataProvider->getDataFromOrder($selectedPaymentId, $order);
+        $data = $this->authDataProvider->getDataFromOrderForReinit($selectedPaymentId, $order);
 
         $basketData = $data['basket'];
 
 
         $payment = $this->createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData);
+
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
-        $this->paymentCache->setActiveBasketId($basketData['id']);
+        //  $this->paymentCache->setActiveBasketId($basketData['id']);
+
+        /** @var PaymentCreation $paymentCreationService */
+        $paymentCreationService = pluginApp(PaymentCreation::class);
+        $paymentCreationService->assignPaymentToOrder($payment, $order);
 
         return $authResponse;
     }

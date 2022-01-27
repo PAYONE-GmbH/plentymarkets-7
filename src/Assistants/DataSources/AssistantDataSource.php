@@ -142,6 +142,7 @@ class AssistantDataSource extends BaseWizardDataSource
                     $assistant[$paymentCode . 'Toggle'] = (bool)($value['active'] ?? false);
                     $assistant[$paymentCode . 'MinimumAmount'] = $value['MinimumAmount'] ?? 0;
                     $assistant[$paymentCode . 'MaximumAmount'] = $value['MaximumAmount'] ?? 2000;
+                    $assistant[$paymentCode . 'paymentIcon'] = $value['paymentIcon'];
                     $assistant[$paymentCode . 'AllowedDeliveryCountries'] = is_array($value['AllowedDeliveryCountries']) ? $value['AllowedDeliveryCountries'] : [];
                     $assistant[$paymentCode . 'AuthType'] = $value['AuthType'] ?? -1;
 

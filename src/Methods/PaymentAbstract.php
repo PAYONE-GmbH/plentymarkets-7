@@ -81,9 +81,14 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function getIcon(string $lang = 'de'): string
     {
-        $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
+        $paymentIcon = $this->settingsService->getPaymentSettingsValue('paymentIcon', $this::PAYMENT_CODE);
 
-        return $pluginPath . '/images/logos/' . $this::PAYMENT_CODE . '.png';
+        if(empty($paymentIcon)) {
+            $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
+            $paymentIcon = $pluginPath . '/images/logos/' . $this::PAYMENT_CODE . '.png';
+        }
+
+        return $paymentIcon;
     }
 
     /**

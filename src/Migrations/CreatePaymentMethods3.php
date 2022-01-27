@@ -9,9 +9,9 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 /**
  * Migration to create payment mehtods
  *
- * Class CreatePaymentMethod2
+ * Class CreatePaymentMethod3
  */
-class CreatePaymentMethods2
+class CreatePaymentMethods3
 {
     /**
      * @var PaymentMethodRepositoryContract

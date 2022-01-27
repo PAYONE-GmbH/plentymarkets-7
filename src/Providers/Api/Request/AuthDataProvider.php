@@ -5,9 +5,14 @@ namespace Payone\Providers\Api\Request;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Methods\PayoneCCPaymentMethod;
 use Payone\Methods\PayoneDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Methods\PayoneSofortPaymentMethod;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Order\Models\Order;
+use Payone\Adapter\SessionStorage;
 
 /**
  * Class AuthDataProvider
@@ -60,6 +65,19 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
         }
         if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
             $requestParams['amazonPayAuth'] = $this->getAmazonPayData($basket->id, $basket->basketAmount, $basket->currency);
+        }
+
+        if ($paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE) {
+
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+
+
+            $requestParams['klarnaAuthToken'] =$sessionStorage->getSessionValue('klarnaAuthToken');
+            $requestParams['klarnaWorkOrderId'] =$sessionStorage->getSessionValue('klarnaWorkOrderId');
         }
 
         $requestParams['referenceId'] = $requestReference;

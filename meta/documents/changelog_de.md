@@ -1,5 +1,20 @@
 # Release Notes für PAYONE
 
+## 2.4.0
+
+### Hinzugefügt
+ * Folgenden Zahlungsarten wurden hinzugefügt:
+   - Klarna "Slice It" (Installments)
+   - Klarna "Pay Later" (Invoice)
+   - Klarna "Pay Now" (Direct Debit)
+   - Klarna "Pay Now" (Direct Bank Transfer)
+ * Im Assistenten kann nun für jede Zahlungsart ein individuelles Icon für den Webshop hinterlegt werden.
+
+## 2.3.1
+
+### Behoben
+- Beim gesichteren Rechnungskauf in Verbindung mit Merkmalen/Bestellmerkmalen/Bestelleigenschaften konnte es zu einem Fehler kommen. Dieser wurde behoben. 
+
 ## 2.3.0
 
 ### Hinzugefügt

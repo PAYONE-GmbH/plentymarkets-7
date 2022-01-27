@@ -1,5 +1,22 @@
 # Release Notes for PAYONE
 
+## 2.4.0
+
+### Added
+* The following payment methods have been added:
+ 
+  - Klarna "Slice It" (Installments)
+  - Klarna "Pay Later" (Invoice)
+  - Klarna "Pay Now" (Direct Debit)
+  - Klarna "Pay Now" (Direct Bank Transfer)
+
+* In the assistant, an individual icon for each payment method can now be stored for the webshop.
+
+## 2.3.1
+
+### Fixed
+- An error could occur in the case of secure invoice purchase in connection with order item properties or item properties. This has been fixed.
+
 ## 2.3.0
 
 ### Added

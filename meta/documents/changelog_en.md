@@ -1,6 +1,6 @@
 # Release Notes for PAYONE
 
-## 2.3.2
+## 2.4.0
 
 ### Added
 * The following payment methods have been added:

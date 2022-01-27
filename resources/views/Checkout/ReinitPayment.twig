@@ -8,7 +8,7 @@
             $("body").append(" " +
                 "<div class=\"modal fade\" id=\"payoneModal\" data-backdrop=\"static\"> " +
                 "<div class=\"modal-dialog modal-lg\" role=\"document\">"+
-                "<div class=\"modal-content\" style='padding: 12px'>"+
+                "<div class=\"modal-content\" style=\"padding: 12px\">"+
                 "</div>" +
                 "</div>" +
                 "</div>");
@@ -20,7 +20,7 @@
 
             $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
 
-                if(data.mop === '6088') {
+                if(data.mop === 'PAYONE_PAYONE_CREDIT_CARD') {
                     $('#payoneModal .modal-content').html(data.data);
                 }
                 if(data.mop === '6083' || data.mop === '6081') {

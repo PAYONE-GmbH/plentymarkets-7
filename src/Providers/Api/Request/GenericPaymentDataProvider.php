@@ -212,4 +212,42 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $this->validator->validate($requestParams);
         return $requestParams;
     }
+
+    /**
+     * @param string $paymentCode
+     * @param Basket $basket
+     * @return array
+     * @throws \Exception
+     */
+    public function getStartSessionRequestDataFromOrder(string $paymentCode, $order)
+    {
+
+
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
+
+        // Currency not mentioned in API-Doc of Payone
+        $requestParams['currency'] = $order->currency;
+        // amount in smallest unit
+        $requestParams['amount'] = ($order->amount->invoiceTotal) * 100;
+
+        $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_STARTSESSION;
+        /** @var ShopHelper $shopHelper */
+        $shopHelper = pluginApp(ShopHelper::class);
+
+        $successParam = '';
+        $basketId = $order->id;
+        if (strlen($basketId)) {
+            $successParam = '?transactionBasketId=' . $basketId;
+        }
+
+        $requestParams['basket'] = $this->getBasketDataFromOrder($order);
+        $requestParams['basketItems'] = $this->getOrderItemData($order);
+
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessReinit';
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
+        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back';
+        $this->validator->validate($requestParams);
+
+        return $requestParams;
+    }
 }

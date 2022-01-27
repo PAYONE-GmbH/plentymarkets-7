@@ -46,6 +46,42 @@ class KlarnaService
      * @param Basket $basket
      * @return mixed
      */
+    public function startSessionFromOrder(string $paymentCode, $order)
+    {
+        /** @var AddressHelper $addressHelper */
+        $addressHelper = pluginApp(AddressHelper::class);
+        $billingAddress = $addressHelper->getOrderBillingAddress($order);
+        // If shippingAddress is empty, then it's filled with the billingAddress data
+        $shippingAddress = $addressHelper->getOrderShippingAddress($order);
+
+        $requestParams = $this->dataProvider->getStartSessionRequestDataFromOrder(
+            $paymentCode,
+            $order
+        );
+
+        $requestParams['address'] = $this->createAddressData($billingAddress, $shippingAddress);
+
+        $startSessionResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_STARTSESSION, $requestParams);
+
+
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Klarna.confirmOrderReference', [
+                "requestParams" => $requestParams,
+                "response" => $startSessionResponse
+            ]);
+
+        return $startSessionResponse;
+    }
+
+
+
+    /**
+     * @param string $paymentCode
+     * @param Basket $basket
+     * @return mixed
+     */
     public function startSession(string $paymentCode, Basket $basket)
     {
         /** @var AddressHelper $addressHelper */

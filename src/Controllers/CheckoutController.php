@@ -40,6 +40,12 @@ use Plenty\Modules\Order\Models\OrderItemAmount;
 use Plenty\Modules\Order\Models\OrderItemType;
 use Plenty\Modules\Basket\Models\Basket;
 use Payone\Methods\PaymentAbstract;
+use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
+use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
+use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
+use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
+use Payone\Services\KlarnaService;
+use Payone\Models\Api\GenericPayment\StartSessionResponse;
 
 
 
@@ -160,6 +166,41 @@ class CheckoutController extends Controller
 //            $event->setValue($dateOfBirthMissingMessage);
 //            $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
             return;
+        }
+
+        if (
+            $paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE
+        ) {
+            /** @var KlarnaService $klarnaService */
+            $klarnaService = pluginApp(KlarnaService::class);
+
+
+
+            /** @var StartSessionResponse $sessionResponse */
+            $sessionResponse = $klarnaService->startSessionFromOrder($paymentCode, $order);
+
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+
+            $sessionStorage->setSessionValue('klarnaWorkOrderId', $sessionResponse->getKlarnaWorkOrderId());
+
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
+            $html = $twig->render(
+                PluginConstants::NAME . '::Checkout.KlarnaWidget',
+                [
+                    'client_token' => $sessionResponse->getKlarnaClientToken(),
+                    'payment_method' => $sessionResponse->getKlarnaMethodIdentifier()
+                ]
+            );
+
+            return $response->json([
+                'data' => $html,
+                'paymentCode' => $paymentCode
+            ], 200);
         }
 
         try {

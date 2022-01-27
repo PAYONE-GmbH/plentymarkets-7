@@ -20,7 +20,7 @@
 
             $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
 
-                if(data.paymentCode === 'PAYONE_PAYONE_CREDIT_CARD') {
+                if(data.paymentCode === 'PAYONE_PAYONE_CREDIT_CARD' || data.paymentCode === 'PAYONE_PAYONE_KLARNA_INSTALLMENTS') {
                     $('#payoneModal .modal-content').html(data.data);
                 }
                 if(data.paymentCode === 'PAYONE_PAYONE_PAY_PAL' || data.paymentCode === 'PAYONE_PAYONE_INVOICE') {

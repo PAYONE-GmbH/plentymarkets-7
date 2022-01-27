@@ -49,7 +49,6 @@ use Payone\Models\Api\GenericPayment\StartSessionResponse;
 
 
 
-
 /**
  * Class CheckoutController
  */
@@ -190,7 +189,7 @@ class CheckoutController extends Controller
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
             $html = $twig->render(
-                PluginConstants::NAME . '::Checkout.KlarnaWidget',
+                PluginConstants::NAME . '::Checkout.KlarnaWidgetReinit',
                 [
                     'client_token' => $sessionResponse->getKlarnaClientToken(),
                     'payment_method' => $sessionResponse->getKlarnaMethodIdentifier()
@@ -311,6 +310,32 @@ class CheckoutController extends Controller
         }
         try {
             $auth = $paymentService->openTransaction($basket->load());
+        } catch (\Exception $e) {
+            return $this->getJsonErrors(['message' => $e->getMessage()]);
+        }
+
+        return $this->getJsonSuccess($auth);
+    }
+
+    /**
+     * @param PaymentService $paymentService
+     * @param  $order
+     * @return string
+     */
+    public function doKlarnaAuthForReinit(
+        PaymentService $paymentService,
+        $order
+    ) {
+        $klarnaAuthToken = $this->request->get('authorization_token');
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $sessionStorage->setSessionValue('klarnaAuthToken', $klarnaAuthToken);
+
+        $this->logger->setIdentifier(__METHOD__)
+            ->debug('Controller.Checkout', $this->request->all());
+
+        try {
+            $auth = $paymentService->openTransactionFromOrder($order);
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);
         }

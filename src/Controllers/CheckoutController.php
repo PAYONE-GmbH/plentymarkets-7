@@ -189,7 +189,12 @@ class CheckoutController extends Controller
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     $paymentService->openTransactionFromOrder($plentyOrder);
 
-                    return $this->response->redirectTo('place-order');
+
+                    return $response->json([
+                        'data' => 'place-order',
+                        'paymentCode' => $paymentCode
+                    ], 200); ;
+
 
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
                     /** @var PaymentRenderer $paymentRenderer */

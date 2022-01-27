@@ -23,7 +23,7 @@
                 if(data.paymentCode === 'PAYONE_PAYONE_CREDIT_CARD') {
                     $('#payoneModal .modal-content').html(data.data);
                 }
-                if(data.paymentCode === 'PAYONE_PAYONE_PAY_PAL' || data.paymentCode === '6081') {
+                if(data.paymentCode === 'PAYONE_PAYONE_PAY_PAL' || data.paymentCode === 'PAYONE_PAYONE_INVOICE') {
                     window.location = data.data;
                 }
             });

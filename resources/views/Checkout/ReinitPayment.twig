@@ -8,7 +8,7 @@
             $("body").append(" " +
                 "<div class=\"modal fade\" id=\"payoneModal\" data-backdrop=\"static\"> " +
                 "<div class=\"modal-dialog modal-lg\" role=\"document\">"+
-                "<div class=\"modal-content\" style=\"padding: 12px\">"+
+                "<div class=\"modal-content\">"+
                 "</div>" +
                 "</div>" +
                 "</div>");
@@ -20,10 +20,10 @@
 
             $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
 
-                if(data.mop === 'PAYONE_PAYONE_CREDIT_CARD') {
+                if(data.paymentCode === 'PAYONE_PAYONE_CREDIT_CARD') {
                     $('#payoneModal .modal-content').html(data.data);
                 }
-                if(data.mop === 'PAYONE_PAYONE_PAY_PAL' || data.mop === '6081') {
+                if(data.paymentCode === 'PAYONE_PAYONE_PAY_PAL' || data.paymentCode === '6081') {
                     window.location = data.data;
                 }
             });

@@ -183,24 +183,20 @@ class CheckoutController extends Controller
 
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
-                        'mop' => $paymentCode
+                        'paymentCode' => $paymentCode
                     ], 200); ;
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
-                    // $paymentService->openTransaction($basket);
+                    $paymentService->openTransactionFromOrder($plentyOrder);
                     break;
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
-
-
                     /** @var PaymentRenderer $paymentRenderer */
                     $paymentRenderer = pluginApp(PaymentRenderer::class);
-
                     $html = $paymentRenderer->render($payment, '');
-
 
                     return $response->json([
                         'data' => $html,
-                        'mop' => $paymentCode
+                        'paymentCode' => $paymentCode
                     ], 200); ;
             }
         } catch (\Exception $e) {

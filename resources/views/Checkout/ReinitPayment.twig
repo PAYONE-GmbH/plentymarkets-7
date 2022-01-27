@@ -23,7 +23,7 @@
                 if(data.mop === 'PAYONE_PAYONE_CREDIT_CARD') {
                     $('#payoneModal .modal-content').html(data.data);
                 }
-                if(data.mop === '6083' || data.mop === '6081') {
+                if(data.mop === 'PAYONE_PAYONE_PAY_PAL' || data.mop === '6081') {
                     window.location = data.data;
                 }
             });

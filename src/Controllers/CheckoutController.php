@@ -183,7 +183,7 @@ class CheckoutController extends Controller
 
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
-                        'mop' => $mopId
+                        'mop' => $paymentCode
                     ], 200); ;
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
@@ -200,7 +200,7 @@ class CheckoutController extends Controller
 
                     return $response->json([
                         'data' => $html,
-                        'mop' => $mopId
+                        'mop' => $paymentCode
                     ], 200); ;
             }
         } catch (\Exception $e) {

@@ -17,7 +17,8 @@
         {% set display = "none" %}
     {% endif %}
 
-    <button id="reinitPayone-{{order.id}}" class="btn btn-primary btn-appearance btn-block" onclick="reinit()" data-toggle="modal" data-target="#payoneModal">
+    <button id="reinitPayone-{{order.id}}" class="btn btn-primary btn-appearance btn-block" onclick="reinit()"
+            data-toggle="modal" data-target="#payoneModal"  style="display: {{ display }}; margin-top: 0.5rem">
         PAY
     </button>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>

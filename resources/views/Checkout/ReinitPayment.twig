@@ -11,7 +11,7 @@
             {% set paidStatus = property.value %}
         {% endif %}
     {% endfor %}
-    {% if (paymentId == paymentMethodId) and (paidStatus != 'fullyPaid') and (order.status < 4 ) and (paymentExists == false) %}
+    {% if  (paidStatus != 'fullyPaid') and (order.status < 4 )  %}
         {% set display = "block" %}
     {% else %}
         {% set display = "none" %}

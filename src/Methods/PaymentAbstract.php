@@ -4,9 +4,12 @@ namespace Payone\Methods;
 
 use Payone\PluginConstants;
 use Payone\Services\SettingsService;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Translation\Translator;
+use Payone\Helpers\PaymentHelper;
+use Payone\Services\PaymentService;
 
 abstract class PaymentAbstract extends PaymentMethodBaseService
 {
@@ -245,6 +248,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isSwitchableFrom($orderId = null): bool
     {
+        // TODO ADD AMAZON PAY
         return true;
     }
 }

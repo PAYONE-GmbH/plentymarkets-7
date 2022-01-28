@@ -97,7 +97,16 @@ class CheckoutController extends Controller
         $this->response = $response;
     }
 
-
+    /**
+     * @param $orderId
+     * @param Twig $twig
+     * @param Response $response
+     * @return \Symfony\Component\HttpFoundation\Response|void
+     * @throws \Throwable
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     public function reinitPayment(
         $orderId,
         Twig $twig,
@@ -123,13 +132,7 @@ class CheckoutController extends Controller
         /** @var OrderRepositoryContract $orderRepository */
         $orderRepository = pluginApp(OrderRepositoryContract::class);
         $plentyOrder = $orderRepository->findOrderById($orderId);
-        // Get the payment method from order if not delivered
-
         $mopId = $plentyOrder->methodOfPaymentId;
-
-
-//        /** @var SettingsService $settingsService */
-//        $settingsService = pluginApp(SettingsService::class);
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         /** @var PaymentHelper $paymentHelper */
@@ -143,11 +146,6 @@ class CheckoutController extends Controller
         /** @var PaymentAbstract $payment */
         $payment = PaymentMethodServiceFactory::create($paymentCode);
 
-
-        /** @var AddressHelper $addressHelper */
-        $addressHelper = pluginApp(AddressHelper::class);
-
-        // $billingAddress = $addressHelper->getBasketBillingAddress($basket);
         $billingAddress = $order->billingAddress;
 
 
@@ -161,10 +159,7 @@ class CheckoutController extends Controller
             $lang = $shopHelper->getCurrentLanguage();
 
             $dateOfBirthMissingMessage = $translator->trans('Payone::Template.missingDateOfBirth', [], $lang);
-
-//            $event->setValue($dateOfBirthMissingMessage);
-//            $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
-            return;
+            throw new \Exception($dateOfBirthMissingMessage);
         }
 
         if (
@@ -207,23 +202,10 @@ class CheckoutController extends Controller
             /** @var PaymentMethodContent $content */
             $content = pluginApp(PaymentMethodContent::class);
             $renderingType = $content->getPaymentContentType($paymentCode);
-            // rechnung -- continue
-            // payolution -- continue
-            // paydirect -- redirectUrl - ok
-            // paypal -- redirectUrl
-            // ratepay -- continue
-            // sofortuber -- redirectUrl
-            // vorkasse -- continue
-            // nachname -- continue
-            // kreditcarte -- htmlContent
-            // lastschrift -- htmlContent
 
             switch ($renderingType) {
                 case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
-
-
                     $auth = $paymentService->openTransactionFromOrder($plentyOrder);
-
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
                         'paymentCode' => $paymentCode
@@ -251,13 +233,8 @@ class CheckoutController extends Controller
                     ], 200); ;
             }
         } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
             $logger->logException($e);
 
-            /** @var ErrorMessageRenderer $errorMessageRenderer */
-            $errorMessageRenderer = pluginApp(ErrorMessageRenderer::class);
-            // $event->setValue($errorMessageRenderer->render($errorMessage));
-            //   $event->setType(GetPaymentMethodContent::RETURN_TYPE_ERROR);
         }
     }
 

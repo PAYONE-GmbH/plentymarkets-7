@@ -192,7 +192,8 @@ class CheckoutController extends Controller
                 PluginConstants::NAME . '::Checkout.KlarnaWidgetReinit',
                 [
                     'client_token' => $sessionResponse->getKlarnaClientToken(),
-                    'payment_method' => $sessionResponse->getKlarnaMethodIdentifier()
+                    'payment_method' => $sessionResponse->getKlarnaMethodIdentifier(),
+                    'order' => $orderId
                 ]
             );
 
@@ -323,8 +324,8 @@ class CheckoutController extends Controller
      * @return string
      */
     public function doKlarnaAuthForReinit(
-        PaymentService $paymentService,
-        $order
+        $orderId,
+        PaymentService $paymentService
     ) {
         $klarnaAuthToken = $this->request->get('authorization_token');
         /** @var SessionStorage $sessionStorage */
@@ -335,7 +336,21 @@ class CheckoutController extends Controller
             ->debug('Controller.Checkout', $this->request->all());
 
         try {
+            /** @var OrderRepositoryContract $orderContract */
+            $orderContract = pluginApp(OrderRepositoryContract::class);
+
+            /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+            $authHelper = pluginApp(AuthHelper::class);
+
+            //guarded
+            $order = $authHelper->processUnguarded(
+                function () use ($orderContract, $orderId) {
+                    //unguarded
+                    return $orderContract->findOrderById($orderId);
+                }
+            );
             $auth = $paymentService->openTransactionFromOrder($order);
+
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);
         }

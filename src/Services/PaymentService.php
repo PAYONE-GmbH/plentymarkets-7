@@ -81,9 +81,9 @@ class PaymentService
             $authType = $this->settingsService->getSettingsValue('authType');
         }
         if ($authType == self::AUTH_TYPE_AUTH) {
-            $authResponse = $this->authService->executeAuthFromOrder( $order);
+            $authResponse = $this->authService->executeAuthFromOrder($order);
         } else {
-         //   $authResponse = $this->preAuthService->executePreAuth($basket);
+            $authResponse = $this->preAuthService->executePreAuthFromOrder($order);
         }
         if (!$authResponse->getSuccess()) {
             throw new \Exception(

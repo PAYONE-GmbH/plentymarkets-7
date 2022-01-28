@@ -130,6 +130,19 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['sepaMandate'] = $this->getSepaMandateData();
         }
 
+        if ($paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaDirectBankTransferPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInstallmentsPaymentMethod::PAYMENT_CODE ||
+            $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE) {
+
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+
+
+            $requestParams['klarnaAuthToken'] =$sessionStorage->getSessionValue('klarnaAuthToken');
+            $requestParams['klarnaWorkOrderId'] =$sessionStorage->getSessionValue('klarnaWorkOrderId');
+        }
+
         $requestParams['referenceId'] = $requestReference;
         $requestParams['shippingProvider'] = $this->getShippingProvider($order->shippingProfileId);
 

@@ -16,14 +16,16 @@
         });
         function reinit() {
 
+          const modalMethods = ['PAYONE_PAYONE_CREDIT_CARD', 'PAYONE_PAYONE_KLARNA_INSTALLMENTS'];
 
+          const redirectMethods = ['PAYONE_PAYONE_PAY_PAL', 'PAYONE_PAYONE_INVOICE'];
 
             $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
 
-                if(data.paymentCode === 'PAYONE_PAYONE_CREDIT_CARD' || data.paymentCode === 'PAYONE_PAYONE_KLARNA_INSTALLMENTS') {
+                if(modalMethods.includes(data.paymentCode)) {
                     $('#payoneModal .modal-content').html(data.data);
                 }
-                if(data.paymentCode === 'PAYONE_PAYONE_PAY_PAL' || data.paymentCode === 'PAYONE_PAYONE_INVOICE') {
+                if(redirectMethods.includes(data.paymentCode)) {
                     window.location = data.data;
                 }
             });

@@ -114,7 +114,6 @@ class CheckoutController extends Controller
     )
     {
 
-
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
 
@@ -129,10 +128,8 @@ class CheckoutController extends Controller
             }
         );
 
-        /** @var OrderRepositoryContract $orderRepository */
-        $orderRepository = pluginApp(OrderRepositoryContract::class);
-        $plentyOrder = $orderRepository->findOrderById($orderId);
-        $mopId = $plentyOrder->methodOfPaymentId;
+
+        $mopId = $order->methodOfPaymentId;
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         /** @var PaymentHelper $paymentHelper */
@@ -205,14 +202,14 @@ class CheckoutController extends Controller
 
             switch ($renderingType) {
                 case GetPaymentMethodContent::RETURN_TYPE_REDIRECT_URL:
-                    $auth = $paymentService->openTransactionFromOrder($plentyOrder);
+                    $auth = $paymentService->openTransactionFromOrder($order);
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
                         'paymentCode' => $paymentCode
                     ], 200); ;
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
-                    $paymentService->openTransactionFromOrder($plentyOrder);
+                    $paymentService->openTransactionFromOrder($order);
 
                     /** @var ShopHelper $shopHelper */
                     $shopHelper = pluginApp(ShopHelper::class);
@@ -297,7 +294,7 @@ class CheckoutController extends Controller
 
     /**
      * @param PaymentService $paymentService
-     * @param  $order
+     * @param  $orderId
      * @return string
      */
     public function doKlarnaAuthForReinit(
@@ -514,8 +511,8 @@ class CheckoutController extends Controller
     /**
      * @param BasketRepositoryContract $basketReopo
      * @param PaymentHelper $helper
-     *
-     * @return string
+     * @param PaymentCache $paymentCache
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function checkoutSuccessForReinit(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
     {

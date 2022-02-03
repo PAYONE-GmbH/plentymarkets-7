@@ -239,7 +239,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         if (strlen($basketId)) {
             $successParam = '?transactionBasketId=' . $basketId;
         }
-
+        $requestParams['basket']['couponDiscount'] = $order->amount->giftCardAmount;
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
         $requestParams['basketItems'] = $this->getOrderItemData($order);
 

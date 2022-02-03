@@ -100,25 +100,20 @@ class PreAuth
     public function executePreAuthFromOrder($order)
     {
 
-        $mopId = $order->methodOfPaymentId;
-
-        $selectedPaymentId = $mopId;
+        $selectedPaymentId = $order->methodOfPaymentId;
 
         if (!$selectedPaymentId || !$this->paymentHelper->isPayonePayment($selectedPaymentId)) {
             throw new \Exception('No Payone payment method');
         }
 
-        $authResponse = $this->doPreAuthFromOrder( $order);
+        $preAuthResponse = $this->doPreAuthFromOrder( $order);
 
         /** @var AuthDataProvider $authDataProvider */
         $authDataProvider = pluginApp(AuthDataProvider::class);
         $data = $authDataProvider->getDataFromOrderForReinit($selectedPaymentId, $order);
 
         $basketData = $data['basket'];
-
-
-        $payment = $this->createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData);
-
+        $payment = $this->createPaymentFromOrder($selectedPaymentId, $preAuthResponse, $basketData);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
         //  $this->paymentCache->setActiveBasketId($basketData['id']);
 
@@ -126,7 +121,7 @@ class PreAuth
         $paymentCreationService = pluginApp(PaymentCreation::class);
         $paymentCreationService->assignPaymentToOrder($payment, $order);
 
-        return $authResponse;
+        return $preAuthResponse;
 
     }
     /**
@@ -160,18 +155,19 @@ class PreAuth
 
     /**
      * @param $selectedPaymentId
-     * @param AuthResponse $authResponse
-     * @throws \Exception
+     * @param PreAuthResponse $preAuthResponse
+     * @param $basketData
      * @return Payment
+     * @throws \Exception
      */
-    private function createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData): Payment
+    private function createPaymentFromOrder($selectedPaymentId,PreAuthResponse $preAuthResponse, $basketData): Payment
     {
         try {
             $plentyPayment = $this->paymentCreationService->createPaymentFromOrder(
                 $selectedPaymentId,
-                $authResponse,
+                $preAuthResponse,
                 $basketData,
-                $authResponse->getClearing()
+                $preAuthResponse->getClearing()
             );
             if (!$plentyPayment instanceof Payment) {
                 throw new \Exception('Not an instance of Payment');
@@ -224,8 +220,6 @@ class PreAuth
             'Api.doPreAuth',
             ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
         );
-
-        //$requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
         /** @var AuthDataProvider $authDataProvider */
         $authDataProvider = pluginApp(AuthDataProvider::class);
         $requestData = $authDataProvider->getDataFromOrder($paymentCode, $order, '');
@@ -234,16 +228,16 @@ class PreAuth
             ['requestData' => $requestData]
         );
         try {
-            $authResponse = $this->api->doPreAuth($requestData);
+            $preAuthResponse = $this->api->doPreAuth($requestData);
 
         } catch (\Exception $e) {
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($authResponse instanceof AuthResponse) || !$authResponse->getSuccess()) {
+        if (!($preAuthResponse instanceof PreAuthResponse) || $preAuthResponse->getSuccess()) {
             throw new \Exception('The payment could not be executed! Auth request failed.');
         }
 
-        return $authResponse;
+        return $preAuthResponse;
     }
 }

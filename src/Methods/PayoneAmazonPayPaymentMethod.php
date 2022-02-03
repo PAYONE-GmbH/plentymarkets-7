@@ -15,6 +15,11 @@ class PayoneAmazonPayPaymentMethod extends PaymentAbstract
      */
     public function isSwitchableFrom($orderId = null): bool
     {
-        return true;
+        return false;
+    }
+
+    public function isSwitchableTo($orderId = null): bool
+    {
+        return false;
     }
 }

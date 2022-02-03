@@ -14,8 +14,6 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
-use Payone\Providers\Api\Request\AuthDataProvider;
-use Payone\Providers\PayoneServiceProvider;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;

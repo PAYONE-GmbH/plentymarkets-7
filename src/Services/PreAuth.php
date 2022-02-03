@@ -5,15 +5,11 @@ namespace Payone\Services;
 use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Models\Api\PreAuthResponse;
-use Payone\Models\Api\Response;
-use Payone\Models\Api\ResponseAbstract;
 use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Payone\Providers\Api\Request\PreAuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
-use Payone\Services\Auth;
 use Plenty\Modules\Payment\Models\Payment;
-use Payone\Models\Api\AuthResponse;
 
 class PreAuth
 {

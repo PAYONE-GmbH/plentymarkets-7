@@ -9,6 +9,7 @@ use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Account\Address\Models\Address;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
+use Plenty\Modules\Order\Models\Order;
 
 /**
  * Class KlarnaService
@@ -43,10 +44,10 @@ class KlarnaService
 
     /**
      * @param string $paymentCode
-     * @param Basket $basket
+     * @param Order $order
      * @return mixed
      */
-    public function startSessionFromOrder(string $paymentCode, $order)
+    public function startSessionFromOrder(string $paymentCode, Order $order)
     {
         /** @var AddressHelper $addressHelper */
         $addressHelper = pluginApp(AddressHelper::class);

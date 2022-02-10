@@ -9,6 +9,7 @@ use Payone\Models\PaymentCache;
 use Payone\Providers\Api\Request\AuthDataProvider;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Payment\Models\Payment;
+use Plenty\Modules\Order\Models\Order;
 
 
 
@@ -76,15 +77,13 @@ class Auth
     }
 
     /**
-     * @param Basket $basket
+     * @param Order $order
      * @return AuthResponse
      * @throws \Exception
      */
-    public function executeAuthFromOrder($order): AuthResponse
+    public function executeAuthFromOrder(Order $order): AuthResponse
     {
-        $mopId = $order->methodOfPaymentId;
-
-        $selectedPaymentId = $mopId;
+        $selectedPaymentId = $order->methodOfPaymentId;
 
         if (!$selectedPaymentId || !$this->paymentHelper->isPayonePayment($selectedPaymentId)) {
             throw new \Exception('No Payone payment method');
@@ -95,11 +94,8 @@ class Auth
 
         $basketData = $data['basket'];
 
-
         $payment = $this->createPaymentFromOrder($selectedPaymentId, $authResponse, $basketData);
-
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
-        //  $this->paymentCache->setActiveBasketId($basketData['id']);
 
         /** @var PaymentCreation $paymentCreationService */
         $paymentCreationService = pluginApp(PaymentCreation::class);
@@ -108,19 +104,21 @@ class Auth
         return $authResponse;
     }
 
-
-    private function doAuthFromOrder($order): AuthResponse
+    /**
+     * @param Order $order
+     * @return AuthResponse
+     * @throws \Exception
+     */
+    private function doAuthFromOrder(Order $order): AuthResponse
     {
-        $mopId = $order->methodOfPaymentId;
+        $selectedPaymentId = $order->methodOfPaymentId;
 
-        $selectedPaymentId = $mopId;
         $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentId);
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Api.doAuth',
             ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
         );
 
-        //$requestData = $this->authDataProvider->getDataFromBasket($paymentCode, $basket, '');
         $requestData = $this->authDataProvider->getDataFromOrder($paymentCode, $order, '');
         $this->logger->setIdentifier(__METHOD__)->debug(
             'Api.doAuth',

@@ -235,7 +235,12 @@ class PreAuth
             throw $e;
         }
         if (!($preAuthResponse instanceof PreAuthResponse) || $preAuthResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! PreAuth request failed.');
+            $this->logger->setIdentifier(__METHOD__)->error(
+                'Api.doPreAuth',
+                [ 'requestData' => $requestData, 'preAuthResponse' => $preAuthResponse]
+            );
+
+            throw new \Exception('The payment could not be executed! PreAuth From Order request failed.');
         }
 
         return $preAuthResponse;

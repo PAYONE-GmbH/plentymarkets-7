@@ -6,6 +6,7 @@ use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Basket\Models\Basket;
+use Plenty\Modules\Order\Models\Order;
 
 class GenericPaymentDataProvider extends DataProviderAbstract
 {
@@ -215,7 +216,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
 
     /**
      * @param string $paymentCode
-     * @param Basket $basket
+     * @param Order $order
      * @return array
      * @throws \Exception
      */
@@ -226,7 +227,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $requestParams = $this->getDefaultPaymentRequestData($paymentCode);
 
         // Currency not mentioned in API-Doc of Payone
-        $requestParams['currency'] = $order->currency;
+        $requestParams['currency'] = $order->amount->currency;
         // amount in smallest unit
         $requestParams['amount'] = ($order->amount->invoiceTotal) * 100;
 

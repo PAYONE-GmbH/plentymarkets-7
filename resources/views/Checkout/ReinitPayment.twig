@@ -11,6 +11,9 @@
             {% set paidStatus = property.value %}
         {% endif %}
     {% endfor %}
+    {% if (paymentId == paymentMethodId)  %}
+         {% set display = "none" %}
+    {% endif %}
     {% if  (paidStatus != 'fullyPaid') and (order.status < 4 )  %}
         {% set display = "block" %}
     {% else %}

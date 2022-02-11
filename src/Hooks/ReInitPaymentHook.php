@@ -23,6 +23,11 @@ class ReInitPaymentHook
                 $paymentIds[] = $paymentMethod->id;
             }
         }
+        if(in_array($order->methodOfPaymentId, $paymentIds)) {
+            $paymentMethodId = $order->methodOfPaymentId;
+        }else{
+            $paymentMethodId = 0;
+        }
 
         /** @var ShopUrls $shopUrls */
         $shopUrls = pluginApp(ShopUrls::class);
@@ -33,7 +38,7 @@ class ReInitPaymentHook
         $twig = pluginApp(Twig::class);
         $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.ReinitPayment', [
             'order' => $order,
-            'paymentIds' => $paymentIds,
+            "paymentMethodId" => $paymentMethodId,
             'isMyAccount' => $isMyAccount,
             'isOrderConfirmation' => $isOrderConfirmation
         ])

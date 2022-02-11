@@ -234,7 +234,7 @@ class PreAuth
             $this->logger->logException($e);
             throw $e;
         }
-        if (!($preAuthResponse instanceof PreAuthResponse) || $preAuthResponse->getSuccess()) {
+        if (!($preAuthResponse instanceof PreAuthResponse) || !$preAuthResponse->getSuccess()) {
             $this->logger->setIdentifier(__METHOD__)->error(
                 'Api.doPreAuth',
                 [ 'requestData' => $requestData, 'preAuthResponse' => $preAuthResponse]

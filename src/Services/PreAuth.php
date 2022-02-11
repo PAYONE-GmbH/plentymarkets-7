@@ -199,7 +199,11 @@ class PreAuth
             throw $e;
         }
         if (!($preAuthResponse instanceof PreAuthResponse) || !$preAuthResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! PreAuth request failed.');
+            $this->logger->setIdentifier(__METHOD__)->error(
+                'Api.doPreAuth',
+                [ 'requestData' => $requestData, 'preAuthResponse' => $preAuthResponse]
+            );
+            throw new \Exception('The payment could not be executed! Pre Auth request failed.');
         }
 
         return $preAuthResponse;
@@ -220,7 +224,7 @@ class PreAuth
         $authDataProvider = pluginApp(AuthDataProvider::class);
         $requestData = $authDataProvider->getDataFromOrder($paymentCode, $order, '');
         $this->logger->setIdentifier(__METHOD__)->debug(
-            'Api.doAuth',
+            'Api.doPreAuth',
             ['requestData' => $requestData]
         );
         try {
@@ -231,7 +235,7 @@ class PreAuth
             throw $e;
         }
         if (!($preAuthResponse instanceof PreAuthResponse) || $preAuthResponse->getSuccess()) {
-            throw new \Exception('The payment could not be executed! Auth request failed.');
+            throw new \Exception('The payment could not be executed! PreAuth request failed.');
         }
 
         return $preAuthResponse;

@@ -378,11 +378,11 @@ class CheckoutController extends Controller
      * @throws \Throwable
      */
     public function storeAccountDataForReinit(
+        $orderId,
         BankAccount $bankAccount,
         BankAccountCache $accountCache,
         SepaMandate $mandateService,
-        SepaMandateCache $mandateCache,
-        $orderId
+        SepaMandateCache $mandateCache
     ) {
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);

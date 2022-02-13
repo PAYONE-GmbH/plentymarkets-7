@@ -9,7 +9,7 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountDataForReinit = function (form, orderId) {
-
+        console.log('reinit with order id ')
         return $.ajax({
             type: 'POST',
             url: '/payment/payone/checkout/storeAccountDataForReinit/' + orderId,
@@ -35,6 +35,7 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountData = function (form) {
+        console.log('normal flow ')
         return $.ajax({
             type: 'POST',
             url: '/payment/payone/checkout/storeAccountData',
@@ -46,11 +47,11 @@
                 var errorClasses = 'has-error error has-feedback';
                 form.find('input, select').parent().removeClass(errorClasses);
             }).fail(function (data) {
-                var data = data.responseJSON;
-                if (data.errors && data.errors.message) {
-                    $.payonePayment.showErrorMessage(data.errors.message);
-                }
-                console.log(data);
+                    var data = data.responseJSON;
+                    if (data.errors && data.errors.message) {
+                        $.payonePayment.showErrorMessage(data.errors.message);
+                    }
+                    console.log(data);
                 }
             );
 
@@ -81,6 +82,7 @@
     };
 
     window.sepaForm = function(event, orderId) {
+
         console.log('submit button clicked');
         event.preventDefault();
 
@@ -88,6 +90,7 @@
 
         var form = $('#createSepamandateForm');
         console.log('storing account data');
+        console.log(orderId)
         if(orderId) {
             $.when($.payoneDirectDebit.storeAccountDataForReinit(form, orderId)).done(function () {
                 console.log('submitting orderPlaceForm');

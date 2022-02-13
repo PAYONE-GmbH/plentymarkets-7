@@ -83,7 +83,7 @@
 
     window.sepaForm = function(event, orderId) {
 
-        console.log('submit button clicked');
+        console.log('submit button clicked now');
         event.preventDefault();
 
         $('#sepaContinue').prop('disabled', true);

@@ -220,7 +220,7 @@ class CheckoutController extends Controller
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
                     /** @var PaymentRenderer $paymentRenderer */
                     $paymentRenderer = pluginApp(PaymentRenderer::class);
-                    $html = $paymentRenderer->render($payment, '');
+                    $html = $paymentRenderer->render($payment, '', $orderId);
 
                     return $response->json([
                         'data' => $html,
@@ -366,6 +366,87 @@ class CheckoutController extends Controller
         }
 
         return $this->getJsonSuccess($response);
+    }
+
+    /**
+     * @param BankAccount $bankAccount
+     * @param BankAccountCache $accountCache
+     * @param SepaMandate $mandateService
+     * @param SepaMandateCache $mandateCache
+     * @param BasketRepositoryContract $basket
+     *
+     * @return string
+     */
+    public function storeAccountDataForReinit(
+        BankAccount $bankAccount,
+        BankAccountCache $accountCache,
+        SepaMandate $mandateService,
+        SepaMandateCache $mandateCache,
+        $orderId
+    ) {
+        /** @var OrderRepositoryContract $orderContract */
+        $orderContract = pluginApp(OrderRepositoryContract::class);
+
+        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+        $authHelper = pluginApp(AuthHelper::class);
+
+        //guarded
+        $order = $authHelper->processUnguarded(
+            function () use ($orderContract, $orderId) {
+                //unguarded
+                return $orderContract->findOrderById($orderId);
+            }
+        );
+
+        $errors = [];
+
+        if (!$this->sessionHelper->isLoggedIn()) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->render(
+                    'Your session expired. Please login and start a new purchase.'
+                ),
+            ]);
+        }
+
+        $formData = [
+            'holder' => $this->request->get('holder'),
+            'iban' => $this->request->get('iban'),
+            'bic' => $this->request->get('bic'),
+        ];
+        $this->logger->setIdentifier(__METHOD__)->debug('Controller.routeCalled', $this->request->all());
+
+        foreach ($formData as $key => $value) {
+            if (empty($formData[$key])) {
+                $errors[$key] = true;
+            }
+        }
+
+        if ($errors) {
+            return $this->getJsonErrors($errors);
+        }
+
+        $accountCache->storeBankAccount(
+            $bankAccount->init(
+                $this->request->get('holder'),
+                $this->request->get('iban'),
+                $this->request->get('bic')
+            )
+        );
+
+        try {
+            $mandate = $mandateService->createMandateFromOrder($order);
+        } catch (\Exception $e) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->render(
+                    $e->getMessage()
+                ),
+            ]);
+        }
+        $sepaMandate = $mandate->getMandate();
+
+        $mandateCache->store($sepaMandate);
+
+        return $this->getJsonSuccess($sepaMandate);
     }
 
     /**

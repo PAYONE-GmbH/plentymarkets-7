@@ -239,7 +239,7 @@ class PayoneServiceProvider extends ServiceProvider
                                 $paymentService->openTransaction($basket);
                                 break;
                             case  GetPaymentMethodContent::RETURN_TYPE_HTML:
-                                $event->setValue($paymentRenderer->render($payment, ''));
+                                $event->setValue($paymentRenderer->render($payment, '', ''));
                                 break;
                         }
                     } catch (\Exception $e) {

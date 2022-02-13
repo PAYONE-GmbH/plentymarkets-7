@@ -65,4 +65,35 @@ class SepaMandate
 
         return $response;
     }
+
+    /**
+     * @param Basket $basket
+     *
+     * @throws \Exception
+     *
+     * @return ManagemandateResponse
+     */
+    public function createMandateFromOrder($order)
+    {
+        $selectedPaymentId = $order->methodOfPaymentId;
+
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($selectedPaymentId);
+        $this->logger->setIdentifier(__METHOD__)->debug(
+            'SepaMandate.createMandate',
+            ['selectedPaymentId' => $selectedPaymentId, 'paymentCode' => $paymentCode]
+        );
+
+        $requestData = $this->requestDataProvider->getDataFromOrder($paymentCode, $order, '');
+        try {
+            $response = $this->api->doManagemandate($requestData);
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            throw $e;
+        }
+        if (!($response instanceof ResponseAbstract) || !$response->getSuccess()) {
+            throw new \Exception($response->getErrorMessage() ?? 'Mandate could not be created. Request failed.');
+        }
+
+        return $response;
+    }
 }

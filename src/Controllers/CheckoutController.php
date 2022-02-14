@@ -518,13 +518,13 @@ class CheckoutController extends Controller
      */
     public function getSepaMandateStep(Twig $twig, SepaMandateCache $sepaMandateCache, ShopHelper $helper)
     {
-        if (!$this->sessionHelper->isLoggedIn()) {
-            return $this->getJsonErrors([
-                'message' => $this->renderer->render(
-                    'Your session expired. Please login and start a new purchase.'
-                ),
-            ]);
-        }
+//        if (!$this->sessionHelper->isLoggedIn()) {
+//            return $this->getJsonErrors([
+//                'message' => $this->renderer->render(
+//                    'Your session expired. Please login and start a new purchase.'
+//                ),
+//            ]);
+//        }
 
         try {
             $mandate = $sepaMandateCache->load();

@@ -134,8 +134,9 @@
     window.createIframeStart = function() {
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
     };
-
-    window.orderPlaceForm = function(event) {
+    let orderGlobal;
+    window.orderPlaceForm = function(event, orderId) {
+        this.orderGlobal = orderId;
         event.preventDefault();
 
         $.payonePayment.setCheckoutDisabled(true);
@@ -159,18 +160,38 @@ function checkCallback(response) {
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
         console.log(response)
         console.log('submitting orderPlaceForm');
-        $.when($.payonePayment.doAuth(form)).done(function (data) {
-            if (data.data.redirecturl) {
-                window.location.replace(data.data.redirecturl);
-                return false;
-            }
-            submitted = true;
-            form.removeAttr('onsubmit');
-            form.submit();
-        }).fail(function (data, textStatus, jqXHR) {
-            form.removeAttr('onsubmit');
-        });
+
+        if(this.orderGlobal){
+            $.when($.payonePayment.doAuthFromOrder(form, this.orderGlobal)).done(function (data) {
+                if (data.data.redirecturl) {
+                    window.location.replace(data.data.redirecturl);
+                    return false;
+                }
+                submitted = true;
+                form.removeAttr('onsubmit');
+                form.submit();
+            }).fail(function (data, textStatus, jqXHR) {
+                form.removeAttr('onsubmit');
+            });
+
+        } else {
+
+            $.when($.payonePayment.doAuth(form)).done(function (data) {
+                if (data.data.redirecturl) {
+                    window.location.replace(data.data.redirecturl);
+                    return false;
+                }
+                submitted = true;
+                form.removeAttr('onsubmit');
+                form.submit();
+            }).fail(function (data, textStatus, jqXHR) {
+                form.removeAttr('onsubmit');
+            });
+
+        }
+
     }).fail(function (data, textStatus, jqXHR) {
         form.removeAttr('onsubmit');
     });
+
 }

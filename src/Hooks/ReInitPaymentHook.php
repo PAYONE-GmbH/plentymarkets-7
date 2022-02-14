@@ -10,7 +10,7 @@ use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Plugin\Templates\Twig;
 use Payone\PluginConstants;
-use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
+
 
 class ReInitPaymentHook
 {
@@ -32,7 +32,7 @@ class ReInitPaymentHook
         $isOrderConfirmation = $shopUrls->is(RouteConfig::CONFIRMATION);
 
         /** @var PaymentRepositoryContract $paymentRepo */
-        $paymentRepo = app(PaymentRepositoryContract::class);
+        $paymentRepo = pluginApp(PaymentRepositoryContract::class);
         $orderHasPaymentAssigned = 0;
         if(!empty($paymentRepo->getPaymentsByOrderId($order->id))) {
             $orderHasPaymentAssigned = 1;

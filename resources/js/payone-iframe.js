@@ -156,6 +156,7 @@ function checkCallback(response) {
     }
     console.log('storing cc check response');
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
+        console.log(response)
         console.log('submitting orderPlaceForm');
         $.when($.payonePayment.doAuth(form)).done(function (data) {
             if (data.data.redirecturl) {

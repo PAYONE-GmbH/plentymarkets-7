@@ -5,10 +5,12 @@ namespace Payone\Hooks;
 use Ceres\Helper\LayoutContainer;
 use IO\Extensions\Constants\ShopUrls;
 use IO\Helper\RouteConfig;
+use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
 use Plenty\Modules\Payment\Method\Contracts\PaymentMethodRepositoryContract;
 use Plenty\Modules\Payment\Method\Models\PaymentMethod;
 use Plenty\Plugin\Templates\Twig;
 use Payone\PluginConstants;
+use Plenty\Modules\Payment\Contracts\PaymentOrderRelationRepositoryContract;
 
 class ReInitPaymentHook
 {
@@ -29,14 +31,23 @@ class ReInitPaymentHook
         $isMyAccount = $shopUrls->is(RouteConfig::MY_ACCOUNT);
         $isOrderConfirmation = $shopUrls->is(RouteConfig::CONFIRMATION);
 
+        /** @var PaymentRepositoryContract $paymentRepo */
+        $paymentRepo = app(PaymentRepositoryContract::class);
+        $orderHasPaymentAssigned = 0;
+        if(!empty($paymentRepo->getPaymentsByOrderId($order->id))) {
+            $orderHasPaymentAssigned = 1;
+        }
+
+
         /** @var Twig $twig */
         $twig = pluginApp(Twig::class);
         $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.ReinitPayment', [
             'order' => $order,
             "paymentIds" => $paymentIds,
             'isMyAccount' => $isMyAccount,
-            'isOrderConfirmation' => $isOrderConfirmation
-        ])
+            'isOrderConfirmation' => $isOrderConfirmation,
+            'orderHasPayment' => $orderHasPaymentAssigned
+         ])
         );
     }
 }

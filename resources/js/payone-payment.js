@@ -30,6 +30,7 @@
     };
 
     $.payonePayment.doAuthFromOrder = function (orderId) {
+        console.log(orderId)
         return $.ajax({
             type: 'POST',
             url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId,

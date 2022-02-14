@@ -373,21 +373,19 @@ class CheckoutController extends Controller
      * @param BankAccountCache $accountCache
      * @param SepaMandate $mandateService
      * @param SepaMandateCache $mandateCache
-
+     * @param $orderId
      * @return string
      */
     public function storeAccountDataForReinit(
+        $orderId,
         BankAccount $bankAccount,
         BankAccountCache $accountCache,
         SepaMandate $mandateService,
         SepaMandateCache $mandateCache
     ) {
-        $orderId = $this->request->get('orderId');
+
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
-
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
 
         //guarded
         $order = $authHelper->processUnguarded(

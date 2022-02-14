@@ -9,12 +9,11 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountDataForReinit = function (form, orderId) {
-        console.log('reinit with order id  - ')
-
+        console.log('reinit with order id ')
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/storeAccountDataForReinit',
-            data: form.serialize() + '&orderId=' + orderId,
+            url: '/payment/payone/checkout/storeAccountDataForReinit/' + orderId,
+            data: form.serialize(),
             dataType: 'json',
             async: true
         })
@@ -23,7 +22,6 @@
                 form.find('input, select').parent().removeClass(errorClasses);
             }).fail(function (data) {
                     var data = data.responseJSON;
-                    console.log(data)
                     if (data.errors && data.errors.message) {
                         $.payonePayment.showErrorMessage(data.errors.message);
                     }

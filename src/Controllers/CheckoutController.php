@@ -387,6 +387,9 @@ class CheckoutController extends Controller
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
 
+        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+        $authHelper = pluginApp(AuthHelper::class);
+
         //guarded
         $order = $authHelper->processUnguarded(
             function () use ($orderContract, $orderId) {

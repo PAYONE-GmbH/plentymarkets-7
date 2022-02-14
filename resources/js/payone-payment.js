@@ -29,6 +29,28 @@
         });
     };
 
+    $.payonePayment.doAuthFromOrder = function (orderId) {
+        return $.ajax({
+            type: 'POST',
+            url: '/payment/payone/checkout/doAuthFromOrder'+ orderId,
+            data: '',
+            dataType: 'json',
+            async: true
+        }).done(function (data) {
+            if (data.data.redirecturl) {
+                window.location.replace(data.data.redirecturl);
+            }
+            console.log('done');
+            console.log(data);
+        }).fail(function (data) {
+            var data = data.responseJSON;
+            if (data.errors && data.errors.message) {
+                $.payonePayment.showErrorMessage(data.errors.message);
+            }
+            console.log(data);
+            console.log(data);
+        });
+    };
     $.payonePayment.showValidationErrors = function (form, errors, errorClasses) {
         for (var key in errors) {
             if (errors.hasOwnProperty(key)) {

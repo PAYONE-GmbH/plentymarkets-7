@@ -20,6 +20,7 @@ class PayoneRouteServiceProvider extends RouteServiceProvider
         $router->post('payment/payone/checkout/doKlarnaAuth/', 'Payone\Controllers\CheckoutController@doKlarnaAuth');
         $router->post('payment/payone/checkout/doKlarnaAuthForReinit/{orderId}', 'Payone\Controllers\CheckoutController@doKlarnaAuthForReinit');
         $router->post('payment/payone/checkout/doAuth/', 'Payone\Controllers\CheckoutController@doAuth');
+        $router->post('payment/payone/checkout/doAuthFromOrder/{orderId}', 'Payone\Controllers\CheckoutController@doAuthFromOrder');
         $router->post('payment/payone/checkout/storeCCCheckResponse/', 'Payone\Controllers\CheckoutController@storeCCCheckResponse');
         $router->post('payment/payone/checkout/storeAccountDataForReinit/{orderId}/', 'Payone\Controllers\CheckoutController@storeAccountDataForReinit');
         $router->post('payment/payone/checkout/storeAccountData/', 'Payone\Controllers\CheckoutController@storeAccountData');

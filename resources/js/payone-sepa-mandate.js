@@ -8,7 +8,7 @@
             $.payonePayment.setCheckoutDisabled(isDisabled);
         }
 
-        window.sepaOrder = function(event, form) {
+        window.sepaOrder = function(event, form, orderId) {
             console.log('submitting orderPlaceForm for sepa');
             event.preventDefault();
 
@@ -17,14 +17,26 @@
             $.payonePayment.setCheckoutDisabled(true);
 
             var form = $(form);
-            $.when($.payonePayment.doAuth(form)).done(function () {
 
-                submitted = true;
-                form.removeAttr('onsubmit');
-                form.submit();
-            }).fail(function (data, textStatus, jqXHR) {
-                return false;
-            });
+            if(orderId){
+                $.when($.payonePayment.doAuthFromOrder(form, orderId)).done(function () {
+
+                    submitted = true;
+                    form.removeAttr('onsubmit');
+                    form.submit();
+                }).fail(function (data, textStatus, jqXHR) {
+                    return false;
+                });
+            }else {
+                $.when($.payonePayment.doAuth(form)).done(function () {
+
+                    submitted = true;
+                    form.removeAttr('onsubmit');
+                    form.submit();
+                }).fail(function (data, textStatus, jqXHR) {
+                    return false;
+                });
+            }
         }
     });
 }(window.jQuery, window, document));

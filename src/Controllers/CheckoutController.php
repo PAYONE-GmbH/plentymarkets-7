@@ -261,6 +261,40 @@ class CheckoutController extends Controller
 
     /**
      * @param PaymentService $paymentService
+     * @param $ordeId
+     *
+     * @return string
+     */
+    public function doAuthFromOrder(
+        PaymentService $paymentService,
+        $orderId
+    ) {
+
+        /** @var OrderRepositoryContract $orderContract */
+        $orderContract = pluginApp(OrderRepositoryContract::class);
+
+        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+        $authHelper = pluginApp(AuthHelper::class);
+
+        //guarded
+        $order = $authHelper->processUnguarded(
+            function () use ($orderContract, $orderId) {
+                //unguarded
+                return $orderContract->findOrderById($orderId);
+            }
+        );
+
+        try {
+            $auth = $paymentService->openTransactionFromOrder($order);
+        } catch (\Exception $e) {
+            return $this->getJsonErrors(['message' => $e->getMessage()]);
+        }
+
+        return $this->getJsonSuccess($auth);
+    }
+
+    /**
+     * @param PaymentService $paymentService
      * @param BasketRepositoryContract $basket
      *
      * @return string
@@ -439,6 +473,9 @@ class CheckoutController extends Controller
 
         $mandateCache->store($sepaMandate);
 
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $sessionStorage->setSessionValue('debitOrderId', $orderId);
         return $this->getJsonSuccess($sepaMandate);
     }
 
@@ -518,19 +555,24 @@ class CheckoutController extends Controller
      */
     public function getSepaMandateStep(Twig $twig, SepaMandateCache $sepaMandateCache, ShopHelper $helper)
     {
-//        if (!$this->sessionHelper->isLoggedIn()) {
-//            return $this->getJsonErrors([
-//                'message' => $this->renderer->render(
-//                    'Your session expired. Please login and start a new purchase.'
-//                ),
-//            ]);
-//        }
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $orderId = $sessionStorage->getSessionValue('debitOrderId');
+
+        if (!$this->sessionHelper->isLoggedIn() && empty($orderId)) {
+            return $this->getJsonErrors([
+                'message' => $this->renderer->render(
+                    'Your session expired. Please login and start a new purchase.'
+                ),
+            ]);
+        }
 
         try {
             $mandate = $sepaMandateCache->load();
             $html = $twig->render(PluginConstants::NAME . '::Partials.PaymentForm.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE', [
                 'mandate' => $mandate,
                 'locale' => $helper->getCurrentLocale(),
+                'orderId' => $orderId
             ]);
         } catch (\Exception $e) {
             return $this->getJsonErrors([

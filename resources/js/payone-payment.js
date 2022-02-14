@@ -29,7 +29,7 @@
         });
     };
 
-    $.payonePayment.doAuthFromOrder = function (orderId) {
+    $.payonePayment.doAuthFromOrder = function (form, orderId) {
         console.log(orderId)
         return $.ajax({
             type: 'POST',

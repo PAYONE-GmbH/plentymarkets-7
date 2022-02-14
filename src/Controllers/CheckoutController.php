@@ -369,27 +369,20 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param $orderId
+     * @param BankAccount $bankAccount
+     * @param BankAccountCache $accountCache
+     * @param SepaMandate $mandateService
+     * @param SepaMandateCache $mandateCache
      * @return string
      * @throws \Throwable
      */
     public function storeAccountDataForReinit(
-        $orderId
+        BankAccount $bankAccount,
+        BankAccountCache $accountCache,
+        SepaMandate $mandateService,
+        SepaMandateCache $mandateCache
     ) {
-
-        /** @var BankAccount $bankAccount */
-        $bankAccount = pluginApp(BankAccount::class);
-
-        /** @var BankAccountCache $accountCache */
-        $accountCache = pluginApp(BankAccountCache::class);
-
-        /** @var SepaMandate $mandateService */
-        $mandateService = pluginApp(SepaMandate::class);
-
-
-        /** @var SepaMandateCache $mandateCache */
-        $mandateCache = pluginApp(SepaMandateCache::class);
-
+        $orderId = $this->request->get('orderId');
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
 

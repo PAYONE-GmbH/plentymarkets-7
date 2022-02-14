@@ -9,13 +9,12 @@
      * @param form
      */
     $.payoneDirectDebit.storeAccountDataForReinit = function (form, orderId) {
-        console.log('reinit with order id ')
-        console.log(form)
-        console.log(form.serialize())
+        console.log('reinit with order id  - ')
+
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/storeAccountDataForReinit/' + orderId,
-            data: form.serialize(),
+            url: '/payment/payone/checkout/storeAccountDataForReinit',
+            data: form.serialize() + '&orderId=' + orderId,
             dataType: 'json',
             async: true
         })

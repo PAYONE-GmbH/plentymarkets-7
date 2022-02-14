@@ -23,6 +23,7 @@
                 form.find('input, select').parent().removeClass(errorClasses);
             }).fail(function (data) {
                     var data = data.responseJSON;
+                    console.log(data)
                     if (data.errors && data.errors.message) {
                         $.payonePayment.showErrorMessage(data.errors.message);
                     }

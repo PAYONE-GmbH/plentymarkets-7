@@ -399,13 +399,6 @@ class CheckoutController extends Controller
 
         $errors = [];
 
-        if (!$this->sessionHelper->isLoggedIn()) {
-            return $this->getJsonErrors([
-                'message' => $this->renderer->render(
-                    'Your session expired. Please login and start a new purchase.'
-                ),
-            ]);
-        }
 
         $formData = [
             'holder' => $this->request->get('holder'),

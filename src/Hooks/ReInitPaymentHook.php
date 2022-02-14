@@ -34,7 +34,7 @@ class ReInitPaymentHook
         /** @var PaymentRepositoryContract $paymentRepo */
         $paymentRepo = pluginApp(PaymentRepositoryContract::class);
         $orderHasPaymentAssigned = 0;
-        if(!empty($paymentRepo->getPaymentsByOrderId($order->id))) {
+        if(!empty($paymentRepo->getPaymentsByOrderId($order['id']))) {
             $orderHasPaymentAssigned = 1;
         }
 

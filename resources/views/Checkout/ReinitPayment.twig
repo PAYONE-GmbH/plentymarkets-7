@@ -12,7 +12,7 @@
         {% endif %}
     {% endfor %}
     <p>{{ orderHasPayment }}</p>
-    {% if  (paidStatus != 'fullyPaid') and (order.status < 4 ) and (paymentId in paymentIds)  %}
+    {% if  (paidStatus != 'fullyPaid') and (order.status < 4 ) and (paymentId in paymentIds) and orderHasPayment == 0 %}
         {% set display = "block" %}
     {% else %}
         {% set display = "none" %}

@@ -32,7 +32,7 @@
     $.payonePayment.doAuthFromOrder = function (orderId) {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/doAuthFromOrder'+ orderId,
+            url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId,
             data: '',
             dataType: 'json',
             async: true

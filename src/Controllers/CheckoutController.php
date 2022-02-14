@@ -373,8 +373,8 @@ class CheckoutController extends Controller
      * @param BankAccountCache $accountCache
      * @param SepaMandate $mandateService
      * @param SepaMandateCache $mandateCache
+
      * @return string
-     * @throws \Throwable
      */
     public function storeAccountDataForReinit(
         BankAccount $bankAccount,

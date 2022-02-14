@@ -378,9 +378,9 @@ class CheckoutController extends Controller
     ) {
         $this->logger->setIdentifier(__METHOD__)
             ->debug('Controller.Checkout', $this->request->all());
-        if (!$this->sessionHelper->isLoggedIn()) {
-            return $this->getJsonErrors(['message' => 'Your session expired. Please login and start a new purchase.']);
-        }
+//        if (!$this->sessionHelper->isLoggedIn()) {
+//            return $this->getJsonErrors(['message' => 'Your session expired. Please login and start a new purchase.']);
+//        }
         $status = $this->request->get('status');
         if ($status !== 'VALID') {
             return $this->getJsonErrors(['message' => 'Credit card check failed.']);

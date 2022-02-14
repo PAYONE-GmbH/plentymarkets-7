@@ -145,6 +145,7 @@
 var submitted = false;
 
 function checkCallback(response) {
+    console.log('doing callback...')
     console.debug(response);
     var form = $('#orderPlaceForm');
     if (submitted) {

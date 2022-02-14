@@ -166,6 +166,8 @@ function checkCallback(response) {
             $.when($.payonePayment.doAuthFromOrder(form, orderId)).done(function (data) {
                 if (data.data.redirecturl) {
                     window.location.replace(data.data.redirecturl);
+                    window.sessionStorage.removeItem('cardOrderId');
+                    window.sessionStorage.clear();
                     return false;
                 }
                 submitted = true;

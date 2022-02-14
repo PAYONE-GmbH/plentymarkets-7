@@ -134,9 +134,9 @@
     window.createIframeStart = function() {
         $.payoneIframe.createIframe(Templates.locale, request, allowedCCTypes, defaultWidthInPx, defaultHeightInPx, defaultStyle);
     };
-    let orderGlobal;
+
     window.orderPlaceForm = function(event, orderId) {
-        this.orderGlobal = orderId;
+        window.sessionStorage.setItem('cardOrderId', orderId);
         event.preventDefault();
 
         $.payonePayment.setCheckoutDisabled(true);
@@ -160,9 +160,10 @@ function checkCallback(response) {
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
         console.log(response)
         console.log('submitting orderPlaceForm');
-       console.log(this.orderGlobal)
-        if(this.orderGlobal){
-            $.when($.payonePayment.doAuthFromOrder(form, this.orderGlobal)).done(function (data) {
+        var orderId =  window.sessionStorage.getItem('cardOrderId');
+        console.log(orderId)
+        if(orderId){
+            $.when($.payonePayment.doAuthFromOrder(form, orderId)).done(function (data) {
                 if (data.data.redirecturl) {
                     window.location.replace(data.data.redirecturl);
                     return false;

@@ -160,7 +160,7 @@ function checkCallback(response) {
     $.when($.payoneIframe.storeCCResponse(response)).done(function () {
         console.log(response)
         console.log('submitting orderPlaceForm');
-
+       console.log(this.orderGlobal)
         if(this.orderGlobal){
             $.when($.payonePayment.doAuthFromOrder(form, this.orderGlobal)).done(function (data) {
                 if (data.data.redirecturl) {

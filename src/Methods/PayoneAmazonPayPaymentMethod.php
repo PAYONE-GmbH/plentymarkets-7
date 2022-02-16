@@ -9,17 +9,4 @@ class PayoneAmazonPayPaymentMethod extends PaymentAbstract
     const CLEARING_TYPE = "wlt";
     const WALLET_TYPE = "AMZ";
 
-    /**
-     * Check if it is allowed to switch from this payment method
-     * @return bool
-     */
-    public function isSwitchableFrom($orderId = null): bool
-    {
-        return false;
-    }
-
-    public function isSwitchableTo($orderId = null): bool
-    {
-        return false;
-    }
 }

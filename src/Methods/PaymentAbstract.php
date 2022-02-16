@@ -245,7 +245,6 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isSwitchableFrom($orderId = null): bool
     {
-        // TODO ADD AMAZON PAY
         return true;
     }
 }

@@ -1,4 +1,4 @@
-{% if services.template.isCurrentTemplate('tpl.checkout') %}
+{% if services.template.isCurrentTemplate('tpl.checkout') or services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation') %}
     <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
 
     {% if sandbox %}

@@ -1,0 +1,103 @@
+{% if services.template.isCurrentTemplate('tpl.checkout') or services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation') %}
+    <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
+    {% if sandbox %}
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
+    {% else %}
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
+    {% endif %}
+
+    <script type="text/javascript">
+
+            window.checkIfWidgetsPlacesCorrectReinit = function() {
+                console.log(37333)
+                    if (document.getElementById("LoginWithAmazon") !== null) {
+                        console.log(3333)
+                        document.getElementById("LoginWithAmazon").remove();
+                    }
+                    console.log(222);
+                    $test = $('div.card-body').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+                    console.log($test);
+                    if (document.getElementById("LogoutWithAmazon") !== null) {
+                        document.getElementById("LogoutWithAmazon").remove();
+                    }
+                    $('div.card-body').append('<button onclick="amazonLogout()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;width:50%\'>Logout</button>');
+
+                    if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
+                        $('div.card-body').after(document.getElementById("walletWidgetDiv"));
+                        walletWidget.bind("walletWidgetDiv")
+                        document.getElementById("LogoutWithAmazon").style.display = "block";
+                    } else if(document.getElementById("walletWidgetDiv") === null) {
+                        $('div.card-body').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+                    } else if(document.getElementById("walletWidgetDiv") !== null) {
+                        document.getElementById("walletWidgetDiv").remove();
+                        $('div.card-body').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+
+                        if(document.getElementById("addressBookWidgetDiv") !== null) {
+                            document.getElementById("addressBookWidgetDiv").style.display = "none";
+                        }
+                    }
+
+                }
+
+
+            window.loadAmazonPayButtonReinit= function() {
+                if(!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
+                    $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
+                        $("body").append(data);
+                    });
+                    window.amazonPayButtonLoaded = true;
+                }
+                document.getElementById("LoginWithAmazon").style.display = "block";
+            }
+
+            window.unloadAmazonPayButtonReinit = function() {
+                if(document.getElementById("LoginWithAmazon") !== null) {
+                    document.getElementById("LoginWithAmazon").style.display = "none";
+                    document.getElementById("LogoutWithAmazon").style.display = "none";
+                }
+                if (document.getElementById("walletWidgetDiv") !== null && document.getElementById("addressBookWidgetDiv") !== null) {
+                    document.getElementById("walletWidgetDiv").style.display = "none";
+                    document.getElementById("addressBookWidgetDiv").style.display = "none";
+                }
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
+                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                }
+                $('.shipping-addresses-select').prev('header').css("display", 'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
+            }
+
+            window.checkAmazonPayButtonReinit = function() {
+                checkIfWidgetsPlacesCorrectReinit();
+
+                 if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
+                        loadAmazonPayButtonReinit();
+                    } else if(document.getElementById("walletWidgetDiv") === null) {
+                        loadAmazonPayButtonReinit();
+                    }
+                }
+
+
+            window.amazonLogoutReinit = function() {
+                amazon.Login.logout();
+                document.getElementById("LoginWithAmazon").style.display = "block";
+                document.getElementById("LogoutWithAmazon").style.display = "none";
+                document.getElementById("addressBookWidgetDiv").style.display = "none";
+                document.getElementById("walletWidgetDiv").style.display = "none";
+
+                if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
+                    document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
+                    document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
+                    document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
+                }
+                $('.shipping-addresses-select').prev('header').css("display", 'block');
+                $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
+
+                checkAmazonPayButtonReinit();
+            };
+
+            window.onload = checkAmazonPayButtonReinit;
+
+    </script>
+{% endif %}

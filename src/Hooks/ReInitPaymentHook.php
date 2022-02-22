@@ -41,8 +41,8 @@ class ReInitPaymentHook
 
         /** @var PaymentMethodRepositoryContract $paymentMethodRepository */
         $paymentMethodRepository = pluginApp(PaymentMethodRepositoryContract::class);
-        $paymentMethods          = $paymentMethodRepository->allForPlugin(PluginConstants::NAME);
-        $paymentIds              = [];
+        $paymentMethods = $paymentMethodRepository->allForPlugin(PluginConstants::NAME);
+        $paymentIds = [];
         foreach ($paymentMethods as $paymentMethod) {
             if ($paymentMethod instanceof PaymentMethod) {
                 $paymentIds[] = $paymentMethod->id;
@@ -61,7 +61,7 @@ class ReInitPaymentHook
         /** @var PaymentRepositoryContract $paymentRepo */
         $paymentRepo = pluginApp(PaymentRepositoryContract::class);
         $orderHasPaymentAssigned = 0;
-        if(!empty($paymentRepo->getPaymentsByOrderId($order['id']))) {
+        if (!empty($paymentRepo->getPaymentsByOrderId($order['id']))) {
             $orderHasPaymentAssigned = 1;
         }
 
@@ -69,7 +69,7 @@ class ReInitPaymentHook
         /** @var SettingsService $settingsService */
         $settingsService = pluginApp(SettingsService::class);
 
-        if($mopId == $amazonPayMopId) {
+        if ($mopId == $amazonPayMopId) {
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
 
@@ -84,8 +84,7 @@ class ReInitPaymentHook
                 'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
             ])
             );
-        }
-
+        } else {
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
             $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.ReinitPayment', [
@@ -98,4 +97,5 @@ class ReInitPaymentHook
             ])
             );
         }
+    }
 }

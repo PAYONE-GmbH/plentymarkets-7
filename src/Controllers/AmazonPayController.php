@@ -172,6 +172,7 @@ class AmazonPayController extends Controller
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
         $orderCurrency = $sessionStorage->getSessionValue('currencyFromOrder');
+
         if(empty($orderCurrency)) {
             $basket = $basketRepository->load();
             $currency = $basket->currency;

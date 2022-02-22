@@ -76,8 +76,8 @@ class ReInitPaymentHook
             // set currency $order->amount->currency to session
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
-            $sessionStorage->setSessionValue('currencyFromOrder', $order->amount->currency);
-            $sessionStorage->setSessionValue('amountFromOrder', $order->amount->invoiceTotal);
+            $sessionStorage->setSessionValue('currencyFromOrder', $orderNew->amount->currency);
+            $sessionStorage->setSessionValue('amountFromOrder', $orderNew->amount->invoiceTotal);
             $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayConfirmation', [
                 'selectedPaymentId' => $mopId,
                 'amazonPayMopId' => $amazonPayMopId,

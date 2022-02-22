@@ -294,7 +294,7 @@ class AmazonPayService
                 $workOrderId,
                 $order->id,
                 $amazonReferenceId,
-                $order->amount->totalItemAmount,
+                $order->amount->invoiceTotal,
                 $order->amount->currency,
                 $order->id
             );

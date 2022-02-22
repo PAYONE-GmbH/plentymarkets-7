@@ -243,6 +243,13 @@ class AmazonPayController extends Controller
             $orderCurrency = $sessionStorage->getSessionValue('currencyFromOrder');
             $orderAmount  = $sessionStorage->getSessionValue('amountFromOrder');
 
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.getOrderReference', [
+                    "currency" => $orderCurrency,
+                    "amount" => $orderAmount
+                ]);
+
             if(empty($orderCurrency)) {
                 $basket = $basketRepositoryContract->load();
                 $currency = $basket->currency;

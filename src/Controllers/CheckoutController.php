@@ -7,6 +7,7 @@ use Payone\Adapter\Logger;
 use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\SessionHelper;
 use Payone\Helpers\ShopHelper;
+use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\BankAccount;
 use Payone\Models\BankAccountCache;
 use Payone\Models\CreditCardCheckResponse;
@@ -14,6 +15,7 @@ use Payone\Models\CreditCardCheckResponseRepository;
 use Payone\Models\PaymentCache;
 use Payone\Models\SepaMandateCache;
 use Payone\PluginConstants;
+use Payone\Services\AmazonPayService;
 use Payone\Services\PaymentService;
 use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
@@ -44,6 +46,7 @@ use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
 use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Services\KlarnaService;
 use Payone\Models\Api\GenericPayment\StartSessionResponse;
+use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 
 
 
@@ -157,6 +160,34 @@ class CheckoutController extends Controller
             throw new \Exception($dateOfBirthMissingMessage);
         }
 
+        if (
+            $paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE
+        ) {
+            /** @var AmazonPayService $amazonPayService */
+            $amazonPayService = pluginApp(AmazonPayService::class);
+
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+
+            /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
+            $confirmOrderRefResponse = $amazonPayService->confirmOrderReferenceFromOrder($order);
+
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
+
+            $html= $twig->render(
+                PluginConstants::NAME . '::Checkout.Confirmation',
+                [
+                    'success' => $confirmOrderRefResponse->getSuccess(),
+                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                ]
+            );
+            return $response->json([
+                'data' => $html,
+                'paymentCode' => $paymentCode
+            ], 200);
+        }
         if (
             $paymentCode == PayoneKlarnaDirectDebitPaymentMethod::PAYMENT_CODE ||
             $paymentCode == PayoneKlarnaInvoicePaymentMethod::PAYMENT_CODE ||

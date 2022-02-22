@@ -9,14 +9,12 @@
     <script type="text/javascript">
 
             window.checkIfWidgetsPlacesCorrectReinit = function() {
-                console.log(37333)
+
                     if (document.getElementById("LoginWithAmazon") !== null) {
-                        console.log(3333)
                         document.getElementById("LoginWithAmazon").remove();
                     }
-                    console.log(222);
-                    $test = $('div.card-body').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-                    console.log($test);
+                    $('div.card-body').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+
                     if (document.getElementById("LogoutWithAmazon") !== null) {
                         document.getElementById("LogoutWithAmazon").remove();
                     }

@@ -19,6 +19,7 @@ use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Order\Shipping\Countries\Models\Country;
 use Plenty\Modules\Order\Shipping\Countries\Models\CountryState;
 use Plenty\Modules\Plugin\Libs\Contracts\LibraryCallContract;
+use Plenty\Modules\Order\Models\Order;
 
 class AmazonPayService
 {
@@ -200,6 +201,42 @@ class AmazonPayService
     }
 
     /**
+     * @param Order $order
+     * @return SetOrderReferenceDetailsResponse
+     * @throws \Exception
+     */
+    public function setOrderReferenceFromOrder(Order $order)
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+        $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
+
+        $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
+            PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+            $workOrderId,
+            $amazonReferenceId,
+            $order->amount->totalItemAmount,
+            $order->amount->currenecy
+        );
+
+        /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */
+        $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_SETORDERREFERENCEDETAILS, $requestParams);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('AmazonPay.setOrderReference', [
+                "workOrderId" => $workOrderId,
+                "amazonReferenceId" => $amazonReferenceId,
+                "requestParams" => $requestParams,
+                "setOrderReferenceResponse" => (array)$orderReferenceResponse
+            ]);
+
+        return $orderReferenceResponse;
+    }
+
+
+    /**
      * @param Basket $basket
      * @return mixed
      */
@@ -220,6 +257,46 @@ class AmazonPayService
                 $basket->basketAmount,
                 $basket->currency,
                 $basket->id
+            );
+
+            /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */
+            $confirmOrderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE, $requestParams);
+
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.confirmOrderReference', [
+                    "workOrderId" => $workOrderId,
+                    "amazonReferenceId" => $amazonReferenceId,
+                    "requestParams" => $requestParams,
+                    "confirmOrderReferenceResponse" => (array)$confirmOrderReferenceResponse
+                ]);
+
+            return $confirmOrderReferenceResponse;
+        } catch (\Exception $exception) {
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->error('AmazonPay.confirmOrderReference', $exception);
+
+            return $exception;
+        }
+    }
+    public function confirmOrderReferenceFromOrder(Order $order)
+    {
+        try {
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+
+            $workOrderId = $sessionStorage->getSessionValue('workOrderId');
+            $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
+
+            $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
+                PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
+                $workOrderId,
+                $order->id,
+                $amazonReferenceId,
+                $order->amount->totalItemAmount,
+                $order->amount->currenecy,
+                $order->id
             );
 
             /** @var ConfirmOrderReferenceResponse $confirmOrderReferenceResponse */

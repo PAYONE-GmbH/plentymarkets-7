@@ -5,6 +5,7 @@ namespace Payone\Hooks;
 use Ceres\Helper\LayoutContainer;
 use IO\Extensions\Constants\ShopUrls;
 use IO\Helper\RouteConfig;
+use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
 use Payone\Services\SettingsService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
@@ -72,13 +73,18 @@ class ReInitPaymentHook
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
 
+            // set currency $order->amount->currency to session
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+            $sessionStorage->setSessionValue('currencyFromOrder', $order->amount->currency);
+            $sessionStorage->setSessionValue('amountFromOrder', $order->amount->invoiceTotal);
             $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayConfirmation', [
                 'selectedPaymentId' => $mopId,
                 'amazonPayMopId' => $amazonPayMopId,
                 'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
             ])
             );
-        } else {
+        }
 
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
@@ -92,5 +98,4 @@ class ReInitPaymentHook
             ])
             );
         }
-    }
 }

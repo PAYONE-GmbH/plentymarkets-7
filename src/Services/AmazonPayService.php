@@ -289,7 +289,7 @@ class AmazonPayService
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
 
-            $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestData(
+            $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestDataForReinit(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
                 $workOrderId,
                 $order->id,

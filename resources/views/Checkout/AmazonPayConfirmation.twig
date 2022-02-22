@@ -8,7 +8,7 @@
 
     <button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
             data-toggle="modal" data-target="#amazonPayoneModal"  style="display: block; margin-top: 0.5rem">
-        Modal
+        {{trans("Payone::General.payReinit")}}
     </button>
 
     <!-- Modal -->
@@ -18,11 +18,11 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-default" onclick="reinitAmazon()">Pay</button>
+                    <button type="button" class="btn btn-primary btn-block btn-appearance" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-block" onclick="reinitAmazon()">Pay</button>
                 </div>
             </div>
 
@@ -125,6 +125,7 @@
             $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
 
                     $('#amazonPayoneModal .modal-content').html(data.data);
+                    document.getElementById("reinitPayoneAmazon").style.display="none";
             });
         };
 

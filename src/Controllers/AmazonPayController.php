@@ -274,7 +274,11 @@ class AmazonPayController extends Controller
                 $currency,
                 $amount
             );
-
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.getOrderReference', [
+                    "requestParams" => $requestParams
+                ]);
             /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
             $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 

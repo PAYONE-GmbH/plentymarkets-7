@@ -81,7 +81,8 @@ class ReInitPaymentHook
             $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayConfirmation', [
                 'selectedPaymentId' => $mopId,
                 'amazonPayMopId' => $amazonPayMopId,
-                'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
+                'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE),
+                'order' => $order
             ])
             );
         } else {

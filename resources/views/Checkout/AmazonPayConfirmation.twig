@@ -22,7 +22,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-default" onclick="reinit()">Pay</button>
+                    <button type="button" class="btn btn-default" onclick="reinitAmazon()">Pay</button>
                 </div>
             </div>
 
@@ -35,7 +35,10 @@
             if (document.getElementById("LoginWithAmazon") !== null) {
                 document.getElementById("LoginWithAmazon").remove();
             }
+
+
             $('#amazonPayoneModal>div>div>div').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
 
             if (document.getElementById("LogoutWithAmazon") !== null) {
                 document.getElementById("LogoutWithAmazon").remove();
@@ -116,6 +119,13 @@
             $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
 
             checkAmazonPayButtonReinit();
+        };
+
+        window.reinitAmazon = function() {
+            $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
+
+                    $('#amazonPayoneModal .modal-content').html(data.data);
+            });
         };
 
     </script>

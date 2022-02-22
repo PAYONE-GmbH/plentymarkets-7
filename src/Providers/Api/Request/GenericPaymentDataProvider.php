@@ -222,7 +222,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
             $successParam = '?transactionBasketId=' . $orderId;
         }
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessReinit';
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit';
         $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
 
 

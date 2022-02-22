@@ -2,12 +2,12 @@
     <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
 
     {% if sandbox %}
-        <script2 src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script2>
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
     {% else %}
-        <script2 src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script2>
+        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
     {% endif %}
 
-    <script2 type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function () {
             window.checkIfWidgetsPlacesCorrect = function() {
                 if($('li.method-list-item[data-id="{{ amazonPayMopId }}"] > label div#LoginWithAmazon').length === 0) {
@@ -117,5 +117,5 @@
 
             checkAmazonPayButton()
         });
-    </script2>
+    </script>
 {% endif %}

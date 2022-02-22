@@ -21,6 +21,8 @@
                             $("body").append(data);
                         });
 
+                    document.getElementById("LoginWithAmazon").style.display = "none";
+                    document.getElementById("LogoutWithAmazon").style.display = "block";
 
                     if (document.getElementById("walletWidgetDiv") !== null &&
                         document.getElementById("addressBookWidgetDiv") !== null) {
@@ -35,8 +37,8 @@
                     $('.shipping-addresses-select').prev('header').css("display", 'none');
                     $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'none');
 
-                    document.getElementById("LoginWithAmazon").style.display = "none";
-                    document.getElementById("LogoutWithAmazon").style.display = "block";
+                    //Check why this is not working
+
                 });
             },
             onError: function (error) {

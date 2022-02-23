@@ -216,8 +216,8 @@ class AmazonPayService
             PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $amazonReferenceId,
-            $order->amount->totalItemAmount,
-            $order->amount->currenecy
+            $order->amount->invoiceTotal,
+            $order->amount->currency
         );
 
         /** @var SetOrderReferenceDetailsResponse $orderReferenceResponse */

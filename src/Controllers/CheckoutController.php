@@ -47,6 +47,7 @@ use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Services\KlarnaService;
 use Payone\Models\Api\GenericPayment\StartSessionResponse;
 use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
+use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 
 
 
@@ -166,23 +167,19 @@ class CheckoutController extends Controller
             /** @var AmazonPayService $amazonPayService */
             $amazonPayService = pluginApp(AmazonPayService::class);
 
-            /** @var SessionStorage $sessionStorage */
-            $sessionStorage = pluginApp(SessionStorage::class);
+            /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
+            $setOrderRefResponse = $amazonPayService->setOrderReferenceFromOrder($order);
+
 
             /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
             $confirmOrderRefResponse = $amazonPayService->confirmOrderReferenceFromOrder($order);
 
-            /** @var Twig $twig */
-            $twig = pluginApp(Twig::class);
-
-            $html= $twig->render(
-                PluginConstants::NAME . '::Checkout.Confirmation',
-                [
-                    'success' => $confirmOrderRefResponse->getSuccess(),
-                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
-                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
-                ]
-            );
+            $logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.paymentMethodContent', [
+                    "setOrderRefResponse" => (array)$setOrderRefResponse,
+                    "confirmOrderRefResponse" => (array)$confirmOrderRefResponse
+                ]);
 
             $auth = $paymentService->openTransactionFromOrder($order);
             $logger
@@ -196,6 +193,18 @@ class CheckoutController extends Controller
             $sessionStorage->setSessionValue('sellerId', null);
             $sessionStorage->setSessionValue('workOrderId', null);
             $sessionStorage->setSessionValue('accessToken', null);
+
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
+
+            $html= $twig->render(
+                PluginConstants::NAME . '::Checkout.Confirmation',
+                [
+                    'success' => $confirmOrderRefResponse->getSuccess(),
+                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                ]
+            );
 
             return $response->json([
                 'data' => $html,

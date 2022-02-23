@@ -38,13 +38,13 @@
 
 
             $('#amazonPayoneModal>div>div>div').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
+
 
             if (document.getElementById("LogoutWithAmazon") !== null) {
                 document.getElementById("LogoutWithAmazon").remove();
             }
             $('#amazonPayoneModal>div>div>div').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;width:50%\'>Logout</button>');
-
+            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
             if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
                 $('#amazonPayoneModal>div>div>div').after(document.getElementById("walletWidgetDiv"));
                 walletWidget.bind("walletWidgetDiv")

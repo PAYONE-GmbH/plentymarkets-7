@@ -43,7 +43,7 @@
             if (document.getElementById("LogoutWithAmazon") !== null) {
                 document.getElementById("LogoutWithAmazon").remove();
             }
-            $('#amazonPayoneModal>div>div>div:eq(2)').append('<button onclick="amazonLogout()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;\'>Logout</button>');
+            $('.modal-footer').append('<button onclick="amazonLogout()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;\'>Logout</button>');
 
             if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
                 $('#amazonPayoneModal>div>div>div').after(document.getElementById("walletWidgetDiv"));

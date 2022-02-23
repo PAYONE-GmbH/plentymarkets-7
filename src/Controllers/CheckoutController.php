@@ -172,6 +172,18 @@ class CheckoutController extends Controller
             /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
             $confirmOrderRefResponse = $amazonPayService->confirmOrderReferenceFromOrder($order);
 
+            /** @var Twig $twig */
+            $twig = pluginApp(Twig::class);
+
+            $html= $twig->render(
+                PluginConstants::NAME . '::Checkout.Confirmation',
+                [
+                    'success' => $confirmOrderRefResponse->getSuccess(),
+                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
+                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                ]
+            );
+
             $auth = $paymentService->openTransactionFromOrder($order);
             $logger
                 ->setIdentifier(__METHOD__)
@@ -185,17 +197,6 @@ class CheckoutController extends Controller
             $sessionStorage->setSessionValue('workOrderId', null);
             $sessionStorage->setSessionValue('accessToken', null);
 
-            /** @var Twig $twig */
-            $twig = pluginApp(Twig::class);
-
-            $html= $twig->render(
-                PluginConstants::NAME . '::Checkout.Confirmation',
-                [
-                    'success' => $confirmOrderRefResponse->getSuccess(),
-                    'sellerId' => $sessionStorage->getSessionValue('sellerId'),
-                    'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
-                ]
-            );
             return $response->json([
                 'data' => $html,
                 'paymentCode' => $paymentCode

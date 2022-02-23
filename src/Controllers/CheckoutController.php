@@ -172,6 +172,19 @@ class CheckoutController extends Controller
             /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
             $confirmOrderRefResponse = $amazonPayService->confirmOrderReferenceFromOrder($order);
 
+            $auth = $paymentService->openTransactionFromOrder($order);
+            $logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.paymentExecute', [
+                    "auth" => (array) $auth
+                ]);
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+            $sessionStorage->setSessionValue('clientId', null);
+            $sessionStorage->setSessionValue('sellerId', null);
+            $sessionStorage->setSessionValue('workOrderId', null);
+            $sessionStorage->setSessionValue('accessToken', null);
+
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
 
@@ -298,7 +311,7 @@ class CheckoutController extends Controller
      */
     public function doAuthFromOrder(
         PaymentService $paymentService,
-        $orderId
+                       $orderId
     ) {
 
         /** @var OrderRepositoryContract $orderContract */

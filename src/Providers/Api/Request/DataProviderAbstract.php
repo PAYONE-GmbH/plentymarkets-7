@@ -668,6 +668,26 @@ abstract class DataProviderAbstract
 
     /**
      * @param Order $order
+     * @return array
+     */
+    protected function getAmazonPayDataFromOrder(Order $order): array
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amazonAuthConfig = [];
+        $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
+        $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amazonAuthConfig['reference'] = $order->id;
+
+        $amazonAuthConfig['currency'] = $order->amount->currency;
+
+        $amazonAuthConfig['amount'] = $order->amount->invoiceTotal * 100;
+
+        return $amazonAuthConfig;
+    }
+
+    /**
+     * @param Order $order
      * @return float
      */
     private function getShippingAmountFromOrder(Order $order)

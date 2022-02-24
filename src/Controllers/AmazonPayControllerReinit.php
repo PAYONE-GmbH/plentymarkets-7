@@ -5,6 +5,7 @@ namespace Payone\Controllers;
 
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
@@ -38,19 +39,25 @@ class AmazonPayControllerReinit extends Controller
     /** @var Logger */
     private $logger;
 
+    /** @var OrderHelper */
+    private $orderHelper;
+
     /**
-     * AmazonPayController constructor.
      * @param Api $api
      * @param GenericPaymentDataProvider $dataProvider
      * @param Logger $logger
+     * @param OrderHelper $orderHelper
      */
     public function __construct(Api $api,
                                 GenericPaymentDataProvider $dataProvider,
-                                Logger $logger)
+                                Logger $logger,
+                                OrderHelper $orderHelper
+    )
     {
         $this->api = $api;
         $this->dataProvider = $dataProvider;
         $this->logger = $logger;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -59,6 +66,7 @@ class AmazonPayControllerReinit extends Controller
      * @param SessionStorage $sessionStorage
      * @param $orderId
      * @param PaymentHelper $paymentHelper
+     * @param OrderHelper $orderHelper
      * @return string|\Symfony\Component\HttpFoundation\Response
      * @throws \Throwable
      * @throws \Twig_Error_Loader
@@ -71,20 +79,7 @@ class AmazonPayControllerReinit extends Controller
                                             $orderId,
                                             PaymentHelper $paymentHelper)
     {
-
-        /** @var OrderRepositoryContract $orderContract */
-        $orderContract = pluginApp(OrderRepositoryContract::class);
-
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
-
-     /** @var Order $order */
-        $order = $authHelper->processUnguarded(
-            function () use ($orderContract, $orderId) {
-                //unguarded
-                return $orderContract->findOrderById($orderId);
-            }
-        );
+        $order = $this->orderHelper->getOrderByOrderId($orderId);
 
         $selectedPaymentId = $order->methodOfPaymentId;
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
@@ -187,19 +182,7 @@ class AmazonPayControllerReinit extends Controller
                                   Request $request,
                                   SessionStorage $sessionStorage): string
     {
-        /** @var OrderRepositoryContract $orderContract */
-        $orderContract = pluginApp(OrderRepositoryContract::class);
-
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
-
-        /** @var Order $order */
-        $order = $authHelper->processUnguarded(
-            function () use ($orderContract, $orderId) {
-                //unguarded
-                return $orderContract->findOrderById($orderId);
-            }
-        );
+        $order = $this->orderHelper->getOrderByOrderId($orderId);
 
 
         // AccessToken in Request
@@ -257,20 +240,7 @@ class AmazonPayControllerReinit extends Controller
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $accessToken = $sessionStorage->getSessionValue('accessToken');
 
-            /** @var OrderRepositoryContract $orderContract */
-            $orderContract = pluginApp(OrderRepositoryContract::class);
-
-            /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-            $authHelper = pluginApp(AuthHelper::class);
-
-            /** @var Order $order */
-            $order = $authHelper->processUnguarded(
-                function () use ($orderContract, $orderId) {
-                    //unguarded
-                    return $orderContract->findOrderById($orderId);
-                }
-            );
-
+            $order = $this->orderHelper->getOrderByOrderId($orderId);
 
             /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
             $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);

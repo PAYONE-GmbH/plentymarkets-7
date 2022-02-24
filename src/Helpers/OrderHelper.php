@@ -5,6 +5,7 @@ namespace Payone\Helpers;
 use Payone\Services\SettingsService;
 use Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Comment\Contracts\CommentRepositoryContract;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Property\Models\OrderProperty;
 use Plenty\Modules\Order\Property\Models\OrderPropertyType;
@@ -13,6 +14,30 @@ use Plenty\Plugin\Log\Loggable;
 class OrderHelper
 {
     use Loggable;
+
+    /**
+     * @param string $orderId
+     * @return Order
+     * @throws \Throwable
+     */
+    public function getOrderByOrderId(string $orderId) {
+
+        /** @var OrderRepositoryContract $orderContract */
+        $orderContract = pluginApp(OrderRepositoryContract::class);
+
+        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+        $authHelper = pluginApp(AuthHelper::class);
+
+        /** @var Order $order */
+        $order = $authHelper->processUnguarded(
+            function () use ($orderContract, $orderId) {
+                //unguarded
+                return $orderContract->findOrderById($orderId);
+            }
+        );
+
+        return $order;
+    }
 
     /**
      * @param Order $order

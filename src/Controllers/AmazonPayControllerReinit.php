@@ -16,18 +16,13 @@ use Payone\Providers\Api\Request\Models\GenericPayment;
 use Payone\Services\AmazonPayService;
 use Payone\Services\Api;
 use Plenty\Modules\Order\Address\Contracts\OrderAddressRepositoryContract;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
-use Plenty\Modules\Webshop\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
 use Plenty\Plugin\Templates\Twig;
-use Plenty\Modules\Authorization\Services\AuthHelper;
-use Plenty\Modules\Order\Models\Order;
 
-
-class AmazonPayControllerReinit extends Controller
+class AmazonPayControllerReinit extends AmazonPayController
 {
 
     /** @var Api */
@@ -298,35 +293,5 @@ class AmazonPayControllerReinit extends Controller
                 ->setIdentifier(__METHOD__)
                 ->error('AmazonPay.getOrderReference', $exception);
         }
-    }
-
-    /**
-     * Maps our language key into the specified language key from Amazon
-     *
-     * @param string $lang
-     * @return string
-     */
-    private function getLanguageCode(string $lang): string
-    {
-        switch ($lang) {
-            case 'de':
-                $lang = 'de-DE';
-                break;
-            case 'en':
-                $lang = 'en-GB';
-                break;
-            case 'es':
-                $lang = 'es-ES';
-                break;
-            case 'fr':
-                $lang = 'fr-FR';
-                break;
-            case 'it':
-                $lang = 'it-IT';
-                break;
-            default:
-                $lang = "en-GB";
-        }
-        return $lang;
     }
 }

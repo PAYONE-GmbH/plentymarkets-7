@@ -2,6 +2,7 @@
     {% if success == "true" %}
     OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
         console.log('success');
+        console.log(confirmationFlow)
         confirmationFlow.success();
     });
     {% else %}

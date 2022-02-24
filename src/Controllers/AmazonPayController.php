@@ -311,7 +311,7 @@ class AmazonPayController extends Controller
      * @param string $lang
      * @return string
      */
-    private function getLanguageCode(string $lang): string
+    public function getLanguageCode(string $lang): string
     {
         switch ($lang) {
             case 'de':

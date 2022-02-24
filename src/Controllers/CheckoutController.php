@@ -187,12 +187,9 @@ class CheckoutController extends Controller
                 ->debug('AmazonPay.paymentExecute', [
                     "auth" => (array) $auth
                 ]);
+
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
-            $sessionStorage->setSessionValue('clientId', null);
-            $sessionStorage->setSessionValue('sellerId', null);
-            $sessionStorage->setSessionValue('workOrderId', null);
-            $sessionStorage->setSessionValue('accessToken', null);
 
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
@@ -205,6 +202,13 @@ class CheckoutController extends Controller
                     'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
                 ]
             );
+
+            /** @var SessionStorage $sessionStorage */
+            $sessionStorage = pluginApp(SessionStorage::class);
+            $sessionStorage->setSessionValue('clientId', null);
+            $sessionStorage->setSessionValue('sellerId', null);
+            $sessionStorage->setSessionValue('workOrderId', null);
+            $sessionStorage->setSessionValue('accessToken', null);
 
             return $response->json([
                 'data' => $html,

@@ -98,6 +98,12 @@ class AmazonPayController extends Controller
             /** @var GetConfigurationResponse $configResponse */
             $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
 
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.configLoginButton', [
+                    'configResponse' => $configResponse
+                ]);
+
             if(!$configResponse->getSuccess()) {
                 return $response->json([
                     'error' => [

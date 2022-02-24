@@ -204,12 +204,12 @@ class CheckoutController extends Controller
                 ]
             );
 
-            /** @var SessionStorage $sessionStorage */
-            $sessionStorage = pluginApp(SessionStorage::class);
-            $sessionStorage->setSessionValue('clientId', null);
-            $sessionStorage->setSessionValue('sellerId', null);
-            $sessionStorage->setSessionValue('workOrderId', null);
-            $sessionStorage->setSessionValue('accessToken', null);
+//            /** @var SessionStorage $sessionStorage */
+//            $sessionStorage = pluginApp(SessionStorage::class);
+//            $sessionStorage->setSessionValue('clientId', null);
+//            $sessionStorage->setSessionValue('sellerId', null);
+//            $sessionStorage->setSessionValue('workOrderId', null);
+//            $sessionStorage->setSessionValue('accessToken', null);
 
             return $response->json([
                 'data' => $html,

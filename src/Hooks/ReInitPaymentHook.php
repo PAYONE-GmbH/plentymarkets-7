@@ -6,6 +6,7 @@ use Ceres\Helper\LayoutContainer;
 use IO\Extensions\Constants\ShopUrls;
 use IO\Helper\RouteConfig;
 use Payone\Adapter\SessionStorage;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Services\SettingsService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
@@ -22,20 +23,10 @@ class ReInitPaymentHook
     public function handle(LayoutContainer $layoutContainer, $order)
     {
 
-        /** @var OrderRepositoryContract $orderContract */
-        $orderContract = pluginApp(OrderRepositoryContract::class);
-
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
-        //
         $orderId = $order['id'];
-        $orderNew = $authHelper->processUnguarded(
-            function () use ($orderContract, $orderId) {
-                //unguarded
-                return $orderContract->findOrderById($orderId);
-            }
-        );
-
+        /** @var OrderHelper $orderHelper */
+        $orderHelper = pluginApp(OrderHelper::class);
+        $orderNew = $orderHelper->getOrderByOrderId($orderId);
 
         $mopId = $orderNew->methodOfPaymentId;
 

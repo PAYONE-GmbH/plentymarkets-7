@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        amazon.Login.setClientId('{{ content.clientId }}');
+        var authRequest;
+
+        OffAmazonPayments.Button('LoginWithAmazon', '{{ content.sellerId }}', {
+            type: '{{ content.type }}',
+            color: '{{ content.color }}',
+            size: '{{ content.size }}',
+            language: '{{ content.language }}',
+
+            authorization: function () {
+                loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
+                authRequest = amazon.Login.authorize(loginOptions, function (t) {
+                    $.post("/payment/payone/checkout/amazonPay/renderWidgetsReinit/{{ orderId }}",
+                        {
+                            "accessToken": t.access_token,
+                            "workOrderId": "{{ content.workOrderId }}"
+                        },
+                        function (data) {
+                            $("body").append(data);
+                        });
+
+                    document.getElementById("LoginWithAmazon").style.display = "none";
+                    document.getElementById("LogoutWithAmazon").style.display = "block";
+
+                    if (document.getElementById("walletWidgetDiv") !== null &&
+                        document.getElementById("addressBookWidgetDiv") !== null) {
+                        document.getElementById("walletWidgetDiv").style.display = "block";
+                        document.getElementById("addressBookWidgetDiv").style.display = "block";
+                    }
+                });
+            },
+            onError: function (error) {
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+            }
+        });
+    });
+</script>

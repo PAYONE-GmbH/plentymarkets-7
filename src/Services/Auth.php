@@ -90,6 +90,13 @@ class Auth
         }
 
         $authResponse = $this->doAuthFromOrder( $order);
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('AmazonPay.executeAuthFromOrder', [
+                'authResponse' => $authResponse
+            ]);
+
         $data = $this->authDataProvider->getDataFromOrderForReinit($selectedPaymentId, $order);
 
         $basketData = $data['basket'];

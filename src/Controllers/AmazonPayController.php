@@ -17,7 +17,6 @@ use Payone\Services\AmazonPayService;
 use Payone\Services\Api;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
 use Plenty\Modules\Frontend\Contracts\Checkout;
-use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\ContactRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
@@ -71,21 +70,13 @@ class AmazonPayController extends Controller
                                             BasketRepositoryContract $basketRepository,
                                             PaymentHelper $paymentHelper)
     {
-        /** @var SessionStorage $sessionStorage */
-        $sessionStorage = pluginApp(SessionStorage::class);
-        $orderCurrency = $sessionStorage->getSessionValue('currencyFromOrder');
-        if(empty($orderCurrency)) {
-            $basket = $basketRepository->load();
-            $currency = $basket->currency;
-        }else {
-            $currency = $orderCurrency;
-        }
+        $basket = $basketRepository->load();
         $selectedPaymentId = $basket->methodOfPaymentId;
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
         $requestParams = $this->dataProvider->getGetConfigRequestData(
             PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
-            $currency
+            $basket->currency
         );
 
         $clientId = $sessionStorage->getSessionValue('clientId');
@@ -93,7 +84,6 @@ class AmazonPayController extends Controller
         $workOrderId = $sessionStorage->getSessionValue('workOrderId');
 
         if(strlen($clientId) <= 0 || strlen($sellerId) <= 0 || strlen($workOrderId) <= 0) {
-
             /** Only load the configuration data if not already stored within the session */
             /** @var GetConfigurationResponse $configResponse */
             $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);
@@ -175,16 +165,7 @@ class AmazonPayController extends Controller
                                   Request $request,
                                   SessionStorage $sessionStorage): string
     {
-        /** @var SessionStorage $sessionStorage */
-        $sessionStorage = pluginApp(SessionStorage::class);
-        $orderCurrency = $sessionStorage->getSessionValue('currencyFromOrder');
-
-        if(empty($orderCurrency)) {
-            $basket = $basketRepository->load();
-            $currency = $basket->currency;
-        }else {
-            $currency = $orderCurrency;
-        }
+        $basket = $basketRepository->load();
 
         // AccessToken in Request
         $accessToken = $request->get('accessToken');
@@ -202,7 +183,7 @@ class AmazonPayController extends Controller
             'sellerId' => $sellerId,
             'addressBookScope' => "profile payments:widget payments:shipping_address payments:billing_address",
             'walletScope' => "profile payments:widget payments:shipping_address payments:billing_address",
-            'currency' => $currency
+            'currency' => $basket->currency
         ];
         $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
@@ -244,31 +225,7 @@ class AmazonPayController extends Controller
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $accessToken = $sessionStorage->getSessionValue('accessToken');
 
-            /** @var SessionStorage $sessionStorage */
-            $sessionStorage = pluginApp(SessionStorage::class);
-            $orderCurrency = $sessionStorage->getSessionValue('currencyFromOrder');
-            $orderAmount  = $sessionStorage->getSessionValue('amountFromOrder');
-
-            $this->logger
-                ->setIdentifier(__METHOD__)
-                ->debug('AmazonPay.getOrderReference', [
-                    "currency" => $orderCurrency,
-                    "amount" => $orderAmount
-                ]);
-
-            if(empty($orderCurrency)) {
-                $basket = $basketRepositoryContract->load();
-                $currency = $basket->currency;
-            }else {
-                $currency = $orderCurrency;
-            }
-
-            if(empty($orderAmount)) {
-                $basket = $basketRepositoryContract->load();
-                $amount = $basket->basketAmount;
-            }else {
-                $amount = $orderAmount;
-            }
+            $basket = $basketRepositoryContract->load();
 
             /** @var GenericPaymentDataProvider $genericPaymentDataProvider */
             $genericPaymentDataProvider = pluginApp(GenericPaymentDataProvider::class);
@@ -277,14 +234,10 @@ class AmazonPayController extends Controller
                 $workOrderId,
                 $accessToken,
                 $amazonReferenceId,
-                $currency,
-                $amount
+                $basket->currency,
+                $basket->basketAmount
             );
-            $this->logger
-                ->setIdentifier(__METHOD__)
-                ->debug('AmazonPay.getOrderReference', [
-                    "requestParams" => $requestParams
-                ]);
+
             /** @var GetOrderReferenceDetailsResponse $orderReferenceResponse */
             $orderReferenceResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETORDERREFERENCEDETAILS, $requestParams);
 

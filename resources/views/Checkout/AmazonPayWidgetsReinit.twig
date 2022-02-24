@@ -8,7 +8,10 @@
             scope: '{{ content.addressBookScope }}',
             onOrderReferenceCreate: function (orderReference) {
 
+                console.log(orderReference)
+                // Here is where you can grab the Order Reference ID.
                 $orderReferenceId = orderReference.getAmazonOrderReferenceId();
+                console.log($orderReferenceId)
             },
             onAddressSelect: function (orderReference) {
 

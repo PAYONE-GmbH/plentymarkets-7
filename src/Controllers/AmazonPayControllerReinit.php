@@ -2,8 +2,7 @@
 
 namespace Payone\Controllers;
 
-use IO\Services\BasketService;
-use IO\Services\CheckoutService;
+
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
@@ -15,8 +14,6 @@ use Payone\Providers\Api\Request\GenericPaymentDataProvider;
 use Payone\Providers\Api\Request\Models\GenericPayment;
 use Payone\Services\AmazonPayService;
 use Payone\Services\Api;
-use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
-use Plenty\Modules\Frontend\Contracts\Checkout;
 use Plenty\Modules\Order\Address\Contracts\OrderAddressRepositoryContract;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Webshop\Contracts\ContactRepositoryContract;

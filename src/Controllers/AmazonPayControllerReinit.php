@@ -103,6 +103,12 @@ class AmazonPayControllerReinit extends Controller
 
         if(strlen($clientId) <= 0 || strlen($sellerId) <= 0 || strlen($workOrderId) <= 0) {
 
+            $this->logger
+                ->setIdentifier(__METHOD__)
+                ->debug('AmazonPay.configLoginButton', [
+                    'configResponse' => $requestParams
+                ]);
+
             /** Only load the configuration data if not already stored within the session */
             /** @var GetConfigurationResponse $configResponse */
             $configResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_GETCONFIGURATION, $requestParams);

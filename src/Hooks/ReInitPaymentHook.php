@@ -82,7 +82,7 @@ class ReInitPaymentHook
                 'selectedPaymentId' => $mopId,
                 'amazonPayMopId' => $amazonPayMopId,
                 'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE),
-                'order' => $order
+                'orderId' => $orderId
             ])
             );
         } else {

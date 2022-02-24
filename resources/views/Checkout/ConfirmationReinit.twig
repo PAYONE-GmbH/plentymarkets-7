@@ -1,0 +1,21 @@
+<script>
+    {% if success == "true" %}
+    OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
+        confirmationFlow.success();
+        doAmazonAuth();
+    });
+    {% else %}
+    OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
+        console.log('fail');
+        confirmationFlow.error();
+    });
+    {% endif %}
+    function doAmazonAuth () {
+        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}', {
+            },
+            function (data, status) {
+                console.log(data)
+            });
+    }
+
+</script>

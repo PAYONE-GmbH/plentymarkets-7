@@ -181,12 +181,12 @@ class CheckoutController extends Controller
                     "confirmOrderRefResponse" => (array)$confirmOrderRefResponse
                 ]);
 
-            $auth = $paymentService->openTransactionFromOrder($order);
-            $logger
-                ->setIdentifier(__METHOD__)
-                ->debug('AmazonPay.paymentExecute', [
-                    "auth" => (array) $auth
-                ]);
+//            $auth = $paymentService->openTransactionFromOrder($order);
+//            $logger
+//                ->setIdentifier(__METHOD__)
+//                ->debug('AmazonPay.paymentExecute', [
+//                    "auth" => (array) $auth
+//                ]);
 
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
@@ -195,11 +195,12 @@ class CheckoutController extends Controller
             $twig = pluginApp(Twig::class);
 
             $html= $twig->render(
-                PluginConstants::NAME . '::Checkout.Confirmation',
+                PluginConstants::NAME . '::Checkout.ConfirmationReinit',
                 [
                     'success' => $confirmOrderRefResponse->getSuccess(),
                     'sellerId' => $sessionStorage->getSessionValue('sellerId'),
                     'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
+                    'orderId' => $orderId
                 ]
             );
 

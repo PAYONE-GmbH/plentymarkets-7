@@ -342,7 +342,14 @@ class CheckoutController extends Controller
                 return $orderContract->findOrderById($orderId);
             }
         );
+        /** @var Logger $logger */
+        $logger = pluginApp(Logger::class);
+        $logger
+            ->setIdentifier(__METHOD__)
+            ->debug('AmazonPay.doAuthFromOrder', [
+                "order" => $order,
 
+            ]);
         try {
             $auth = $paymentService->openTransactionFromOrder($order);
         } catch (\Exception $e) {

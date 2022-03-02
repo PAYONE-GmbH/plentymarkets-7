@@ -30,44 +30,11 @@
     </div>
     <script type="text/javascript">
 
-        window.checkIfWidgetsPlacesCorrectReinit = function() {
-
-            if (document.getElementById("LoginWithAmazon") !== null) {
-                document.getElementById("LoginWithAmazon").remove();
-            }
-
-
-            $('#amazonPayoneModal>div>div>div').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-
-
-            if (document.getElementById("LogoutWithAmazon") !== null) {
-                document.getElementById("LogoutWithAmazon").remove();
-            }
-            $('#amazonPayoneModal>div>div>div').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
-            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
-            if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
-                $('#amazonPayoneModal>div>div>div').after(document.getElementById("walletWidgetDiv"));
-                walletWidget.bind("walletWidgetDiv")
-                document.getElementById("LogoutWithAmazon").style.display = "block";
-            } else if(document.getElementById("walletWidgetDiv") === null) {
-                $('#amazonPayoneModal>div>div>div').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
-            } else if(document.getElementById("walletWidgetDiv") !== null) {
-                document.getElementById("walletWidgetDiv").remove();
-                $('#amazonPayoneModal>div>div>div').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
-
-                if(document.getElementById("addressBookWidgetDiv") !== null) {
-                    document.getElementById("addressBookWidgetDiv").style.display = "none";
-                }
-            }
-
-        }
 
 
         window.loadAmazonPayButtonReinit= function() {
             if(!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
                 $.get("/payment/payone/checkout/amazonPay/loginButtonReinit/{{ orderId }}", function (data) {
-                    console.log({{ orderId }});
-                    console.log(data)
                     $("body").append(data);
                 });
                 window.amazonPayButtonLoaded = true;
@@ -75,27 +42,13 @@
             document.getElementById("LoginWithAmazon").style.display = "block";
         }
 
-        window.unloadAmazonPayButtonReinit = function() {
-            if(document.getElementById("LoginWithAmazon") !== null) {
-                document.getElementById("LoginWithAmazon").style.display = "none";
-                document.getElementById("LogoutWithAmazon").style.display = "none";
-            }
-            if (document.getElementById("walletWidgetDiv") !== null && document.getElementById("addressBookWidgetDiv") !== null) {
-                document.getElementById("walletWidgetDiv").style.display = "none";
-                document.getElementById("addressBookWidgetDiv").style.display = "none";
-            }
-            if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
-                document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
-                document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
-                document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
-            }
-            $('.shipping-addresses-select').prev('header').css("display", 'block');
-            $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
-        }
 
         window.checkAmazonPayButtonReinit = function() {
             document.getElementById("payWithAmazon").style.display = "none";
-            checkIfWidgetsPlacesCorrectReinit();
+            $('#amazonPayoneModal>div>div>div').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+            $('#amazonPayoneModal>div>div>div').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
+            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
+            $('#amazonPayoneModal>div>div>div').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
             if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
                 loadAmazonPayButtonReinit();
@@ -112,20 +65,11 @@
             document.getElementById("addressBookWidgetDiv").style.display = "none";
             document.getElementById("walletWidgetDiv").style.display = "none";
 
-            if (document.getElementsByClassName("invoice-addresses-select")[0] !== null &&
-                document.getElementsByClassName("shipping-addresses-select")[0] !== null) {
-                document.getElementsByClassName("invoice-addresses-select")[0].style.display = 'block';
-                document.getElementsByClassName("shipping-addresses-select")[0].style.display = 'block';
-            }
-            $('.shipping-addresses-select').prev('header').css("display", 'block');
-            $('.invoice-addresses-select').prev().prev().prev().prev('header').css("display", 'block');
-
             checkAmazonPayButtonReinit();
         };
 
         window.reinitAmazon = function() {
             $.get("payment/payone/reinit/{{ orderId }}" , function (data) {
-
                     $('#amazonPayoneModal .modal-content').html(data.data);
                     document.getElementById("reinitPayoneAmazon").style.display="none";
             });

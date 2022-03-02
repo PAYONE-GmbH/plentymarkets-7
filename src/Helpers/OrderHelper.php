@@ -16,11 +16,11 @@ class OrderHelper
     use Loggable;
 
     /**
-     * @param string $orderId
+     * @param int $orderId
      * @return Order
      * @throws \Throwable
      */
-    public function getOrderByOrderId(string $orderId) {
+    public function getOrderByOrderId(int $orderId) : Order {
 
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);

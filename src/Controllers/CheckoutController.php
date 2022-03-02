@@ -304,13 +304,13 @@ class CheckoutController extends Controller
 
     /**
      * @param PaymentService $paymentService
-     * @param $ordeId
-     *
+     * @param int $orderId
      * @return string
+     * @throws \Throwable
      */
     public function doAuthFromOrder(
         PaymentService $paymentService,
-                       $orderId
+        int $orderId
     ) {
 
         /** @var OrderHelper $orderHelper */

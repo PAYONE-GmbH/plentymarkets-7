@@ -2,11 +2,16 @@
 
 namespace Payone\Methods;
 
+use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Services\SettingsService;
+
+use PayPal\Services\PayPalLimitationsService;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Translation\Translator;
+use Plenty\Modules\Payment\Models\Payment;
 
 abstract class PaymentAbstract extends PaymentMethodBaseService
 {
@@ -245,6 +250,31 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isSwitchableFrom($orderId = null): bool
     {
-        return true;
+        if ($orderId > 0 ) {
+            /** @var OrderRepositoryContract $orderRepo */
+            $orderRepo = pluginApp(OrderRepositoryContract::class);
+            $filters = $orderRepo->getFilters();
+            $filters['addOrderItems'] = false;
+            $orderRepo->setFilters($filters);
+
+            try {
+                $order = $orderRepo->findById($orderId, ['payments']);
+
+                /** @var PaymentHelper $paymentHelper */
+                $paymentHelper = pluginApp(PaymentHelper::class);
+                foreach ($order->payments as $paymentData) {
+                    if (in_array($paymentData->mopId, $paymentHelper->getMops()) &&
+                        $paymentData->status == Payment::STATUS_AWAITING_APPROVAL
+                    ) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (\Exception $e) {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 }

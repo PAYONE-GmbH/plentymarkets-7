@@ -4,6 +4,7 @@ namespace Payone\Controllers;
 
 use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
+use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
 use Payone\Helpers\SessionHelper;
 use Payone\Helpers\ShopHelper;
@@ -36,9 +37,6 @@ use Payone\Adapter\Translator;
 use Payone\Models\PaymentMethodContent;
 use Payone\Views\PaymentRenderer;
 use Plenty\Modules\Payment\Events\Checkout\GetPaymentMethodContent;
-use Plenty\Modules\Order\Models\OrderItemAmount;
-use Plenty\Modules\Order\Models\OrderItemType;
-use Plenty\Modules\Basket\Models\Basket;
 use Payone\Methods\PaymentAbstract;
 use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
 use Payone\Methods\PayoneKlarnaDirectBankTransferPaymentMethod;
@@ -181,13 +179,6 @@ class CheckoutController extends Controller
                     "confirmOrderRefResponse" => (array)$confirmOrderRefResponse
                 ]);
 
-//            $auth = $paymentService->openTransactionFromOrder($order);
-//            $logger
-//                ->setIdentifier(__METHOD__)
-//                ->debug('AmazonPay.paymentExecute', [
-//                    "auth" => (array) $auth
-//                ]);
-
             /** @var SessionStorage $sessionStorage */
             $sessionStorage = pluginApp(SessionStorage::class);
 
@@ -203,13 +194,6 @@ class CheckoutController extends Controller
                     'orderId' => $orderId
                 ]
             );
-
-//            /** @var SessionStorage $sessionStorage */
-//            $sessionStorage = pluginApp(SessionStorage::class);
-//            $sessionStorage->setSessionValue('clientId', null);
-//            $sessionStorage->setSessionValue('sellerId', null);
-//            $sessionStorage->setSessionValue('workOrderId', null);
-//            $sessionStorage->setSessionValue('accessToken', null);
 
             return $response->json([
                 'data' => $html,
@@ -329,19 +313,12 @@ class CheckoutController extends Controller
                        $orderId
     ) {
 
-        /** @var OrderRepositoryContract $orderContract */
-        $orderContract = pluginApp(OrderRepositoryContract::class);
+        /** @var OrderHelper $orderHelper */
+        $orderHelper = pluginApp(OrderHelper::class);
 
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
+        $order = $orderHelper->getOrderByOrderId($orderId);
 
-        //guarded
-        $order = $authHelper->processUnguarded(
-            function () use ($orderContract, $orderId) {
-                //unguarded
-                return $orderContract->findOrderById($orderId);
-            }
-        );
+
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         $logger
@@ -352,6 +329,19 @@ class CheckoutController extends Controller
             ]);
         try {
             $auth = $paymentService->openTransactionFromOrder($order);
+
+            $mopId = $order->methodOfPaymentId;
+            /** @var PaymentHelper $paymentHelper */
+            $paymentHelper = pluginApp(PaymentHelper::class);
+            $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
+
+            if ($mopId == $amazonPayMopId)  {
+                    $sessionStorage = pluginApp(SessionStorage::class);
+                    $sessionStorage->setSessionValue('clientId', null);
+                    $sessionStorage->setSessionValue('sellerId', null);
+                    $sessionStorage->setSessionValue('workOrderId', null);
+                    $sessionStorage->setSessionValue('accessToken', null);
+            }
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);
         }

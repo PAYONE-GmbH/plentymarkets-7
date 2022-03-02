@@ -1,37 +1,20 @@
-{% if services.template.isCurrentTemplate('tpl.checkout') or services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation') %}
-    <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
-    {% if sandbox %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
-    {% else %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
-    {% endif %}
-
+   {% extends 'AmazonBase.twig' %}
     <button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
             data-toggle="modal" data-target="#amazonPayoneModal"  style="display: block; margin-top: 0.5rem">
         {{trans("Payone::General.payReinit")}}
     </button>
-
-    <!-- Modal -->
     <div id="amazonPayoneModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-body">
-
-                </div>
+                <div class="modal-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-block btn-appearance" data-dismiss="modal">Close</button>
                     <button id="payWithAmazon" type="button" class="btn btn-block" onclick="reinitAmazon()">Pay</button>
                 </div>
             </div>
-
         </div>
     </div>
     <script type="text/javascript">
-
-
-
         window.loadAmazonPayButtonReinit= function() {
             if(!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
                 $.get("/payment/payone/checkout/amazonPay/loginButtonReinit/{{ orderId }}", function (data) {
@@ -41,7 +24,6 @@
             }
             document.getElementById("LoginWithAmazon").style.display = "block";
         }
-
 
         window.checkAmazonPayButtonReinit = function() {
             document.getElementById("payWithAmazon").style.display = "none";
@@ -56,7 +38,6 @@
                 loadAmazonPayButtonReinit();
             }
         }
-
 
         window.amazonLogoutReinit = function() {
             amazon.Login.logout();
@@ -74,6 +55,4 @@
                     document.getElementById("reinitPayoneAmazon").style.display="none";
             });
         };
-
     </script>
-{% endif %}

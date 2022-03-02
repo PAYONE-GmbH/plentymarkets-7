@@ -1,11 +1,5 @@
 {% if services.template.isCurrentTemplate('tpl.checkout') or services.template.isCurrentTemplate('tpl.my-account') or services.template.isCurrentTemplate('tpl.confirmation') %}
-    <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
-
-    {% if sandbox %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
-    {% else %}
-        <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
-    {% endif %}
+    {% extends 'AmazonBase.twig' %}
 
     <script type="text/javascript">
         $(document).ready(function () {

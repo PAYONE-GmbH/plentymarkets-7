@@ -1,5 +1,11 @@
-   {% extends 'AmazonBase.twig' %}
-    <button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
+<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
+{% if sandbox %}
+    <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
+{% else %}
+    <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
+{% endif %}
+
+<button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
             data-toggle="modal" data-target="#amazonPayoneModal"  style="display: block; margin-top: 0.5rem">
         {{trans("Payone::General.payReinit")}}
     </button>

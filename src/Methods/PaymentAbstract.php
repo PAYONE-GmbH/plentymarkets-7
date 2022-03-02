@@ -5,8 +5,6 @@ namespace Payone\Methods;
 use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Services\SettingsService;
-
-use PayPal\Services\PayPalLimitationsService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;

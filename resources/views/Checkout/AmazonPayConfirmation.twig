@@ -14,8 +14,9 @@
             <div class="modal-content">
                 <div id="amazonBody" class="modal-body"></div>
                 <div id="amazonFooter"  class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-block btn-appearance" data-dismiss="modal">Close</button>
                     <button id="payWithAmazon" type="button" class="btn btn-block" onclick="reinitAmazon()">Pay</button>
+                    <button type="button" class="btn btn-primary btn-block btn-appearance" data-dismiss="modal">Cancel</button>
+
                 </divid>
             </div>
         </div>
@@ -33,11 +34,11 @@
 
         window.checkAmazonPayButtonReinit = function() {
             document.getElementById("payWithAmazon").style.display = "none";
-
-            $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-            $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
-            $('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
-            $('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+            //
+            // $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+            // $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
+            // $('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
+            // $('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
             if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
                 loadAmazonPayButtonReinit();

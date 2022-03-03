@@ -32,7 +32,7 @@ class OrderHelper
         $order = $authHelper->processUnguarded(
             function () use ($orderContract, $orderId) {
                 //unguarded
-                return $orderContract->findOrderById($orderId);
+                return $orderContract->findById($orderId);
             }
         );
 

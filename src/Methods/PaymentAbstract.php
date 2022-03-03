@@ -251,12 +251,9 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
         if ($orderId > 0 ) {
             /** @var OrderRepositoryContract $orderRepo */
             $orderRepo = pluginApp(OrderRepositoryContract::class);
-            $filters = $orderRepo->getFilters();
-            $filters['addOrderItems'] = false;
-            $orderRepo->setFilters($filters);
 
             try {
-                $order = $orderRepo->findById($orderId, ['payments']);
+                $order = $orderRepo->findById($orderId, ['payments'], true);
 
                 /** @var PaymentHelper $paymentHelper */
                 $paymentHelper = pluginApp(PaymentHelper::class);

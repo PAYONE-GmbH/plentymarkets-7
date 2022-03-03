@@ -1,9 +1,4 @@
-<link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
-{% if sandbox %}
-    <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
-{% else %}
-    <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js'></script>
-{% endif %}
+{% include 'AmazonBase.twig' %}
 
 <button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
             data-toggle="modal" data-target="#amazonPayoneModal"  style="display: block; margin-top: 0.5rem">
@@ -12,11 +7,11 @@
     <div id="amazonPayoneModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-body"></div>
-                <div class="modal-footer">
+                <div id="amazonBody" class="modal-body"></div>
+                <div id="amazonFooter"  class="modal-footer">
                     <button type="button" class="btn btn-primary btn-block btn-appearance" data-dismiss="modal">Close</button>
                     <button id="payWithAmazon" type="button" class="btn btn-block" onclick="reinitAmazon()">Pay</button>
-                </div>
+                </divid>
             </div>
         </div>
     </div>
@@ -33,10 +28,11 @@
 
         window.checkAmazonPayButtonReinit = function() {
             document.getElementById("payWithAmazon").style.display = "none";
-            $('#amazonPayoneModal>div>div>div').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-            $('#amazonPayoneModal>div>div>div').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
-            $('#amazonPayoneModal>div>div>div').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
-            $('#amazonPayoneModal>div>div>div').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+
+            $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+            $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
+            $('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none\'></div>');
+            $('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 
             if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
                 loadAmazonPayButtonReinit();

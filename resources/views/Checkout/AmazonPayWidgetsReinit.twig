@@ -7,8 +7,6 @@
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.addressBookScope }}',
             onOrderReferenceCreate: function (orderReference) {
-
-                // Here is where you can grab the Order Reference ID.
                 $orderReferenceId = orderReference.getAmazonOrderReferenceId();
             },
             onAddressSelect: function (orderReference) {
@@ -20,18 +18,12 @@
                         "amazonReferenceId": $orderReferenceId
                     },
                     function (response) {
-
                     });
-
-
             },
             design: {
                 designMode: 'responsive'
             },
-            onReady: function (orderReference) {
-                // Enter code here you want to be executed
-                // when the AddressBook widget has been rendered.
-            },
+
             onError: function (error) {
                 console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
@@ -41,20 +33,11 @@
         walletWidget = new OffAmazonPayments.Widgets.Wallet({
             sellerId: '{{ content.sellerId }}',
             scope: '{{ content.walletScope }}',
-            onPaymentSelect: function (orderReference) {
-                // Replace this code with the action that you want to perform
-                // after the payment method is selected.
 
-                // Ideally this would enable the next action for the buyer
-                // including either a "Continue" or "Place Order" button.
-            },
             design: {
                 designMode: 'responsive'
             },
             onError: function (error) {
-                // Your error handling code.
-                // During development you can use the following
-                // code to view error messages:
                 console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
             }
         });

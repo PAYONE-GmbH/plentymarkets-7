@@ -98,7 +98,7 @@ class CheckoutController extends Controller
     }
 
     /**
-     * @param $orderId
+     * @param int $orderId
      * @param Twig $twig
      * @param Response $response
      * @return \Symfony\Component\HttpFoundation\Response|void
@@ -159,15 +159,12 @@ class CheckoutController extends Controller
             throw new \Exception($dateOfBirthMissingMessage);
         }
 
-        if (
-            $paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE
-        ) {
+        if ($paymentCode == PayoneAmazonPayPaymentMethod::PAYMENT_CODE) {
             /** @var AmazonPayService $amazonPayService */
             $amazonPayService = pluginApp(AmazonPayService::class);
 
             /** @var SetOrderReferenceDetailsResponse $setOrderRefResponse */
             $setOrderRefResponse = $amazonPayService->setOrderReferenceFromOrder($order);
-
 
             /** @var ConfirmOrderReferenceResponse $confirmOrderRefResponse */
             $confirmOrderRefResponse = $amazonPayService->confirmOrderReferenceFromOrder($order);

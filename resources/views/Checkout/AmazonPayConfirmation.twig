@@ -15,7 +15,7 @@
                 <div id="amazonBody" class="modal-body"></div>
                 <div id="amazonFooter"  class="modal-footer">
                     <button id="payWithAmazon" type="button" class="btn btn-primary btn-block btn-appearance" onclick="reinitAmazon()">{{trans("Payone::General.payReinit")}}</button>
-                    <button type="button" class="close" data-dismiss="modal">{{trans("Payone::General.cancel")}}</button>
+                    <button type="button" class="btn btn-secondary"  :class="buttonClasses" data-dismiss="modal" aria-label="Close">{{trans("Payone::General.cancel")}}</button>
                 </div>
             </div>
         </div>

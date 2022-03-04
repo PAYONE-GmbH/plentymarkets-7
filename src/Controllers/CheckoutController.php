@@ -29,9 +29,7 @@ use Plenty\Plugin\Templates\Twig;
 use Payone\Adapter\SessionStorage;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Authorization\Services\AuthHelper;
-use PayPal\Services\Database\SettingsService;
 use Payone\Methods\PaymentMethodServiceFactory;
-use Payone\Helpers\AddressHelper;
 use Payone\Methods\PayoneInvoiceSecurePaymentMethod;
 use Payone\Adapter\Translator;
 use Payone\Models\PaymentMethodContent;
@@ -98,7 +96,6 @@ class CheckoutController extends Controller
 
     /**
      * @param int $orderId
-     * @param Twig $twig
      * @param Response $response
      * @return \Symfony\Component\HttpFoundation\Response|void
      * @throws \Throwable
@@ -108,32 +105,19 @@ class CheckoutController extends Controller
      */
     public function reinitPayment(
         $orderId,
-        Twig $twig,
         Response $response
     )
     {
+        /** @var OrderHelper $orderHelper */
+        $orderHelper = pluginApp(OrderHelper::class);
 
-        /** @var OrderRepositoryContract $orderContract */
-        $orderContract = pluginApp(OrderRepositoryContract::class);
-
-        /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
-        $authHelper = pluginApp(AuthHelper::class);
-
-        //guarded
-        $order = $authHelper->processUnguarded(
-            function () use ($orderContract, $orderId) {
-                //unguarded
-                return $orderContract->findOrderById($orderId);
-            }
-        );
-
+        $order = $orderHelper->getOrderByOrderId($orderId);
 
         $mopId = $order->methodOfPaymentId;
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         /** @var PaymentHelper $paymentHelper */
         $paymentHelper = pluginApp(PaymentHelper::class);
-
 
         /** @var PaymentService $paymentService */
         $paymentService = pluginApp(PaymentService::class);
@@ -143,7 +127,6 @@ class CheckoutController extends Controller
         $payment = PaymentMethodServiceFactory::create($paymentCode);
 
         $billingAddress = $order->billingAddress;
-
 
         if ($paymentCode == PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE &&
             (!isset($billingAddress->birthday) || !strlen($billingAddress->birthday))) {

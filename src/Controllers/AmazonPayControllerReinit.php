@@ -59,9 +59,8 @@ class AmazonPayControllerReinit extends AmazonPayController
      * @param Twig $twig
      * @param Response $response
      * @param SessionStorage $sessionStorage
-     * @param $orderId
+     * @param int $orderId
      * @param PaymentHelper $paymentHelper
-     * @param OrderHelper $orderHelper
      * @return string|\Symfony\Component\HttpFoundation\Response
      * @throws \Throwable
      * @throws \Twig_Error_Loader
@@ -71,7 +70,7 @@ class AmazonPayControllerReinit extends AmazonPayController
     public function getAmazonPayLoginWidgetReinit(Twig           $twig,
                                                   Response       $response,
                                                   SessionStorage $sessionStorage,
-                                                                 $orderId,
+                                                  int               $orderId,
                                                   PaymentHelper  $paymentHelper)
     {
         $order = $this->orderHelper->getOrderByOrderId($orderId);
@@ -162,7 +161,7 @@ class AmazonPayControllerReinit extends AmazonPayController
     /**
      * @param Twig $twig
      * @param PaymentHelper $paymentHelper
-     * @param $orderId
+     * @param int $orderId
      * @param Request $request
      * @param SessionStorage $sessionStorage
      * @return string
@@ -173,7 +172,7 @@ class AmazonPayControllerReinit extends AmazonPayController
      */
     public function renderWidgetsReinit(Twig           $twig,
                                         PaymentHelper  $paymentHelper,
-                                                       $orderId,
+                                        int            $orderId,
                                         Request        $request,
                                         SessionStorage $sessionStorage): string
     {
@@ -218,14 +217,14 @@ class AmazonPayControllerReinit extends AmazonPayController
     /**
      * @param Request $request
      * @param Response $response
-     * @param $orderId
+     * @param int $orderId
      * @param SessionStorage $sessionStorage
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Throwable
      */
     public function getOrderReferenceReinit(Request        $request,
                                             Response       $response,
-                                                           $orderId,
+                                            int            $orderId,
                                             SessionStorage $sessionStorage): \Symfony\Component\HttpFoundation\Response
     {
         try {

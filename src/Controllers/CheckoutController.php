@@ -104,7 +104,7 @@ class CheckoutController extends Controller
      * @throws \Twig_Error_Syntax
      */
     public function reinitPayment(
-        $orderId,
+        int $orderId,
         Response $response
     )
     {
@@ -359,12 +359,13 @@ class CheckoutController extends Controller
     }
 
     /**
+     * @param int $orderId
      * @param PaymentService $paymentService
-     * @param  $orderId
      * @return string
+     * @throws \Throwable
      */
     public function doKlarnaAuthForReinit(
-        $orderId,
+        int $orderId,
         PaymentService $paymentService
     )
     {

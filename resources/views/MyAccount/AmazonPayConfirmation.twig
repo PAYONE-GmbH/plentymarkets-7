@@ -37,7 +37,7 @@
         document.getElementById("payWithAmazon").style.display = "none";
 
         $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-        $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>Logout</button>');
+        $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>{{ trans("Payone::General.logout") }}</button>');
         $('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none; margin-block: 10px\'></div>');
         $('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
 

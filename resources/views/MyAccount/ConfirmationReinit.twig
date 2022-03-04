@@ -9,9 +9,8 @@
         confirmationFlow.error();
     });
     {% endif %}
-    function doAmazonAuth () {
-        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}', {
-            },
+    function doAmazonAuth() {
+        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}', {},
             function (data, status) {
             });
     }

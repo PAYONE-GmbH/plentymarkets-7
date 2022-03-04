@@ -43,10 +43,10 @@ class AmazonPayControllerReinit extends AmazonPayController
      * @param Logger $logger
      * @param OrderHelper $orderHelper
      */
-    public function __construct(Api $api,
+    public function __construct(Api                        $api,
                                 GenericPaymentDataProvider $dataProvider,
-                                Logger $logger,
-                                OrderHelper $orderHelper
+                                Logger                     $logger,
+                                OrderHelper                $orderHelper
     )
     {
         $this->api = $api;
@@ -68,11 +68,11 @@ class AmazonPayControllerReinit extends AmazonPayController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function getAmazonPayLoginWidgetReinit(Twig $twig,
-                                            Response $response,
-                                            SessionStorage $sessionStorage,
-                                            $orderId,
-                                            PaymentHelper $paymentHelper)
+    public function getAmazonPayLoginWidgetReinit(Twig           $twig,
+                                                  Response       $response,
+                                                  SessionStorage $sessionStorage,
+                                                                 $orderId,
+                                                  PaymentHelper  $paymentHelper)
     {
         $order = $this->orderHelper->getOrderByOrderId($orderId);
 
@@ -88,7 +88,7 @@ class AmazonPayControllerReinit extends AmazonPayController
         $sellerId = $sessionStorage->getSessionValue('sellerId');
         $workOrderId = $sessionStorage->getSessionValue('workOrderId');
 
-        if(strlen($clientId) <= 0 || strlen($sellerId) <= 0 || strlen($workOrderId) <= 0) {
+        if (strlen($clientId) <= 0 || strlen($sellerId) <= 0 || strlen($workOrderId) <= 0) {
 
             $this->logger
                 ->setIdentifier(__METHOD__)
@@ -106,7 +106,7 @@ class AmazonPayControllerReinit extends AmazonPayController
                     'configResponse' => $configResponse
                 ]);
 
-            if(!$configResponse->getSuccess()) {
+            if (!$configResponse->getSuccess()) {
                 return $response->json([
                     'error' => [
                         'message' => $configResponse->getErrorMessage()
@@ -151,7 +151,7 @@ class AmazonPayControllerReinit extends AmazonPayController
                 "content" => (array)$content
             ]);
 
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLoginReinit', [
+        return $twig->render(PluginConstants::NAME . '::MyAccount.AmazonPayLoginReinit', [
             'orderId' => $orderId,
             'selectedPaymentId' => $selectedPaymentId,
             'amazonPayMopId' => $amazonPayMopId,
@@ -171,11 +171,11 @@ class AmazonPayControllerReinit extends AmazonPayController
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function renderWidgetsReinit(Twig $twig,
-                                  PaymentHelper $paymentHelper,
-                                  $orderId,
-                                  Request $request,
-                                  SessionStorage $sessionStorage): string
+    public function renderWidgetsReinit(Twig           $twig,
+                                        PaymentHelper  $paymentHelper,
+                                                       $orderId,
+                                        Request        $request,
+                                        SessionStorage $sessionStorage): string
     {
         $order = $this->orderHelper->getOrderByOrderId($orderId);
 
@@ -206,7 +206,7 @@ class AmazonPayControllerReinit extends AmazonPayController
                 "content" => (array)$content
             ]);
 
-        return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayWidgetsReinit', [
+        return $twig->render(PluginConstants::NAME . '::MyAccount.AmazonPayWidgetsReinit', [
             'orderId' => $orderId,
             'content' => $content,
             'accessToken' => $accessToken,
@@ -223,10 +223,10 @@ class AmazonPayControllerReinit extends AmazonPayController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Throwable
      */
-    public function getOrderReferenceReinit(Request $request,
-                                      Response $response,
-                                      $orderId,
-                                      SessionStorage $sessionStorage): \Symfony\Component\HttpFoundation\Response
+    public function getOrderReferenceReinit(Request        $request,
+                                            Response       $response,
+                                                           $orderId,
+                                            SessionStorage $sessionStorage): \Symfony\Component\HttpFoundation\Response
     {
         try {
             $amazonReferenceId = $request->get('amazonReferenceId');
@@ -265,7 +265,7 @@ class AmazonPayControllerReinit extends AmazonPayController
                     "orderReferenceResponse" => (array)$orderReferenceResponse
                 ]);
 
-            if(!$orderReferenceResponse->getSuccess()) {
+            if (!$orderReferenceResponse->getSuccess()) {
                 return $response->json([
                     'error' => [
                         'message' => $orderReferenceResponse->getErrorMessage()

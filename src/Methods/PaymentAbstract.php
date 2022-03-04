@@ -38,9 +38,9 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      * @param SettingsService $settingsService
      */
     public function __construct(
-        Application $application,
+        Application      $application,
         PaymentValidator $paymentValidator,
-        SettingsService $settingsService
+        SettingsService  $settingsService
     )
     {
         $this->paymentValidator = $paymentValidator;
@@ -86,7 +86,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     {
         $paymentIcon = $this->settingsService->getPaymentSettingsValue('paymentIcon', $this::PAYMENT_CODE);
 
-        if(empty($paymentIcon)) {
+        if (empty($paymentIcon)) {
             $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
             $paymentIcon = $pluginPath . '/images/logos/' . $this::PAYMENT_CODE . '.png';
         }
@@ -232,7 +232,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isSwitchableTo($orderId = null): bool
     {
-        if($orderId > 0) {
+        if ($orderId > 0) {
             /** @var PaymentOrderValidator $paymentOrderValidator */
             $paymentOrderValidator = pluginApp(PaymentOrderValidator::class);
 
@@ -242,19 +242,18 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
 
         return false;
     }
+
     /**
      * Check if it is allowed to switch from this payment method
      * @return bool
      */
     public function isSwitchableFrom($orderId = null): bool
     {
-        if ($orderId > 0 ) {
+        if ($orderId > 0) {
             /** @var OrderRepositoryContract $orderRepo */
             $orderRepo = pluginApp(OrderRepositoryContract::class);
-
             try {
                 $order = $orderRepo->findById($orderId, ['payments'], true);
-
                 /** @var PaymentHelper $paymentHelper */
                 $paymentHelper = pluginApp(PaymentHelper::class);
                 foreach ($order->payments as $paymentData) {

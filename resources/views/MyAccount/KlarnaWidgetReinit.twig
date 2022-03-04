@@ -2,10 +2,13 @@
     <style>
         .loading {
             position: fixed;
-            top: 0; right: 0;
-            bottom: 0; left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
             background: rgba(255, 255, 255, 0.5);
         }
+
         .loader {
             left: 50%;
             margin-left: -4em;
@@ -14,6 +17,7 @@
             border-left: .8em solid rgba(0, 142, 189, 1);
             animation: spin 1.1s infinite linear;
         }
+
         .loader, .loader:after {
             border-radius: 50%;
             width: 8em;
@@ -32,23 +36,29 @@
                 transform: rotate(0deg);
             }
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes rotation {
             from {
                 transform: rotate(0deg);
-            } to {
-                  transform: rotate(359deg);
-              }
+            }
+            to {
+                transform: rotate(359deg);
+            }
         }
     </style>
 
     <script type="text/javascript">
-        var payment = '{{payment_method}}'
-        var containerPaymentMethod = payment.replace(/_/g,'-')
+        var payment = '{{ payment_method }}'
+        var containerPaymentMethod = payment.replace(/_/g, '-')
         console.log(containerPaymentMethod)
         window.klarnaAsyncCallback = function () {
             Klarna.Payments.init({
@@ -56,40 +66,40 @@
             });
             //The following method loads the payment_method_category in the container with the id of 'klarna_container'
             Klarna.Payments.load({
-                container: "#klarna-"+this.containerPaymentMethod+"-container",
+                container: "#klarna-" + this.containerPaymentMethod + "-container",
                 payment_method_category: '{{ payment_method }}'
             }, function (res) {
             });
         };
 
-        function confirmCancel () {
+        function confirmCancel() {
             document.querySelector(".modal-content").style = 'display: none';
             location.reload()
         }
 
-        $(function(){
-            $("#pay").on('click', function(){
+        $(function () {
+            $("#pay").on('click', function () {
 
-                $('.loading').css('display','block');
+                $('.loading').css('display', 'block');
                 Klarna.Payments.authorize({
                     payment_method_category: '{{ payment_method }}'
-                },{
-                }, function(res) {
-                    if(res.authorization_token) { }
-                    if( (res.show_form === false ) && (res.approved === false )) {
-                    } else if ( (res.show_form === true ) && (res.approved === false ) ) {
+                }, {}, function (res) {
+                    if (res.authorization_token) {
+                    }
+                    if ((res.show_form === false) && (res.approved === false)) {
+                    } else if ((res.show_form === true) && (res.approved === false)) {
                         document.querySelector(".modal-content").style = 'display: none';
                         location.reload()
-                    } else if ((res.show_form === true ) && (res.approved === true )) {
+                    } else if ((res.show_form === true) && (res.approved === true)) {
                         $.post('/payment/payone/checkout/doKlarnaAuthForReinit/{{ order }}', {
                                 authorization_token: res.authorization_token
                             },
                             function (data, status) {
                                 console.log(data)
-                                $('.loading').css('display','none');
+                                $('.loading').css('display', 'none');
                                 window.location.replace(data.data.redirecturl);
-                                $('#pay').css('display','none');
-                                $('#cancel').css('display','none');
+                                $('#pay').css('display', 'none');
+                                $('#cancel').css('display', 'none');
                             });
                     }
                 })
@@ -109,8 +119,10 @@
         <!--Button to trigger authorize call-->
         <div class="button-container">
 
-            <input type="submit"  class="btn btn-primary btn-block btn-appearance"  value="{{trans("Payone::General.pay")}}" id="pay"/>
-            <input type="button" onclick="confirmCancel()"  class="btn btn-block"  value="{{trans("Payone::General.cancel")}}" id="cancel"/>
+            <input type="submit" class="btn btn-primary btn-block btn-appearance"
+                   value="{{ trans("Payone::General.pay") }}" id="pay"/>
+            <input type="button" onclick="confirmCancel()" class="btn btn-block"
+                   value="{{ trans("Payone::General.cancel") }}" id="cancel"/>
         </div>
     </div>
     <div class="loading" style="display: none">

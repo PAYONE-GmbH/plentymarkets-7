@@ -69,7 +69,7 @@ class ReInitPaymentHook
             $sessionStorage = pluginApp(SessionStorage::class);
             $sessionStorage->setSessionValue('currencyFromOrder', $orderNew->amount->currency);
             $sessionStorage->setSessionValue('amountFromOrder', $orderNew->amount->invoiceTotal);
-            $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.AmazonPayConfirmation', [
+            $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::MyAccount.AmazonPayConfirmation', [
                 'selectedPaymentId' => $mopId,
                 'amazonPayMopId' => $amazonPayMopId,
                 'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE),
@@ -79,7 +79,7 @@ class ReInitPaymentHook
         } else {
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
-            $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::Checkout.ReinitPayment', [
+            $layoutContainer->addContent($twig->render(PluginConstants::NAME . '::MyAccount.ReinitPayment', [
                 'order' => $order,
                 "paymentIds" => $paymentIds,
                 'isMyAccount' => $isMyAccount,

@@ -48,7 +48,6 @@ use Payone\Models\Api\GenericPayment\ConfirmOrderReferenceResponse;
 use Payone\Models\Api\GenericPayment\SetOrderReferenceDetailsResponse;
 
 
-
 /**
  * Class CheckoutController
  */
@@ -182,8 +181,8 @@ class CheckoutController extends Controller
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
 
-            $html= $twig->render(
-                PluginConstants::NAME . '::Checkout.ConfirmationReinit',
+            $html = $twig->render(
+                PluginConstants::NAME . '::MyAccount.ConfirmationReinit',
                 [
                     'success' => $confirmOrderRefResponse->getSuccess(),
                     'sellerId' => $sessionStorage->getSessionValue('sellerId'),
@@ -207,7 +206,6 @@ class CheckoutController extends Controller
             $klarnaService = pluginApp(KlarnaService::class);
 
 
-
             /** @var StartSessionResponse $sessionResponse */
             $sessionResponse = $klarnaService->startSessionFromOrder($paymentCode, $order);
 
@@ -219,7 +217,7 @@ class CheckoutController extends Controller
             /** @var Twig $twig */
             $twig = pluginApp(Twig::class);
             $html = $twig->render(
-                PluginConstants::NAME . '::Checkout.KlarnaWidgetReinit',
+                PluginConstants::NAME . '::MyAccount.KlarnaWidgetReinit',
                 [
                     'client_token' => $sessionResponse->getKlarnaClientToken(),
                     'payment_method' => $sessionResponse->getKlarnaMethodIdentifier(),
@@ -244,7 +242,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
                         'paymentCode' => $paymentCode
-                    ], 200); ;
+                    ], 200);;
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     $paymentService->openTransactionFromOrder($order);
@@ -254,7 +252,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $shopHelper->getPlentyDomain() . '/place-order',
                         'paymentCode' => $paymentCode
-                    ], 200); ;
+                    ], 200);;
 
 
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
@@ -265,7 +263,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $html,
                         'paymentCode' => $paymentCode
-                    ], 200); ;
+                    ], 200);;
             }
         } catch (\Exception $e) {
             $logger->logException($e);
@@ -280,9 +278,10 @@ class CheckoutController extends Controller
      * @return string
      */
     public function doAuth(
-        PaymentService $paymentService,
+        PaymentService           $paymentService,
         BasketRepositoryContract $basket
-    ) {
+    )
+    {
         $this->logger->setIdentifier(__METHOD__)
             ->debug('Controller.Checkout', $this->request->all());
         if (!$this->sessionHelper->isLoggedIn()) {
@@ -307,15 +306,13 @@ class CheckoutController extends Controller
      */
     public function doAuthFromOrder(
         PaymentService $paymentService,
-        int $orderId
-    ) {
+        int            $orderId
+    )
+    {
 
         /** @var OrderHelper $orderHelper */
         $orderHelper = pluginApp(OrderHelper::class);
-
         $order = $orderHelper->getOrderByOrderId($orderId);
-
-
         /** @var Logger $logger */
         $logger = pluginApp(Logger::class);
         $logger
@@ -332,12 +329,12 @@ class CheckoutController extends Controller
             $paymentHelper = pluginApp(PaymentHelper::class);
             $amazonPayMopId = $paymentHelper->getMopId(PayoneAmazonPayPaymentMethod::PAYMENT_CODE);
 
-            if ($mopId == $amazonPayMopId)  {
-                    $sessionStorage = pluginApp(SessionStorage::class);
-                    $sessionStorage->setSessionValue('clientId', null);
-                    $sessionStorage->setSessionValue('sellerId', null);
-                    $sessionStorage->setSessionValue('workOrderId', null);
-                    $sessionStorage->setSessionValue('accessToken', null);
+            if ($mopId == $amazonPayMopId) {
+                $sessionStorage = pluginApp(SessionStorage::class);
+                $sessionStorage->setSessionValue('clientId', null);
+                $sessionStorage->setSessionValue('sellerId', null);
+                $sessionStorage->setSessionValue('workOrderId', null);
+                $sessionStorage->setSessionValue('accessToken', null);
             }
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);
@@ -353,9 +350,10 @@ class CheckoutController extends Controller
      * @return string
      */
     public function doKlarnaAuth(
-        PaymentService $paymentService,
+        PaymentService           $paymentService,
         BasketRepositoryContract $basket
-    ) {
+    )
+    {
         $klarnaAuthToken = $this->request->get('authorization_token');
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
@@ -385,7 +383,8 @@ class CheckoutController extends Controller
     public function doKlarnaAuthForReinit(
         $orderId,
         PaymentService $paymentService
-    ) {
+    )
+    {
         $klarnaAuthToken = $this->request->get('authorization_token');
         /** @var SessionStorage $sessionStorage */
         $sessionStorage = pluginApp(SessionStorage::class);
@@ -426,9 +425,10 @@ class CheckoutController extends Controller
      */
     public function storeCCCheckResponse(
         CreditCardCheckResponseRepository $repository,
-        CreditCardCheckResponse $response,
-        CardExpireDate $validator
-    ) {
+        CreditCardCheckResponse           $response,
+        CardExpireDate                    $validator
+    )
+    {
         $this->logger->setIdentifier(__METHOD__)
             ->debug('Controller.Checkout', $this->request->all());
 //        if (!$this->sessionHelper->isLoggedIn()) {
@@ -469,7 +469,8 @@ class CheckoutController extends Controller
         BankAccountCache $accountCache,
         SepaMandate $mandateService,
         SepaMandateCache $mandateCache
-    ) {
+    )
+    {
 
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
@@ -542,12 +543,13 @@ class CheckoutController extends Controller
      * @return string
      */
     public function storeAccountData(
-        BankAccount $bankAccount,
-        BankAccountCache $accountCache,
-        SepaMandate $mandateService,
-        SepaMandateCache $mandateCache,
+        BankAccount              $bankAccount,
+        BankAccountCache         $accountCache,
+        SepaMandate              $mandateService,
+        SepaMandateCache         $mandateCache,
         BasketRepositoryContract $basket
-    ) {
+    )
+    {
         $errors = [];
 
         if (!$this->sessionHelper->isLoggedIn()) {
@@ -655,15 +657,15 @@ class CheckoutController extends Controller
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
 
-        if(strlen($transactionBasketId)){
+        if (strlen($transactionBasketId)) {
             $storedBasketId = $paymentCache->getActiveBasketId();
-            if($storedBasketId === null){
+            if ($storedBasketId === null) {
                 return $this->response->redirectTo('confirmation');
             }
-            if($storedBasketId != $transactionBasketId){
+            if ($storedBasketId != $transactionBasketId) {
                 return $this->response->redirectTo('payone/error');
             }
-        } else{
+        } else {
             return $this->response->redirectTo('payone/error');
         }
         $basket = $basketReopo->load();
@@ -697,9 +699,10 @@ class CheckoutController extends Controller
      * @return string
      */
     public function redirectWithNotice(
-        NotificationService $notificationService,
+        NotificationService  $notificationService,
         ErrorMessageRenderer $messageRenderer
-    ) {
+    )
+    {
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.redirecting');
 

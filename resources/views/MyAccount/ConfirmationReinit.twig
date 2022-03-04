@@ -10,9 +10,7 @@
     });
     {% endif %}
     function doAmazonAuth() {
-        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}', {},
-            function (data, status) {
-            });
+        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}', {},);
     }
 
 </script>

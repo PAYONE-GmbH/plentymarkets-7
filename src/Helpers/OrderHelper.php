@@ -20,7 +20,8 @@ class OrderHelper
      * @return Order
      * @throws \Throwable
      */
-    public function getOrderByOrderId(int $orderId) : Order {
+    public function getOrderByOrderId(int $orderId): Order
+    {
 
         /** @var OrderRepositoryContract $orderContract */
         $orderContract = pluginApp(OrderRepositoryContract::class);
@@ -70,17 +71,15 @@ class OrderHelper
         $settingsService = pluginApp(SettingsService::class);
         $backendUserId = $settingsService->getSettingsValue('userId');
 
-        if (isset($backendUserId))
-        {
+        if (isset($backendUserId)) {
             $commentData = [];
             $commentData['referenceType'] = 'order';
             $commentData['referenceValue'] = $refValue;
             $commentData['text'] = $msg;
             $commentData['isVisibleForContact'] = false;
-            $commentData['userId'] = (int) $backendUserId;
+            $commentData['userId'] = (int)$backendUserId;
 
-            try
-            {
+            try {
                 /** @var  AuthHelper $authHelper */
                 $authHelper = pluginApp(AuthHelper::class);
 
@@ -92,7 +91,8 @@ class OrderHelper
                         $commentRepo->createComment($commentData);
                     }
                 );
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
     }
 }

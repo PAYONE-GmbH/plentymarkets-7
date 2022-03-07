@@ -225,7 +225,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $auth->getRedirecturl(),
                         'paymentCode' => $paymentCode
-                    ], 200);;
+                    ], 200);
 
                 case GetPaymentMethodContent::RETURN_TYPE_CONTINUE:
                     $paymentService->openTransactionFromOrder($order);
@@ -235,7 +235,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $shopHelper->getPlentyDomain() . '/place-order',
                         'paymentCode' => $paymentCode
-                    ], 200);;
+                    ], 200);
 
 
                 case  GetPaymentMethodContent::RETURN_TYPE_HTML:
@@ -246,7 +246,7 @@ class CheckoutController extends Controller
                     return $response->json([
                         'data' => $html,
                         'paymentCode' => $paymentCode
-                    ], 200);;
+                    ], 200);
             }
         } catch (\Exception $e) {
             $logger->logException($e);

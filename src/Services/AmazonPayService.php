@@ -38,9 +38,9 @@ class AmazonPayService
      * @param GenericPaymentDataProvider $dataProvider
      * @param Logger $logger
      */
-    public function __construct(Api $api,
+    public function __construct(Api                        $api,
                                 GenericPaymentDataProvider $dataProvider,
-                                Logger $logger)
+                                Logger                     $logger)
     {
         $this->api = $api;
         $this->dataProvider = $dataProvider;
@@ -124,7 +124,7 @@ class AmazonPayService
 
         /** @var LibraryCallContract $libCall */
         $libCall = pluginApp(LibraryCallContract::class);
-        $parsedAddress = $libCall->call(PluginConstants::NAME .'::addressParser', [
+        $parsedAddress = $libCall->call(PluginConstants::NAME . '::addressParser', [
             'address' => $amazonAddress['streetAndNumber']
         ]);
 
@@ -212,11 +212,16 @@ class AmazonPayService
         $workOrderId = $sessionStorage->getSessionValue('workOrderId');
         $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
 
+        if (!empty($order->amount->giftCardAmount)) {
+            $amount = $order->amount->invoiceTotal - $order->amount->giftCardAmount;
+        } else {
+            $amount = $order->amount->invoiceTotal;
+        }
         $requestParams = $this->dataProvider->getSetOrderReferenceDetailsRequestData(
             PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
             $workOrderId,
             $amazonReferenceId,
-            $order->amount->invoiceTotal,
+            $amount,
             $order->amount->currency
         );
 
@@ -280,6 +285,11 @@ class AmazonPayService
             return $exception;
         }
     }
+
+    /**
+     * @param Order $order
+     * @return \Exception|ConfirmOrderReferenceResponse
+     */
     public function confirmOrderReferenceFromOrder(Order $order)
     {
         try {
@@ -289,12 +299,17 @@ class AmazonPayService
             $workOrderId = $sessionStorage->getSessionValue('workOrderId');
             $amazonReferenceId = $sessionStorage->getSessionValue('amazonReferenceId');
 
+            if (!empty($order->amount->giftCardAmount)) {
+                $amount = $order->amount->invoiceTotal - $order->amount->giftCardAmount;
+            } else {
+                $amount = $order->amount->invoiceTotal;
+            }
             $requestParams = $this->dataProvider->getConfirmOrderReferenceRequestDataForReinit(
                 PayoneAmazonPayPaymentMethod::PAYMENT_CODE,
                 $workOrderId,
                 $order->id,
                 $amazonReferenceId,
-                $order->amount->invoiceTotal,
+                $amount,
                 $order->amount->currency,
                 $order->id
             );

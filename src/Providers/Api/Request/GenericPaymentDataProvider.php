@@ -185,7 +185,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
      * @param string $amazonReferenceId
      * @param string $amount
      * @param string $currency
-     * @param string $basketId
+     * @param int $orderId
      * @param int|null $clientId
      * @param int|null $pluginSetId
      * @return array
@@ -198,7 +198,7 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         string $amazonReferenceId,
         string $amount,
         string $currency,
-        string $orderId,
+        int $orderId,
         int $clientId = null,
         int $pluginSetId = null
     ): array {

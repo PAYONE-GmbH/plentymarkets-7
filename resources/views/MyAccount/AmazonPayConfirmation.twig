@@ -1,3 +1,22 @@
+{% block body %}
+    {% set paymentId = 0 %}
+    {% set paidStatus = '' %}
+
+    {% set properties = order.properties %}
+    {% for property in properties %}
+        {% if property.typeId == 3 %}
+            {% set paymentId = property.value %}
+        {% endif %}
+        {% if property.typeId == 4 %}
+            {% set paidStatus = property.value %}
+        {% endif %}
+    {% endfor %}
+    {% if  (paidStatus != 'fullyPaid') and (order.status < 4 ) and (paymentId in paymentIds) and orderHasPayment == 0 %}
+        {% set display = "block" %}
+    {% else %}
+        {% set display = "none" %}
+    {% endif %}
+
 <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-amazonpay.css">
 {% if sandbox %}
     <script src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'></script>
@@ -6,7 +25,7 @@
 {% endif %}
 
 <button id="reinitPayoneAmazon" class="btn btn-primary btn-appearance btn-block" onclick="checkAmazonPayButtonReinit()"
-        data-toggle="modal" data-target="#amazonPayoneModal" style="display: block; margin-top: 0.5rem">
+        data-toggle="modal" data-target="#amazonPayoneModal" style="display: {{ display }}; margin-top: 0.5rem">
     {{ trans("Payone::General.payReinit") }}
 </button>
 <div id="amazonPayoneModal" class="modal fade" role="dialog">
@@ -65,3 +84,4 @@
         });
     };
 </script>
+{% endblock %}

@@ -76,7 +76,7 @@
         };
 
         window.reinitAmazon = function () {
-            $.get("payment/payone/reinit/{{ orderId }}", function (data) {
+            $.get("/payment/payone/reinit/{{ orderId }}", function (data) {
                 $('#amazonPayoneModal .modal-content').html(data.data);
                 document.getElementById("reinitPayoneAmazon").style.display = "none";
             });

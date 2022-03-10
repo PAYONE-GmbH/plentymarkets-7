@@ -318,6 +318,7 @@ class CheckoutController extends Controller
                 $sessionStorage->setSessionValue('sellerId', null);
                 $sessionStorage->setSessionValue('workOrderId', null);
                 $sessionStorage->setSessionValue('accessToken', null);
+                $sessionStorage->setSessionValue('amazonReferenceId', null);
             }
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);

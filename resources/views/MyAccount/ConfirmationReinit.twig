@@ -11,5 +11,6 @@
     {% endif %}
     function doAmazonAuth() {
         $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}');
+        window.amazonLogoutReinit();
     }
 </script>

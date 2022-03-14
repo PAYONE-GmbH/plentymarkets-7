@@ -2,7 +2,7 @@
     {% if success == "true" %}
     OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {
         confirmationFlow.success();
-        window.amazonLogout();
+     //   window.amazonLogout();
     });
     {% else %}
     OffAmazonPayments.initConfirmationFlow("{{ sellerId }}", "{{ amazonReferenceId }}", function (confirmationFlow) {

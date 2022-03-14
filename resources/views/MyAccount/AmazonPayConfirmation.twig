@@ -53,10 +53,43 @@
         window.checkAmazonPayButtonReinit = function () {
             document.getElementById("payWithAmazon").style.display = "none";
 
-            $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
-            $('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>{{ trans("Payone::General.logout") }}</button>');
-            $('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none; margin-block: 10px\'></div>');
-            $('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+            {#$('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');#}
+            {#$('#amazonFooter').append('<button onclick="amazonLogoutReinit()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none\'>{{ trans("Payone::General.logout") }}</button>');#}
+            {#$('#amazonBody').append('<div id=\'addressBookWidgetDiv\' class=\'addressBookWidgetDiv\' style=\'display:none; margin-block: 10px\'></div>');#}
+            {#$('#amazonBody').append("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");#}
+
+
+
+            if($('#amazonBody div#LoginWithAmazon').length === 0) {
+                if (document.getElementById("LoginWithAmazon") !== null) {
+                    document.getElementById("LoginWithAmazon").remove();
+                }
+                $('#amazonBody').append('<div id=\'LoginWithAmazon\' style=\'display:none\'></div>');
+
+                if (document.getElementById("LogoutWithAmazon") !== null) {
+                    document.getElementById("LogoutWithAmazon").remove();
+                }
+                $('#amazonBody').append('<button onclick="amazonLogout()" type=\'button\' class=\'btn btn-primary btn-block\' id=\'LogoutWithAmazon\' style=\'display:none;width:50%\'>Logout</button>');
+
+                if(document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display === "block") {
+                    $('#amazonBody').after(document.getElementById("walletWidgetDiv"));
+                    walletWidget.bind("walletWidgetDiv")
+                    document.getElementById("LogoutWithAmazon").style.display = "block";
+                } else if(document.getElementById("walletWidgetDiv") === null) {
+                    $('#amazonBody').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+                } else if(document.getElementById("walletWidgetDiv") !== null) {
+                    document.getElementById("walletWidgetDiv").remove();
+                    $('#amazonBody').after("<div id='walletWidgetDiv' class='walletWidgetDiv' style='display:none'></div>");
+
+                    if(document.getElementById("addressBookWidgetDiv") !== null) {
+                        document.getElementById("addressBookWidgetDiv").style.display = "none";
+                    }
+                }
+                window.amazonPayButtonLoaded = false;
+            }
+
+
+
 
             if (document.getElementById("walletWidgetDiv") !== null && document.getElementById("walletWidgetDiv").style.display !== "block") {
                 loadAmazonPayButtonReinit();

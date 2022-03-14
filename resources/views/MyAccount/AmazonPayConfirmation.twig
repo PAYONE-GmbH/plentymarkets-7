@@ -41,6 +41,7 @@
     window.loadAmazonPayButtonReinit = function () {
         if (!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
             $.get("/payment/payone/checkout/amazonPay/loginButtonReinit/{{ orderId }}", function (data) {
+                console.log('test');
                 $("body").append(data);
             });
             window.amazonPayButtonLoaded = true;

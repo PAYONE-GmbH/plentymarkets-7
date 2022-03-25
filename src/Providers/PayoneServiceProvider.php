@@ -293,18 +293,18 @@ class PayoneServiceProvider extends ServiceProvider
                     /** @var PaymentCache $paymentCache */
                     $paymentCache = pluginApp(PaymentCache::class);
 
-                    $order = $orderRepository->findOrderById($event->getOrderId());
+                    $order = $orderRepository->findById($event->getOrderId());
                     if($order instanceof Order) {
                         if($event->getMop() == $paymentHelper->getMopId(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE)) {
                             //Block the invoice generation for secure invoice because there will be an external invoice
-                            $orderRepository->updateOrder([
+                            $orderRepository->update($order->id,[
                                 'properties' => [
                                     [
                                         'typeId' => OrderPropertyType::EXTERNAL_TAX_SERVICE,
                                         'value' => "1"
                                     ]
                                 ]
-                            ], $order->id);
+                            ]);
                         }
 
                         $payment = $paymentCache->loadPayment($event->getMop());
@@ -329,7 +329,6 @@ class PayoneServiceProvider extends ServiceProvider
                 }
             }
         });
-
     }
 
     /**

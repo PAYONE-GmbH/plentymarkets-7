@@ -180,6 +180,58 @@ class GenericPaymentDataProvider extends DataProviderAbstract
 
     /**
      * @param string $paymentCode
+     * @param string $workOrderId
+     * @param string $reference
+     * @param string $amazonReferenceId
+     * @param string $amount
+     * @param string $currency
+     * @param int $orderId
+     * @param int|null $clientId
+     * @param int|null $pluginSetId
+     * @return array
+     * @throws \Exception
+     */
+    public function getConfirmOrderReferenceRequestDataForReinit(
+        string $paymentCode,
+        string $workOrderId,
+        string $reference,
+        string $amazonReferenceId,
+        string $amount,
+        string $currency,
+        int $orderId,
+        int $clientId = null,
+        int $pluginSetId = null
+    ): array {
+        $requestParams = $this->getDefaultPaymentRequestData($paymentCode, $clientId, $pluginSetId);
+
+        // Currency not mentioned in API-Doc of Payone
+        $requestParams['currency'] = $currency;
+        // amount in smallest unit
+        $requestParams['amount'] = $amount * 100;
+
+        $requestParams['add_paydata']['action'] = GenericPayment::ACTIONTYPE_CONFIRMORDERREFERENCE;
+        $requestParams['add_paydata']['reference'] = $reference;
+        $requestParams['add_paydata']['amazon_reference_id'] = $amazonReferenceId;
+        $requestParams['workorderid'] = $workOrderId;
+
+        /** @var ShopHelper $shopHelper */
+        $shopHelper = pluginApp(ShopHelper::class);
+
+        $successParam = '';
+        if (strlen($orderId)) {
+            $successParam = '?transactionBasketId=' . $orderId;
+        }
+
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit';
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
+
+
+        $this->validator->validate($requestParams);
+        return $requestParams;
+    }
+
+    /**
+     * @param string $paymentCode
      * @param Basket $basket
      * @return array
      * @throws \Exception

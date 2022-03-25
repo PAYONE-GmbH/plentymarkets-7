@@ -17,38 +17,39 @@
         {% set display = "none" %}
     {% endif %}
 
-    <button id="reinitPayone-{{order.id}}" class="btn btn-primary btn-appearance btn-block" onclick="reinit()"
-            data-toggle="modal" data-target="#payoneModal"  style="display: {{ display }}; margin-top: 0.5rem">
-        {{trans("Payone::General.payReinit")}}
+    <button id="reinitPayone-{{ order.id }}" class="btn btn-primary btn-appearance btn-block" onclick="reinit()"
+            data-toggle="modal" data-target="#payoneModal" style="display: {{ display }}; margin-top: 0.5rem">
+        {{ trans("Payone::General.payReinit") }}
     </button>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("body").append(" " +
                 "<div class=\"modal fade\" id=\"payoneModal\" data-backdrop=\"static\"> " +
-                "<div class=\"modal-dialog modal-lg\" role=\"document\">"+
-                "<div class=\"modal-content\">"+
+                "<div class=\"modal-dialog modal-lg\" role=\"document\">" +
+                "<div class=\"modal-content\">" +
                 "</div>" +
                 "</div>" +
                 "</div>");
             $("#payoneModal").data("modal-loaded", true);
         });
+
         function reinit() {
 
             const modalMethods = ['PAYONE_PAYONE_CREDIT_CARD',
                 'PAYONE_PAYONE_KLARNA_INSTALLMENTS', 'PAYONE_PAYONE_KLARNA_DIRECT_DEBIT', 'PAYONE_PAYONE_KLARNA_DIRECT_BANK',
-                'PAYONE_PAYONE_KLARNA_INVOICE'];
+                'PAYONE_PAYONE_KLARNA_INVOICE', 'PAYONE_PAYONE_AMAZON_PAY'];
 
             const redirectMethods = ['PAYONE_PAYONE_PAY_PAL', 'PAYONE_PAYONE_INVOICE', 'PAYONE_PAYONE_PRE_PAYMENT',
                 'PAYONE_PAYONE_CACHE_ON_DELIVERY', 'PAYONE_PAYONE_SOFORT', 'PAYONE_PAYONE_RATEPAY_INSTALLMENT', 'PAYONE_PAYONE_PAYDIREKT',
                 'PAYONE_PAYONE_PAYOLUTION_INSTALLMENT', 'PAYONE_PAYONE_INVOICE'];
 
-            $.get("payment/payone/reinit/{{ order.id }}" , function (data) {
+            $.get("payment/payone/reinit/{{ order.id }}", function (data) {
 
-                if(modalMethods.includes(data.paymentCode)) {
+                if (modalMethods.includes(data.paymentCode)) {
                     $('#payoneModal .modal-content').html(data.data);
                 }
-                if(redirectMethods.includes(data.paymentCode)) {
+                if (redirectMethods.includes(data.paymentCode)) {
                     window.location = data.data;
                 }
             });

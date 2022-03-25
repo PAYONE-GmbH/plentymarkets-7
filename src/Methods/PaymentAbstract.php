@@ -2,11 +2,14 @@
 
 namespace Payone\Methods;
 
+use Payone\Helpers\PaymentHelper;
 use Payone\PluginConstants;
 use Payone\Services\SettingsService;
+use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Method\Services\PaymentMethodBaseService;
 use Plenty\Plugin\Application;
 use Plenty\Plugin\Translation\Translator;
+use Plenty\Modules\Payment\Models\Payment;
 
 abstract class PaymentAbstract extends PaymentMethodBaseService
 {
@@ -35,9 +38,9 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      * @param SettingsService $settingsService
      */
     public function __construct(
-        Application $application,
+        Application      $application,
         PaymentValidator $paymentValidator,
-        SettingsService $settingsService
+        SettingsService  $settingsService
     )
     {
         $this->paymentValidator = $paymentValidator;
@@ -83,7 +86,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
     {
         $paymentIcon = $this->settingsService->getPaymentSettingsValue('paymentIcon', $this::PAYMENT_CODE);
 
-        if(empty($paymentIcon)) {
+        if (empty($paymentIcon)) {
             $pluginPath = $this->app->getUrlPath(PluginConstants::NAME);
             $paymentIcon = $pluginPath . '/images/logos/' . $this::PAYMENT_CODE . '.png';
         }
@@ -229,7 +232,7 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
      */
     public function isSwitchableTo($orderId = null): bool
     {
-        if($orderId > 0) {
+        if ($orderId > 0) {
             /** @var PaymentOrderValidator $paymentOrderValidator */
             $paymentOrderValidator = pluginApp(PaymentOrderValidator::class);
 
@@ -239,13 +242,33 @@ abstract class PaymentAbstract extends PaymentMethodBaseService
 
         return false;
     }
+
     /**
      * Check if it is allowed to switch from this payment method
      * @return bool
      */
     public function isSwitchableFrom($orderId = null): bool
     {
-        // TODO ADD AMAZON PAY
-        return true;
+        if ($orderId > 0) {
+            /** @var OrderRepositoryContract $orderRepo */
+            $orderRepo = pluginApp(OrderRepositoryContract::class);
+            try {
+                $order = $orderRepo->findById($orderId, ['payments'], true);
+                /** @var PaymentHelper $paymentHelper */
+                $paymentHelper = pluginApp(PaymentHelper::class);
+                foreach ($order->payments as $paymentData) {
+                    if (in_array($paymentData->mopId, $paymentHelper->getMops()) &&
+                        $paymentData->status == Payment::STATUS_AWAITING_APPROVAL
+                    ) {
+                        return false;
+                    }
+                }
+                return true;
+            } catch (\Exception $e) {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 }

@@ -227,6 +227,133 @@ class PaymentCreation
         return $payment;
     }
 
+
+    /**
+     * @param $mopId
+     * @param $response
+     * @param Basket $basket
+     * @param ClearingAbstract|null $account
+     *
+     * @throws \Exception
+     *
+     * @return Payment
+     */
+    public function createPaymentFromOrder($mopId, ResponseAbstract $response,  $basketData, ClearingAbstract $account = null)
+    {
+        $transactionID = $response->getTransactionID();
+
+        $paymentCode = $this->paymentHelper->getPaymentCodeByMop($mopId);
+
+        //  $paymentData = $this->preAuhtDataProvider->getDataFromBasket($paymentCode, $basket, $transactionID);
+
+        /** @var Payment $payment */
+        $payment = pluginApp(Payment::class);
+
+        $payment->mopId = (int) $mopId;
+        $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
+        $payment->status = Payment::STATUS_APPROVED;
+
+        $payment->currency = $basketData['currency'];
+
+        $payment->amount = 0;
+        $payment->unaccountable = 0;
+
+        if ($response instanceof AuthResponse) {
+            $payment->currency = $basketData['currency'];
+            $payment->amount = $basketData['basketAmount']/100;
+            $payment->receivedAt = date('Y-m-d H:i:s');
+        }
+
+
+        /** @var CurrencyExchangeRepositoryContract $currencyService */
+        $currencyService = pluginApp(CurrencyExchangeRepositoryContract::class);
+
+        $defaultCurrency = $currencyService->getDefaultCurrency();
+
+        //when a payment is placed in a foreign currency, we save the foreign amount,
+        // foreign currency sign, exchange ratio and isSystemCurrency set to 0
+        if ($payment->currency != $defaultCurrency) {
+            $payment->exchangeRatio = $currencyService->getExchangeRatioByCurrency($payment->currency);
+            $payment->isSystemCurrency = 0;
+        }
+
+        $payment->type = 'credit';
+
+        $paymentProperties = [];
+
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_ID,
+            $transactionID
+        );
+
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_TRANSACTION_CODE,
+            0
+        );
+
+        $paymentProperties[] = $this->createPaymentProperty(PaymentProperty::TYPE_ORIGIN, '' . Payment::ORIGIN_PLUGIN);
+
+        $paymentText = [
+            'Request type' => 'PreAuth',
+            'TransactionID' => $transactionID,
+        ];
+
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_BOOKING_TEXT,
+            'TransactionID ' . $transactionID
+        );
+        if ($account instanceof Bank) {
+            if(strlen(json_encode($account->getAccountholder()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_NAME_OF_RECEIVER,
+                    json_encode($account->getAccountholder())
+                );
+            }
+            if(strlen(json_encode($account->getIban()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_IBAN_OF_RECEIVER,
+                    json_encode($account->getIban())
+                );
+            }
+            if(strlen(json_encode($account->getBic()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_BIC_OF_RECEIVER,
+                    json_encode($account->getBic())
+                );
+            }
+            if(strlen(json_encode($account->getAccount()))){
+                $paymentProperties[] = $this->createPaymentProperty(
+                    PaymentProperty::TYPE_ACCOUNT_OF_RECEIVER,
+                    json_encode($account->getAccount())
+                );
+            }
+
+            $paymentText['accountHolder'] = $account->getAccountholder();
+            $paymentText['iban'] = $account->getIban();
+            $paymentText['bic'] = $account->getBic();
+            $paymentText['referenceNumber'] = $response->getTransactionID();
+        }
+
+        $paymentProperties[] = $this->createPaymentProperty(
+            PaymentProperty::TYPE_PAYMENT_TEXT,
+            json_encode($paymentText)
+        );
+        $payment->properties = $paymentProperties;
+
+        try {
+
+            $payment = $this->paymentRepository->createPayment($payment);
+        } catch (\Exception $e) {
+            $this->logger->logException($e);
+            $storedPayment = $this->paymentRepository->getPaymentById($payment->id);
+            if ($storedPayment) {
+                return $storedPayment;
+            }
+            throw $e;
+        }
+
+        return $payment;
+    }
     /**
      * @param Payment $payment
      * @param Order $order

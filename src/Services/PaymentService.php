@@ -64,6 +64,36 @@ class PaymentService
         $this->settingsService = $settingsService;
         $this->paymentHelper = $paymentHelper;
     }
+    public function openTransactionFromOrder($order)
+    {
+
+        $mopId = $order->methodOfPaymentId;
+
+        $selectedPaymentMopId = $mopId;
+
+        if (!$selectedPaymentMopId || !$this->paymentHelper->isPayonePayment($selectedPaymentMopId)) {
+            throw new \Exception(
+                'Can no initialize payment. Not a Payone payment method'
+            );
+        }
+        $authType = $this->settingsService->getPaymentSettingsValue('authType', $this->paymentHelper->getPaymentCodeByMop($selectedPaymentMopId));
+        if(!isset($authType) || $authType == -1) {
+            $authType = $this->settingsService->getSettingsValue('authType');
+        }
+        if ($authType == self::AUTH_TYPE_AUTH) {
+            $authResponse = $this->authService->executeAuthFromOrder($order);
+        } else {
+            $authResponse = $this->preAuthService->executePreAuthFromOrder($order);
+        }
+        if (!$authResponse->getSuccess()) {
+            throw new \Exception(
+                $authResponse->getErrorMessage() ?? 'Could not initialize payment. Please choose another payment method and retry'
+            );
+        }
+        $this->responseCache->storeAuth($selectedPaymentMopId, $authResponse);
+
+        return $authResponse;
+    }
 
     /**
      * @param Basket $basket

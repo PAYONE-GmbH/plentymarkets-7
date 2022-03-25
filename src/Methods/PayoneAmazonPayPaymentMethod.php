@@ -8,4 +8,5 @@ class PayoneAmazonPayPaymentMethod extends PaymentAbstract
 
     const CLEARING_TYPE = "wlt";
     const WALLET_TYPE = "AMZ";
+
 }

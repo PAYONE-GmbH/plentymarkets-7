@@ -21,7 +21,7 @@
                    required>{{ trans("Payone::Template.sepaMandateConsent") }}</label>
     </div>
     <div class="">
-        <form id="orderPlaceForm" action="place-order" onsubmit="sepaOrder(event, this)">
+        <form id="orderPlaceForm" action="place-order" onsubmit="sepaOrder(event, this, {{ orderId }})">
             <button id="orderPlace" class="btn btn-primary btn-block" disabled="disabled">
                 <i class="fa fa-arrow-right"
                    aria-hidden="true"></i> {{ trans('Payone::Template.orderPlace') }}

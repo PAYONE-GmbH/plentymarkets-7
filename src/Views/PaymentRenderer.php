@@ -69,7 +69,7 @@ class PaymentRenderer
      *
      * @return string
      */
-    public function render(PaymentAbstract $payment, $message)
+    public function render(PaymentAbstract $payment, $message, $orderId)
     {
         if (!$payment instanceof PaymentAbstract) {
             throw new \Exception('Payment method is not a Payone payment. Can not render it.');
@@ -85,7 +85,8 @@ class PaymentRenderer
                 'ccTypes' => $this->creditcardTypes->getAllowedTypes(),
                 'defaultWidthInPx' => $this->style->getDefaultWidthInPx(),
                 'defaultHeightInPx' => $this->style->getDefaultHeightInPx(),
-                'defaultStyle' => $this->style->getDefaultStyle()
+                'defaultStyle' => $this->style->getDefaultStyle(),
+                'orderId' => $orderId
             ]
         );
     }

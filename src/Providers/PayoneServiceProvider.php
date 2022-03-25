@@ -56,6 +56,7 @@ use Payone\Methods\PayoneKlarnaDirectDebitPaymentMethod;
 use Payone\Methods\PayoneKlarnaInstallmentsPaymentMethod;
 use Payone\Methods\PayoneKlarnaInvoicePaymentMethod;
 use Payone\Services\KlarnaService;
+use Payone\Hooks\ReInitPaymentHook;
 
 class PayoneServiceProvider extends ServiceProvider
 {
@@ -112,6 +113,10 @@ class PayoneServiceProvider extends ServiceProvider
         $this->registerAmazonPayListener($eventDispatcher, $basket);
 
         $eventDispatcher->listen(CopyPluginSet::class, CopyPluginSetHook::class);
+
+        $eventDispatcher->listen('Ceres.LayoutContainer.MyAccount.OrderHistoryPaymentInformation', ReInitPaymentHook::class);
+        $eventDispatcher->listen('Ceres.LayoutContainer.OrderConfirmation.AdditionalPaymentInformation', ReInitPaymentHook::class);
+
 
         pluginApp(WizardContainerContract::class)->register('payment-payone-assistant', PayoneAssistant::class);
     }
@@ -234,7 +239,7 @@ class PayoneServiceProvider extends ServiceProvider
                                 $paymentService->openTransaction($basket);
                                 break;
                             case  GetPaymentMethodContent::RETURN_TYPE_HTML:
-                                $event->setValue($paymentRenderer->render($payment, ''));
+                                $event->setValue($paymentRenderer->render($payment, '', ''));
                                 break;
                         }
                     } catch (\Exception $e) {
@@ -288,18 +293,18 @@ class PayoneServiceProvider extends ServiceProvider
                     /** @var PaymentCache $paymentCache */
                     $paymentCache = pluginApp(PaymentCache::class);
 
-                    $order = $orderRepository->findOrderById($event->getOrderId());
+                    $order = $orderRepository->findById($event->getOrderId());
                     if($order instanceof Order) {
                         if($event->getMop() == $paymentHelper->getMopId(PayoneInvoiceSecurePaymentMethod::PAYMENT_CODE)) {
                             //Block the invoice generation for secure invoice because there will be an external invoice
-                            $orderRepository->updateOrder([
+                            $orderRepository->update($order->id,[
                                 'properties' => [
                                     [
                                         'typeId' => OrderPropertyType::EXTERNAL_TAX_SERVICE,
                                         'value' => "1"
                                     ]
                                 ]
-                            ], $order->id);
+                            ]);
                         }
 
                         $payment = $paymentCache->loadPayment($event->getMop());
@@ -324,7 +329,6 @@ class PayoneServiceProvider extends ServiceProvider
                 }
             }
         });
-
     }
 
     /**
@@ -453,9 +457,9 @@ class PayoneServiceProvider extends ServiceProvider
                 $basketData = $basket->load();
                 $resourceContainer->addScriptTemplate(
                     PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
-                        'selectedPaymentId' => $basketData->methodOfPaymentId,
-                        'amazonPayMopId' => $amazonPayMopId,
-                        'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
+                    'selectedPaymentId' => $basketData->methodOfPaymentId,
+                    'amazonPayMopId' => $amazonPayMopId,
+                    'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
                 ]);
             }
         });

@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.5.0
+
+### Added
+- The payment methods of the plugin can now also be used in MyAccount to pay for an order afterwards.
+
 ## 2.4.0
 
 ### Added

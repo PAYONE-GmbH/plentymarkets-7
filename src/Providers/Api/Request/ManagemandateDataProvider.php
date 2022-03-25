@@ -37,4 +37,26 @@ class ManagemandateDataProvider extends DataProviderAbstract implements DataProv
         return $requestParams;
     }
 
+    public function getDataFromOrder(string $paymentCode, $order, string $requestReference = null, int $clientId = null, int $pluginSetId = null): array
+    {
+        $requestParams = $this->getDefaultRequestData($paymentCode, $clientId, $pluginSetId);
+
+        $requestParams['basket'] = $this->getBasketDataFromOrder($order);
+
+        $requestParams['basketItems'] = $this->getOrderItemData($order);
+        $requestParams['shippingAddress'] = $this->addressHelper->getAddressData(
+            $this->addressHelper->getOrderShippingAddress($order)
+        );
+        $billingAddress = $this->addressHelper->getOrderBillingAddress($order);
+        $requestParams['billingAddress'] = $this->addressHelper->getAddressData(
+            $billingAddress
+        );
+        $requestParams['customer'] = $this->getCustomerData($billingAddress, $order->ownerId);
+
+        $requestParams['bankAccount'] = $this->getBankAccount();
+        $this->validator->validate($requestParams);
+
+        return $requestParams;
+    }
+
 }

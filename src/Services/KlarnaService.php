@@ -9,6 +9,7 @@ use Payone\Providers\Api\Request\Models\GenericPayment;
 use Plenty\Modules\Account\Address\Models\Address;
 use Plenty\Modules\Basket\Models\Basket;
 use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
+use Plenty\Modules\Order\Models\Order;
 
 /**
  * Class KlarnaService
@@ -40,6 +41,42 @@ class KlarnaService
         $this->dataProvider = $dataProvider;
         $this->logger = $logger;
     }
+
+    /**
+     * @param string $paymentCode
+     * @param Order $order
+     * @return mixed
+     */
+    public function startSessionFromOrder(string $paymentCode, Order $order)
+    {
+        /** @var AddressHelper $addressHelper */
+        $addressHelper = pluginApp(AddressHelper::class);
+        $billingAddress = $addressHelper->getOrderBillingAddress($order);
+        // If shippingAddress is empty, then it's filled with the billingAddress data
+        $shippingAddress = $addressHelper->getOrderShippingAddress($order);
+
+        $requestParams = $this->dataProvider->getStartSessionRequestDataFromOrder(
+            $paymentCode,
+            $order
+        );
+
+        $requestParams['address'] = $this->createAddressData($billingAddress, $shippingAddress);
+
+        $startSessionResponse = $this->api->doGenericPayment(GenericPayment::ACTIONTYPE_STARTSESSION, $requestParams);
+
+
+
+        $this->logger
+            ->setIdentifier(__METHOD__)
+            ->debug('Klarna.confirmOrderReference', [
+                "requestParams" => $requestParams,
+                "response" => $startSessionResponse
+            ]);
+
+        return $startSessionResponse;
+    }
+
+
 
     /**
      * @param string $paymentCode

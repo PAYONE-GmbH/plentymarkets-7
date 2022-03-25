@@ -1,0 +1,45 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        amazon.Login.setClientId('{{ content.clientId }}');
+
+        var $orderReferenceId;
+        addressBookWidget = new OffAmazonPayments.Widgets.AddressBook({
+            sellerId: '{{ content.sellerId }}',
+            scope: '{{ content.addressBookScope }}',
+            onOrderReferenceCreate: function (orderReference) {
+                $orderReferenceId = orderReference.getAmazonOrderReferenceId();
+            },
+            onAddressSelect: function (orderReference) {
+
+                $.post("/payment/payone/checkout/amazonPay/getOrderReferenceReinit/{{ orderId }}",
+                    {
+                        "accessToken": "{{ accessToken }}",
+                        "workOrderId": "{{ workOrderId }}",
+                        "amazonReferenceId": $orderReferenceId
+                    });
+            },
+            design: {
+                designMode: 'responsive'
+            },
+
+            onError: function (error) {
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+            }
+        });
+        addressBookWidget.bind("addressBookWidgetDiv");
+
+        walletWidget = new OffAmazonPayments.Widgets.Wallet({
+            sellerId: '{{ content.sellerId }}',
+            scope: '{{ content.walletScope }}',
+
+            design: {
+                designMode: 'responsive'
+            },
+            onError: function (error) {
+                console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+            }
+        });
+        walletWidget.setPresentmentCurrency('{{ content.currency }}'); // ISO-4217 currency code, merchant is expected to enter a valid currency supported by Amazon Pay.
+        walletWidget.bind("walletWidgetDiv");
+    });
+</script>

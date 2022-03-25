@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.5.0
+
+### Hinzugefügt
+- Die Zahlungsarten des Plugins können nun auch im MyAccount dazu genutzt werden einen Auftrag nachträglich zu bezahlen.
+
 ## 2.4.0
 
 ### Hinzugefügt

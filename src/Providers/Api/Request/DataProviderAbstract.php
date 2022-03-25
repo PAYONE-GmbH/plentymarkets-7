@@ -584,6 +584,18 @@ abstract class DataProviderAbstract
 
         return false;
     }
+    /**
+     * @return array
+     */
+    protected function getRedirectUrlsForReinit()
+    {
+
+        return [
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit',
+            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+        ];
+    }
 
     /**
      * @return array
@@ -650,6 +662,26 @@ abstract class DataProviderAbstract
         $amazonAuthConfig['currency'] = $currency;
         // amount in smallest unit
         $amazonAuthConfig['amount'] = $basketAmount * 100;
+
+        return $amazonAuthConfig;
+    }
+
+    /**
+     * @param Order $order
+     * @return array
+     */
+    protected function getAmazonPayDataFromOrder(Order $order): array
+    {
+        /** @var SessionStorage $sessionStorage */
+        $sessionStorage = pluginApp(SessionStorage::class);
+        $amazonAuthConfig = [];
+        $amazonAuthConfig['workOrderId'] = $sessionStorage->getSessionValue('workOrderId');
+        $amazonAuthConfig['amazonReferenceId'] = $sessionStorage->getSessionValue('amazonReferenceId');
+        $amazonAuthConfig['reference'] = $order->id;
+
+        $amazonAuthConfig['currency'] = $order->amount->currency;
+
+        $amazonAuthConfig['amount'] = $order->amount->invoiceTotal * 100;
 
         return $amazonAuthConfig;
     }

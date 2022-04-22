@@ -171,10 +171,11 @@
     );
   };
 
-  window.orderPlaceForm = function (event, orderId) {
+  window.orderPlaceForm = function (event, orderId, trailingSlash = '') {
     window.sessionStorage.setItem("cardOrderId", orderId);
     event.preventDefault();
 
+    $.payoneIframe.trailingSlash = trailingSlash;
     $.payonePayment.setCheckoutDisabled(true);
     $.payoneIframe.check();
   };

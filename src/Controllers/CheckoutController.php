@@ -170,7 +170,8 @@ class CheckoutController extends Controller
                     'success' => $confirmOrderRefResponse->getSuccess(),
                     'sellerId' => $sessionStorage->getSessionValue('sellerId'),
                     'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
-                    'orderId' => $orderId
+                    'orderId' => $orderId,
+                    'trailingSlash' => ShopHelper::getTrailingSlash()
                 ]
             );
 
@@ -204,7 +205,8 @@ class CheckoutController extends Controller
                 [
                     'client_token' => $sessionResponse->getKlarnaClientToken(),
                     'payment_method' => $sessionResponse->getKlarnaMethodIdentifier(),
-                    'order' => $orderId
+                    'order' => $orderId,
+                    'trailingSlash' => ShopHelper::getTrailingSlash()
                 ]
             );
 
@@ -612,7 +614,8 @@ class CheckoutController extends Controller
             $html = $twig->render(PluginConstants::NAME . '::Partials.PaymentForm.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE', [
                 'mandate' => $mandate,
                 'locale' => $helper->getCurrentLocale(),
-                'orderId' => $orderId
+                'orderId' => $orderId,
+                'trailingSlash' => ShopHelper::getTrailingSlash()
             ]);
         } catch (\Exception $e) {
             return $this->getJsonErrors([
@@ -648,14 +651,14 @@ class CheckoutController extends Controller
                 return $this->response->redirectTo('confirmation');
             }
             if ($storedBasketId != $transactionBasketId) {
-                return $this->response->redirectTo('payone/error');
+                return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
             }
         } else {
-            return $this->response->redirectTo('payone/error');
+            return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
         }
         $basket = $basketReopo->load();
         if (!$helper->isPayonePayment($basket->methodOfPaymentId)) {
-            return $this->response->redirectTo('payone/error');
+            return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
         }
 
         $paymentCache->resetActiveBasketId();

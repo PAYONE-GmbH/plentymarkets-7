@@ -10,6 +10,6 @@
     });
     {% endif %}
     function doAmazonAuth() {
-        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}');
+        $.post('/payment/payone/checkout/doAuthFromOrder/{{ orderId }}{{ trailingSlash }}');
     }
 </script>

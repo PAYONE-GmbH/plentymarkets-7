@@ -86,7 +86,8 @@ class PaymentRenderer
                 'defaultWidthInPx' => $this->style->getDefaultWidthInPx(),
                 'defaultHeightInPx' => $this->style->getDefaultHeightInPx(),
                 'defaultStyle' => $this->style->getDefaultStyle(),
-                'orderId' => $orderId
+                'orderId' => $orderId,
+                'trailingSlash' => ShopHelper::getTrailingSlash()
             ]
         );
     }

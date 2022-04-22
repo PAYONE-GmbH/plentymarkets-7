@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <form id="createSepamandateForm" name="paymentform" action="place-order" onsubmit="sepaForm(event, {{ orderId }})">
+        <form id="createSepamandateForm" name="paymentform" action="place-order" onsubmit="sepaForm(event, {{ orderId }}, {{ trailingSlash }})">
             <div class="bank-details">
                 <div class="bank-details container">
                     <legend>{{ trans("Payone::Template.yourBankAccount") }}:</legend>

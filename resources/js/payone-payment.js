@@ -6,10 +6,10 @@
         $('#orderPlace').prop('disabled', isDisabled);
     };
 
-    $.payonePayment.doAuth = function () {
+    $.payonePayment.doAuth = function (trailingSlash = '') {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/doAuth',
+            url: '/payment/payone/checkout/doAuth' + trailingSlash,
             data: '',
             dataType: 'json',
             async: true
@@ -29,11 +29,11 @@
         });
     };
 
-    $.payonePayment.doAuthFromOrder = function (form, orderId) {
+    $.payonePayment.doAuthFromOrder = function (form, orderId, trailingSlash = '') {
         console.log(orderId)
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId,
+            url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId + trailingSlash,
             data: '',
             dataType: 'json',
             async: true

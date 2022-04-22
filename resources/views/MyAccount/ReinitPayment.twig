@@ -44,7 +44,7 @@
                 'PAYONE_PAYONE_CACHE_ON_DELIVERY', 'PAYONE_PAYONE_SOFORT', 'PAYONE_PAYONE_RATEPAY_INSTALLMENT', 'PAYONE_PAYONE_PAYDIREKT',
                 'PAYONE_PAYONE_PAYOLUTION_INSTALLMENT', 'PAYONE_PAYONE_INVOICE'];
 
-            $.get("payment/payone/reinit/{{ order.id }}", function (data) {
+            $.get("payment/payone/reinit/{{ order.id }}{{ trailingSlash }}", function (data) {
 
                 if (modalMethods.includes(data.paymentCode)) {
                     $('#payoneModal .modal-content').html(data.data);

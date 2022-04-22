@@ -36,8 +36,10 @@
     allowedCCTypes,
     defaultWidthInPx,
     defaultHeightInPx,
-    defaultStyle
+    defaultStyle,
+    trailingSlash = ''
   ) {
+    $.payoneIframe.trailingSlash = trailingSlash;
     var n = document.createElement("script");
     n.setAttribute("type", "text/javascript");
     n.setAttribute(
@@ -59,10 +61,10 @@
     document.getElementsByTagName("body")[0].appendChild(n);
   };
 
-  $.payoneIframe.storeCCResponse = function (response) {
+  $.payoneIframe.storeCCResponse = function (response, trailingSlash = '') {
     return $.ajax({
       type: "POST",
-      url: "/payment/payone/checkout/storeCCCheckResponse",
+      url: "/payment/payone/checkout/storeCCCheckResponse" + trailingSlash,
       data: response,
       dataType: "json",
       async: true,
@@ -157,14 +159,15 @@
     return config;
   };
 
-  window.createIframeStart = function () {
+  window.createIframeStart = function (trailingSlash) {
     $.payoneIframe.createIframe(
       Templates.locale,
       request,
       allowedCCTypes,
       defaultWidthInPx,
       defaultHeightInPx,
-      defaultStyle
+      defaultStyle,
+      trailingSlash
     );
   };
 
@@ -178,7 +181,7 @@
 })(window.jQuery, window, document);
 var submitted = false;
 
-function checkCallback(response) {
+function checkCallback(response, trailingSlash = '') {
   console.log("doing callback...");
   console.debug(response);
   var form = $("#orderPlaceForm");
@@ -197,7 +200,7 @@ function checkCallback(response) {
       var orderId = window.sessionStorage.getItem("cardOrderId");
       console.log(orderId);
       if (orderId > 0) {
-        $.when($.payonePayment.doAuthFromOrder(form, orderId))
+        $.when($.payonePayment.doAuthFromOrder(form, orderId, $.payoneIframe.trailingSlash))
           .done(function (data) {
             if (data.data.redirecturl) {
               window.location.replace(data.data.redirecturl);
@@ -213,7 +216,7 @@ function checkCallback(response) {
             form.removeAttr("onsubmit");
           });
       } else {
-        $.when($.payonePayment.doAuth(form))
+        $.when($.payonePayment.doAuth(form, $.payoneIframe.trailingSlash))
           .done(function (data) {
             if (data.data.redirecturl) {
               window.location.replace(data.data.redirecturl);

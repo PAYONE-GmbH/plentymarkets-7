@@ -41,7 +41,7 @@
 
             window.loadAmazonPayButton = function() {
                 if(!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
-                    $.get("/payment/payone/checkout/amazonPay/loginButton", function (data) {
+                    $.get("/payment/payone/checkout/amazonPay/loginButton{{ trailingSlash }}", function (data) {
                         $("body").append(data);
                     });
                     window.amazonPayButtonLoaded = true;

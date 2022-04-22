@@ -8,6 +8,7 @@ use IO\Helper\RouteConfig;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\Services\SettingsService;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -76,6 +77,7 @@ class ReInitPaymentHook
                 'orderId' => $orderId,
                 'orderHasPayment' => $orderHasPaymentAssigned,
                 "paymentIds" => $paymentIds,
+                'trailingSlash' => ShopHelper::getTrailingSlash()
             ])
             );
         } else {
@@ -87,7 +89,7 @@ class ReInitPaymentHook
                 'isMyAccount' => $isMyAccount,
                 'isOrderConfirmation' => $isOrderConfirmation,
                 'orderHasPayment' => $orderHasPaymentAssigned,
-
+                'trailingSlash' => ShopHelper::getTrailingSlash()
             ])
             );
         }

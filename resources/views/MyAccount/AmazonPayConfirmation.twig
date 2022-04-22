@@ -40,7 +40,7 @@
 <script type="text/javascript">
     window.loadAmazonPayButtonReinit = function () {
         if (!window.amazonPayButtonLoaded || document.getElementById("LoginWithAmazon") === null) {
-            $.get("/payment/payone/checkout/amazonPay/loginButtonReinit/{{ orderId }}", function (data) {
+            $.get("/payment/payone/checkout/amazonPay/loginButtonReinit/{{ orderId }}{{ trailingSlash }}", function (data) {
                 console.log('test');
                 $("body").append(data);
             });
@@ -75,7 +75,7 @@
     };
 
     window.reinitAmazon = function () {
-        $.get("payment/payone/reinit/{{ orderId }}", function (data) {
+        $.get("payment/payone/reinit/{{ orderId }}{{ trailingSlash }}", function (data) {
             $('#amazonPayoneModal .modal-content').html(data.data);
             document.getElementById("reinitPayoneAmazon").style.display = "none";
         });

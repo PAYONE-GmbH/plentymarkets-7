@@ -15,7 +15,7 @@
                 // to perform after the address is selected. The
                 // amazonOrderReferenceId can be used to retrieve the address
                 // details by calling the GetOrderReferenceDetails operation.
-                $.post("/payment/payone/checkout/amazonPay/getOrderReference",
+                $.post("/payment/payone/checkout/amazonPay/getOrderReference{{ trailingSlash }}",
                     {
                         "accessToken": "{{ accessToken }}",
                         "workOrderId": "{{ workOrderId }}",

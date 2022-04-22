@@ -11,7 +11,7 @@
             },
             onAddressSelect: function (orderReference) {
 
-                $.post("/payment/payone/checkout/amazonPay/getOrderReferenceReinit/{{ orderId }}",
+                $.post("/payment/payone/checkout/amazonPay/getOrderReferenceReinit/{{ orderId }}{{ trailingSlash }}",
                     {
                         "accessToken": "{{ accessToken }}",
                         "workOrderId": "{{ workOrderId }}",

@@ -7,6 +7,7 @@ use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFact
 use Plenty\Modules\Frontend\Session\Storage\Models\LocaleSettings;
 use Plenty\Modules\Helper\Services\WebstoreHelper;
 use Plenty\Modules\System\Models\WebstoreConfiguration;
+use Plenty\Modules\Webshop\Helpers\UrlQuery;
 
 /**
  * Class ShopHelper
@@ -112,6 +113,14 @@ class ShopHelper
     public function getCurrentLocale(): string
     {
         return strtolower($this->getCurrentLanguage()) . '-' . strtoupper($this->getCurrentLanguage());
+    }
+
+    public static function getTrailingSlash()
+    {
+        if(UrlQuery::shouldAppendTrailingSlash()) {
+            return '/';
+        }
+        return '';
     }
 
     /**

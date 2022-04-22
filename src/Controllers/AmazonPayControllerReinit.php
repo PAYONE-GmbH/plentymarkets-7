@@ -7,6 +7,7 @@ use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\OrderHelper;
 use Payone\Helpers\PaymentHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
@@ -154,7 +155,8 @@ class AmazonPayControllerReinit extends AmazonPayController
             'orderId' => $orderId,
             'selectedPaymentId' => $selectedPaymentId,
             'amazonPayMopId' => $amazonPayMopId,
-            'content' => $content
+            'content' => $content,
+            'trailingSlash' => ShopHelper::getTrailingSlash()
         ]);
     }
 
@@ -210,7 +212,8 @@ class AmazonPayControllerReinit extends AmazonPayController
             'content' => $content,
             'accessToken' => $accessToken,
             'workOrderId' => $workdOrderId,
-            'amazonPayMopId' => $amazonPayMopId
+            'amazonPayMopId' => $amazonPayMopId,
+            'trailingSlash' => ShopHelper::getTrailingSlash()
         ]);
     }
 

@@ -8,7 +8,7 @@
             $.payonePayment.setCheckoutDisabled(isDisabled);
         }
 
-        window.sepaOrder = function(event, form, orderId) {
+        window.sepaOrder = function(event, form, orderId, trailingSlash = '') {
             console.log('submitting orderPlaceForm for sepa');
             console.log(orderId)
             event.preventDefault();
@@ -20,7 +20,7 @@
             var form = $(form);
 
             if(orderId){
-                $.when($.payonePayment.doAuthFromOrder(form, orderId)).done(function () {
+                $.when($.payonePayment.doAuthFromOrder(form, orderId, trailingSlash)).done(function () {
 
                     submitted = true;
                     form.removeAttr('onsubmit');
@@ -29,7 +29,7 @@
                     return false;
                 });
             }else {
-                $.when($.payonePayment.doAuth(form)).done(function () {
+                $.when($.payonePayment.doAuth(form, trailingSlash)).done(function () {
 
                     submitted = true;
                     form.removeAttr('onsubmit');

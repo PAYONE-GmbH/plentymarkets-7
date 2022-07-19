@@ -15,7 +15,6 @@
   };
 
   $.payoneIframe.checkCallback = function (response) {
-    console.debug(response);
     if (response.status === "VALID") {
       document.getElementById("pseudocardpan").value = response.pseudocardpan;
       document.getElementById("truncatedcardpan").value =
@@ -76,7 +75,6 @@
         if (data.errors && data.errors.message) {
           $.payonePayment.showErrorMessage(data.errors.message);
         }
-        console.log(data);
       });
   };
 

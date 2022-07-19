@@ -9,8 +9,6 @@
         }
 
         window.sepaOrder = function(event, form, orderId, trailingSlash = '') {
-            console.log('submitting orderPlaceForm for sepa');
-            console.log(orderId)
             event.preventDefault();
 
             var termsCheckboxes = $('#sepaMandateConfirmation input[type="checkbox"]');

@@ -22,13 +22,10 @@
             if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
-            console.log(data);
-            console.log(data);
         });
     };
 
     $.payonePayment.doAuthFromOrder = function (form, orderId, trailingSlash = '') {
-        console.log(orderId)
         return $.ajax({
             type: 'POST',
             url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId + trailingSlash,
@@ -44,8 +41,6 @@
             if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
-            console.log(data);
-            console.log(data);
         });
     };
     $.payonePayment.showValidationErrors = function (form, errors, errorClasses) {

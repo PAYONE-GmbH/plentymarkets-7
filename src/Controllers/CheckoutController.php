@@ -22,6 +22,7 @@ use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\ErrorMessageRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
@@ -71,6 +72,11 @@ class CheckoutController extends Controller
     private $response;
 
     /**
+     * @var LocalizationRepositoryContract
+     */
+    private $localizationRepositoryContract;
+
+    /**
      * CheckoutController constructor.
      *
      * @param SessionHelper $sessionHelper
@@ -78,20 +84,22 @@ class CheckoutController extends Controller
      * @param Request $request
      * @param Logger $logger
      * @param Response $response
+     * @param LocalizationRepositoryContract $localizationRepositoryContract
      */
     public function __construct(
         SessionHelper        $sessionHelper,
         ErrorMessageRenderer $renderer,
         Request              $request,
         Logger               $logger,
-        Response             $response
-    )
-    {
+        Response             $response,
+        LocalizationRepositoryContract $localizationRepositoryContract
+    ) {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
         $this->request = $request;
         $this->logger = $logger;
         $this->response = $response;
+        $this->localizationRepositoryContract = $localizationRepositoryContract;
     }
 
     /**
@@ -235,7 +243,7 @@ class CheckoutController extends Controller
                     /** @var ShopHelper $shopHelper */
                     $shopHelper = pluginApp(ShopHelper::class);
                     return $response->json([
-                        'data' => $shopHelper->getPlentyDomain() . '/place-order',
+                        'data' => $shopHelper->getPlentyDomain() . '/'. $this->localizationRepositoryContract->getLanguage() .'/place-order',
                         'paymentCode' => $paymentCode
                     ], 200);
 
@@ -640,7 +648,6 @@ class CheckoutController extends Controller
      */
     public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
     {
-
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
@@ -662,7 +669,7 @@ class CheckoutController extends Controller
         }
 
         $paymentCache->resetActiveBasketId();
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage().'/place-order');
     }
 
     /**
@@ -677,7 +684,7 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
 
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage() . '/place-order');
     }
 
     /**
@@ -735,6 +742,6 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
 
         $paymentCache->resetActiveBasketId();
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage() . '/place-order');
     }
 }

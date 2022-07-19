@@ -56,5 +56,8 @@
       "name": "Payone Checkout JS",
       "description": "Block to integrate the payone payments into checkout"
     }
-  ]
+  ],
+  "platform": {
+    "php": ">=7.3 <8.1"
+  }
 }

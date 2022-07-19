@@ -70,8 +70,6 @@
       async: true,
     })
       .done(function (data) {
-        console.log("done");
-        console.log(data);
       })
       .fail(function (data) {
         var data = data.responseJSON;

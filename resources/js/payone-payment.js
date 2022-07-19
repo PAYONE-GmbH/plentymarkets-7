@@ -6,7 +6,7 @@
         $('#orderPlace').prop('disabled', isDisabled);
     };
 
-    $.payonePayment.doAuth = function (trailingSlash = '') {
+    $.payonePayment.doAuth = function (form, trailingSlash = '') {
         return $.ajax({
             type: 'POST',
             url: '/payment/payone/checkout/doAuth' + trailingSlash,
@@ -17,8 +17,6 @@
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
             }
-            console.log('done');
-            console.log(data);
         }).fail(function (data) {
             var data = data.responseJSON;
             if (data.errors && data.errors.message) {
@@ -41,8 +39,6 @@
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
             }
-            console.log('done');
-            console.log(data);
         }).fail(function (data) {
             var data = data.responseJSON;
             if (data.errors && data.errors.message) {

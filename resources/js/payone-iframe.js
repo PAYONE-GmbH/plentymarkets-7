@@ -64,7 +64,7 @@
   $.payoneIframe.storeCCResponse = function (response, trailingSlash = '') {
     return $.ajax({
       type: "POST",
-      url: "/payment/payone/checkout/storeCCCheckResponse" + trailingSlash,
+      url: "/payment/payone/checkout/storeCCCheckResponse" + $.payoneIframe.trailingSlash,
       data: response,
       dataType: "json",
       async: true,
@@ -183,8 +183,6 @@
 var submitted = false;
 
 function checkCallback(response, trailingSlash = '') {
-  console.log("doing callback...");
-  console.debug(response);
   var form = $("#orderPlaceForm");
   if (submitted) {
     return false;
@@ -193,13 +191,9 @@ function checkCallback(response, trailingSlash = '') {
     $.payonePayment.setCheckoutDisabled(false);
     return false;
   }
-  console.log("storing cc check response");
-  $.when($.payoneIframe.storeCCResponse(response))
+  $.when($.payoneIframe.storeCCResponse(response, trailingSlash))
     .done(function () {
-      console.log(response);
-      console.log("submitting orderPlaceForm");
       var orderId = window.sessionStorage.getItem("cardOrderId");
-      console.log(orderId);
       if (orderId > 0) {
         $.when($.payonePayment.doAuthFromOrder(form, orderId, $.payoneIframe.trailingSlash))
           .done(function (data) {

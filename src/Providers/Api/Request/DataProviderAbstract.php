@@ -592,7 +592,7 @@ abstract class DataProviderAbstract
         return [
             'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit' . ShopHelper::getTrailingSlash(),
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash(),
-            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout' . ShopHelper::getTrailingSlash(),
         ];
     }
 
@@ -608,7 +608,7 @@ abstract class DataProviderAbstract
         return [
             'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . ShopHelper::getTrailingSlash() . $successParam,
             'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash(),
-            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout' . ShopHelper::getTrailingSlash(),
         ];
     }
 

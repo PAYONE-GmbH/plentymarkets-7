@@ -36,7 +36,7 @@
     var request = {{ creditcardcheck|json_encode|raw }};
     var requestUrl = "{{ request.getRequestUri() }}";
     var payment = "{{ payment }}";
-    var trailingSlash = "{{trailingSlash }}"
+    var trailingSlash = "{{trailingSlash }}";
 </script>
 
 <link rel="stylesheet" href="{{ plugin_path('Payone') }}/css/payone-iframe.css">

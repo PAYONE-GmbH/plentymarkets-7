@@ -9,7 +9,6 @@ use Payone\Models\CreditCardStyle;
 use Payone\Models\CreditcardTypes;
 use Payone\PluginConstants;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
-use Plenty\Modules\Webshop\Helpers\UrlQuery;
 use Plenty\Plugin\Templates\Twig;
 
 class Javascript
@@ -49,7 +48,7 @@ class Javascript
                 'defaultHeightInPx' => $style->getDefaultHeightInPx(),
                 'defaultStyle' => $style->getDefaultStyle(),
                 'payment' => $paymentHelper->getPaymentCodeByMop($selectedPaymentId),
-                'trailingSlash' => UrlQuery::shouldAppendTrailingSlash() ? "/" : ""
+                'trailingSlash' => $helper::getTrailingSlash()
             ]
         );
     }

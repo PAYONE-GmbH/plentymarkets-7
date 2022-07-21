@@ -7,12 +7,13 @@
     };
     /**
      * @param form
+     * @param orderId
+     * @param trailingSlash
      */
-    $.payoneDirectDebit.storeAccountDataForReinit = function (form, orderId) {
-        console.log('reinit with order id ')
+    $.payoneDirectDebit.storeAccountDataForReinit = function (form, orderId, trailingSlash = '') {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/storeAccountDataForReinit/' + orderId,
+            url: '/payment/payone/checkout/storeAccountDataForReinit/' + orderId + trailingSlash,
             data: form.serialize(),
             dataType: 'json',
             async: true
@@ -25,7 +26,6 @@
                     if (data.errors && data.errors.message) {
                         $.payonePayment.showErrorMessage(data.errors.message);
                     }
-                    console.log(data);
                 }
             );
 
@@ -33,12 +33,12 @@
 
     /**
      * @param form
+     * @param trailingSlash
      */
-    $.payoneDirectDebit.storeAccountData = function (form) {
-        console.log('normal flow ')
+    $.payoneDirectDebit.storeAccountData = function (form, trailingSlash = '') {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/storeAccountData',
+            url: '/payment/payone/checkout/storeAccountData' + trailingSlash,
             data: form.serialize(),
             dataType: 'json',
             async: true
@@ -51,28 +51,27 @@
                     if (data.errors && data.errors.message) {
                         $.payonePayment.showErrorMessage(data.errors.message);
                     }
-                    console.log(data);
                 }
             );
-
     };
 
-    $.payoneDirectDebit.showSepaMandate = function () {
+    /**
+     * @param trailingSlash
+     */
+    $.payoneDirectDebit.showSepaMandate = function (trailingSlash = '') {
         return $.ajax({
             type: 'GET',
             dataType: 'json',
-            url: '/payment/payone/checkout/getSepaMandateStep'
+            url: '/payment/payone/checkout/getSepaMandateStep' + trailingSlash
         })
             .done(function (data) {
                 $(data.data.html).insertAfter('#createSepamandate');
                 $('#sepaMandateConfirmation').show();
-
             }).fail(function (data) {
                     var data = data.responseJSON;
                     if (data.errors && data.errors.message) {
                         $.payonePayment.showErrorMessage(data.errors.message);
                     }
-                    console.log(data);
                 }
             );
     };
@@ -81,33 +80,22 @@
         $('#createSepamandate').hide();
     };
 
-    window.sepaForm = function(event, orderId) {
-
-        console.log('submit button clicked now');
+    window.sepaForm = function(event, orderId, trailingSlash = '') {
         event.preventDefault();
-
         $('#sepaContinue').prop('disabled', true);
 
         var form = $('#createSepamandateForm');
-        console.log('storing account data');
-        console.log(orderId)
         if(orderId) {
-            $.when($.payoneDirectDebit.storeAccountDataForReinit(form, orderId)).done(function () {
-                console.log('submitting orderPlaceForm');
-
+            $.when($.payoneDirectDebit.storeAccountDataForReinit(form, orderId, trailingSlash)).done(function () {
                 $.payoneDirectDebit.hideAccountForm();
-                $.payoneDirectDebit.showSepaMandate(form);
-
+                $.payoneDirectDebit.showSepaMandate(trailingSlash);
             }).fail(function (data, textStatus, jqXHR) {
                 return false;
             });
         }else {
-            $.when($.payoneDirectDebit.storeAccountData(form)).done(function () {
-                console.log('submitting orderPlaceForm');
-
+            $.when($.payoneDirectDebit.storeAccountData(form, trailingSlash)).done(function () {
                 $.payoneDirectDebit.hideAccountForm();
-                $.payoneDirectDebit.showSepaMandate(form);
-
+                $.payoneDirectDebit.showSepaMandate(trailingSlash);
             }).fail(function (data, textStatus, jqXHR) {
                 return false;
             });

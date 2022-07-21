@@ -214,7 +214,8 @@ class PayoneServiceProvider extends ServiceProvider
                             PluginConstants::NAME . '::Checkout.KlarnaWidget',
                             [
                                 'client_token' => $response->getKlarnaClientToken(),
-                                'payment_method' => $response->getKlarnaMethodIdentifier()
+                                'payment_method' => $response->getKlarnaMethodIdentifier(),
+                                'trailingSlash' => ShopHelper::getTrailingSlash()
                             ]
                         ));
                         $event->setType(GetPaymentMethodContent::RETURN_TYPE_HTML);
@@ -459,7 +460,8 @@ class PayoneServiceProvider extends ServiceProvider
                     PluginConstants::NAME . '::Checkout.AmazonPayCheckout', [
                     'selectedPaymentId' => $basketData->methodOfPaymentId,
                     'amazonPayMopId' => $amazonPayMopId,
-                    'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE)
+                    'sandbox' => (bool)$settingsService->getPaymentSettingsValue('Sandbox', PayoneAmazonPayPaymentMethod::PAYMENT_CODE),
+                    'trailingSlash' => ShopHelper::getTrailingSlash()
                 ]);
             }
         });

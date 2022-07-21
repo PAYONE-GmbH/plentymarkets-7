@@ -171,8 +171,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
             $successParam = '?transactionBasketId=' . $basketId;
         }
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
-        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . ShopHelper::getTrailingSlash() . $successParam;
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash();
 
         $this->validator->validate($requestParams);
         return $requestParams;
@@ -222,8 +222,8 @@ class GenericPaymentDataProvider extends DataProviderAbstract
             $successParam = '?transactionBasketId=' . $orderId;
         }
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit';
-        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit' . ShopHelper::getTrailingSlash();
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash();
 
 
         $this->validator->validate($requestParams);
@@ -259,9 +259,9 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $requestParams['basket'] = $this->getBasketData($basket);
         $requestParams['basketItems'] = $this->getCartItemData($basket);
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . $successParam;
-        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
-        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back';
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . ShopHelper::getTrailingSlash() . $successParam;
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash();
+        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back' . ShopHelper::getTrailingSlash();
         $this->validator->validate($requestParams);
         return $requestParams;
     }
@@ -296,9 +296,9 @@ class GenericPaymentDataProvider extends DataProviderAbstract
         $requestParams['basket'] = $this->getBasketDataFromOrder($order);
         $requestParams['basketItems'] = $this->getOrderItemData($order);
 
-        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessReinit';
-        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error';
-        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back';
+        $requestParams['successurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessReinit' . ShopHelper::getTrailingSlash();
+        $requestParams['errorurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash();
+        $requestParams['backurl'] = $shopHelper->getPlentyDomain() . '/payment/payone/back' . ShopHelper::getTrailingSlash();
         $this->validator->validate($requestParams);
 
         return $requestParams;

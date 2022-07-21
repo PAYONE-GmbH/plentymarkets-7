@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.5.1
+
+### Behoben
+- Die SEO Einstellungen bzgl. dem Trailing Slash werden beim Aufbau der Routen nun korrekt berücksichtigt, damit es zu keinen fehlerhaften Weiterleitungen kommt.
+
 ## 2.5.0
 
 ### Hinzugefügt

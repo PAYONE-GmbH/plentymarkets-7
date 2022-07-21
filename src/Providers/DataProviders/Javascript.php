@@ -48,6 +48,7 @@ class Javascript
                 'defaultHeightInPx' => $style->getDefaultHeightInPx(),
                 'defaultStyle' => $style->getDefaultStyle(),
                 'payment' => $paymentHelper->getPaymentCodeByMop($selectedPaymentId),
+                'trailingSlash' => $helper::getTrailingSlash()
             ]
         );
     }

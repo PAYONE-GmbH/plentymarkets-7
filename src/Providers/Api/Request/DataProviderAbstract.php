@@ -589,11 +589,10 @@ abstract class DataProviderAbstract
      */
     protected function getRedirectUrlsForReinit()
     {
-
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit',
-            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
-            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccessForReinit' . ShopHelper::getTrailingSlash(),
+            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash(),
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout' . ShopHelper::getTrailingSlash(),
         ];
     }
 
@@ -607,9 +606,9 @@ abstract class DataProviderAbstract
             $successParam = '?transactionBasketId='.$transactionBasketId;
         }
         return [
-            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess'.$successParam,
-            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error',
-            'back' => $this->shopHelper->getPlentyDomain() . '/checkout',
+            'success' => $this->shopHelper->getPlentyDomain() . '/payment/payone/checkoutSuccess' . ShopHelper::getTrailingSlash() . $successParam,
+            'error' => $this->shopHelper->getPlentyDomain() . '/payment/payone/error' . ShopHelper::getTrailingSlash(),
+            'back' => $this->shopHelper->getPlentyDomain() . '/checkout' . ShopHelper::getTrailingSlash(),
         ];
     }
 

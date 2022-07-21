@@ -12,7 +12,7 @@
             authorization: function () {
                 loginOptions = {scope: '{{ content.scopes }}', popup: {{ content.popup }}};
                 authRequest = amazon.Login.authorize(loginOptions, function (t) {
-                    $.post("/payment/payone/checkout/amazonPay/renderWidgets",
+                    $.post("/payment/payone/checkout/amazonPay/renderWidgets{{ trailingSlash }}",
                         {
                             "accessToken": t.access_token,
                             "workOrderId": "{{ content.workOrderId }}"

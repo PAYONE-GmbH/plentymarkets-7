@@ -6,13 +6,13 @@
         <div class="method-option form-check-label">
             <h3>{{ paymentMethod.name }}:</h3>
             <div class="method-icon">
-                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon" onload="createIframeStart()">
+                <img src="{{ paymentMethod.icon }}" alt="{{ paymentMethod.name }} icon" onload="createIframeStart('{{ trailingSlash }}')">
             </div>
             <div class="description">{{ paymentMethod.description }}</div>
         </div>
     </div>
 
-    <form id="orderPlaceForm" name="paymentform" action="place-order" onsubmit="orderPlaceForm(event, {{ orderId }})">
+    <form id="orderPlaceForm" name="paymentform" action="/place-order" onsubmit="orderPlaceForm(event, '{{ orderId }}', '{{ trailingSlash }}')">
         <fieldset>
             <div class="form-group row">
                 <label for="cardpan"

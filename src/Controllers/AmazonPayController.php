@@ -7,6 +7,7 @@ use IO\Services\CheckoutService;
 use Payone\Adapter\Logger;
 use Payone\Adapter\SessionStorage;
 use Payone\Helpers\PaymentHelper;
+use Payone\Helpers\ShopHelper;
 use Payone\Methods\PayoneAmazonPayPaymentMethod;
 use Payone\Models\Api\GenericPayment\GetConfigurationResponse;
 use Payone\Models\Api\GenericPayment\GetOrderReferenceDetailsResponse;
@@ -142,7 +143,8 @@ class AmazonPayController extends Controller
         return $twig->render(PluginConstants::NAME . '::Checkout.AmazonPayLogin', [
             'selectedPaymentId' => $selectedPaymentId,
             'amazonPayMopId' => $amazonPayMopId,
-            'content' => $content
+            'content' => $content,
+            'trailingSlash' => ShopHelper::getTrailingSlash()
         ]);
     }
 
@@ -197,7 +199,8 @@ class AmazonPayController extends Controller
             'content' => $content,
             'accessToken' => $accessToken,
             'workOrderId' => $workdOrderId,
-            'amazonPayMopId' => $amazonPayMopId
+            'amazonPayMopId' => $amazonPayMopId,
+            'trailingSlash' => ShopHelper::getTrailingSlash()
         ]);
     }
 

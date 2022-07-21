@@ -22,6 +22,7 @@ use Payone\Services\SepaMandate;
 use Payone\Validator\CardExpireDate;
 use Payone\Views\ErrorMessageRenderer;
 use Plenty\Modules\Basket\Contracts\BasketRepositoryContract;
+use Plenty\Modules\Webshop\Contracts\LocalizationRepositoryContract;
 use Plenty\Plugin\Controller;
 use Plenty\Plugin\Http\Request;
 use Plenty\Plugin\Http\Response;
@@ -71,6 +72,11 @@ class CheckoutController extends Controller
     private $response;
 
     /**
+     * @var LocalizationRepositoryContract
+     */
+    private $localizationRepositoryContract;
+
+    /**
      * CheckoutController constructor.
      *
      * @param SessionHelper $sessionHelper
@@ -78,20 +84,22 @@ class CheckoutController extends Controller
      * @param Request $request
      * @param Logger $logger
      * @param Response $response
+     * @param LocalizationRepositoryContract $localizationRepositoryContract
      */
     public function __construct(
         SessionHelper        $sessionHelper,
         ErrorMessageRenderer $renderer,
         Request              $request,
         Logger               $logger,
-        Response             $response
-    )
-    {
+        Response             $response,
+        LocalizationRepositoryContract $localizationRepositoryContract
+    ) {
         $this->sessionHelper = $sessionHelper;
         $this->renderer = $renderer;
         $this->request = $request;
         $this->logger = $logger;
         $this->response = $response;
+        $this->localizationRepositoryContract = $localizationRepositoryContract;
     }
 
     /**
@@ -170,7 +178,8 @@ class CheckoutController extends Controller
                     'success' => $confirmOrderRefResponse->getSuccess(),
                     'sellerId' => $sessionStorage->getSessionValue('sellerId'),
                     'amazonReferenceId' => $sessionStorage->getSessionValue('amazonReferenceId'),
-                    'orderId' => $orderId
+                    'orderId' => $orderId,
+                    'trailingSlash' => ShopHelper::getTrailingSlash()
                 ]
             );
 
@@ -204,7 +213,8 @@ class CheckoutController extends Controller
                 [
                     'client_token' => $sessionResponse->getKlarnaClientToken(),
                     'payment_method' => $sessionResponse->getKlarnaMethodIdentifier(),
-                    'order' => $orderId
+                    'order' => $orderId,
+                    'trailingSlash' => ShopHelper::getTrailingSlash()
                 ]
             );
 
@@ -233,7 +243,7 @@ class CheckoutController extends Controller
                     /** @var ShopHelper $shopHelper */
                     $shopHelper = pluginApp(ShopHelper::class);
                     return $response->json([
-                        'data' => $shopHelper->getPlentyDomain() . '/place-order',
+                        'data' => $shopHelper->getPlentyDomain() . '/'. $this->localizationRepositoryContract->getLanguage() .'/place-order',
                         'paymentCode' => $paymentCode
                     ], 200);
 
@@ -612,7 +622,8 @@ class CheckoutController extends Controller
             $html = $twig->render(PluginConstants::NAME . '::Partials.PaymentForm.PAYONE_PAYONE_DIRECT_DEBIT_MANDATE', [
                 'mandate' => $mandate,
                 'locale' => $helper->getCurrentLocale(),
-                'orderId' => $orderId
+                'orderId' => $orderId,
+                'trailingSlash' => ShopHelper::getTrailingSlash()
             ]);
         } catch (\Exception $e) {
             return $this->getJsonErrors([
@@ -637,7 +648,6 @@ class CheckoutController extends Controller
      */
     public function checkoutSuccess(BasketRepositoryContract $basketReopo, PaymentHelper $helper, PaymentCache $paymentCache)
     {
-
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
         $transactionBasketId = $this->request->get('transactionBasketId');
@@ -648,18 +658,18 @@ class CheckoutController extends Controller
                 return $this->response->redirectTo('confirmation');
             }
             if ($storedBasketId != $transactionBasketId) {
-                return $this->response->redirectTo('payone/error');
+                return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
             }
         } else {
-            return $this->response->redirectTo('payone/error');
+            return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
         }
         $basket = $basketReopo->load();
         if (!$helper->isPayonePayment($basket->methodOfPaymentId)) {
-            return $this->response->redirectTo('payone/error');
+            return $this->response->redirectTo('payone/error' . ShopHelper::getTrailingSlash());
         }
 
         $paymentCache->resetActiveBasketId();
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage().'/place-order');
     }
 
     /**
@@ -674,7 +684,7 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
         $this->logger->debug('Controller.Success', $this->request->all());
 
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage() . '/place-order');
     }
 
     /**
@@ -732,6 +742,6 @@ class CheckoutController extends Controller
         $this->logger->setIdentifier(__METHOD__);
 
         $paymentCache->resetActiveBasketId();
-        return $this->response->redirectTo('place-order');
+        return $this->response->redirectTo($this->localizationRepositoryContract->getLanguage() . '/place-order');
     }
 }

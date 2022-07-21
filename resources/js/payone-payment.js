@@ -6,10 +6,10 @@
         $('#orderPlace').prop('disabled', isDisabled);
     };
 
-    $.payonePayment.doAuth = function () {
+    $.payonePayment.doAuth = function (form, trailingSlash = '') {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/doAuth',
+            url: '/payment/payone/checkout/doAuth' + trailingSlash,
             data: '',
             dataType: 'json',
             async: true
@@ -17,23 +17,18 @@
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
             }
-            console.log('done');
-            console.log(data);
         }).fail(function (data) {
             var data = data.responseJSON;
             if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
-            console.log(data);
-            console.log(data);
         });
     };
 
-    $.payonePayment.doAuthFromOrder = function (form, orderId) {
-        console.log(orderId)
+    $.payonePayment.doAuthFromOrder = function (form, orderId, trailingSlash = '') {
         return $.ajax({
             type: 'POST',
-            url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId,
+            url: '/payment/payone/checkout/doAuthFromOrder/'+ orderId + trailingSlash,
             data: '',
             dataType: 'json',
             async: true
@@ -41,15 +36,11 @@
             if (data.data.redirecturl) {
                 window.location.replace(data.data.redirecturl);
             }
-            console.log('done');
-            console.log(data);
         }).fail(function (data) {
             var data = data.responseJSON;
             if (data.errors && data.errors.message) {
                 $.payonePayment.showErrorMessage(data.errors.message);
             }
-            console.log(data);
-            console.log(data);
         });
     };
     $.payonePayment.showValidationErrors = function (form, errors, errorClasses) {

@@ -1,6 +1,6 @@
 {
-  "version": "2.5.0",
-  "license": "MIT",
+  "version": "2.5.1",
+  "license": "",
   "pluginIcon": "icon_plugin_xs.png",
   "price": 0.0,
   "authorIcon": "icon_author_xs.png",
@@ -56,5 +56,8 @@
       "name": "Payone Checkout JS",
       "description": "Block to integrate the payone payments into checkout"
     }
-  ]
+  ],
+  "platform": {
+    "php": ">=7.3 <8.1"
+  }
 }

@@ -1,5 +1,11 @@
 # Release Notes für PAYONE
 
+## 2.5.2
+
+### Behoben
+- Wenn es bei einer Rückerstattung zu einem Fehler kam wurde dieser nicht korrekt dargestellt.
+- Fehler bei der Rückerstattung behoben.
+
 ## 2.5.1
 
 ### Behoben

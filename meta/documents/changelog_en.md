@@ -1,5 +1,11 @@
 # Release Notes for PAYONE
 
+## 2.5.2
+
+### Fixed
+- If there was an error during a refund, it was not displayed correctly.
+- Fixed the error that occurred during the refund.
+
 ## 2.5.1
 
 ### Fixed

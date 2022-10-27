@@ -1,5 +1,10 @@
 # Release Notes für PAYONE
 
+## 2.5.3 (2022-10-27)
+
+### Behoben
+- Zahlungen können nun in allen Fällen wieder abgeschlossen werden.
+
 ## 2.5.2
 
 ### Behoben

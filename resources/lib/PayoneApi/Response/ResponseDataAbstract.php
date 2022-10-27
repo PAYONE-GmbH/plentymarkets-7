@@ -25,6 +25,8 @@ class ResponseDataAbstract
                     $value = $value->jsonSerialize();
                 }
                 $result[$propertyName] = $value;
+            } elseif(is_bool($value)) {
+                $result[$propertyName] = $value;
             }
         }
 

@@ -284,6 +284,8 @@ class CheckoutController extends Controller
         }
         try {
             $auth = $paymentService->openTransaction($basket->load());
+            $this->logger->setIdentifier(__METHOD__)
+                ->debug('Controller.Checkout', ['authResponse' => $auth]);
         } catch (\Exception $e) {
             return $this->getJsonErrors(['message' => $e->getMessage()]);
         }

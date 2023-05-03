@@ -282,6 +282,8 @@ class Api
             $this->logger->error('Api.' . $this->getCallAction($call), $response);
         }
 
+        $this->logger->error('do lib call response', $response);
+
         return $response;
     }
 

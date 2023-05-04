@@ -50,8 +50,8 @@ class OrderPdf
         }
 
         $adviceData = [
-            (string)$this->getPayoneBankAccount($payment),
-            $this->getPaymentReferenceText($payment),
+            (string)$this->getPayoneBankAccount($payment, $lang),
+            $this->getPaymentReferenceText($payment, $lang),
         ];
 
         $orderPdfGenerationModel->advice = implode(self::PDF_LINEBREAK . self::PDF_LINEBREAK, $adviceData);
@@ -61,9 +61,10 @@ class OrderPdf
 
     /**
      * @param Payment $payment
+     * @param String $lang
      * @return string
      */
-    private function getPayoneBankAccount(Payment $payment): string
+    private function getPayoneBankAccount(Payment $payment, String $lang): string
     {
 
         $iban = $this->paymentHelper->getPaymentPropertyValue($payment, PaymentProperty::TYPE_IBAN_OF_RECEIVER);;
@@ -75,7 +76,7 @@ class OrderPdf
             return '';
         }
 
-        return $this->translator->trans('Invoice.holder') . ': ' . $accountHolder . self::PDF_LINEBREAK .
+        return $this->translator->trans('Invoice.holder', [], $lang) . ': ' . $accountHolder . self::PDF_LINEBREAK .
             'IBAN: ' . $iban . self::PDF_LINEBREAK .
             'BIC: ' . $bic;
     }
@@ -83,14 +84,15 @@ class OrderPdf
 
     /**
      * @param Payment $payment
+     * @param String $lang
      * @return string
      */
-    private function getPaymentReferenceText(Payment $payment): string
+    private function getPaymentReferenceText(Payment $payment, String $lang): string
     {
         $referenceNumber = $this->paymentHelper->getPaymentPropertyValue(
             $payment,
             PaymentProperty::TYPE_TRANSACTION_ID
         );
-        return $this->translator->trans('Invoice.paymentReference') . ': ' . $referenceNumber;
+        return $this->translator->trans('Invoice.paymentReference', [], $lang) . ': ' . $referenceNumber;
     }
 }

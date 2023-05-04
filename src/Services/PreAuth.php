@@ -82,6 +82,8 @@ class PreAuth
 
         $preAuthResponse = $this->doPreAuthFromBasket($basket);
 
+        $this->logger->error('executePreAuth', ['preauthResponse' => $preAuthResponse]);
+
         $payment = $this->createPayment($selectedPaymentId, $preAuthResponse, $basket);
         $this->paymentCache->storePayment((string) $selectedPaymentId, $payment);
         $this->paymentCache->setActiveBasketId($basket->id);
@@ -103,6 +105,8 @@ class PreAuth
         }
 
         $preAuthResponse = $this->doPreAuthFromOrder( $order);
+        $this->logger->error('executePreAuthFromOrder', ['executePreAuthFromOrder' => $preAuthResponse]);
+
 
         /** @var AuthDataProvider $authDataProvider */
         $authDataProvider = pluginApp(AuthDataProvider::class);
@@ -194,6 +198,9 @@ class PreAuth
         try {
             $requestData = $this->preAuthDataProvider->getDataFromBasket($paymentCode, $basket, '');
             $preAuthResponse = $this->api->doPreAuth($requestData);
+
+            $this->logger->error('doPreAuthFromBasket', ['doPreAuthFromBasket' => $preAuthResponse]);
+
         } catch (\Exception $e) {
             $this->logger->logException($e);
             throw $e;
@@ -229,7 +236,7 @@ class PreAuth
         );
         try {
             $preAuthResponse = $this->api->doPreAuth($requestData);
-
+            $this->logger->error('doPreAuthFromOrder', ['doPreAuthFromOrder' => $preAuthResponse]);
         } catch (\Exception $e) {
             $this->logger->logException($e);
             throw $e;

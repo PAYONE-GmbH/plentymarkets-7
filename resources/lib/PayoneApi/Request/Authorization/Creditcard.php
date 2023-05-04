@@ -15,7 +15,8 @@ class Creditcard extends AuthorizationRequestAbstract
     /**
      * @var string
      */
-    protected $clearingtype = ClearingTypes::CREDITCARD;
+//    protected $clearingtype = ClearingTypes::CREDITCARD;
+    protected $clearingtype = 'ccsecure3d';
 
     /**
      * @var string

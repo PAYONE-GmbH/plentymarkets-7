@@ -123,7 +123,10 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($this->paymentHasRedirect($paymentCode)) {
-            $requestParams['redirect'] = $this->getRedirectUrlsForReinit();
+            $urls = $this->getRedirectUrls($basket->id);
+            $requestParams['redirect'] = $urls;
+            $requestParams['successurl'] = $urls['success'];
+            $requestParams['errorurl'] = $urls['error'];
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();
@@ -190,7 +193,10 @@ class AuthDataProvider extends DataProviderAbstract implements DataProviderOrder
             $requestParams['bankAccount']['country'] = $requestParams['billingAddress']['country'];
         }
         if ($this->paymentHasRedirect($paymentCode)) {
-            $requestParams['redirect'] = $this->getRedirectUrls();
+            $urls = $this->getRedirectUrls($basket->id);
+            $requestParams['redirect'] = $urls;
+            $requestParams['successurl'] = $urls['success'];
+            $requestParams['errorurl'] = $urls['error'];
         }
         if ($paymentCode == PayoneCCPaymentMethod::PAYMENT_CODE) {
             $requestParams['ccCheck'] = $this->getCreditCardData()->jsonSerialize();

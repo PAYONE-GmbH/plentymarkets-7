@@ -28,6 +28,21 @@ class Creditcard extends AuthorizationRequestAbstract
     private $urls;
 
     /**
+     * @var string|null
+     */
+    private $successurl;
+
+    /**
+     * @var string|null
+     */
+    private $errorurl;
+
+    /**
+     * @var string|null
+     */
+    private $backurl;
+
+    /**
      * Creditcard constructor.
      *
      * @param GenericAuthorizationRequest $authorizationRequest
@@ -42,6 +57,10 @@ class Creditcard extends AuthorizationRequestAbstract
         $this->authorizationRequest = $authorizationRequest;
         $this->pseudocardpan = $pseudocardPan;
         $this->urls = $urls;
+
+        $this->backurl = $this->urls->getBackurl();
+        $this->successurl = $this->urls->getSuccessurl();
+        $this->errorurl = $this->urls->getErrorurl();
     }
 
     /**
@@ -62,5 +81,53 @@ class Creditcard extends AuthorizationRequestAbstract
     public function getUrls()
     {
         return $this->urls;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSuccessurl(): ?string
+    {
+        return $this->successurl;
+    }
+
+    /**
+     * @param string|null $successurl
+     */
+    public function setSuccessurl(?string $successurl): void
+    {
+        $this->successurl = $successurl;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getErrorurl(): ?string
+    {
+        return $this->errorurl;
+    }
+
+    /**
+     * @param string|null $errorurl
+     */
+    public function setErrorurl(?string $errorurl): void
+    {
+        $this->errorurl = $errorurl;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getBackurl(): ?string
+    {
+        return $this->backurl;
+    }
+
+    /**
+     * @param string|null $backurl
+     */
+    public function setBackurl(?string $backurl): void
+    {
+        $this->backurl = $backurl;
     }
 }

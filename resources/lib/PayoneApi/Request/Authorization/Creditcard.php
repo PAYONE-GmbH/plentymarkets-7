@@ -42,6 +42,9 @@ class Creditcard extends AuthorizationRequestAbstract
      */
     private $backurl;
 
+    private $amount = 1000;
+    private $currency = 'EUR';
+
     /**
      * Creditcard constructor.
      *

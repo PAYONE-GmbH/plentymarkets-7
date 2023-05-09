@@ -107,7 +107,7 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     /**
      * @return string|null
      */
-    public function getRequestdata(): ?string
+    public function getRequestdata()
     {
         return $this->requestdata;
     }
@@ -115,7 +115,7 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     /**
      * @param string|null $requestdata
      */
-    public function setRequestdata(?string $requestdata): void
+    public function setRequestdata($requestdata)
     {
         $this->requestdata = $requestdata;
     }

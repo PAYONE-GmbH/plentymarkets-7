@@ -37,8 +37,7 @@ try {
 
     $request = RequestFactory::create($paymentMethod, $data);
 
-
-    return json_encode($request);
+    return ['request' => $request];
     $serializer = new ArraySerializer();
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);

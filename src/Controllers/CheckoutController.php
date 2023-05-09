@@ -2,16 +2,6 @@
 
 namespace Payone\Controllers;
 
-require_once (__DIR__.'/../../resources/lib/vendor/autoload.php');
-
-use PayoneApi\Api\Client;
-use PayoneApi\Api\PostApi;
-use PayoneApi\Lib\Version;
-use PayoneApi\Request\ArraySerializer;
-use PayoneApi\Request\Authorization\RequestFactory;
-use PayoneApi\Response\ClientErrorResponse;
-
-
 use IO\Services\NotificationService;
 use Payone\Adapter\Logger;
 use Payone\Helpers\OrderHelper;

@@ -42,8 +42,6 @@ try {
 
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);
-
-    return ['response' => $serializer->serialize($response)];
 } catch (Exception $e) {
     $errorResponse = new ClientErrorResponse(
         'SdkRestApi error: ' . $e->getMessage() . PHP_EOL .
@@ -66,4 +64,7 @@ if (!$response->getSuccess()) {
     return $errorResponse->jsonSerialize();
 }
 
-return $response->jsonSerialize();
+return [
+   'serializer' => $serializer->serialize($response),
+    'jsonself' => $response->jsonSerialize()
+];

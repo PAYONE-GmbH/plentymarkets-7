@@ -64,7 +64,10 @@ if (!$response->getSuccess()) {
     return $errorResponse->jsonSerialize();
 }
 
-return [
-   'serializer' => $serializer->serialize($response),
-    'jsonself' => $response->jsonSerialize()
-];
+return $response->jsonSerialize();
+//
+//
+//return [
+//   'serializer' => $serializer->serialize($response),
+//    'jsonself' => $response->jsonSerialize()
+//];

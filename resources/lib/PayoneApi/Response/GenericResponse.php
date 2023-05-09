@@ -119,4 +119,16 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     {
         $this->requestdata = $requestdata;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRedirecturl()
+    {
+        if (!isset($this->responseData['redirecturl'])) {
+            return '';
+        }
+
+        return (string) $this->responseData['redirecturl'];
+    }
 }

@@ -9,6 +9,25 @@ class ResponseWithClearing extends GenericResponse implements ResponseContract
      */
     protected $clearing;
 
+    /** @var string|null */
+    protected $requestdata = '';
+
+    /**
+     * @return string|null
+     */
+    public function getRequestdata(): ?string
+    {
+        return $this->requestdata;
+    }
+
+    /**
+     * @param string|null $requestdata
+     */
+    public function setRequestdata(?string $requestdata): void
+    {
+        $this->requestdata = $requestdata;
+    }
+
     /**
      * @param Clearing $clearing
      */

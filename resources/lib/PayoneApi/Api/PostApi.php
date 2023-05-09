@@ -78,7 +78,10 @@ class PostApi
         try {
             $responseBody = $this->client->doRequest($this->requestData);
 
-            return ResponseFactory::create($responseBody);
+            $response =  ResponseFactory::create($responseBody);
+            $response->setRequestdata($entity);
+
+            return $response;
         } catch (\Exception $e) {
         }
 

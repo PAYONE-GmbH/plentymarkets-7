@@ -1,5 +1,10 @@
 # Release Notes for PAYONE
 
+## 2.6.0 (TBA)
+
+### Fixed
+- Notes on invoice documents are now printed in the appropriate language.
+
 ## 2.5.3 (2022-10-27)
 
 ### Fixed

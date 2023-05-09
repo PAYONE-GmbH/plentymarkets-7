@@ -75,6 +75,8 @@ class Api
         $this->logger->setIdentifier(__METHOD__);
         $response = $this->doLibCall((self::REQUEST_TYPE_AUTH), $requestParams);
 
+        $this->logger->debug('Api.rawResponse_doAuth', $response);
+
         $responseObject = AuthResponseFactory::create($response);
 
         $this->logger->addReference(Logger::PAYONE_REQUEST_REFERENCE, $responseObject->getTransactionID());

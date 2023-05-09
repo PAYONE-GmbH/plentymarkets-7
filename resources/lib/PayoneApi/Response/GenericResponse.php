@@ -105,7 +105,7 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     }
 
     /**
-     * @return string|null
+     * @return mixed
      */
     public function getRequestdata()
     {
@@ -113,7 +113,7 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
     }
 
     /**
-     * @param string|null $requestdata
+     * @param mixed $requestdata
      */
     public function setRequestdata($requestdata)
     {

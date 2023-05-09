@@ -37,8 +37,11 @@ try {
 
     $request = RequestFactory::create($paymentMethod, $data);
 
-    return ['request' => $request];
+
     $serializer = new ArraySerializer();
+
+    return ['request' => $serializer->serialize($request)];
+
     $client = new PostApi(new Client(), $serializer);
     $response = $client->doRequest($request);
 } catch (Exception $e) {

@@ -14,6 +14,25 @@ class GenericResponse extends ResponseDataAbstract implements ResponseContract
      */
     protected $responseData = [];
 
+    /** @var string|null */
+    protected $requestdata;
+
+    /**
+     * @return string|null
+     */
+    public function getRequestdata(): ?string
+    {
+        return $this->requestdata;
+    }
+
+    /**
+     * @param string|null $requestdata
+     */
+    public function setRequestdata(?string $requestdata): void
+    {
+        $this->requestdata = $requestdata;
+    }
+
     /**
      * XmlApiResponse constructor.
      *

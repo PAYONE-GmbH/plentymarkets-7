@@ -121,7 +121,7 @@ class PaymentCreation
 
         $payment->mopId = (int) $mopId;
         $payment->transactionType = Payment::TRANSACTION_TYPE_BOOKED_POSTING;
-        $payment->status = Payment::STATUS_APPROVED;
+        $payment->status =  $response->getRedirectUrl() !== '' ? Payment::STATUS_AWAITING_APPROVAL :  Payment::STATUS_APPROVED;
 
         $payment->currency = $paymentData['basket']['currency'];
 

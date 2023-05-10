@@ -61,9 +61,9 @@ class Creditcard extends AuthorizationRequestAbstract
         $this->pseudocardpan = $pseudocardPan;
         $this->urls = $urls;
 
-        $this->backurl = $this->urls->getBackurl();
-        $this->successurl = $this->urls->getSuccessurl();
-        $this->errorurl = $this->urls->getErrorurl();
+        $this->backurl = $this->urls->getBackurl().'?3ds';
+        $this->successurl = $this->urls->getSuccessurl().'?3ds';
+        $this->errorurl = $this->urls->getErrorurl().'?3ds';
     }
 
     /**

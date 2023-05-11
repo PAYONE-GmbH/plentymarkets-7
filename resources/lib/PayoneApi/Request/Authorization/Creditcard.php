@@ -55,15 +55,15 @@ class Creditcard extends AuthorizationRequestAbstract
     public function __construct(
         GenericAuthorizationRequest $authorizationRequest,
         RedirectUrls $urls,
-        $pseudocardPan
+        $pseudocardPan,
+        $successurl = "",
+        $errorurl = ""
     ) {
         $this->authorizationRequest = $authorizationRequest;
         $this->pseudocardpan = $pseudocardPan;
         $this->urls = $urls;
-
-        $this->backurl = $this->urls->getBackurl().'?3ds';
-        $this->successurl = $this->urls->getSuccessurl().'?3ds';
-        $this->errorurl = $this->urls->getErrorurl().'?3ds';
+        $this->successurl = $successurl;
+        $this->errorurl = $errorurl;
     }
 
     /**
@@ -95,42 +95,10 @@ class Creditcard extends AuthorizationRequestAbstract
     }
 
     /**
-     * @param string|null $successurl
-     */
-    public function setSuccessurl(?string $successurl): void
-    {
-        $this->successurl = $successurl;
-    }
-
-    /**
      * @return string|null
      */
     public function getErrorurl(): ?string
     {
         return $this->errorurl;
-    }
-
-    /**
-     * @param string|null $errorurl
-     */
-    public function setErrorurl(?string $errorurl): void
-    {
-        $this->errorurl = $errorurl;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getBackurl(): ?string
-    {
-        return $this->backurl;
-    }
-
-    /**
-     * @param string|null $backurl
-     */
-    public function setBackurl(?string $backurl): void
-    {
-        $this->backurl = $backurl;
     }
 }
